@@ -1,0 +1,445 @@
+<?php
+$includeJS=$includeCSS=array();
+$includeJS[] = "/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js";   
+//$includeJS[] = "/assets/js/wurfl.js";   
+$includeCSS[] = "/assets/meteo/css/weather-icons.css"; 
+$includeCSS[] = "/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"; 
+include "modules/header.php";
+include "modules/sidebar.php";
+
+include_once "models/PageItem.php";
+include_once "models/Scenario.php";
+include_once "models/Device.php";
+include_once "models/Tuile.php";
+include_once "models/Chart.php";
+include_once "models/ChartDevice.php";
+include_once "models/History.php";
+include_once "models/Liste.php";
+include_once "models/ListeMessage.php";
+include_once "models/MessageDevice.php";
+
+$GLOBALS["dbconnec"] = connectDB();
+if(!isset($_GET["pageId"])){
+    die('Aucune page définie');
+}
+
+$page= Page::getPage($_GET["pageId"]);
+$items = PageItem::getPageItemsForPage($_GET["pageId"]);
+
+?>
+<!-- BEGIN PAGE -->
+<div class="page-content-wrapper">
+<div class="page-content">
+    <input type="hidden" id="pageId" value="<?php echo $page->id; ?>" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
+                <h3 class="page-title">
+                    <?php echo $page->name; ?>
+                    <small><?php echo $page->description; ?></small>
+                    <a style="float:right;" class="btn btn-primary" href="ajax/user/itempage_add.php?pageId=<?php echo $page->id; ?>" data-target="#ajax" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Ajouter un objet</a>
+                </h3>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="packery">
+    <?php 
+    foreach($items as $item){
+        if($item->scenarioId != ""){
+            include "page_scenario.php";
+        }elseif($item->tuileId != ""){
+            include "page_tuile.php";
+        }elseif($item->chartId != ""){
+            include "page_chart.php";
+        }elseif($item->listeId != ""){
+            include "page_liste.php";
+        }elseif($item->deviceId != ""){
+            include "page_device.php";
+        }else{
+            include "page_plugin.php";
+        }
+    }
+    ?>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade" id="deleteItemPage" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <input type="hidden" id="iditempagetodelete" value="" />
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="modal-title">Confirmez vous la suppression de l'objet?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btnCancelPageItemDeletion" data-dismiss="modal" type="button">Annuler</button>
+                <button class="btn red btnDeletePageItemConfirm" data-dismiss="modal" type="button">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade" id="ajax" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>
+        &nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ajaxTendance" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+            <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+            <span>
+            &nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+            OKOK RENTRE
+        </div>
+    </div>
+</div>
+    <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+    $('.btnDeletePageItemConfirm').bind('click',function(e){
+        var iditempage=$('#iditempagetodelete').val();
+        $.ajax({
+            url: "ajax/delete_page_item.php",
+            type: "POST",
+            data: {
+                iditempage:  iditempage
+            },
+            complete: function(data){
+                if(data.responseText == "success"){
+                    $('.btnCancelPageItemDeletion').click();
+                    $('.itempage-'+iditempage).fadeOut(300, function(){ 
+                       $('.itempage-'+iditempage).remove(); 
+                    });
+                }
+            }
+        });
+    });
+    
+    $('.btnDeletePageItem').bind('click',function(e){
+        $('#iditempagetodelete').val($(this).attr('iditempage'));
+    });
+    
+    $('.popupTendance').bind('click',function(e){
+        console.debug('okok');
+    });
+    
+    $('.box-action').bind('click',function(e){
+        //console.debug($(this).attr('class'));
+        $.ajax({
+            url: "ajax/action/execute.php",
+            type: "POST",
+            data: {
+               type:  encodeURIComponent($(this).attr('type')),
+               elementId: $(this).attr('elementId')
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                toastr.success("Action exécutée");
+            }
+        });
+    });
+    
+    var $container = $('.packery').packery({
+        columnWidth: 80,
+        rowHeight: 80
+    });
+    
+    if(WURFL.is_mobile){
+	//dostuff();
+    } else {
+        $container.find('.boxPackery').each( function( i, itemElem ) {
+            // make element draggable with Draggabilly
+            var draggie = new Draggabilly( itemElem );
+            // bind Draggabilly events to Packery
+            $container.packery( 'bindDraggabillyEvents', draggie );
+        });
+    }
+    
+    $('.make-switch').on('switchChange.bootstrapSwitch', function () {
+        if($(this).is(':checked')){
+            var action='on';
+        }else{
+            var action='off';
+        }
+        $.ajax({
+            url: "ajax/action/execute.php",
+            type: "POST",
+            data: {
+               type:  'device',
+               elementId: $(this).attr('deviceId'),
+               action: action
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+              toastr.success("Action exécutée");
+            }
+        });
+    });
+    
+  
+    function orderItems() {
+        var itemElems = $container.packery('getItemElements');
+        var sorts="";
+        jQuery.each(itemElems, function( index ) {
+            if(sorts != ""){
+                sorts=sorts+"~";
+            }
+            sorts=sorts+index+":"+ $( this ).attr('iditempage');
+            //console.log( index + ": " + $( this ).attr('iditempage') );
+        });
+        
+        
+        $.ajax({
+            url: "ajax/page_item_update_order.php",
+            type: "POST",
+            data: {
+                pageid:  $('#pageId').val(),
+                params:  sorts
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                if(data == "error"){
+                    $('#alert').addClass('alert alert-danger');
+                    $('#alert').text('Une erreur est survenue');
+                } 
+            }
+        });
+        //console.debug(sorts);
+    }
+    
+    
+    
+
+    $container.packery( 'on', 'layoutComplete', orderItems );
+    $container.packery( 'on', 'dragItemPositioned', orderItems );
+    
+    <?php
+    foreach($items as $item){
+        if($item->chartId == ""){
+            continue;
+        }
+        $chart=Chart::getChart($item->chartId);
+        $heightChart=$chart->size*80;
+        
+        if($chart->type == "temps" || $chart->type == "ligne"){
+            echo "$('.container-".$item->id."').highcharts({";
+            echo " chart: {";
+            if($chart->type=='temps'){
+                echo " zoomType: 'x'";
+            }elseif($chart->type=='ligne'){
+                echo " type: 'line'";
+            }
+            //echo ",height:'".$heightChart."px'";
+            //echo ",width:'375px'";
+            echo " },";
+            echo "title: {";
+            echo " text: '".$chart->name."'";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+            echo "},";
+            echo "xAxis: {";
+            echo "type: 'datetime',";
+            echo "title: {";
+            echo "text: '".$chart->abscisse."'";
+            echo " }";
+            echo "},";
+            echo "yAxis: {";
+            echo "title: {";
+            echo "text: '".$chart->ordonne."'";
+            echo "}";
+            echo "},";
+            echo "series: [";
+            $i=0;
+            foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+                $device=Device::getDevice($chartDevice->deviceid);
+
+                $data=History::getHistoryHighchartLine($chartDevice->deviceid, $chart->period, $chart->from);
+                if($i>0){
+                    echo ",";
+                }
+                echo "{";  
+                if($chart->type=='temps'){
+                    echo "type:'area',";  
+                }
+                echo "name:'".$device->name."',";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";  
+                echo "}";
+                $i++;
+            }
+            echo "]";
+            echo "});";
+        }
+        
+        if($chart->type == "barre"){
+            echo "$('.container-".$item->id."').highcharts({";
+            echo " chart: {";
+            echo " type: 'column'";
+            echo " },";
+            echo "title: {";
+            echo " text: '".$chart->name."'";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+            echo "},";
+            echo "xAxis: {";
+            echo "categories: [";
+            switch($chart->period){
+                case '1':
+                    $j=$chart->getHeureFormatted();
+                    for($i=0;$i<=23;$i++){
+                        $j=($j > 23) ? 0 : $j;
+                        if($i>0){echo ",";}
+                        echo "'".$j."'";
+                        $j++;
+                    }
+                    break;
+                case '2':
+                    echo $chart->getDaysForWeek();
+                    /*for($i=0;$i<=23;$i++){
+                        $j=($j > 23) ? 0 : $j;
+                        if($i>0){echo ",";}
+                        echo "'".$j."'";
+                        $j++;
+                    }*/
+                    break;
+            }
+            echo "]";
+            echo "},";
+            echo "yAxis: {";
+            echo "min: 0,";
+            echo "title: {";
+            echo "text: '".$chart->ordonne."'";
+            echo "}";
+            echo "},";
+            echo "series: [";
+            $k=0;
+            foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+                $device=Device::getDevice($chartDevice->deviceid);
+
+                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from);
+                //print_r($data);
+                //exit;
+                //$data=0;
+                if($k>0){
+                    echo ",";
+                }
+                echo "{";  
+                echo "name:'".$device->name."',";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";  
+                echo "}";
+                $k++;
+            }
+            echo "]";
+            echo "});";
+        }
+        
+    }
+    ?>
+});
+
+setTimeout("refreshStatus()", 3000);
+function refreshStatus(){
+    var device_ids = new Array();
+    //Status
+    $('.stateDeviceId:visible').each(function() {
+        if ($(this).attr('stateDeviceId') != 0) {
+            if ($.inArray($(this).attr('stateDeviceId'),device_ids) == -1) {
+                device_ids.push($(this).attr('stateDeviceId'));
+            }
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "scripts/status.php",
+        dataType:"json",
+        data: {ids: device_ids.join(',')},
+        timeout: 2000,
+        success: function(data){
+            $.each(data, function(index, value) {
+                value = utf8_decode(value);
+                if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
+                    $('.stateDeviceId-'+index).text(value);
+                }
+                if(value.toLowerCase() == "on"){
+                    $('.stateDeviceId-'+index).removeClass("badge-danger");
+                    $('.stateDeviceId-'+index).addClass("badge-success");
+                }
+                if(value.toLowerCase() == "off"){
+                    $('.stateDeviceId-'+index).removeClass("badge-success");
+                    $('.stateDeviceId-'+index).addClass("badge-danger");
+                }
+            });
+        }
+    });
+
+    if(device_ids.length > 0) setTimeout("refreshStatus()", 10000);
+}
+    
+function utf8_decode(str_data) {
+
+    var tmp_arr = [],
+    i = 0,
+    ac = 0,
+    c1 = 0,
+    c2 = 0,
+    c3 = 0,
+    c4 = 0;
+
+    str_data += '';
+
+    while (i < str_data.length) {
+        c1 = str_data.charCodeAt(i);
+        if (c1 <= 191) {
+          tmp_arr[ac++] = String.fromCharCode(c1);
+          i++;
+        } else if (c1 <= 223) {
+          c2 = str_data.charCodeAt(i + 1);
+          tmp_arr[ac++] = String.fromCharCode(((c1 & 31) << 6) | (c2 & 63));
+          i += 2;
+        } else if (c1 <= 239) {
+          // http://en.wikipedia.org/wiki/UTF-8#Codepage_layout
+          c2 = str_data.charCodeAt(i + 1);
+          c3 = str_data.charCodeAt(i + 2);
+          tmp_arr[ac++] = String.fromCharCode(((c1 & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+          i += 3;
+        } else {
+          c2 = str_data.charCodeAt(i + 1);
+          c3 = str_data.charCodeAt(i + 2);
+          c4 = str_data.charCodeAt(i + 3);
+          c1 = ((c1 & 7) << 18) | ((c2 & 63) << 12) | ((c3 & 63) << 6) | (c4 & 63);
+          c1 -= 0x10000;
+          tmp_arr[ac++] = String.fromCharCode(0xD800 | ((c1 >> 10) & 0x3FF));
+          tmp_arr[ac++] = String.fromCharCode(0xDC00 | (c1 & 0x3FF));
+          i += 4;
+        }
+    }
+
+  return tmp_arr.join('');
+}
+
+</script>
+<?php
+include "modules/footer.php";
+?>
