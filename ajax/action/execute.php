@@ -19,6 +19,8 @@ if(!isset($_POST["elementId"])){
     return false;
 }
 
+$value=(isset($_POST["value"])) ? $_POST["value"] : NULL; 
+
 switch (strtolower($_POST["type"])){
     case 'scenario':
         echo "scenario";
@@ -32,8 +34,7 @@ switch (strtolower($_POST["type"])){
         }
         break;
     case 'message':
-        executeMessage($_POST["elementId"]);
-        
+        executeMessage($_POST["elementId"],$value);
         break;
     case 'device':
         //Get Message with command associated
@@ -46,7 +47,7 @@ switch (strtolower($_POST["type"])){
     default:
 }
 
-function executeMessage($messgeId){
+function executeMessage($messgeId, $valueToSend=NULL){
     echo "execute message";
     $message=MessageDevice::getMessageDevice($messgeId);
     $device=Device::getDevice($message->deviceId);
@@ -157,6 +158,9 @@ function executeMessage($messgeId){
             if(strtolower($message->command) == "off"){
                 $value = 'false';
             }
+            
+            $value=($valueToSend != "") ? $valueToSend : $value;
+            
             //Construction query JSON
             $json='{';
             $json.='"cn_user": "'.$login.'",';
@@ -201,6 +205,8 @@ function executeMessage($messgeId){
             if(strtolower($message->command) == "off"){
                 $value = 'false';
             }
+            $value=($valueToSend != "") ? $valueToSend : $value;
+            
             //Construction query JSON
             $json='{';
             $json.='"cn_user": "'.$login.'",';

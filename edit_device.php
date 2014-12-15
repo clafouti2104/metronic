@@ -596,8 +596,8 @@ $(document).ready(function () {
                 if(data.responseText == "error"){
                     toastr.error("Une erreur est survenue");
                 } else {
+                    eval(data);
                     eval(data.responseText);
-                    //eval(data.responseText);
                 }
             }
         });

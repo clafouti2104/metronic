@@ -1,8 +1,12 @@
 <?php
 $includeJS=$includeCSS=array();
 $includeJS[] = "/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js";   
+$includeJS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js";   
+//$includeJS[] = "/assets/admin/pages/scripts/components-jqueryui-sliders.js";   
+
 //$includeJS[] = "/assets/js/wurfl.js";   
 $includeCSS[] = "/assets/meteo/css/weather-icons.css"; 
+$includeCSS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.css"; 
 $includeCSS[] = "/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"; 
 include "modules/header.php";
 include "modules/sidebar.php";
@@ -36,7 +40,8 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                 <h3 class="page-title">
-                    <?php echo $page->name; ?>
+                    <i class="fa fa-gear fa-2 btnEditMode"></i><?php echo $page->name; ?>&nbsp;
+                    <input type="hidden" id="editMode" value="0" />
                     <small><?php echo $page->description; ?></small>
                     <a style="float:right;" class="btn btn-primary" href="ajax/user/itempage_add.php?pageId=<?php echo $page->id; ?>" data-target="#ajax" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Ajouter un objet</a>
                 </h3>
@@ -108,6 +113,27 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
     <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
 <script type="text/javascript">
 $( document ).ready(function() {
+    $('.btnEditMode').bind('click',function(e){
+        if($('#editMode').val() == "0"){
+            $('#editMode').val('1');
+            if(WURFL.is_mobile){
+                //dostuff();
+            } else {
+                $container.find('.boxPackery').each( function( i, itemElem ) {
+                    // make element draggable with Draggabilly
+                    var draggie = new Draggabilly( itemElem );
+                    // bind Draggabilly events to Packery
+                    $container.packery( 'bindDraggabillyEvents', draggie );
+                });
+                $container.packery( 'on', 'layoutComplete', orderItems );
+                $container.packery( 'on', 'dragItemPositioned', orderItems );
+            }
+        } else {
+            $('#editMode').val('0');
+            location.reload();
+        }
+    });
+    
     $('.btnDeletePageItemConfirm').bind('click',function(e){
         var iditempage=$('#iditempagetodelete').val();
         $.ajax({
@@ -133,6 +159,28 @@ $( document ).ready(function() {
     
     $('.popupTendance').bind('click',function(e){
         console.debug('okok');
+    });
+    
+    $(".slider-basic").slider({
+        change: function(e,ui){
+            if( typeof e.clientX != 'undefined'){
+                $.ajax({
+                    url: "ajax/action/execute.php",
+                    type: "POST",
+                    data: {
+                       type:  encodeURIComponent('message'),
+                       value:  ui.value,
+                       elementId: $(this).attr('elementId')
+                    },
+                    error: function(data){
+                        toastr.error("Une erreur est survenue");
+                    },
+                    complete: function(data){
+                        toastr.success("Action exécutée");
+                    }
+                });
+            }
+        }
     });
     
     $('.box-action').bind('click',function(e){
@@ -165,7 +213,7 @@ $( document ).ready(function() {
             // make element draggable with Draggabilly
             var draggie = new Draggabilly( itemElem );
             // bind Draggabilly events to Packery
-            $container.packery( 'bindDraggabillyEvents', draggie );
+            $container.packery( 'bindDraggabillyEvents', false );
         });
     }
     
@@ -225,14 +273,36 @@ $( document ).ready(function() {
         //console.debug(sorts);
     }
     
-    
+    //$('.slider-basic').change(function() {})
     
 
-    $container.packery( 'on', 'layoutComplete', orderItems );
-    $container.packery( 'on', 'dragItemPositioned', orderItems );
+    /*$('.slider-basic').each(function() {
+        console.debug($(this).attr('dataValue'));
+        $(this).slider({value:$(this).attr('dataValue')});
+    });*/
     
     <?php
     foreach($items as $item){
+        /*if($item->deviceId != ""){
+            $device=Device::getDevice($item->deviceId);
+            $msgs =MessageDevice::getMessageDevicesForDevice($item->deviceId);
+            $slider=false;
+            if(count($msgs) == 1){
+                //Parcours msg
+                foreach($msgs as $msg){
+                    $params = json_decode($msg->parameters);
+                    if(isset($params->slider)){
+                        $slider=true;
+                        break;
+                    }
+                }
+            }
+            if($slider){
+                //echo "alert('ok');";
+                //echo "$('.slider-basic-".$item->id."').slider({'value':".$device->state."});";
+            }
+        }*/
+        
         if($item->chartId == ""){
             continue;
         }
@@ -380,7 +450,11 @@ function refreshStatus(){
             $.each(data, function(index, value) {
                 value = utf8_decode(value);
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
-                    $('.stateDeviceId-'+index).text(value);
+                    if($('.slider-basic-'+index).size() == 1){
+                        $('.slider-basic-'+index).slider({'value':value});
+                    } else {
+                        $('.stateDeviceId-'+index).text(value);
+                    }
                 }
                 if(value.toLowerCase() == "on"){
                     $('.stateDeviceId-'+index).removeClass("badge-danger");
