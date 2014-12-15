@@ -35,6 +35,15 @@ if($_POST["incremental"]){
         'period'=>$_POST["period"]
     ));
 }
+//Slider
+if($_POST["slider"] == "true"){
+    $params=json_encode(array(
+        'color'=>$_POST["color"],
+        //'description'=>$_POST["description"],
+        'width'=>$_POST["width"],
+        'colorSlider'=>$_POST["colorSlider"]
+    ));
+}
 if($_POST["plugin"] != ""){
     $params = json_encode(array(
         "plugin"=>$_POST["pluginType"],

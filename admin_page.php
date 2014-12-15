@@ -28,7 +28,17 @@ $pages = Page::getPages(FALSE);
                 <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
                 <ul class="page-breadcrumb breadcrumb">
                     <li class="btn-group">
-                        <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_page.php';"><i class="fa fa-plus"></i>Ajouter une page</button>
+                        <button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                        <span>Actions</span><i class="fa fa-angle-down"></i>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li>
+                                <a href="edit_page.php"><i class="fa fa-plus"></i>Ajouter une page</a>
+                            </li>
+                            <li>
+                                <a href="admin_page_order.php">Gestion de l'ordre</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <i class="fa fa-home"></i>

@@ -492,6 +492,16 @@ if($product != ""){
                         </div>
                     </div>
                 </div>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="msgSlider">Variation</label>
+                            <div class="col-md-9">
+                                <input id="msgSlider" name="msgSlider" class="form-control" value="" type="checkbox">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default btnCancelMessageDevice" data-dismiss="modal" type="button">Annuler</button>
@@ -613,6 +623,7 @@ $(document).ready(function () {
                 deviceId: $('#iddevice').val(),
                 name: $('#msgName').val(),
                 command: $('#msgCommand').val(),
+                slider: $('#msgSlider').is(':checked'),
                 type: $('#msgType').val()
                 //active: $('#msgActif').is(':checked')
             },

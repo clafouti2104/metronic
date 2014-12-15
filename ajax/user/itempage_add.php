@@ -9,11 +9,25 @@ include_once "../../models/Liste.php";
 
 $GLOBALS["dbconnec"] = connectDB();
 $scenarios= Scenario::getScenarios();
-$devices= Device::getDevices();
+//$devices= Device::getDevices();
+$sqlDevices = "SELECT * FROM device ";
+$sqlDevices .= " WHERE incremental=1 ";
+$sqlDevices .= " OR id IN (";
+$sqlDevices .= " SELECT deviceId FROM messagedevice";
+$sqlDevices .= " WHERE parameters LIKE '%slider%'";
+$sqlDevices .= ")";
+$stmt = $GLOBALS["dbconnec"]->prepare($sqlDevices);
+$stmt->execute(array());
 $devicesTab = array();
-foreach ($devices as $device){
-    $devicesTab[$device->id]=$device;
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $devicesTab[$row["id"]]=array(
+        "id"=>$row["id"],
+        "name"=>$row["name"],
+        "parameters"=>$row["parameters"],
+        "incremental"=>$row["incremental"]
+    );
 }
+
 $tuiles= Tuile::getTuiles();
 $charts= Chart::getCharts();
 $listes= Liste::getListes();
@@ -56,7 +70,7 @@ foreach($scenarios as $scenarioTmp){
 <?php
 foreach($tuiles as $tuileTmp){
     $deviceTuile = $devicesTab[$tuileTmp->deviceid];
-    $mode = ($deviceTuile->incremental=='1') ? "incremental" : "normal";
+    $mode = ($deviceTuile["incremental"]=='1') ? "incremental" : "normal";
     echo "<option value=\"".$tuileTmp->id."\" mode=\"$mode\">".$tuileTmp->name."</option>";
 }
 ?>
@@ -89,8 +103,12 @@ foreach($listes as $listeTmp){
                 <select name="selectDevice" id="selectDevice" style="width:100%;">
                     <option></option>
 <?php
-foreach($devices as $deviceTmp){
-    echo "<option value=\"".$deviceTmp->id."\">".$deviceTmp->name."</option>";
+foreach($devicesTab as $deviceTmp){
+    //Check if slider
+    $pos = strpos($deviceTmp["parameters"], "slider");
+    $type = ($pos !== false) ? "slider" : "";
+    $type = ($deviceTmp["incremental"] == "1") ? "incremental" : $type;
+    echo "<option value=\"".$deviceTmp["id"]."\" type=\"".$type."\">".$deviceTmp["name"]."</option>";
 }
 ?>
                 </select>
@@ -144,6 +162,25 @@ foreach($plugins as $type=>$params){
 ?>
                 </select>
             </div>
+            <div class="col-md-4 optionSliderColor" style="display:none;">
+                <p class="text-center">Couleur Slider</p>
+                <select id="selectSliderColor" style="width: 100%;">
+                    <option></option>
+<?php
+$colorSlider=array(
+    "yellow" => "jaune",
+    "red" => "rouge",
+    "blue" => "bleu",
+    "purple" => "violet",
+    "green" => "vert",
+    "grey" => "gris"
+);
+                    foreach($colorSlider as $colorSliderId=>$colorSliderName){
+                        echo "<option value=\"".$colorSliderId."\" >".ucwords($colorSliderName)."</option>";
+                    }
+?>
+                </select>
+            </div>
             <div class="col-md-4 optionDescription" style="display:none;">
                 <p class="text-center">Description</p>
                 <input type="text" id="inputDescription" style="width: 100%;">
@@ -181,6 +218,15 @@ $( document ).ready(function() {
             $('.optionTuile').hide();
             $('.optionPeriod').hide();
             $('.optionDescription').hide();
+        }
+    });
+    $('#selectDevice').bind('change',function(e){
+        if($('#selectDevice option:selected').attr('type') == "slider"){
+            $('.optionTuile').show();
+            $('.optionSliderColor').show();
+        } else {
+            $('.optionTuile').hide();
+            $('.optionSliderColor').hide();
         }
     });
     
@@ -238,6 +284,10 @@ $( document ).ready(function() {
         if($('#selectTuile option:selected').attr('mode') == "incremental"){
             var incremental='true';
         }
+        var slider='false';
+        if($('#selectDevice option:selected').attr('type') == "slider"){
+            var slider='true';
+        }
         var pluginType='';
         if($('#selectPlugins option:selected').attr('type') != ""){
             var pluginType=$('#selectPlugins option:selected').attr('type');
@@ -260,7 +310,9 @@ $( document ).ready(function() {
                 period:  $('#selectPeriod').val(),
                 width:  $('#selectWidth').val(),
                 height:  $('#inputHeight').val(),
-                color:  $('#selectColor').val()
+                color:  $('#selectColor').val(),
+                slider:  slider,
+                colorSlider:  $('#selectSliderColor').val()
             },
             complete: function(data){
                 if(data.responseText == "success"){

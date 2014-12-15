@@ -80,7 +80,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
             $json=json_decode($response);
-            print_r($json);
+            //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
@@ -102,7 +102,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
             $json=json_decode($response);
-            print_r($json);
+            //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
@@ -124,7 +124,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
             $json=json_decode($response);
-            print_r($json);
+            //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
@@ -135,95 +135,12 @@ function executeMessage($messgeId, $valueToSend=NULL){
             break;
         case 'calaos_output':
             echo "calaos output";
-            //Récupération token
-            $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
-            $content = "[parameters]";
-            $login=$password=$ipAddress="";
-            foreach($ini as $title => $value){
-                if($title == "calaos_login"){
-                    $login=$value;
-                }
-                if($title == "calaos_password"){
-                    $password=$value;
-                }
-                if($title == "calaos_ip_address"){
-                    $ipAddress=$value;
-                }
-            }
-            
-            $value="";
-            if(strtolower($message->command) == "on"){
-                $value = 'true';
-            }
-            if(strtolower($message->command) == "off"){
-                $value = 'false';
-            }
-            
-            $value=($valueToSend != "") ? $valueToSend : $value;
-            
-            //Construction query JSON
-            $json='{';
-            $json.='"cn_user": "'.$login.'",';
-            $json.='"cn_pass": "'.$password.'",';
-            $json.='"action": "set_state",';
-            $json.='"type": "output",';
-            $json.='"id": "'.$device->param1.'",';
-            $json.='"value": "'.$value.'"';
-            $json.='}';
-            
-            file_put_contents("/var/www/metronic/scripts/calaos/action.json", $json);
-            
-            //RECUPERATION INFO CALAOS
-            exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/action.json --output-document /var/www/metronic/scripts/calaos/result.json https://'.$ipAddress.'/api.php',$response);
-
-            $results = file_get_contents('/var/www/metronic/scripts/calaos/result_action.json');
-            $results = json_decode($results,TRUE);
+            calaos("output",$device,$message,$valueToSend);
             
             break;
         case 'calaos_input':
             echo "calaos input";
-            //Récupération token
-            $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
-            $content = "[parameters]";
-            $login=$password=$ipAddress="";
-            foreach($ini as $title => $value){
-                if($title == "calaos_login"){
-                    $login=$value;
-                }
-                if($title == "calaos_password"){
-                    $password=$value;
-                }
-                if($title == "calaos_ip_address"){
-                    $ipAddress=$value;
-                }
-            }
-            
-            $value="";
-            if(strtolower($message->command) == "on"){
-                $value = 'true';
-            }
-            if(strtolower($message->command) == "off"){
-                $value = 'false';
-            }
-            $value=($valueToSend != "") ? $valueToSend : $value;
-            
-            //Construction query JSON
-            $json='{';
-            $json.='"cn_user": "'.$login.'",';
-            $json.='"cn_pass": "'.$password.'",';
-            $json.='"action": "set_state",';
-            $json.='"type": "input",';
-            $json.='"id": "'.$device->param1.'",';
-            $json.='"value": "'.$value.'"';
-            $json.='}';
-            
-            file_put_contents("/var/www/metronic/scripts/calaos/action.json", $json);
-            
-            //RECUPERATION INFO CALAOS
-            exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/action.json --output-document /var/www/metronic/scripts/calaos/result.json https://'.$ipAddress.'/api.php',$response);
-
-            $results = file_get_contents('/var/www/metronic/scripts/calaos/result_action.json');
-            $results = json_decode($results,TRUE);
+            calaos("input",$device,$message,$valueToSend);
             
             break;
         default:
@@ -233,6 +150,51 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 file_get_contents("http://".$device->ip_address.$prefixCommand.$message->command, false, $context);
             }
     }
+}
+
+function calaos($type,$device,$message,$valueToSend=NULL){
+    //Récupération token
+    $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+    $content = "[parameters]";
+    $login=$password=$ipAddress="";
+    foreach($ini as $title => $value){
+        if($title == "calaos_login"){
+            $login=$value;
+        }
+        if($title == "calaos_password"){
+            $password=$value;
+        }
+        if($title == "calaos_ip_address"){
+            $ipAddress=$value;
+        }
+    }
+
+    $value="";
+    if(strtolower($message->command) == "on"){
+        $value = 'true';
+    }
+    if(strtolower($message->command) == "off"){
+        $value = 'false';
+    }
+    $value=($valueToSend != "") ? $valueToSend : $value;
+
+    //Construction query JSON
+    $json='{';
+    $json.='"cn_user": "'.$login.'",';
+    $json.='"cn_pass": "'.$password.'",';
+    $json.='"action": "set_state",';
+    $json.='"type": "'.$type.'",';
+    $json.='"id": "'.$device->param1.'",';
+    $json.='"value": "'.$value.'"';
+    $json.='}';
+
+    file_put_contents("/var/www/metronic/scripts/calaos/action.json", $json);
+
+    //RECUPERATION INFO CALAOS
+    exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/action.json --output-document /var/www/metronic/scripts/calaos/result.json https://'.$ipAddress.'/api.php',$response);
+
+    $results = file_get_contents('/var/www/metronic/scripts/calaos/result_action.json');
+    $results = json_decode($results,TRUE);
 }
 
 switch ($_POST["type"]){

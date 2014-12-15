@@ -6,13 +6,15 @@ class Page{
     public $description;
     public $active;
     public $icon;
+    public $position;
     
-    public function __construct($id, $name, $description, $active,$icon) {
+    public function __construct($id, $name, $description, $active, $icon, $position) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->active = $active;
         $this->icon = $icon;
+        $this->position = $position;
     }
     
     public static function PageExists($idPage) {
@@ -51,6 +53,7 @@ class Page{
         $query .= ",description";
         $query .= ",active";
         $query .= ",icon";
+        $query .= ",position";
         $query .= " FROM page ";
         $query .= " WHERE id=:id";
         
@@ -61,7 +64,7 @@ class Page{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_page = new Page($row['id'],$row['name'],$row['description'],$row["active"],$row["icon"]);
+                    $tmp_page = new Page($row['id'],$row['name'],$row['description'],$row["active"],$row["icon"],$row["position"]);
 
                     $result[] = $tmp_page;
                     $tmp_page = NULL;
@@ -77,7 +80,7 @@ class Page{
     public static function getPages($active=TRUE) {
         $query = "SELECT id FROM page";
         $query .= ($active) ? " WHERE active=1" : "";
-        $query .= " ORDER BY name";
+        $query .= " ORDER BY position";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
 
@@ -85,18 +88,28 @@ class Page{
     }
     
     public static function createPage($name,$description,$active=1,$icon) {
+        $position=0;
+        $sqlPosition="SELECT TOP 1 position FROM page ORDER BY position DESC";
+        $stmt = $GLOBALS['dbconnec']->prepare($sqlPosition);
+        if (!$stmt->execute($params)) {
+            if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                $position = $row["position"] + 1;
+            }
+        }
         
         $query = "INSERT INTO page (";
         $query .= "name";
         $query .= ",description";
         $query .= ",active ";
         $query .= ",icon ";
+        $query .= ",position ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":name";
         $query .= ",:description";
         $query .= ",:active ";
         $query .= ",:icon ";
+        $query .= ",:position ";
         $query .= ")";
         
         $params = array();
@@ -104,6 +117,7 @@ class Page{
         $params[":description"] = $description;
         $params[":active"] = $active;
         $params[":icon"] = $icon;
+        $params[":position"] = $position;
         
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -121,7 +135,7 @@ class Page{
         }
         $stmt = NULL;
 
-        $tmpInstance = new Page($id, $name, $description, $active,$icon);
+        $tmpInstance = new Page($id, $name, $description, $active,$icon,$position);
         
         return $tmpInstance;
     }
