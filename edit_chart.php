@@ -64,7 +64,7 @@ if($isPost && isset($_POST["idchart"])){
     $description= (!is_object($chart)) ? NULL : $chart->description;
     $type= (!is_object($chart)) ? NULL : $chart->type;
     $period= (!is_object($chart)) ? NULL : $chart->period;
-    $from= (!is_object($chart)) ? NULL : $chart->from;
+    $from= (!is_object($chart)) ? 1 : $chart->from;
     $size= (!is_object($chart)) ? 3 : $chart->size;
     $abs= (!is_object($chart)) ? NULL : $chart->abscisse;
     $ord= (!is_object($chart)) ? NULL : $chart->ordonne;
