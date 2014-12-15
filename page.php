@@ -226,55 +226,6 @@ $( document ).ready(function() {
     });
     
     
-    var $container = $('.packery').packery({
-        columnWidth: 80,
-        rowHeight: 80
-    });
-    
-    if(WURFL.is_mobile){
-	//dostuff();
-    } else {
-        $container.find('.boxPackery').each( function( i, itemElem ) {
-            // make element draggable with Draggabilly
-            var draggie = new Draggabilly( itemElem );
-            // bind Draggabilly events to Packery
-            $container.packery( 'bindDraggabillyEvents', false );
-        });
-    }
-    
-  
-    function orderItems() {
-        var itemElems = $container.packery('getItemElements');
-        var sorts="";
-        jQuery.each(itemElems, function( index ) {
-            if(sorts != ""){
-                sorts=sorts+"~";
-            }
-            sorts=sorts+index+":"+ $( this ).attr('iditempage');
-            //console.log( index + ": " + $( this ).attr('iditempage') );
-        });
-        
-        
-        $.ajax({
-            url: "ajax/page_item_update_order.php",
-            type: "POST",
-            data: {
-                pageid:  $('#pageId').val(),
-                params:  sorts
-            },
-            error: function(data){
-                toastr.error("Une erreur est survenue");
-            },
-            complete: function(data){
-                if(data == "error"){
-                    $('#alert').addClass('alert alert-danger');
-                    $('#alert').text('Une erreur est survenue');
-                } 
-            }
-        });
-        //console.debug(sorts);
-    }
-    
     //$('.slider-basic').change(function() {})
     
 
@@ -434,6 +385,58 @@ $( document ).ready(function() {
         
     }
     ?>
+            
+            
+    
+    
+    var $container = $('.packery').packery({
+        columnWidth: 80,
+        rowHeight: 80
+    });
+    
+    if(WURFL.is_mobile){
+	//dostuff();
+    } else {
+        $container.find('.boxPackery').each( function( i, itemElem ) {
+            // make element draggable with Draggabilly
+            var draggie = new Draggabilly( itemElem );
+            // bind Draggabilly events to Packery
+            $container.packery( 'bindDraggabillyEvents', false );
+        });
+    }
+    
+  
+    function orderItems() {
+        var itemElems = $container.packery('getItemElements');
+        var sorts="";
+        jQuery.each(itemElems, function( index ) {
+            if(sorts != ""){
+                sorts=sorts+"~";
+            }
+            sorts=sorts+index+":"+ $( this ).attr('iditempage');
+            //console.log( index + ": " + $( this ).attr('iditempage') );
+        });
+        
+        
+        $.ajax({
+            url: "ajax/page_item_update_order.php",
+            type: "POST",
+            data: {
+                pageid:  $('#pageId').val(),
+                params:  sorts
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                if(data == "error"){
+                    $('#alert').addClass('alert alert-danger');
+                    $('#alert').text('Une erreur est survenue');
+                } 
+            }
+        });
+        //console.debug(sorts);
+    }
 });
 
 setTimeout("refreshStatus()", 3000);

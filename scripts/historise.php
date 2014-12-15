@@ -21,6 +21,8 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $stmt2 = $GLOBALS["dbconnec"]->prepare($sql);
     $stmt2->execute(array(":deviceid"=>$row["id"]));
     if($stmt2->rowCount() == 0){
+        $row['state']=($row['state'] == "on") ? 1 : $row['state'];
+        $row['state']=($row['state'] == "off") ? 0 : $row['state'];
         $row['state']=doubleval($row['state']);
         //Consommation: Alimente la table releve_<DEVICE_ID>
         if($row["incremental"] == 1){
