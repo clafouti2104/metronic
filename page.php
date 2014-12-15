@@ -469,6 +469,7 @@ function refreshStatus(){
                     $('.stateDeviceId-badge-'+index).addClass("badge-success");
                     $('.stateDeviceId-tile-'+index).removeClass("tile-danger");
                     $('.stateDeviceId-tile-'+index).addClass("tile-success");
+                    $('.stateDeviceId-tile-'+index).text('');
                     //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
@@ -476,6 +477,7 @@ function refreshStatus(){
                     $('.stateDeviceId-badge-'+index).addClass("badge-danger");
                     $('.stateDeviceId-tile-'+index).removeClass("tile-success");
                     $('.stateDeviceId-tile-'+index).addClass("tile-danger");
+                    $('.stateDeviceId-tile-'+index).text('');
                     //$('.stateDeviceId-'+index).text('');
                 }
             });
