@@ -21,6 +21,7 @@ include_once "models/Device.php";
 include_once "models/MessageDevice.php";
 
 $devices=  Device::getDevices();
+$error="";
 $colors=array();
 $colors["bleu"]=array(
     "blue"=>"bleu",
@@ -92,17 +93,24 @@ if($isPost && isset($_POST["idliste"])){
 }
 
 if($isPost){
-    $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
-    if($_POST["idliste"]>0){
-        $sql="UPDATE liste SET name='".$_POST["name"]."', description='".$_POST["description"]."', color='".$_POST["color"]."', size=".$_POST["size"].", icon='".$_POST["icon"]."'";
-        $sql.=" WHERE id=".$_POST["idliste"];
-        
-        $stmt = $GLOBALS["dbconnec"]->exec($sql);
-        $info="La liste a été modifiée";
-    } else {
-        $liste=Liste::createListe($_POST["name"], $_POST["description"], $_POST["color"],$_POST["size"], $_POST["icon"]);
-        $idListe=$liste->id;
-        $info="Le liste a été créée";
+    //Controle
+    if($_POST["name"] == ""){
+        $error="Veuillez renseigner le nom";
+    }
+    
+    if($error == ""){
+        $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
+        if($_POST["idliste"]>0){
+            $sql="UPDATE liste SET name='".$_POST["name"]."', description='".$_POST["description"]."', color='".$_POST["color"]."', size=".$_POST["size"].", icon='".$_POST["icon"]."'";
+            $sql.=" WHERE id=".$_POST["idliste"];
+
+            $stmt = $GLOBALS["dbconnec"]->exec($sql);
+            $info="La liste a été modifiée";
+        } else {
+            $liste=Liste::createListe($_POST["name"], $_POST["description"], $_POST["color"],$_POST["size"], $_POST["icon"]);
+            $idListe=$liste->id;
+            $info="Le liste a été créée";
+        }
     }
 }
 
@@ -143,6 +151,7 @@ if(isset($idListe) && $idListe > 0){
                 </li>
             </ul>
             <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
+            <?php if($error!=""){echo "<div class=\"alert alert-danger\">".$error."</div>";}?>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>

@@ -66,7 +66,7 @@ foreach($devices as $device){
         $lastUpdate = $lastUpdate->format('d-m-Y H:i');
     }
     echo "<tr class=\"odd gradeX linedevice-".$device->id."\" >";
-    echo "<td>".$device->name."</td>";
+    echo "<td><a class=\"black\" href=\"edit_device.php?idDevice=".$device->id."\">".$device->name."</a></td>";
     echo "<td>".$device->type."</td>";
     echo "<td>".$device->state."</td>";
     echo "<td>".$lastUpdate."</td>";

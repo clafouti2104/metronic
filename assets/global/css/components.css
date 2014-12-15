@@ -172,6 +172,10 @@ a {
   text-shadow: none;
   color: #428bca;
 }
+a.black {
+  text-shadow: none;
+  color: #000;
+}
 a:hover {
   color: #2a6496;
 }

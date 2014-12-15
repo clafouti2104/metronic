@@ -5,6 +5,7 @@ include "modules/sidebar.php";
 $GLOBALS["dbconnec"] = connectDB();
 include_once "models/Page.php";
 
+$error="";
 $isPost=FALSE;
 if(isset($_POST["formname"]) && $_POST["formname"]=="editpage"){
     $isPost=TRUE;
@@ -31,17 +32,24 @@ if($isPost && isset($_POST["idpage"])){
 }
 
 if($isPost){
-    $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
-    if($_POST["idpage"]>0){
-        $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
-        $sql="UPDATE page SET name='".$_POST["name"]."', description='".$_POST["description"]."', active=".$_POST["active"].", icon='".$_POST["icon"]."'";
-        $sql.=" WHERE id=".$_POST["idpage"];
-        $stmt = $GLOBALS["dbconnec"]->exec($sql);
-        $info="La page a été modifiée";
-    } else {
-        $page=Page::createPage($_POST["name"], $_POST["description"], $_POST["active"],$_POST["icon"]);
-        $idPage=$page->id;
-        $info="Le page a été créée";
+    //Controle
+    if($_POST["name"] == ""){
+        $error="Veuillez renseigner le nom";
+    }
+    
+    if($error == ""){
+        $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
+        if($_POST["idpage"]>0){
+            $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
+            $sql="UPDATE page SET name='".$_POST["name"]."', description='".$_POST["description"]."', active=".$_POST["active"].", icon='".$_POST["icon"]."'";
+            $sql.=" WHERE id=".$_POST["idpage"];
+            $stmt = $GLOBALS["dbconnec"]->exec($sql);
+            $info="La page a été modifiée";
+        } else {
+            $page=Page::createPage($_POST["name"], $_POST["description"], $_POST["active"],$_POST["icon"]);
+            $idPage=$page->id;
+            $info="Le page a été créée";
+        }
     }
 }
 
@@ -81,6 +89,7 @@ if(isset($idPage) && $idPage > 0){
                 </li>
             </ul>
             <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
+            <?php if($error!=""){echo "<div class=\"alert alert-danger\">".$error."</div>";}?>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>

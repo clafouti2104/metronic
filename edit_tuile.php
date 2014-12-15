@@ -32,17 +32,24 @@ if($isPost && isset($_POST["idTuile"])){
 }
 
 if($isPost){
-    if($_POST["idTuile"]>0){
-        $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
-        $sql="UPDATE tuile SET name='".$_POST["name"]."', deviceid='".$_POST["deviceid"]."', color='".$_POST["color"]."'";
-        $sql.=" WHERE id=".$_POST["idTuile"];
-        //echo $sql;
-        $stmt = $GLOBALS["dbconnec"]->exec($sql);
-        $info="La tuile a été modifiée";
-    } else {
-        $tuile=Tuile::createTuile($_POST["name"], $_POST["deviceid"], $_POST["color"]);
-        $idTuile=$tuile->id;
-        $info="Le tuile a été créée";
+    //Controle
+    if($_POST["name"] == ""){
+        $error="Veuillez renseigner le nom";
+    }
+    
+    if($error == ""){
+        if($_POST["idTuile"]>0){
+            $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
+            $sql="UPDATE tuile SET name='".$_POST["name"]."', deviceid='".$_POST["deviceid"]."', color='".$_POST["color"]."'";
+            $sql.=" WHERE id=".$_POST["idTuile"];
+            //echo $sql;
+            $stmt = $GLOBALS["dbconnec"]->exec($sql);
+            $info="La tuile a été modifiée";
+        } else {
+            $tuile=Tuile::createTuile($_POST["name"], $_POST["deviceid"], $_POST["color"]);
+            $idTuile=$tuile->id;
+            $info="Le tuile a été créée";
+        }
     }
 }
 
@@ -82,6 +89,7 @@ if(isset($idTuile) && $idTuile > 0){
                 </li>
             </ul>
             <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
+            <?php if($error!=""){echo "<div class=\"alert alert-danger\">".$error."</div>";}?>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>

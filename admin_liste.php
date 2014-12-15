@@ -57,7 +57,7 @@ $listes = Liste::getListes();
 foreach($listes as $liste){
     $listeMessages=ListeMessage::getListeMessagesForListe($liste->id);
     echo "<tr class=\"odd gradeX lineliste-".$liste->id."\" >";
-    echo "<td>".$liste->name."</td>";
+    echo "<td><a class=\"black\" href=\"edit_liste.php?idListe=".$liste->id."\">".$liste->name."</a></td>";
     echo "<td>".count($listeMessages)."</td>";
     echo "<td><a href=\"edit_liste.php?idListe=".$liste->id."\"><i class=\"fa fa-edit\"  style=\"color:black;\" ></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeleteListe\" listeId=\"".$liste->id."\"  style=\"color:black;\"></i></a></td>";

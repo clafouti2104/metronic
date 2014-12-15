@@ -67,7 +67,7 @@ $pages = Page::getPages(FALSE);
 foreach($pages as $page){
     $actif=($page->active) ? "fa fa-check-square" : "fa fa-square";
     echo "<tr class=\"odd gradeX linepage-".$page->id."\" >";
-    echo "<td>".$page->name."</td>";
+    echo "<td><a class=\"black\" href=\"edit_page.php?idPage=".$page->id."\">".$page->name."</a></td>";
     echo "<td><i class=\"".$actif."\"></i></td>";
     echo "<td><a href=\"edit_page.php?idPage=".$page->id."\"><i class=\"fa fa-edit\" style=\"color:black;\"></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeletePage\" style=\"color:black;\" pageId=\"".$page->id."\"></i></a></td>";

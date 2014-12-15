@@ -26,7 +26,7 @@ $icon=($liste->icon == "") ? "fa-play-circle" : $liste->icon;
                             if(count($messageDevices) >= 2){
                                 if(strtolower($deviceTmp->state) == "on" || strtolower($deviceTmp->state) == "off"){
                                     $checked=(strtolower($deviceTmp->state)=="on") ? " checked " : "";
-                                    $elem="<input type=\"checkbox\" class=\"make-switch action-light-".$deviceTmp->id."\" ".$checked." data-on-color=\"success\" data-off-color=\"danger\" deviceId=\"".$deviceTmp->id."\" style=\"float:right;\">";
+                                    $elem="<input type=\"checkbox\" class=\"make-switch make-switch-".$deviceTmp->id." stateDeviceId action-light-".$deviceTmp->id."\" ".$checked." data-on-color=\"success\" data-off-color=\"danger\"  stateDeviceId=\"".$deviceTmp->id."\" deviceId=\"".$deviceTmp->id."\" style=\"float:right;\">";
                                 } else {
                                     $msgIdOn=$msgIdOff=0;
                                     foreach($messageDevices as $messageDevice){

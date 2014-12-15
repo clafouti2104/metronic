@@ -9,6 +9,7 @@ include_once "models/Device.php";
 include_once "models/MessageDevice.php";
 include_once "models/Product.php";
 
+$error="";
 $isPost=FALSE;
 if(isset($_POST["formname"]) && $_POST["formname"]=="editdevice"){
     $isPost=TRUE;
@@ -67,28 +68,35 @@ $products=Product::getProducts();
 $_POST["incremental"]=$incremental;
 
 if($isPost){
-    $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
-    $_POST["incremental"] = (!isset($_POST["incremental"]) || $_POST["incremental"] == "") ? 0 : $_POST["incremental"];
-    $_POST["collect"] = ($_POST["collect"] == "") ? 0 : $_POST["collect"];
-    $_POST["type"] = ($_POST["type"] == "-1") ? NULL : $_POST["type"];
-    $alertMinute = ($alertMinute == "") ? 0 : $alertMinute;
-    //$_POST["alert_lost_communication"] = (!isset($_POST["alert_lost_communication"]) || $_POST["alert_lost_communication"] == "") ? NULL : $_POST["alert_lost_communication"];
-    if($_POST["iddevice"]>0){
-        $sql="UPDATE device SET name='".$_POST["name"]."', type='".$_POST["type"]."', product_id=".$_POST["product"].",ip_address='".$_POST["ipaddress"]."', active=".$_POST["active"].", incremental=".$_POST["incremental"];
-        $sql.=", alert_lost_communication='".$alertMinute."', param1='".$_POST["param1"]."', param2='".$_POST["param2"]."', param3='".$_POST["param3"]."', param4='".$_POST["param4"]."', param5='".$_POST["param5"]."'";
-        $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"]." ";
-        $sql.=" WHERE id=".$_POST["iddevice"];
-        //echo $sql;
-        $stmt = $GLOBALS["dbconnec"]->exec($sql);
-        $info="Le device a été modifié";
-    } else {
-        $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"]);
-        $idDevice=$device->id;
-        $info="Le device a été modifié";
+    //Controle
+    if($_POST["name"] == ""){
+        $error="Veuillez renseigner le nom";
     }
-    if($_POST["incremental"] > 0){
-        $sqlTable = "CREATE TABLE IF NOT EXISTS releve_".$idDevice." (id MEDIUMINT NOT NULL AUTO_INCREMENT, value FLOAT, date DATETIME,PRIMARY KEY (id))";
-        $stmt = $GLOBALS["dbconnec"]->exec($sqlTable);
+    
+    if($error==""){
+        $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
+        $_POST["incremental"] = (!isset($_POST["incremental"]) || $_POST["incremental"] == "") ? 0 : $_POST["incremental"];
+        $_POST["collect"] = ($_POST["collect"] == "") ? 0 : $_POST["collect"];
+        $_POST["type"] = ($_POST["type"] == "-1") ? NULL : $_POST["type"];
+        $alertMinute = ($alertMinute == "") ? 0 : $alertMinute;
+        //$_POST["alert_lost_communication"] = (!isset($_POST["alert_lost_communication"]) || $_POST["alert_lost_communication"] == "") ? NULL : $_POST["alert_lost_communication"];
+        if($_POST["iddevice"]>0){
+            $sql="UPDATE device SET name='".$_POST["name"]."', type='".$_POST["type"]."', product_id=".$_POST["product"].",ip_address='".$_POST["ipaddress"]."', active=".$_POST["active"].", incremental=".$_POST["incremental"];
+            $sql.=", alert_lost_communication='".$alertMinute."', param1='".$_POST["param1"]."', param2='".$_POST["param2"]."', param3='".$_POST["param3"]."', param4='".$_POST["param4"]."', param5='".$_POST["param5"]."'";
+            $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"]." ";
+            $sql.=" WHERE id=".$_POST["iddevice"];
+            //echo $sql;
+            $stmt = $GLOBALS["dbconnec"]->exec($sql);
+            $info="Le device a été modifié";
+        } else {
+            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"]);
+            $idDevice=$device->id;
+            $info="Le device a été modifié";
+        }
+        if($_POST["incremental"] > 0){
+            $sqlTable = "CREATE TABLE IF NOT EXISTS releve_".$idDevice." (id MEDIUMINT NOT NULL AUTO_INCREMENT, value FLOAT, date DATETIME,PRIMARY KEY (id))";
+            $stmt = $GLOBALS["dbconnec"]->exec($sqlTable);
+        }   
     }
 }
 
@@ -138,6 +146,7 @@ if($product != ""){
                 </li>
             </ul>
             <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
+            <?php if($error!=""){echo "<div class=\"alert alert-danger\">".$error."</div>";}?>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>

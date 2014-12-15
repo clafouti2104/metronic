@@ -202,7 +202,9 @@ $( document ).ready(function() {
     });
     
     
-    $('.make-switch').on('switchChange.bootstrapSwitch', function () {
+    $('.make-switch').on('switchChange.bootstrapSwitch', function (e,ui) {
+        //console.log(this); // DOM element
+        console.debug(e);
         if($(this).is(':checked')){
             var action='on';
         }else{
@@ -226,35 +228,8 @@ $( document ).ready(function() {
     });
     
     
-    //$('.slider-basic').change(function() {})
-    
-
-    /*$('.slider-basic').each(function() {
-        console.debug($(this).attr('dataValue'));
-        $(this).slider({value:$(this).attr('dataValue')});
-    });*/
-    
     <?php
     foreach($items as $item){
-        /*if($item->deviceId != ""){
-            $device=Device::getDevice($item->deviceId);
-            $msgs =MessageDevice::getMessageDevicesForDevice($item->deviceId);
-            $slider=false;
-            if(count($msgs) == 1){
-                //Parcours msg
-                foreach($msgs as $msg){
-                    $params = json_decode($msg->parameters);
-                    if(isset($params->slider)){
-                        $slider=true;
-                        break;
-                    }
-                }
-            }
-            if($slider){
-                //echo "alert('ok');";
-                //echo "$('.slider-basic-".$item->id."').slider({'value':".$device->state."});";
-            }
-        }*/
         
         if($item->chartId == ""){
             continue;
@@ -399,9 +374,9 @@ $( document ).ready(function() {
     } else {
         $container.find('.boxPackery').each( function( i, itemElem ) {
             // make element draggable with Draggabilly
-            var draggie = new Draggabilly( itemElem );
+            //var draggie = new Draggabilly( itemElem );
             // bind Draggabilly events to Packery
-            $container.packery( 'bindDraggabillyEvents', false );
+            //$container.packery( 'bindDraggabillyEvents', draggie );
         });
     }
     
@@ -443,7 +418,8 @@ setTimeout("refreshStatus()", 3000);
 function refreshStatus(){
     var device_ids = new Array();
     //Status
-    $('.stateDeviceId:visible').each(function() {
+    //$('.stateDeviceId:visible').each(function() {
+    $('.stateDeviceId').each(function() {
         if ($(this).attr('stateDeviceId') != 0) {
             if ($.inArray($(this).attr('stateDeviceId'),device_ids) == -1) {
                 device_ids.push($(this).attr('stateDeviceId'));
@@ -468,6 +444,8 @@ function refreshStatus(){
                     }
                 }
                 if(value.toLowerCase() == "on"){
+                    $('.make-switch-'+index).bootstrapSwitch('state', true, false);
+                    
                     $('.stateDeviceId-badge-'+index).removeClass("badge-danger");
                     $('.stateDeviceId-badge-'+index).addClass("badge-success");
                     $('.stateDeviceId-tile-'+index).removeClass("tile-danger");
@@ -476,6 +454,7 @@ function refreshStatus(){
                     //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
+                    $('.make-switch-'+index).bootstrapSwitch('state', false, false);
                     $('.stateDeviceId-badge-'+index).removeClass("badge-success");
                     $('.stateDeviceId-badge-'+index).addClass("badge-danger");
                     $('.stateDeviceId-tile-'+index).removeClass("tile-success");
@@ -487,7 +466,7 @@ function refreshStatus(){
         }
     });
 
-    if(device_ids.length > 0) setTimeout("refreshStatus()", 10000);
+    if(device_ids.length > 0) setTimeout("refreshStatus()", 5000);
 }
     
 function utf8_decode(str_data) {

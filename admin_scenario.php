@@ -58,7 +58,7 @@ $scenarios = Scenario::getScenarios();
 foreach($scenarios as $scenario){
     $messages=ScenarioMessage::getScenarioMessagesForScenario($scenario->id);
     echo "<tr class=\"odd gradeX linescenario-".$scenario->id."\" >";
-    echo "<td>".$scenario->name."</td>";
+    echo "<td><a class=\"black\" href=\"edit_scenario.php?idScenario=".$scenario->id."\">".$scenario->name."</a></td>";
     echo "<td>".count($messages)."</td>";
     echo "<td><a href=\"edit_scenario.php?idScenario=".$scenario->id."\"><i class=\"fa fa-edit\" style=\"color:black;\"></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeleteScenario\" scenarioId=\"".$scenario->id."\" style=\"color:black;\"></i></a></td>";

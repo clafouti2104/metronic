@@ -18,6 +18,7 @@ include_once "models/Chart.php";
 include_once "models/ChartDevice.php";
 include_once "models/Device.php";
 
+$error="";
 $devices=  Device::getDevicesByType();
 $deviceTab=array();
 foreach($devices as $device){
@@ -43,8 +44,8 @@ if($isPost && isset($_POST["idchart"])){
     $size= $_POST["size"];
     $abs= $_POST["abs"];
     $ord= $_POST["ord"];
-    $scaleMin= $_POST["scaleMin"];
-    $scaleMax= $_POST["scaleMax"];
+    $scaleMin= ($_POST["scaleMin"] == "") ? NULL : $_POST["scaleMin"];
+    $scaleMax= ($_POST["scaleMax"] == "") ? NULL : $_POST["scaleMax"];
     $idchart=$_POST["idchart"];
 } else {
     $idchart=0;
@@ -75,30 +76,53 @@ $from = ($from != "") ? str_replace("P", "", $from) : $from;
 $from = ($from != "") ? str_replace("D", "", $from) : $from;
 
 if($isPost){
-    $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
-    $_POST["from"]=($_POST["from"] != "") ? "P".$_POST["from"]."D" : "";
-    if($_POST["idchart"]>0){
-        $sql="UPDATE chart SET name='".$_POST["name"]."', description='".$_POST["description"]."', type='".$_POST["type"]."',";
-        $sql.="period='".$_POST["period"]."', froms='".$_POST["from"]."', size=".$_POST["size"].", ";
-        $sql.="abs='".$_POST["abs"]."', ord='".$_POST["ord"]."', ";
-        $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."'";
-        $sql.=" WHERE id=".$_POST["idchart"];
-        $stmt = $GLOBALS["dbconnec"]->exec($sql);
-        
-        //Suppression des device associés au chart
-        ChartDevice::deleteForChart($_POST["idchart"]);
-        foreach($_POST["my_multi_select2"] as $deviceTmp){
-            ChartDevice::createChartDevice($_POST["idchart"], $deviceTmp);
+    //Controle
+    if($_POST["name"] == ""){
+        $error="Veuillez renseigner le nom";
+    }
+    if($_POST["type"] == ""){
+        $error.= ($error!="") ? "<br/>" : "";
+        $error.="Veuillez renseigner le type";
+    }
+    if($_POST["period"] == ""){
+        $error.= ($error!="") ? "<br/>" : "";
+        $error.="Veuillez renseigner la période";
+    }
+    if($_POST["froms"] == ""){
+        $error.= ($error!="") ? "<br/>" : "";
+        $error.="Veuillez renseigner la date de début";
+    }
+    if($_POST["size"] == ""){
+        $error.= ($error!="") ? "<br/>" : "";
+        $error.="Veuillez renseigner la taille";
+    }
+    
+    if($error == ""){
+        $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
+        $_POST["from"]=($_POST["from"] != "") ? "P".$_POST["from"]."D" : "";
+        if($_POST["idchart"]>0){
+            $sql="UPDATE chart SET name='".$_POST["name"]."', description='".$_POST["description"]."', type='".$_POST["type"]."',";
+            $sql.="period='".$_POST["period"]."', froms='".$_POST["from"]."', size=".$_POST["size"].", ";
+            $sql.="abs='".$_POST["abs"]."', ord='".$_POST["ord"]."', ";
+            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."'";
+            $sql.=" WHERE id=".$_POST["idchart"];
+            $stmt = $GLOBALS["dbconnec"]->exec($sql);
+
+            //Suppression des device associés au chart
+            ChartDevice::deleteForChart($_POST["idchart"]);
+            foreach($_POST["my_multi_select2"] as $deviceTmp){
+                ChartDevice::createChartDevice($_POST["idchart"], $deviceTmp);
+            }
+
+            $info="La graphique a été modifié";
+        } else {
+            $chart=Chart::createChart($_POST["name"], $_POST["description"], $_POST["type"], $_POST["period"], $_POST["from"],$_POST["size"], $_POST["abs"],$_POST["ord"],$_POST["scaleMin"],$_POST["scaleMax"]);
+            $idchart=$chart->id;
+            foreach($_POST["my_multi_select2"] as $deviceTmp){
+                ChartDevice::createChartDevice($idchart, $deviceTmp);
+            }
+            $info="Le graphique a été créé";
         }
-        
-        $info="La graphique a été modifié";
-    } else {
-        $chart=Chart::createChart($_POST["name"], $_POST["description"], $_POST["type"], $_POST["period"], $_POST["from"],$_POST["size"], $_POST["abs"],$_POST["ord"],$_POST["scaleMin"],$_POST["scaleMax"]);
-        $idchart=$chart->id;
-        foreach($_POST["my_multi_select2"] as $deviceTmp){
-            ChartDevice::createChartDevice($idchart, $deviceTmp);
-        }
-        $info="Le graphique a été créé";
     }
 }
 
@@ -141,6 +165,7 @@ if(isset($idchart) && $idchart > 0){
                 </li>
             </ul>
             <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
+            <?php if($error!=""){echo "<div class=\"alert alert-danger\">".$error."</div>";}?>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>

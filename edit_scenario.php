@@ -97,17 +97,24 @@ if($isPost && isset($_POST["idscenario"])){
 }
 
 if($isPost){
-    $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
-    if($_POST["idscenario"]>0){
-        $sql="UPDATE scenario SET name='".$_POST["name"]."', description='".$_POST["description"]."', color='".$_POST["color"]."', size=".$_POST["size"].", icon='".$_POST["icon"]."'";
-        $sql.=" WHERE id=".$_POST["idscenario"];
-        
-        $stmt = $GLOBALS["dbconnec"]->exec($sql);
-        $info="La scenario a été modifié";
-    } else {
-        $scenario=Scenario::createScenario($_POST["name"], $_POST["description"], $_POST["color"],$_POST["size"], $_POST["icon"]);
-        $idScenario=$scenario->id;
-        $info="Le scenario a été créé";
+    //Controle
+    if($_POST["name"] == ""){
+        $error="Veuillez renseigner le nom";
+    }
+    
+    if($error == ""){
+        $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
+        if($_POST["idscenario"]>0){
+            $sql="UPDATE scenario SET name='".$_POST["name"]."', description='".$_POST["description"]."', color='".$_POST["color"]."', size=".$_POST["size"].", icon='".$_POST["icon"]."'";
+            $sql.=" WHERE id=".$_POST["idscenario"];
+
+            $stmt = $GLOBALS["dbconnec"]->exec($sql);
+            $info="La scenario a été modifié";
+        } else {
+            $scenario=Scenario::createScenario($_POST["name"], $_POST["description"], $_POST["color"],$_POST["size"], $_POST["icon"]);
+            $idScenario=$scenario->id;
+            $info="Le scenario a été créé";
+        }   
     }
 }
 
@@ -148,6 +155,7 @@ if(isset($idScenario) && $idScenario > 0){
                 </li>
             </ul>
             <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
+            <?php if($error!=""){echo "<div class=\"alert alert-danger\">".$error."</div>";}?>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>

@@ -62,7 +62,7 @@ foreach($tuiles as $tuile){
         $name=(is_object($device)) ? $device->name : "";
     }
     echo "<tr class=\"odd gradeX linetuile-".$tuile->id."\" >";
-    echo "<td>".$tuile->name."</td>";
+    echo "<td><a class=\"black\" href=\"edit_tuile.php?idTuile=".$tuile->id."\">".$tuile->name."</a></td>";
     echo "<td>".$name."</td>";
     echo "<td><a href=\"edit_tuile.php?idTuile=".$tuile->id."\"><i class=\"fa fa-edit\" style=\"color:black;\"></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeleteTuile\" style=\"color:black;\" tuileId=\"".$tuile->id."\"></i></a></td>";
