@@ -74,6 +74,9 @@ foreach($results as $type=>$result){
         foreach($result as $calaosId => $value){
             //$sql .= "INSERT INTO temperature(name, date, value, deviceid, calaosid) VALUES ('".$calaos[$calaosId]."', NOW(), '".$value."',".$elems[$calaosId].",NULL );";
             $idDevice = (isset($elems[$calaosId])) ? $elems[$calaosId] : $outputs[$calaosId];
+            if($value=="false"){$value="off";}
+            if($value=="true"){$value="on";}
+            
             $sql .= "UPDATE device SET state='".$value."', last_update=NOW() WHERE id=".$idDevice.";";
         }
 }

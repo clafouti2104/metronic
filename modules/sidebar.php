@@ -48,7 +48,7 @@ $pageAdmin=array(
 				</li>
 				                <?php
                                 foreach($pages as $pageTmp){
-                                    $class=($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/charts.php") ? "active" : "";
+                                    $class=($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/page.php?pageId=".$pageTmp->id) ? "active" : "";
                                     echo "
                                     <li class=\"".$class."\">
                                             <a href=\"".$GLOBALS['path']."/page.php?pageId=".$pageTmp->id."\">

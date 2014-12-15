@@ -23,6 +23,12 @@ include "modules/header.php";
 include "modules/sidebar.php";
 include "models/Device.php";
 
+$types=array(
+    //"column"=>"colonne",
+    "time"=>"temps",
+    "line"=>"ligne"
+);
+
 $GLOBALS["dbconnec"]=connectDB();
 
 //Récupération Devices
@@ -38,9 +44,13 @@ $series=$seriesName=array();
 $dateBegin = (isset($_POST["dateBegin"])) ? $_POST["dateBegin"] : '01-'.date('m-Y');
 $dateEnd = (isset($_POST["dateEnd"])) ? $_POST["dateEnd"] : date('d-m-Y');
 $formDevices = (isset($_POST["formDevices"])) ? $_POST["formDevices"] : NULL;
+$type = (isset($_POST["chartType"])) ? $_POST["chartType"] : "time";
 
 if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
     $isPost=TRUE;
+    if($_POST["chartType"] == ""){
+        $error.="Le type n'est pas renseigné";
+    }
     if($_POST["dateBegin"] == ""){
         $error.="La date de début n'est pas renseignée";
     }
@@ -54,6 +64,7 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
     }
     
     if($error == ""){
+        $type=$_POST["chartType"];
         $dateBeginTmp=explode("-",$_POST["dateBegin"]);
         $dateEndTmp=explode("-",$_POST["dateEnd"]);
         
@@ -192,6 +203,19 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                             <input id="dateEnd" name="dateEnd" class="" type="text" placeholder="Au >-->
                     </div>
                 </div>
+                <div class="col-md-3 ">
+                    <div class="form-group">
+                        <label class="control-label" for="chartType">Type</label>
+                        <select id="chartType" name="chartType">
+<?php 
+                        foreach($types as $typeId=>$typeTmp){
+                            $selected = ($type=$typeId) ? " selected=\"selected\" " : "";
+                            echo "<option value=\"".$typeId."\" $selected>".ucwords($typeTmp)."</option>";
+                        }
+?>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="form-actions">
                 <button class="btn blue" type="submit">
@@ -206,7 +230,7 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
         
     </div>
     </div>
-        <?php print_r($temps); ?>
+        <?php //print_r($temps); ?>
 </div>
 </div>
 
@@ -217,9 +241,15 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
         
         
         $('#container').highcharts({
-            chart: {
-                zoomType: 'x'
-            },
+            <?php
+            echo "chart: {";
+                if($type=="time"){
+                    echo " zoomType: 'x' ";
+                }elseif($type=="line"){
+                    echo " type: 'line' ";
+                }
+            echo "},";
+            ?>
             title: {
                 text: 'Supervision Temperature'
             },
@@ -237,10 +267,6 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                     text: 'Temperature (C)'
                 }
             },
-            //tooltip: {
-            //    headerFormat: '<b>{series.name}</b><br>',
-            //    pointFormat: '{point.x:%e. %b}: {point.y:.2f} C'
-            //},
             series: [
                 <?php 
                 $i=0;
@@ -249,33 +275,14 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                       echo ",";
                   }
                   echo "{";  
-                  echo "type:'area',";  
+                  if($type=="time"){
+                      echo "type:'area',";
+                  }
                   echo "name:'".$seriesName[$i]."',";  
                   echo "data:[".$serie."]";  
                   echo "}";
                   $i++;
                 }
-                /*{
-                type: 'area', 
-                name: 'Salon',
-                // Define the data points. All series have a dummy year
-                // of 1970/71 in order to be compared on the same x axis. Note
-                // that in JavaScript, months start at 0 for January, 1 for February etc.
-                data: [
-                    <?php echo $jsSerie; ?>
-                ]
-            },{
-                type: 'area', 
-                name: 'Exterieur',
-                color: '#F7A35C',
-                // Define the data points. All series have a dummy year
-                // of 1970/71 in order to be compared on the same x axis. Note
-                // that in JavaScript, months start at 0 for January, 1 for February etc.
-                data: [
-                    <?php echo $jsSerieExt; ?>
-                ]
-            }
-                 */
                 ?>
                 ]
         });
