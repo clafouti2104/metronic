@@ -8340,3 +8340,20 @@ Purple Seance
   background: #09F;
   z-index: 2;
 }
+
+.tile-danger{
+    border: 1px solid #fff;
+    border-radius: 5px;
+    height: 30px;
+    margin-top: 10px;
+    width: 30px;
+}
+
+.tile-success{
+    background-color: #2E933D;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    height: 30px;
+    margin-top: 10px;
+    width: 30px;
+}

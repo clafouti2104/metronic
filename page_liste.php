@@ -45,7 +45,7 @@ $icon=($liste->icon == "") ? "fa-play-circle" : $liste->icon;
                             } elseif(count($messageDevices) == 0) {
                                 if(strtolower($deviceTmp->state) == "on" || strtolower($deviceTmp->state) == "off"){
                                     $class=(strtolower($deviceTmp->state) == "on") ? "success" : "danger";
-                                    $elem = "<span class=\"badge badge-".$class." stateDeviceId stateDeviceId-".$deviceTmp->id."\" style=\"float:right;\" stateDeviceId=\"".$deviceTmp->id."\">&nbsp;&nbsp;&nbsp;</span>";
+                                    $elem = "<span class=\"badge badge-".$class." stateDeviceId stateDeviceId-badge-".$deviceTmp->id." stateDeviceId-".$deviceTmp->id."\" style=\"float:right;\" stateDeviceId=\"".$deviceTmp->id."\">&nbsp;&nbsp;&nbsp;</span>";
                                 }else{
                                     $elem = "<span class=\"badge badge-success stateDeviceId stateDeviceId-".$deviceTmp->id."\" style=\"float:right;\" stateDeviceId=\"".$deviceTmp->id."\"> ".$deviceTmp->showState()." </span>";
                                 }

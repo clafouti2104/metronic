@@ -465,14 +465,18 @@ function refreshStatus(){
                     }
                 }
                 if(value.toLowerCase() == "on"){
-                    $('.stateDeviceId-'+index).removeClass("badge-danger");
-                    $('.stateDeviceId-'+index).addClass("badge-success");
-                    $('.stateDeviceId-'+index).text('');
+                    $('.stateDeviceId-badge-'+index).removeClass("badge-danger");
+                    $('.stateDeviceId-badge-'+index).addClass("badge-success");
+                    $('.stateDeviceId-tile-'+index).removeClass("tile-danger");
+                    $('.stateDeviceId-tile-'+index).addClass("tile-success");
+                    //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
-                    $('.stateDeviceId-'+index).removeClass("badge-success");
-                    $('.stateDeviceId-'+index).addClass("badge-danger");
-                    $('.stateDeviceId-'+index).text('');
+                    $('.stateDeviceId-badge-'+index).removeClass("badge-success");
+                    $('.stateDeviceId-badge-'+index).addClass("badge-danger");
+                    $('.stateDeviceId-tile-'+index).removeClass("tile-success");
+                    $('.stateDeviceId-tile-'+index).addClass("tile-danger");
+                    //$('.stateDeviceId-'+index).text('');
                 }
             });
         }

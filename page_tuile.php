@@ -26,7 +26,7 @@ if($item->params != "" && $lastStateNow != 0){
             
         </div>
         <div class="details">
-                <div class="number <?php echo $refreshClass; ?> stateDeviceId-<?php echo $tuileDevice->id; ?>" stateDeviceId="<?php echo $tuileDevice->id; ?>">
+                <div class="number <?php echo $refreshClass; ?> stateDeviceId-tile-<?php echo $deviceTmp->id; ?>" stateDeviceId-<?php echo $tuileDevice->id; ?>" stateDeviceId="<?php echo $tuileDevice->id; ?>">
                     <?php echo $state; ?>
                 </div>
         </div>
