@@ -235,7 +235,7 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                         <select id="chartType" class="form-control" name="chartType">
 <?php 
                         foreach($types as $typeId=>$typeTmp){
-                            $selected = ($type=$typeId) ? " selected=\"selected\" " : "";
+                            $selected = ($type==$typeId) ? " selected=\"selected\" " : "";
                             echo "<option value=\"".$typeId."\" $selected>".ucwords($typeTmp)."</option>";
                         }
 ?>
@@ -297,10 +297,10 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
             },
             yAxis: {
 <?php
-                if(!is_null($scaleMin)){
+                if(!is_null($scaleMin) && $scaleMin!= ""){
                     echo " min: $scaleMin,";
                 }
-                if(!is_null($scaleMax)){
+                if(!is_null($scaleMax) && $scaleMax!= ""){
                     echo " max: $scaleMax,";
                 }
 ?>
