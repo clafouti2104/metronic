@@ -333,6 +333,12 @@ $( document ).ready(function() {
             echo " }";
             echo "},";
             echo "yAxis: {";
+            if($chart->scaleMin != ""){
+                echo " min: ".$chart->scaleMin.",";
+            }
+            if($chart->scaleMax != ""){
+                echo " max: ".$chart->scaleMax.",";
+            }
             echo "title: {";
             echo "text: '".$chart->ordonne."'";
             echo "}";

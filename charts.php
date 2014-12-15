@@ -45,6 +45,8 @@ $dateBegin = (isset($_POST["dateBegin"])) ? $_POST["dateBegin"] : '01-'.date('m-
 $dateEnd = (isset($_POST["dateEnd"])) ? $_POST["dateEnd"] : date('d-m-Y');
 $formDevices = (isset($_POST["formDevices"])) ? $_POST["formDevices"] : NULL;
 $type = (isset($_POST["chartType"])) ? $_POST["chartType"] : "time";
+$scaleMin = (isset($_POST["chartScaleMin"])) ? $_POST["chartScaleMin"] : NULL;
+$scaleMax = (isset($_POST["chartScaleMax"])) ? $_POST["chartScaleMax"] : NULL;
 
 if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
     $isPost=TRUE;
@@ -155,23 +157,49 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
 <div class="page-content-wrapper">
 <div class="page-content">
     <div class="container-fluid">
-    <div class="row-fluid">
-            <div class="col-md-12"> 	
-                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
-                    <h3 class="page-title">
-                            Températures				
-                            <small>Supervision des températures</small>
-                    </h3>
-                    <!-- END PAGE TITLE & BREADCRUMB-->
-            </div>
+    <div class="row">
+        <div class="col-md-12"> 	
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
+                <h3 class="page-title">
+                        Températures				
+                        <small>Supervision des températures</small>
+                </h3>
+                <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
     </div>
-    <div class="row-fluid">
+    <div class="row">
+        <form class="horizontal-form" method="POST" action="./charts.php">
+        <div class="portlet" style="margin-bottom:0px;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-search"></i>Recherche
+                </div>
+                <div class="actions">
+                    <div class="btn-group">
+                        <!--<a class="btn default yellow-stripe" data-toggle="dropdown" href="ecommerce_products.html#">
+                            <i class="fa fa-share"></i>
+                            Tools
+                            <i class="fa fa-angle-down"></i>
+                        <a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="ecommerce_products.html#"> Export to Excel </a>
+                            </li>
+                        </ul>-->
+                        <button class="btn yellow" type="submit" style="background: none repeat scroll 0% 0% rgb(255, 184, 72);">
+                        <i class="fa fa-search"></i>
+                        Rechercher
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php 
         if($error != ""){
             echo "<div class=\"alert alert-error\">".$error."</div>";
         } 
         ?>
-        <form class="horizontal-form" method="POST" action="./charts.php">
+        
             <div class="form-body">
             <input type="hidden" id="formName" name="formName" value="charts" />
             <div class="row">
@@ -186,7 +214,7 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                                     }
                                     $selected = (in_array($device->id,$formDevices)) ? " selected=\"selected\" " : "";
                                     echo "<option value=\"".$device->id."\" $selected>".$device->name."</option>";
-                                }
+                                } 
                                 ?>
                             </select>
                     </div>
@@ -199,14 +227,12 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                             <span class="input-group-addon"> au </span>
                             <input id="dateEnd" name="dateEnd" class="form-control" type="text" name="to" value="<?php echo $dateEnd; ?>">
                         </div>
-                           <!-- <input id="dateBegin" name="dateBegin" class="form-control form-control-inline input-medium date-picker" type="text" placeholder="Du">
-                            <input id="dateEnd" name="dateEnd" class="" type="text" placeholder="Au >-->
                     </div>
                 </div>
-                <div class="col-md-3 ">
+                <div class="col-md-2 ">
                     <div class="form-group">
                         <label class="control-label" for="chartType">Type</label>
-                        <select id="chartType" name="chartType">
+                        <select id="chartType" class="form-control" name="chartType">
 <?php 
                         foreach($types as $typeId=>$typeTmp){
                             $selected = ($type=$typeId) ? " selected=\"selected\" " : "";
@@ -216,12 +242,22 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn blue" type="submit">
-                <i class="icon-ok"></i>
-                Rechercher
-                </button>
+                <div class="col-md-2 ">
+                    <div class="form-group">
+                        <label class="control-label" for="chartScaleMin">Echelle Min</label>
+                        <div class="input-group" >
+                                <input id="chartScaleMin" name="chartScaleMin" class="form-control" type="text"  value="<?php echo $scaleMin; ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 ">
+                    <div class="form-group">
+                        <label class="control-label" for="chartScaleMax">Max</label>
+                        <div class="input-group" >
+                                <input id="chartScaleMax" name="chartScaleMax" class="form-control" type="text"  value="<?php echo $scaleMax    ; ?>">
+                        </div>
+                    </div>
+                </div>
             </div>
             </div>
         </form>
@@ -236,9 +272,6 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
 
 <script type="text/javascript">
     $(document).ready(function () {
-        //$( "#dateBegin" ).datepicker({ dateFormat: 'dd-mm-yy' });
-        //$( "#dateEnd" ).datepicker({ dateFormat: 'dd-mm-yy' });
-        
         
         $('#container').highcharts({
             <?php
@@ -263,6 +296,14 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                 }
             },
             yAxis: {
+<?php
+                if(!is_null($scaleMin)){
+                    echo " min: $scaleMin,";
+                }
+                if(!is_null($scaleMax)){
+                    echo " max: $scaleMax,";
+                }
+?>
                 title: {
                     text: 'Temperature (C)'
                 }
