@@ -76,6 +76,8 @@ foreach($results as $type=>$result){
             $idDevice = (isset($elems[$calaosId])) ? $elems[$calaosId] : $outputs[$calaosId];
             if($value=="false"){$value="off";}
             if($value=="true"){$value="on";}
+            if($value=="0"){$value="off";}
+            if($value=="1"){$value="on";}
             
             $sql .= "UPDATE device SET state='".$value."', last_update=NOW() WHERE id=".$idDevice.";";
         }
