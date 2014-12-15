@@ -191,7 +191,7 @@ function calaos($type,$device,$message,$valueToSend=NULL){
     file_put_contents("/var/www/metronic/scripts/calaos/action.json", $json);
 
     //RECUPERATION INFO CALAOS
-    exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/action.json --output-document /var/www/metronic/scripts/calaos/result.json https://'.$ipAddress.'/api.php',$response);
+    exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/action.json --output-document /var/www/metronic/scripts/calaos/result_action.json https://'.$ipAddress.'/api.php',$response);
 
     $results = file_get_contents('/var/www/metronic/scripts/calaos/result_action.json');
     $results = json_decode($results,TRUE);

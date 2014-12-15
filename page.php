@@ -201,21 +201,6 @@ $( document ).ready(function() {
         });
     });
     
-    var $container = $('.packery').packery({
-        columnWidth: 80,
-        rowHeight: 80
-    });
-    
-    if(WURFL.is_mobile){
-	//dostuff();
-    } else {
-        $container.find('.boxPackery').each( function( i, itemElem ) {
-            // make element draggable with Draggabilly
-            var draggie = new Draggabilly( itemElem );
-            // bind Draggabilly events to Packery
-            $container.packery( 'bindDraggabillyEvents', false );
-        });
-    }
     
     $('.make-switch').on('switchChange.bootstrapSwitch', function () {
         if($(this).is(':checked')){
@@ -239,6 +224,23 @@ $( document ).ready(function() {
             }
         });
     });
+    
+    
+    var $container = $('.packery').packery({
+        columnWidth: 80,
+        rowHeight: 80
+    });
+    
+    if(WURFL.is_mobile){
+	//dostuff();
+    } else {
+        $container.find('.boxPackery').each( function( i, itemElem ) {
+            // make element draggable with Draggabilly
+            var draggie = new Draggabilly( itemElem );
+            // bind Draggabilly events to Packery
+            $container.packery( 'bindDraggabillyEvents', false );
+        });
+    }
     
   
     function orderItems() {
