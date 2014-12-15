@@ -467,10 +467,12 @@ function refreshStatus(){
                 if(value.toLowerCase() == "on"){
                     $('.stateDeviceId-'+index).removeClass("badge-danger");
                     $('.stateDeviceId-'+index).addClass("badge-success");
+                    $('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
                     $('.stateDeviceId-'+index).removeClass("badge-success");
                     $('.stateDeviceId-'+index).addClass("badge-danger");
+                    $('.stateDeviceId-'+index).text('');
                 }
             });
         }
