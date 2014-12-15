@@ -176,7 +176,7 @@ function calaos($type,$device,$message,$valueToSend=NULL){
     if(strtolower($message->command) == "off"){
         $value = 'false';
     }
-    $value=($valueToSend != "") ? $valueToSend : $value;
+    $value=($valueToSend != "") ? "set ".$valueToSend : $value;
 
     //Construction query JSON
     $json='{';
