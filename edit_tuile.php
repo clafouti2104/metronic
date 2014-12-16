@@ -71,9 +71,9 @@ if(isset($idTuile) && $idTuile > 0){
             </h3>
             <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
             <ul class="page-breadcrumb breadcrumb">
-                <li class="btn-group">
+                <!--<li class="btn-group">
                     <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_tuile.php';"><i class="fa fa-plus"></i>Ajouter une tuile</button>
-                </li>
+                </li>-->
                 <li>
                     <i class="fa fa-home"></i>
                     <a href="index.php">Admin</a>

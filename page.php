@@ -4,7 +4,7 @@ $includeJS[] = "/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.
 $includeJS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js";   
 //$includeJS[] = "/assets/admin/pages/scripts/components-jqueryui-sliders.js";   
 
-//$includeJS[] = "/assets/js/wurfl.js";   
+$includeJS[] = "/assets/js/wurfl.js";   
 $includeCSS[] = "/assets/meteo/css/weather-icons.css"; 
 $includeCSS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.css"; 
 $includeCSS[] = "/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"; 
@@ -40,10 +40,15 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                 <h3 class="page-title">
-                    <i class="fa fa-gear fa-2 btnEditMode"></i><?php echo $page->name; ?>&nbsp;
+                    <?php echo $page->name; ?>&nbsp;
                     <input type="hidden" id="editMode" value="0" />
                     <small><?php echo $page->description; ?></small>
-                    <a style="float:right;" class="btn btn-primary" href="ajax/user/itempage_add.php?pageId=<?php echo $page->id; ?>" data-target="#ajax" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Ajouter un objet</a>
+                    <a style="float:right;" class="btn btn-primary" href="ajax/user/itempage_add.php?pageId=<?php echo $page->id; ?>" data-target="#ajax" data-toggle="modal">
+                        <i class="fa fa-plus"></i>&nbsp;Ajouter un objet
+                    </a>
+                    <a style="float:right;margin-right:5px;" title="Gestion de l'ordre des objets" class="btn default btnEditMode" href="#" >
+                        <i class="fa fa-wrench "></i>&nbsp;
+                    </a>
                 </h3>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
@@ -113,8 +118,11 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
     <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
 <script type="text/javascript">
 $( document ).ready(function() {
+    $('#editMode').val('0');
     $('.btnEditMode').bind('click',function(e){
         if($('#editMode').val() == "0"){
+            $(this).removeClass("default");
+            $(this).addClass("green");
             $('#editMode').val('1');
             if(WURFL.is_mobile){
                 //dostuff();
@@ -157,9 +165,6 @@ $( document ).ready(function() {
         $('#iditempagetodelete').val($(this).attr('iditempage'));
     });
     
-    $('.popupTendance').bind('click',function(e){
-        console.debug('okok');
-    });
     
     $(".slider-basic").slider({
         change: function(e,ui){
@@ -204,7 +209,7 @@ $( document ).ready(function() {
     
     $('.make-switch').on('switchChange.bootstrapSwitch', function (e,ui) {
         //console.log(this); // DOM element
-        console.debug(e);
+        //console.debug(e);
         if($(this).is(':checked')){
             var action='on';
         }else{

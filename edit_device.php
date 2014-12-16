@@ -128,9 +128,9 @@ if($product != ""){
             </h3>
             <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
             <ul class="page-breadcrumb breadcrumb">
-                <li class="btn-group">
+                <!--<li class="btn-group">
                     <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_device.php';"><i class="fa fa-plus"></i>Ajouter un device</button>
-                </li>
+                </li>-->
                 <li>
                     <i class="fa fa-home"></i>
                     <a href="index.php">Admin</a>
@@ -151,6 +151,28 @@ if($product != ""){
         </div>
     </div>
     <form class="form-horizontal" method="POST" action="edit_device.php">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-gears"></i>
+                Gestion
+            </div>
+            <div class="actions btn-set">
+                <a href="admin_device.php" class="btn default">
+                    <i class="fa fa-angle-left"></i>
+                    Retour
+                </a>
+                <button class="btn green" type="submit">
+                    <i class="fa fa-check"></i>
+                    Valider
+                </button>
+                <a href="edit_device.php" class="btn blue">
+                    <i class="fa fa-plus"></i>
+                    Ajouter
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="tabbable-custom ">
         <ul class="nav nav-tabs ">
             <li class="active">
@@ -183,7 +205,7 @@ if($product != ""){
                         <input type="hidden" name="iddevice" id="iddevice" value="<?php echo $idDevice; ?>" />
                         <div class="row">
                             <div class="col-md-7 ">
-                                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Paramètres</h3>
+                                <!--<h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Paramètres</h3>-->
                                 <div class="row">
                                     <div class="col-md-12 ">
                                         <div class="form-group">
@@ -262,7 +284,7 @@ if($product != ""){
                                 ?>
                             </div>
                             <div class="col-md-5 ">
-                                <h3 class="form-section"><i class="fa fa-info-circle"></i>&nbsp;Informations</h3>
+                                <!--<h3 class="form-section"><i class="fa fa-info-circle"></i>&nbsp;Informations</h3>-->
                                 <div class="row">
                                     <div class="col-md-12 ">
                                         <div class="form-group">
@@ -454,12 +476,12 @@ if($product != ""){
             </div>
         </div>
     </div>
-        <div class="form-actions" style="background-color: #f7f7f7;padding: 20px 10px;display: table;box-sizing: border-box;border-top: 1px solid #e5e5e5;width:100%;">
+        <!--<div class="form-actions" style="background-color: #f7f7f7;padding: 20px 10px;display: table;box-sizing: border-box;border-top: 1px solid #e5e5e5;width:100%;">
             <button class="btn blue" type="submit">
                 <i class="icon-ok"></i>Valider
             </button>
             <a href="admin_device.php"><button class="btn" type="button">Retourner</button></a>
-        </div>
+        </div>-->
     </form>
     </div>
 </div>

@@ -117,7 +117,7 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
-		<div class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+		<div class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse" style="padding:20px;margin-top:0px;">
 		</div>
 		<!-- END RESPONSIVE MENU TOGGLER -->
 		<!-- BEGIN TOP NAVIGATION MENU -->

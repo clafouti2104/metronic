@@ -133,9 +133,9 @@ if(isset($idListe) && $idListe > 0){
             </h3>
             <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
             <ul class="page-breadcrumb breadcrumb">
-                <li class="btn-group">
+                <!--<li class="btn-group">
                     <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_liste.php';"><i class="fa fa-plus"></i>Ajouter une liste</button>
-                </li>
+                </li>-->
                 <li>
                     <i class="fa fa-home"></i>
                     <a href="index.php">Admin</a>
@@ -156,8 +156,30 @@ if(isset($idListe) && $idListe > 0){
         </div>
     </div>
     <div class="row">
+        <form class="form-horizontal" method="POST" action="edit_liste.php">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-gears"></i>
+                    Gestion
+                </div>
+                <div class="actions btn-set">
+                    <a href="admin_liste.php" class="btn default">
+                        <i class="fa fa-angle-left"></i>
+                        Retour
+                    </a>
+                    <button class="btn green" type="submit">
+                        <i class="fa fa-check"></i>
+                        Valider
+                    </button>
+                    <a href="edit_liste.php" class="btn blue">
+                        <i class="fa fa-plus"></i>
+                        Ajouter
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="col-md-12" id="form_wizard_1">
-            <form class="form-horizontal" method="POST" action="edit_liste.php">
                 <input type="hidden" name="formname" id="formname" value="editliste" />
                 <input type="hidden" name="idliste" id="idliste" value="<?php echo $idListe; ?>" />
                 <div class="form-wizard">
@@ -292,23 +314,13 @@ if(isset($idListe) && $idListe > 0){
                                 </ol>
                             </div>
                         </div><!-- class="tab-pane" id="messages" -->
-                          
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-actions">
-                                    <button class="btn blue" deviceid="submit">
-                                        <i class="icon-ok"></i>Valider
-                                    </button>
-                                    <a href="admin_liste.php"><button class="btn" deviceid="button">Retourner</button></a>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                     </div>
                 </div>
-            </form>
         </div>
     </div>
+    </form>
     </div>
 </div>
     

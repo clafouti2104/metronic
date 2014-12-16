@@ -23,12 +23,12 @@ $bgcolor=(isset($itemParams->color) && $itemParams->color != "") ? $itemParams->
 $sliderColor=(isset($itemParams->colorSlider) && $itemParams->colorSlider != "" && $itemParams->colorSlider != "NULL") ? $itemParams->colorSlider : "yellow";
 $color="#FFF";
 ?>
-<div class="cell col-md-<?php echo $width; ?> boxPackery itempage itempage-<?php echo $item->id; ?>" type="device" elementId="<?php echo $device->id; ?>" iditempage="<?php echo $item->id; ?>">
+<div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery itempage itempage-<?php echo $item->id; ?>" type="device" elementId="<?php echo $device->id; ?>" iditempage="<?php echo $item->id; ?>">
     <div class="dashboard-stat <?php echo $bgcolor; ?>" style="<?php echo $color; ?>">
         <div class="visual ">
             <i class="fa fa-play"></i>
         </div>
-        <div class="details col-md-9" >
+        <div class="details col-md-9" style="width: 85%;">
             <div class="number">
                     <?php echo $device->name; ?>
             </div>

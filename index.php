@@ -103,6 +103,7 @@ $logs = Log::getLastLogs(20);
                             </div>
                         </div>
                         <div class="tiles">
+                            <img src="http://192.168.1.24:8080/video"/>
                                 <?php
                                 foreach($devices as $device){
                                     if(strtolower($device->type) != "sensor" && strtolower($device->type) != "sensor_humidity"){

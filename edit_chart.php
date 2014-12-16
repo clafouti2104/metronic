@@ -148,9 +148,9 @@ if(isset($idchart) && $idchart > 0){
             </h3>
             <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
             <ul class="page-breadcrumb breadcrumb">
-                <li class="btn-group">
+                <!--<li class="btn-group">
                     <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_chart.php';"><i class="fa fa-plus"></i>Ajouter</button>
-                </li>
+                </li>-->
                 <li>
                     <i class="fa fa-home"></i>
                     <a href="index.php">Admin</a>
@@ -180,17 +180,21 @@ if(isset($idchart) && $idchart > 0){
                         <div class="portlet-title">
                             <div class="caption">
                                 <i class="fa fa-gears"></i>
-                                Paramètres
+                                Gestion
                             </div>
                             <div class="actions btn-set">
-                                <button class="btn default" name="back" type="button">
+                                <a href="admin_chart.php" class="btn default">
                                     <i class="fa fa-angle-left"></i>
                                     Retour
-                                </button>
+                                </a>
                                 <button class="btn green" type="submit">
                                     <i class="fa fa-check"></i>
                                     Valider
                                 </button>
+                                <a href="edit_chart.php" class="btn blue">
+                                    <i class="fa fa-plus"></i>
+                                    Ajouter
+                                </a>
                             </div>
                         </div>
                     </div>

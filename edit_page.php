@@ -71,9 +71,9 @@ if(isset($idPage) && $idPage > 0){
             </h3>
             <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
             <ul class="page-breadcrumb breadcrumb">
-                <li class="btn-group">
+                <!--<li class="btn-group">
                     <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_page.php';"><i class="fa fa-plus"></i>Ajouter une page</button>
-                </li>
+                </li>-->
                 <li>
                     <i class="fa fa-home"></i>
                     <a href="index.php">Admin</a>
@@ -96,11 +96,33 @@ if(isset($idPage) && $idPage > 0){
     <div class="row">
         <div class="col-md-12">
             <form class="form-horizontal" method="POST" action="edit_page.php">
+                <div class="portlet">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-gears"></i>
+                            Gestion
+                        </div>
+                        <div class="actions btn-set">
+                            <a href="admin_page.php" class="btn default">
+                                <i class="fa fa-angle-left"></i>
+                                Retour
+                            </a>
+                            <button class="btn green" type="submit">
+                                <i class="fa fa-check"></i>
+                                Valider
+                            </button>
+                            <a href="edit_page.php" class="btn blue">
+                                <i class="fa fa-plus"></i>
+                                Ajouter
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-body form">
                 <input type="hidden" name="formname" id="formname" value="editpage" />
                 <input type="hidden" name="idpage" id="idpage" value="<?php echo $idPage; ?>" />
                 <div class="row">
-                        <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Paramètres</h3>
+                        <!--<h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Paramètres</h3>-->
                         <div class="row">
                             <div class="col-md-12 ">
                                 <div class="form-group">
@@ -144,12 +166,6 @@ if(isset($idPage) && $idPage > 0){
                                 </div>
                             </div>
                         </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn blue" description="submit">
-                        <i class="icon-ok"></i>Valider
-                    </button>
-                    <a href="admin_page.php"><button class="btn" description="button">Retourner</button></a>
                 </div>
                 </div>
             </form>
