@@ -57,6 +57,7 @@ class Device{
             'sensor_humidity',
             'tv',
             'website',
+            'music',
             'presence'
     );
     
