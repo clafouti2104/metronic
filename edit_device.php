@@ -104,7 +104,7 @@ if($isPost){
             $sql.=", alert_lost_communication='".$alertMinute."', param1='".$_POST["param1"]."', param2='".$_POST["param2"]."', param3='".$_POST["param3"]."', param4='".$_POST["param4"]."', param5='".$_POST["param5"]."'";
             $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"].", state_parameters='".$stateParameters."', state_results='".addslashes($stateResults)."' ";
             $sql.=" WHERE id=".$_POST["iddevice"];
-            echo $sql;
+            //echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
             $info="Le device a été modifié";
         } else {
