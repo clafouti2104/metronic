@@ -88,7 +88,7 @@ if($isPost){
         $error.= ($error!="") ? "<br/>" : "";
         $error.="Veuillez renseigner la période";
     }
-    if($_POST["froms"] == ""){
+    if($_POST["from"] == ""){
         $error.= ($error!="") ? "<br/>" : "";
         $error.="Veuillez renseigner la date de début";
     }
