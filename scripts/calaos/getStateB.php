@@ -1,5 +1,6 @@
 <?php
 require('../../tools/config.php');
+require('../../models/Device.php');
 $db = connectDB();
 
 $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
@@ -17,10 +18,10 @@ foreach($ini as $title => $value){
     }
 }
 
-$elems=$outputs=array();
+$elems=$outputs=$domokine=array();
 
 //Récupération des devices actifs de type raspberry
-$sql = "SELECT d.id, d.name as dname, d.param1,p.name as pname ";
+$sql = "SELECT d.id, d.name as dname, d.param1,p.name as pname, d.state_parameters, d.state_results ";
 $sql .= " FROM device d,product p ";
 $sql .= " WHERE p.name LIKE 'calaos%' ";
 $sql .= " AND d.active=1";
@@ -34,6 +35,10 @@ while($row = $stmt->fetch()){
     }else{
         $elems[$row["param1"]] = $row["id"];
     }
+    $domokine[$row["param1"]] = array(
+        "state_parameters" => $row["state_parameters"],
+        "state_results" => $row["state_results"]
+    );
 }
 if(count($elems) == 0 && count($outputs) == 0){
     exit;
@@ -74,10 +79,14 @@ foreach($results as $type=>$result){
         foreach($result as $calaosId => $value){
             //$sql .= "INSERT INTO temperature(name, date, value, deviceid, calaosid) VALUES ('".$calaos[$calaosId]."', NOW(), '".$value."',".$elems[$calaosId].",NULL );";
             $idDevice = (isset($elems[$calaosId])) ? $elems[$calaosId] : $outputs[$calaosId];
-            if($value=="false"){$value="off";}
+            
+            if(isset($domokine[$calaosId]["state_parameters"]) && $domokine[$calaosId]["state_results"]){
+                $value=Device::decodeState($value, $domokine[$calaosId]["state_parameters"], $domokine[$calaosId]["state_results"]);
+            }
+            /*if($value=="false"){$value="off";}
             if($value=="true"){$value="on";}
             if($value=="0"){$value="off";}
-            if($value=="1"){$value="on";}
+            if($value=="1"){$value="on";}*/
             
             $sql .= "UPDATE device SET state='".$value."', last_update=NOW() WHERE id=".$idDevice.";";
         }

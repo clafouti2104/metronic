@@ -28,6 +28,8 @@ if($isPost && isset($_POST["iddevice"])){
     $incremental=(isset($_POST["incremental"]) && $_POST["incremental"] != "") ? $_POST["incremental"] : NULL;
     $alertMinute=(isset($_POST["alertMinute"]) && $_POST["alertMinute"] != "") ? $_POST["alertMinute"] : NULL;
     $collect=$_POST["collect"];
+    $stateFormula=$_POST["stateFormula"];
+    $stateResults=$_POST["state_results"];
     $txtMode=($idDevice==0) ? "Création" : "Edition";
     $txtModeDesc=($idDevice==0) ? "Création d'un device" : "Edition d'un device";
     
@@ -44,6 +46,14 @@ if($isPost && isset($_POST["iddevice"])){
         $idDevice=$_GET["idDevice"];
         $device = Device::getDevice($idDevice);
     } 
+    
+    $stateResults = (!isset($device) || !is_object($device)) ? NULL : $device->state_results;
+    $stateParameters = (!isset($device) || !is_object($device)) ? NULL : $device->state_parameters;
+    $stateFormula = NULL;
+    if(!is_null($stateParameters)){
+        $jsonParameters = json_decode($stateParameters);
+        $stateFormula = (isset($jsonParameters->formula)) ? $jsonParameters->formula : $stateFormula;
+    }
     $name= (!isset($device) || !is_object($device)) ? NULL : $device->name;
     $type= (!isset($device) || !is_object($device)) ? NULL : $device->type;
     $product= (!isset($device) || !is_object($device)) ? NULL : $device->product_id;
@@ -79,17 +89,26 @@ if($isPost){
         $_POST["collect"] = ($_POST["collect"] == "") ? 0 : $_POST["collect"];
         $_POST["type"] = ($_POST["type"] == "-1") ? NULL : $_POST["type"];
         $alertMinute = ($alertMinute == "") ? 0 : $alertMinute;
+        
+        $stateParameters = NULL;
+        if($stateFormula != "" && !is_null($stateFormula)){
+            $stateParameters = json_encode(array(
+                "formula"=>$stateFormula
+            ));
+        }
+        
+        
         //$_POST["alert_lost_communication"] = (!isset($_POST["alert_lost_communication"]) || $_POST["alert_lost_communication"] == "") ? NULL : $_POST["alert_lost_communication"];
         if($_POST["iddevice"]>0){
             $sql="UPDATE device SET name='".$_POST["name"]."', type='".$_POST["type"]."', product_id=".$_POST["product"].",ip_address='".$_POST["ipaddress"]."', active=".$_POST["active"].", incremental=".$_POST["incremental"];
             $sql.=", alert_lost_communication='".$alertMinute."', param1='".$_POST["param1"]."', param2='".$_POST["param2"]."', param3='".$_POST["param3"]."', param4='".$_POST["param4"]."', param5='".$_POST["param5"]."'";
-            $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"]." ";
+            $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"].", state_parameters='".$stateParameters."', state_results='".addslashes($stateResults)."' ";
             $sql.=" WHERE id=".$_POST["iddevice"];
-            //echo $sql;
+            echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
             $info="Le device a été modifié";
         } else {
-            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"]);
+            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"],$stateParameters, $stateResults);
             $idDevice=$device->id;
             $info="Le device a été modifié";
         }
@@ -400,14 +419,14 @@ if($product != ""){
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 ">
+                                <!--<div class="col-md-6 ">
                                     <div class="form-group">
                                         <label class="control-label col-md-3" for="usage">Usage</label>
                                         <div class="col-md-9">
                                             <input id="usage" name="usage" class="form-control" value="" type="text" disabled="">
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="col-md-6 ">
                                     <div class="form-group">
                                         <label class="control-label col-md-3" for="dataType">Type de données</label>
@@ -420,6 +439,55 @@ if($product != ""){
                                                 }
                                                 ?>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="form-section"><i class="fa fa-superscript "></i>&nbsp;Traitement des résultats</h3>
+                            <div class="row">
+                                <div class="col-md-6 ">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" for="stateFormula">Formule</label>
+                                        <div class="col-md-9">
+                                            <input id="stateFormula" name="stateFormula" class="form-control" value="<?php echo $stateFormula; ?>" type="text">
+                                            <span class="help-block">Exemple: x + 12</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" for="state_results">
+                                            Etats Virtuels 
+                                            <button class="btn btn-sm default btnAddStateResult" data-dismiss="modal" type="button"><i class="fa fa-plus"></i></button>
+                                        </label>
+                                        <div class="col-md-9">
+                                            <input id="state_results" name="state_results" class="form-control" value="<?php echo $stateResults; ?>" type="hidden">
+                                            <table class="table table-condensed table-hover tableStateResult">
+                                                <tr>
+                                                    <th>Valeur Brute</th>
+                                                    <th>Affectée</th>
+                                                </tr>
+                                                <?php
+                                                if(is_null($stateResults) || $stateResults == ""){
+                                                ?>
+                                                <tr>
+                                                    <td><input type="text" id="stateResultBrute1" class="form-control stateResultInput stateResultBrute" value="" /></td>
+                                                    <td><input type="text" id="stateResultAffecte1" class="form-control stateResultInput stateResultAffecte" value="" /></td>
+                                                </tr>
+                                                <?php
+                                                } else {
+                                                    $jsonParams = json_decode($stateResults);
+                                                    $i=1;
+                                                    foreach($jsonParams as $key=>$jsonParam){
+                                                        echo "<tr>";
+                                                        echo '<td><input type="text" id="stateResultBrute'.$i.'" class="form-control stateResultInput stateResultBrute" value="'.$key.'" /></td>';
+                                                        echo '<td><input type="text" id="stateResultAffecte'.$i.'" class="form-control stateResultInput stateResultAffecte" value="'.$jsonParam.'" /></td>';
+                                                        echo "</tr>";
+                                                        $i++;
+                                                    }
+                                                }
+                                                ?>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -598,6 +666,25 @@ $(document).ready(function () {
         });
     });
     
+    /*
+     * STATE RESULTS
+     */
+    $('.btnAddStateResult').bind('click',function(e){
+        var count=$('.stateResultBrute').size();
+        count=count + 1;
+        $('.tableStateResult').append('<tr><td><input type="text" id="stateResultBrute'+count+'" class="form-control stateResultInput stateResultBrute" value="" onKeyUp="generateInputResultState();" /></td><td><input type="text" id="stateResultAffecte'+count+'" class="form-control stateResultInput stateResultAffecte" value="" onKeyUp="generateInputResultState();" /></td></tr>');
+    });
+    
+    $('.stateResultBrute').keyup(function(){
+        generateInputResultState();
+    });
+    $('.stateResultAffecte').keyup(function(){
+        generateInputResultState();
+    });
+    /*
+     * END STATE RESULTS
+     */
+    
     $('.btnAddAlert').bind('click',function(e){
         $('#labelEditAlert').text("Ajout d'une alerte");
         $('#idalert').val('');
@@ -723,6 +810,32 @@ $(document).ready(function () {
         });
     });
 });
+
+
+function generateInputResultState(){
+    var count = $('.stateResultBrute').size();
+    if(count <= 0){
+        ('#state_results').val('');
+        return false;
+    }
+    if($('.stateResultBrute1').val() == ""){
+        ('#state_results').val('');
+        return false;
+    }
+    
+    var i=1;
+    var params="{";
+    $('.stateResultBrute').each(function(){
+        if(params != "{"){
+            params += ",";
+        }
+        params += '"'+$('#stateResultBrute'+i).val()+'":"'+$('#stateResultAffecte'+i).val()+'"';
+        i=i+1;
+    });
+    params += "}";
+    $('#state_results').val(params);
+    console.debug(params);
+}
 
 </script>
 <?php

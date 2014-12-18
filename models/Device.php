@@ -24,8 +24,10 @@ class Device{
     public $incremental;
     public $unite;
     public $data_type;
+    public $state_parameters;
+    public $state_results;
     
-    public function __construct($id, $name, $type, $state, $states, $last_update, $ip_address,$model,$active,$parameters,$alert_lost_communication,$last_alert,$product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite, $data_type) {
+    public function __construct($id, $name, $type, $state, $states, $last_update, $ip_address,$model,$active,$parameters,$alert_lost_communication,$last_alert,$product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite, $data_type, $state_parameters, $state_results) {
         $this->id = $id;
         $this->name = $name;
         $this->type = $type;
@@ -48,6 +50,8 @@ class Device{
         $this->incremental = $incremental;
         $this->unite = $unite;
         $this->data_type = $data_type;
+        $this->state_parameters = $state_parameters;
+        $this->state_results = $state_results;
     }
     
     private static $types = array(
@@ -143,6 +147,8 @@ class Device{
         $query .= ", incremental ";
         $query .= ", unite ";
         $query .= ", data_type ";
+        $query .= ", state_parameters ";
+        $query .= ", state_results ";
         $query .= " FROM device ";
         $query .= " WHERE id=:id";
         
@@ -153,7 +159,7 @@ class Device{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_device = new Device($row['id'],$row['name'],$row['type'], $row['state'], $row['states'], $row['last_update'], $row['ip_address'], $row['model'], $row['active'],$row["parameters"], $row["alert_lost_communication"], $row["last_alert"],$row["product_id"],$row["param1"],$row["param2"],$row["param3"],$row["param4"],$row["param5"],$row["collect"],$row["incremental"], $row["unite"], $row["data_type"]);
+                    $tmp_device = new Device($row['id'],$row['name'],$row['type'], $row['state'], $row['states'], $row['last_update'], $row['ip_address'], $row['model'], $row['active'],$row["parameters"], $row["alert_lost_communication"], $row["last_alert"],$row["product_id"],$row["param1"],$row["param2"],$row["param3"],$row["param4"],$row["param5"],$row["collect"],$row["incremental"], $row["unite"], $row["data_type"], $row["state_parameters"], $row["state_results"]);
 
                     $result[] = $tmp_device;
                     $tmp_device = NULL;
@@ -196,7 +202,7 @@ class Device{
         return self::getDevice($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createDevice($name,$type,$state,$states,$last_update=NULL,$ip_address,$model,$active=1,$parameters,$alert_lost_communication, $last_alert,$product_id,$param1,$param2,$param3,$param4,$param5, $collect, $incremental,$unite,$data_type) {
+    public static function createDevice($name,$type,$state,$states,$last_update=NULL,$ip_address,$model,$active=1,$parameters,$alert_lost_communication, $last_alert,$product_id,$param1,$param2,$param3,$param4,$param5, $collect, $incremental,$unite,$data_type,$state_parameters=NULL, $state_results=NULL) {
         
         $query = "INSERT INTO device (";
         $query .= "name";
@@ -220,6 +226,8 @@ class Device{
         $query .= ",incremental ";
         $query .= ",unite ";
         $query .= ",data_type ";
+        $query .= ",state_parameters ";
+        $query .= ",state_results ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":name";
@@ -243,6 +251,8 @@ class Device{
         $query .= ",:incremental ";
         $query .= ",:unite ";
         $query .= ",:data_type ";
+        $query .= ",:state_parameters ";
+        $query .= ",:state_results ";
         $query .= ")";
         
         $params = array();
@@ -267,6 +277,8 @@ class Device{
         $params[":incremental"] = $incremental;
         $params[":unite"] = $unite;
         $params[":data_type"] = $data_type;
+        $params[":state_parameters"] = $state_parameters;
+        $params[":state_results"] = $state_results;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -284,7 +296,7 @@ class Device{
         }
         $stmt = NULL;
 
-        $tmpInstance = new Device($id, $name, $type, $state, $states, $last_update, $ip_address, $model, $active, $parameters, $alert_lost_communication, $last_alert, $product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite,$data_type);
+        $tmpInstance = new Device($id, $name, $type, $state, $states, $last_update, $ip_address, $model, $active, $parameters, $alert_lost_communication, $last_alert, $product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite,$data_type,$state_parameters,$state_results);
 
         //Création des messages device si un product est renseigné
         if($product_id != "" && $id != 0){
@@ -470,6 +482,38 @@ class Device{
         }
         
         return $result;
+    }
+    
+    /*
+     * Décode l'état brute d'un device en fonction des paramètres et tableau de renvoi
+     */
+    public static function decodeState($rawState,$stateParameters, $stateResults){
+        $state = $rawState;
+        $stateParameters = ($stateParameters != "") ? json_decode($stateParameters) : $stateParameters;
+        $stateResults = ($stateResults != "") ? json_decode($stateResults,TRUE) : $stateResults;
+        
+        $entered=false;
+        if($stateParameters != "" && count($stateParameters) > 0){
+            if(isset($stateParameters->formula)){
+                $entered=true;
+                $fonction = str_replace("x", $state, $stateParameters->formula);
+                @eval('$stateTemp='.$fonction.';');
+                if(isset($stateTemp)){
+                    $state = round($stateTemp, 1);
+                }
+            }
+        }
+        if(!$entered){
+            if(count($stateResults) > 0){
+                foreach($stateResults as $rawStateTmp=>$affectStateTmp){
+                    if(strtolower($rawStateTmp) == strtolower($state)){
+                        $state=strtolower($affectStateTmp);
+                    }
+                }
+            }
+        }
+        
+        return $state;
     }
 }
 ?>
