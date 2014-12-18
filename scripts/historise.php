@@ -41,9 +41,11 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             } else {
                 $value=0;
             }
-            $sqlInsert.="INSERT INTO releve_".$row["id"]." (date,value) ";
-            $sqlInsert.=" VALUES (NOW(), ".$value.");";
-
+            if($value >= 0){
+                $sqlInsert.="INSERT INTO releve_".$row["id"]." (date,value) ";
+                $sqlInsert.=" VALUES (NOW(), ".$value.");";
+            }
+            $row['state']=($row['state'] == 0) ? NULL : $row['state'];
         }
         $sqlInsert.="INSERT INTO temperature (name,date,value,deviceid) ";
         $sqlInsert.=" VALUES ('".$row['name']."', NOW(), ".$row['state'].", ".$row['id'].");";
