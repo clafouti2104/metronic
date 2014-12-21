@@ -16,10 +16,18 @@ $output.="$('#msgType').val('".  addslashes($message->type)."');";
 $params = json_decode($message->parameters);
 if(isset($params->slider)){    
     $output.="if($('#msgSlider').is(':checked')){}else { $('#msgSlider').click();}";
+} else {
+    $output.="if($('#msgSlider').is(':checked')){ $('#msgSlider').click();}";
 }
+/*if($message->action == '1'){
+    $output.="if($('#msgAction').is(':checked')){}else { $('#msgAction').click();}";
+} else {
+    $output.="if($('#msgAction').is(':checked')){ $('#msgAction').click();}";  
+}*/
 if($message->active == '1'){
-    $output.="$('#msgActif').attr('checked','checked');";
+    $output.="if($('#msgActif').is(':checked')){}else { $('#msgActif').click();}";
+} else{
+    $output.="if($('#msgActif').is(':checked')){ $('#msgActif').click();}";  
 }
-
 echo $output;
 ?>

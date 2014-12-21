@@ -304,6 +304,14 @@ class Device{
             $product = Product::getProduct($product_id);
             if(is_object($product)){
                 switch(strtolower($product->name)){
+                    case 'calaos_input':
+                        $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on" );
+                        $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");
+                        break;
+                    case 'calaos_output':
+                        $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on" );
+                        $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");
+                        break;
                     case 'freebox':
                         $cmds = array();
                         $cmds["power"]="power";
@@ -331,19 +339,16 @@ class Device{
                         $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on");
                         $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");
                         break;
-                    case 'calaos_output':
-                        $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on" );
-                        $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");
+                    case 'netatmo_meteo_temperature_int':
+                        $sqlUpdate="UPDATE device SET param1='temperature' AND model='interieur' WHERE id=".$id;
+                        $stmt = $GLOBALS['dbconnec']->prepare($sqlUpdate);
+                        $stmt->execute($array());
                         break;
-                    case 'calaos_input':
-                        $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on" );
-                        $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");
+                    case 'netatmo_meteo_temperature_ext':
+                        $sqlUpdate="UPDATE device SET param1='temperature' AND model='exterieur' WHERE id=".$id;
+                        $stmt = $GLOBALS['dbconnec']->prepare($sqlUpdate);
+                        $stmt->execute($array());
                         break;
-                    /*case 'calaos_variation':
-                        $sqlUpdate = "UPDATE device SET parameters='{\"type\":\"slider\"}' WHERE id=".$id;
-                        $stmt = $GLOBALS['dbconnec']->query($sqlUpdate);
-                        $msgOn=MessageDevice::createMessageDevice($id, "variation", 0, NULL, NULL, "variation", 1,'{"slider":"true"}',"" );
-                        break;*/
                     case 'popcorn':
                         $msg=MessageDevice::createMessageDevice($id, "power", 0, NULL, NULL, NULL, 1,NULL,"power");
                         $msgOff=MessageDevice::createMessageDevice($id, "home", 0, NULL, NULL, NULL, 1, NULL, "home");

@@ -22,9 +22,10 @@ $includeJS[] = "/assets/admin/pages/scripts/components-pickers.js";
 include "modules/header.php";
 include "modules/sidebar.php";
 include "models/Device.php";
+include "models/History.php";
 
 $types=array(
-    //"column"=>"colonne",
+    "column"=>"colonne",
     "time"=>"temps",
     "line"=>"ligne"
 );
@@ -70,37 +71,46 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
         $dateBeginTmp=explode("-",$_POST["dateBegin"]);
         $dateEndTmp=explode("-",$_POST["dateEnd"]);
         
+        $dateTimeBegin=new DateTime($dateBeginTmp[2].$dateBeginTmp[1].$dateBeginTmp[0]);
+        $dateTimeEnd=new DateTime($dateEndTmp[2].$dateEndTmp[1].$dateEndTmp[0]);
+        
         $names=array();
-        /*foreach($devices as $device){
-            if(in_array($device->id, $_POST["formDevices"])){
-                $names[]=$device->name;
+        if($type == "line" || $type == "time"){
+            foreach($_POST["formDevices"] as $deviceId){
+                $sql = "SELECT date,value FROM temperature WHERE deviceid='".$deviceId."' AND ";
+                $sql .= "date BETWEEN '".$dateBeginTmp[2]."-".$dateBeginTmp[1]."-".$dateBeginTmp[0]." 00:00:00' AND '".$dateEndTmp[2]."-".$dateEndTmp[1]."-".$dateEndTmp[0]." 23:59:59' ORDER BY date ASC ";
+                $stmt = $GLOBALS["dbconnec"]->prepare($sql);
+                $stmt->execute();
+                $values = array();
+                $jsSerie="";
+                while($row=$stmt->fetch()){
+                    $values[$row["date"]] = $row["value"];
+                    $date = new DateTime($row["date"]);
+                    $jsSerie .= ($jsSerie == "") ? ""  : ",";
+
+                    $value = ($deviceTab[$deviceId]->type == "sensor_humidity") ? $row["value"] : $row['value'];
+                    $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
+                    $month--;
+                    $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
+                    $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
+                    $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
+                    $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                }
+                $series[]=$jsSerie;
+                $seriesName[]=$deviceTab[$deviceId]->name;
             }
-        }*/
-        //foreach($names as $name){
-        foreach($_POST["formDevices"] as $deviceId){
-            $sql = "SELECT date,value FROM temperature WHERE deviceid='".$deviceId."' AND ";
-            $sql .= "date BETWEEN '".$dateBeginTmp[2]."-".$dateBeginTmp[1]."-".$dateBeginTmp[0]." 00:00:00' AND '".$dateEndTmp[2]."-".$dateEndTmp[1]."-".$dateEndTmp[0]." 23:59:59' ORDER BY date ASC ";
-            $stmt = $GLOBALS["dbconnec"]->prepare($sql);
-            $stmt->execute();
-            $values = array();
-            $jsSerie="";
-            while($row=$stmt->fetch()){
-                //echo "<br/>TYPE = ".$deviceTab[$deviceId]->type;
-                //$values[$row["date"]] = ($deviceTab[$deviceId]->type == "sensor_humidity") ? $row["value"] : $row["value"]/1000;
-                $values[$row["date"]] = $row["value"];
-                $date = new DateTime($row["date"]);
-                $jsSerie .= ($jsSerie == "") ? ""  : ",";
-                //$value = ($deviceTab[$deviceId]->type == "sensor_humidity") ? $row["value"] : $row['value']/1000;
-                $value = ($deviceTab[$deviceId]->type == "sensor_humidity") ? $row["value"] : $row['value'];
-                $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
-                $month--;
-                $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
-                $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
-                $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
-                $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+        }if($type == "column"){
+            $categories="";
+            $daysDiff = $dateTimeEnd->diff($dateTimeBegin);
+            for($i=1;$i<=$daysDiff->d + 1;$i++){
+                $categories.=($categories=="") ? "" : ",";
+                $categories.=$dateTimeBegin->format('d');
+                $interval=new DateInterval("P1D");
+                $dateTimeBegin->add($interval);
             }
-            $series[]=$jsSerie;
-            $seriesName[]=$deviceTab[$deviceId]->name;
+            
+            echo "<br/>".$categories;
+            //exit;
         }
     }
     
@@ -132,12 +142,11 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
             $values = array();
             $jsSerie="";
             while($row=$stmt->fetch()){
-                //$values[$row["date"]] = $row["value"]/1000;  
+                
                 $values[$row["date"]] = $row["value"];  
                 $date = new DateTime($row["date"]);
                 $jsSerie .= ($jsSerie == "") ? ""  : ",";
-                //$value = $row['value'];
-                //$value = $row['value']/1000;
+                
                 $value = $row['value'];
                 $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
                 $month--;
@@ -176,19 +185,9 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                 </div>
                 <div class="actions">
                     <div class="btn-group">
-                        <!--<a class="btn default yellow-stripe" data-toggle="dropdown" href="ecommerce_products.html#">
-                            <i class="fa fa-share"></i>
-                            Tools
-                            <i class="fa fa-angle-down"></i>
-                        <a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="ecommerce_products.html#"> Export to Excel </a>
-                            </li>
-                        </ul>-->
                         <button class="btn yellow" type="submit" style="background: none repeat scroll 0% 0% rgb(255, 184, 72);">
-                        <i class="fa fa-search"></i>
-                        Rechercher
+                            <i class="fa fa-search"></i>
+                            Rechercher
                         </button>
                     </div>
                 </div>
@@ -209,12 +208,13 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                             <select id="formDevices" name="formDevices[]" class="form-control" multiple="multiple" placeholder="Objets">
                                 <?php
                                 foreach($devices as $device){
-                                    if(strtolower($device->type) != "sensor" && strtolower($device->type) != "sensor_humidity" && strtolower($device->type) != "raspberry"){
+                                    if(strtolower($device->type) != "sensor" && strtolower($device->type) != "sensor_humidity" && strtolower($device->type) != "raspberry" && strtolower($device->type) != "electricity"){
                                         continue;
                                     }
                                     $selected = (in_array($device->id,$formDevices)) ? " selected=\"selected\" " : "";
                                     echo "<option value=\"".$device->id."\" $selected>".$device->name."</option>";
                                 } 
+
                                 ?>
                             </select>
                     </div>
@@ -271,10 +271,12 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+$(document).ready(function () {
         
         $('#container').highcharts({
             <?php
+        if($type == "time" || $type== "line" ){
+            
             echo "chart: {";
                 if($type=="time"){
                     echo " zoomType: 'x' ";
@@ -326,8 +328,52 @@ if(isset($_POST["formName"]) && $_POST["formName"] == "charts"){
                 }
                 ?>
                 ]
-        });
-        });
+    <?php
+        } elseif($type=="column"){
+            echo " chart: {";
+            echo " type: 'column'";
+            echo " },";
+            echo "title: {";
+            echo " text: ''";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: ''";
+            echo "},";
+            echo "xAxis: {";
+            echo "categories: [";
+            echo $categories;
+            echo "]";
+            echo "},";
+            echo "yAxis: {";
+            echo "min: 0,";
+            echo "title: {";
+            echo "text: ''";
+            echo "}";
+            echo "},";
+            echo "series: [";
+            foreach($_POST["formDevices"] as $deviceId){
+                $device=Device::getDevice($deviceId);
+
+                $data=History::getHistoryHighchartBarreCustom($deviceId, $dateBeginTmp[2].$dateBeginTmp[1].$dateBeginTmp[0], $daysDiff->d + 1);
+                //print_r($data);
+                //exit;
+                //$data=0;
+                if($k>0){
+                    echo ",";
+                }
+                echo "{";  
+                echo "name:'".$device->name."',";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";  
+                echo "}";
+                $k++;
+            }
+            echo "]";
+         
+        }
+    ?>
+    });
+});
 </script>
 <!-- END PAGE -->
 

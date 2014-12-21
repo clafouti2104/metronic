@@ -8,6 +8,7 @@ if(!isset($_POST["deviceId"])){
     return "error";
 }
 $active = ($_POST["active"] == "true") ? 1 : 0;
+$action = ($_POST["action"] == "true") ? 1 : 0;
 $params = (isset($_POST["slider"]) && $_POST["slider"]=="true") ? '{"slider":"true"}' : NULL;
 
 if($_POST["messageId"] != ""){
@@ -15,6 +16,7 @@ if($_POST["messageId"] != ""){
     $message->name=$_POST["name"];
     $message->type=$_POST["type"];
     $message->command=$_POST["command"];
+    //$message->action=$action;
     if(isset($_POST["slider"]) && $_POST["slider"]=="true"){
         $message->parameters='{"slider":"true"}';
     } else {

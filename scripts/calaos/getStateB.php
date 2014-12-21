@@ -80,7 +80,7 @@ foreach($results as $type=>$result){
             //$sql .= "INSERT INTO temperature(name, date, value, deviceid, calaosid) VALUES ('".$calaos[$calaosId]."', NOW(), '".$value."',".$elems[$calaosId].",NULL );";
             $idDevice = (isset($elems[$calaosId])) ? $elems[$calaosId] : $outputs[$calaosId];
             
-            if(isset($domokine[$calaosId]["state_parameters"]) && $domokine[$calaosId]["state_results"]){
+            if(isset($domokine[$calaosId]["state_parameters"]) || $domokine[$calaosId]["state_results"]){
                 $value=Device::decodeState($value, $domokine[$calaosId]["state_parameters"], $domokine[$calaosId]["state_results"]);
             }
             /*if($value=="false"){$value="off";}

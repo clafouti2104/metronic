@@ -111,7 +111,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
     </div>
     <div class="modal-dialog" style="width:600px;">
         <div class="modal-content">
-            OKOK RENTRE
+            <!--OKOK RENTRE-->
         </div>
     </div>
 </div>

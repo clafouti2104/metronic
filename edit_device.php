@@ -204,9 +204,9 @@ if($product != ""){
             <li>
                 <a href="edit_device.php#tab_affichage" data-toggle="tab">Affichage</a>
             </li>
-            <!--<li>
-                <a href="edit_device.php#tab_alert" data-toggle="tab">Alertes</a>
-            </li>-->
+            <li>
+                <a href="edit_device.php#tab_alert" class="btnTabAlerts" data-toggle="tab">Alertes</a>
+            </li>
             <li>
                 <a href="edit_device.php#tab_historique" class="btnTabLogs" type="historique" data-toggle="tab">Historique</a>
             </li>
@@ -496,17 +496,24 @@ if($product != ""){
                     </div>
                 </div>
             </div>
-            <!--<div class="tab-pane" id="tab_alert">
+            <div class="tab-pane" id="tab_alert">
                 <div class="form-body form">
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="form-section"><i class="fa fa-rocket"></i>&nbsp;Alertes
                             &nbsp;&nbsp;&nbsp;&nbsp;<a data-toggle="modal" href="edit_device.php#editAlert" class="btn btn-primary btnAddAlert" type="button"><i class="fa fa-plus"></i>&nbsp;Ajouter une alerte</a>
                             </h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="tableAlert" class="table table-striped table-hover">
+                                        <tr></tr>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
             <div class="tab-pane" id="tab_historique">
                 <div class="form-body form">
                     <div class="row">
@@ -553,6 +560,33 @@ if($product != ""){
     </form>
     </div>
 </div>
+<div class="modal fade" id="editAlert" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <input type="hidden" id="idalert" value="" />
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa fa-edit"></i>&nbsp;<span id="labelEditMessageDevice">Ajout d'une alerte</span>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="alertOperator">Opérateur</label>
+                            <div class="col-md-9">
+                                <select id="alertOperator" name="alertOperator" class="form-control">
+                                    <option value="<">supérieur à </option>
+                                    <option value=">">inférieur à </option>
+                                    <option value="=">égal à</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
 <div class="modal fade" id="editMessageDevice" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog">
         <input type="hidden" id="idmessagedevice" value="" />
@@ -587,6 +621,16 @@ if($product != ""){
                             <label class="control-label col-md-3" for="msgType">Type</label>
                             <div class="col-md-9">
                                 <input id="msgType" name="msgType" class="form-control" value="" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="msgAction">Action</label>
+                            <div class="col-md-9">
+                                <input id="msgAction" name="msgAction" class="form-control" value="1" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -742,6 +786,7 @@ $(document).ready(function () {
                 name: $('#msgName').val(),
                 command: $('#msgCommand').val(),
                 slider: $('#msgSlider').is(':checked'),
+                action: $('#msgAction').is(':checked'),
                 type: $('#msgType').val()
                 //active: $('#msgActif').is(':checked')
             },
@@ -792,6 +837,29 @@ $(document).ready(function () {
             data: {
                 deviceId:  $('#iddevice').val(),
                 type:  $(this).attr('type')
+            },
+            beforeSend: function(data){
+                Metronic.blockUI({boxed: true});
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+                Metronic.unblockUI();
+            },
+            complete: function(data){
+                if(data.responseText == "error"){
+                    toastr.error("Une erreur est survenue");
+                }
+                eval(data.responseText);
+                Metronic.unblockUI();
+            }
+        });
+    });
+    $('.btnTabAlerts').bind('click',function(e){
+        $.ajax({
+            url: "ajax/get_alerts.php",
+            type: "POST",
+            data: {
+                deviceId:  $('#iddevice').val()
             },
             beforeSend: function(data){
                 Metronic.blockUI({boxed: true});

@@ -180,9 +180,9 @@ if($isPost){
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="calaos_password">Client Secret</label>
+                            <label class="control-label col-md-3" for="netatmo_client_secret">Client Secret</label>
                             <div class="col-md-9">
-                                <input class="form-control"name="calaos_password" id="calaos_password" type="text" value="<?php echo $netatmoClientSecret; ?>">
+                                <input class="form-control"name="netatmo_client_secret" id="netatmo_client_secret" type="text" value="<?php echo $netatmoClientSecret; ?>">
                             </div>
                         </div>
                     </div>

@@ -26,11 +26,11 @@ class MessageDevice{
     }
     
     private static $types = array(
-            /*'raspberry',
-            'light',
-            'sensor',
-            'sensor_humidity',
-            'presence'*/
+            "on",
+            "off",
+            "open",
+            "close",
+            "state"
     );
     
     public static function getTypes() {

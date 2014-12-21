@@ -207,6 +207,35 @@ class History{
         return $jsSerie;
     }
     
+    public static function getHistoryHighchartBarreCustom($deviceid,$dateFrom,$durationDays){
+        $jsSerie="";
+        $dateFrom = new DateTime($dateFrom);
+        for($i=1;$i<=$durationDays;$i++){
+            $query = "SELECT ";
+            $query .= " SUM(value) as somme";
+            $query .= " FROM releve_$deviceid";
+            $query .= " WHERE ";
+            $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";
+            
+            $stmt = $GLOBALS["dbconnec"]->prepare($query);
+            $stmt->execute(array());
+            
+            $value=0;
+            if($stmt->rowCount() > 0){
+                if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    if($row["somme"]!=""){
+                        $value = $row["somme"];
+                    }
+                }
+            }
+            $jsSerie .= ($jsSerie == "") ? "" : ",";
+            $jsSerie .= $value;
+            $dateFrom->add(new DateInterval("P1D"));
+        }
+        
+        return $jsSerie;
+    }
+    
     //Renvoie les données de consommations à partir de la période
     public static function getCountForPeriod($deviceid, $period){
         $query = "SELECT SUM(value) as somme ";
