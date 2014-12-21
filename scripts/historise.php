@@ -27,7 +27,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         //Consommation: Alimente la table releve_<DEVICE_ID>
         if($row["incremental"] == 1){
             //Récupération de la dernière valeur de la table température
-            $sqlGetLastValue = "SELECT value FROM temperature WHERE deviceid=:deviceid AND VALUE != 0 ORDER BY date DESC LIMIT 1";
+            $sqlGetLastValue = "SELECT value FROM temperature WHERE deviceid=:deviceid AND value != 0 AND value IS NOT NULL ORDER BY date DESC LIMIT 1";
             //echo $sqlGetLastValue."->".$row["id"];
             $stmt3 = $GLOBALS["dbconnec"]->prepare($sqlGetLastValue);
             $stmt3->execute(array(":deviceid"=>$row["id"]));
@@ -45,7 +45,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $sqlInsert.="INSERT INTO releve_".$row["id"]." (date,value) ";
                 $sqlInsert.=" VALUES (NOW(), ".$value.");";
             }
-            $row['state']=($row['state'] == 0) ? NULL : $row['state'];
+            $row['state']=($row['state'] == 0) ? 0 : $row['state'];
         }
         $sqlInsert.="INSERT INTO temperature (name,date,value,deviceid) ";
         $sqlInsert.=" VALUES ('".$row['name']."', NOW(), ".$row['state'].", ".$row['id'].");";
