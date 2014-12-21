@@ -1,7 +1,10 @@
 <?php
 include_once "tools/config.php";
 include_once "models/Page.php";
+require_once '../tools/Mobile_Detect.php';
+$detect = new Mobile_Detect;
 
+$deviceType = ($detect->isMobile()) ? 'mobile' : 'computer';
 $GLOBALS["dbconnec"]=connectDB();
 $pages= Page::getPages(TRUE);
 

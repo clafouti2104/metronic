@@ -43,12 +43,14 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
                     <?php echo $page->name; ?>&nbsp;
                     <input type="hidden" id="editMode" value="0" />
                     <small><?php echo $page->description; ?></small>
+                    <?php if($deviceType == "computer"){ ?>
                     <a style="float:right;" class="btn btn-primary" href="ajax/user/itempage_add.php?pageId=<?php echo $page->id; ?>" data-target="#ajax" data-toggle="modal">
                         <i class="fa fa-plus"></i>&nbsp;Ajouter un objet
                     </a>
                     <a style="float:right;margin-right:5px;" title="Gestion de l'ordre des objets" class="btn default btnEditMode" href="#" >
                         <i class="fa fa-wrench "></i>&nbsp;
                     </a>
+                    <?php } ?>
                 </h3>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
