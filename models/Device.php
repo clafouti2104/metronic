@@ -349,6 +349,11 @@ class Device{
                         $stmt = $GLOBALS['dbconnec']->prepare($sqlUpdate);
                         $stmt->execute($array());
                         break;
+                    case 'netatmo_meteo_humidite_ext':
+                        $sqlUpdate="UPDATE device SET param1='humidite' AND model='exterieur' WHERE id=".$id;
+                        $stmt = $GLOBALS['dbconnec']->prepare($sqlUpdate);
+                        $stmt->execute($array());
+                        break;
                     case 'popcorn':
                         $msg=MessageDevice::createMessageDevice($id, "power", 0, NULL, NULL, NULL, 1,NULL,"power");
                         $msgOff=MessageDevice::createMessageDevice($id, "home", 0, NULL, NULL, NULL, 1, NULL, "home");
