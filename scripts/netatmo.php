@@ -72,8 +72,10 @@ while($row = $stmt->fetch()){
         continue;
     }
     
-    $date=(strtolower($row["model"]) == "interieur") ? $data[0]["time_utc"] : $data[1]["time_utc"];
-    $date=new DateTime($date);
+    $dateTmp=(strtolower($row["model"]) == "interieur") ? $data[0]["time_utc"] : $data[1]["time_utc"];
+    
+    $date=new DateTime();
+    $date->setTimestamp($dateTmp);
     $value="";
     switch(strtolower($row["param1"])){
         case "temperature":
@@ -81,6 +83,12 @@ while($row = $stmt->fetch()){
                 $value=$data[0]["Temperature"];
             } else {
                 $value=$data[1]["Temperature"];
+            }
+        case "humidite":
+            if(strtolower($row["model"]) == "interieur"){
+                $value=$data[0]["Humidity"];
+            } else {
+                $value=$data[1]["Humidity"];
             }
             break;
         default:
