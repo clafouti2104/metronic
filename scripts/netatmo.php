@@ -95,7 +95,7 @@ while($row = $stmt->fetch()){
     }
     
     if($value != ""){
-        Device::updateState($row["id"], $value, $date);
+        Device::updateState($row["id"], $value, $date->format('Y-m-d H:i:s'));
     }
 }
 
