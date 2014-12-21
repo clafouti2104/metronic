@@ -84,6 +84,7 @@ while($row = $stmt->fetch()){
             } else {
                 $value=$data[1]["Temperature"];
             }
+            break;
         case "humidite":
             if(strtolower($row["model"]) == "interieur"){
                 $value=$data[0]["Humidity"];
