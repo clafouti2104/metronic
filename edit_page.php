@@ -5,6 +5,8 @@ include "modules/sidebar.php";
 $GLOBALS["dbconnec"] = connectDB();
 include_once "models/Page.php";
 
+$pages = Page::getPageNonFilles();
+
 $error="";
 $isPost=FALSE;
 if(isset($_POST["formname"]) && $_POST["formname"]=="editpage"){
@@ -16,6 +18,9 @@ if($isPost && isset($_POST["idpage"])){
     $description= $_POST["description"];
     $active=$_POST["active"];
     $icon=$_POST["icon"];
+    $parent=$_POST["parent"];
+    $color=$_POST["color"];
+    $idPage=$_POST["idpage"];
 } else {
     $idPage=0;
     $txtMode="Création";
@@ -29,6 +34,8 @@ if($isPost && isset($_POST["idpage"])){
     $description= (!is_object($page)) ? NULL : $page->description;
     $icon= (!is_object($page)) ? NULL : $page->icon;
     $active= (!is_object($page)) ? TRUE : $page->active;
+    $parent= (!is_object($page)) ? TRUE : $page->parent;
+    $color= (!is_object($page)) ? TRUE : $page->color;
 }
 
 if($isPost){
@@ -39,14 +46,17 @@ if($isPost){
     
     if($error == ""){
         $_POST["icon"]=str_replace("fa ","",$_POST["icon"]);
+        $_POST["parent"]=($_POST["parent"]=="-1") ? 'NULL' : $_POST["parent"];
         if($_POST["idpage"]>0){
             $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
-            $sql="UPDATE page SET name='".$_POST["name"]."', description='".$_POST["description"]."', active=".$_POST["active"].", icon='".$_POST["icon"]."'";
+            $sql="UPDATE page SET name='".$_POST["name"]."', description='".$_POST["description"]."'";
+            $sql.=", active=".$_POST["active"].", icon='".$_POST["icon"]."', parent=".$_POST["parent"].", color='".$_POST["color"]."'";
             $sql.=" WHERE id=".$_POST["idpage"];
+            //echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
             $info="La page a été modifiée";
         } else {
-            $page=Page::createPage($_POST["name"], $_POST["description"], $_POST["active"],$_POST["icon"]);
+            $page=Page::createPage($_POST["name"], $_POST["description"], $_POST["active"],$_POST["icon"],$_POST["parent"],$_POST["color"]);
             $idPage=$page->id;
             $info="Le page a été créée";
         }
@@ -146,12 +156,52 @@ if(isset($idPage) && $idPage > 0){
                         <div class="row">
                             <div class="col-md-12 ">
                                 <div class="form-group">
+                                    <label class="control-label col-md-3" for="parent">Parent</label>
+                                    <div class="col-md-9">
+                                        <select id="parent" name="parent" class="form-control">
+                                            <option value="-1"></option>
+                                            <?php 
+                                            foreach($pages as $pageTmp){
+                                                $selected = ($pageTmp->id == $parent) ? ' selected="selected" ' : '';
+                                                echo '<option value="'.$pageTmp->id.'" '.$selected.'>'.ucwords($pageTmp->name).'</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="form-group">
                                     <label class="control-label col-md-3" for="icon">Icône</label>
                                     <div class="col-md-4">
                                         <input id="icon" name="icon" class="form-control" value="<?php echo $icon; ?>" type="text">
                                     </div>
                                     <div class="col-md-4">
                                         <a class="btn btn-info"  data-toggle="modal" href="edit_page.php#basic">Icônes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3" for="color">Couleur</label>
+                                    <div class="col-md-9">
+                                        <select name="color" id="color" class="form-control">
+
+<?php
+                                        foreach($colors as $colorType=>$array){
+                                            echo "<optgroup label=\"".ucwords($colorType)."\">";
+                                            foreach($array as $key=>$colorTmp){
+                                                $selected=($key==$color) ? " selected=\"selected\" " : "";
+                                                echo "<option value=\"".$key."\" $selected>".ucwords($colorTmp)."</option>";
+                                            }
+                                            echo "</optgroup>";
+                                        }
+?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

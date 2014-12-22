@@ -7,14 +7,18 @@ class Page{
     public $active;
     public $icon;
     public $position;
+    public $parent;
+    public $color;
     
-    public function __construct($id, $name, $description, $active, $icon, $position) {
+    public function __construct($id, $name, $description, $active, $icon, $position, $parent, $color) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->active = $active;
         $this->icon = $icon;
         $this->position = $position;
+        $this->parent = $parent;
+        $this->color = $color;
     }
     
     public static function PageExists($idPage) {
@@ -54,6 +58,8 @@ class Page{
         $query .= ",active";
         $query .= ",icon";
         $query .= ",position";
+        $query .= ",parent";
+        $query .= ",color";
         $query .= " FROM page ";
         $query .= " WHERE id=:id";
         
@@ -64,7 +70,7 @@ class Page{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_page = new Page($row['id'],$row['name'],$row['description'],$row["active"],$row["icon"],$row["position"]);
+                    $tmp_page = new Page($row['id'],$row['name'],$row['description'],$row["active"],$row["icon"],$row["position"],$row["parent"], $row["color"]);
 
                     $result[] = $tmp_page;
                     $tmp_page = NULL;
@@ -87,7 +93,45 @@ class Page{
         return self::getPage($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createPage($name,$description,$active=1,$icon) {
+    /**
+    * @desc Renvoie tous les Pages parents
+    */
+    public static function getPageParents() {
+        $query = "SELECT DISTINCT(parent) FROM page";
+        $query .= " ORDER BY name";
+        
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+
+        return self::getPage($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+    }
+    
+    /**
+    * @desc Renvoie tous les Pages non fille
+    */
+    public static function getPageNonFilles() {
+        $query = "SELECT id FROM page";
+        $query .= " WHERE parent IS NULL";
+        $query .= " ORDER BY name";
+        
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+
+        return self::getPage($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+    }
+    
+    /**
+    * @desc Renvoie tous les Pages fille
+    */
+    public static function getPageFilles($idParent) {
+        $query = "SELECT id FROM page";
+        $query .= " WHERE parent=".$idParent." ";
+        $query .= " ORDER BY name";
+        
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+
+        return self::getPage($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+    }
+    
+    public static function createPage($name,$description,$active=1,$icon,$parent,$color) {
         $position=0;
         $sqlPosition="SELECT TOP 1 position FROM page ORDER BY position DESC";
         $stmt = $GLOBALS['dbconnec']->prepare($sqlPosition);
@@ -103,6 +147,8 @@ class Page{
         $query .= ",active ";
         $query .= ",icon ";
         $query .= ",position ";
+        $query .= ",parent ";
+        $query .= ",color ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":name";
@@ -110,6 +156,8 @@ class Page{
         $query .= ",:active ";
         $query .= ",:icon ";
         $query .= ",:position ";
+        $query .= ",:parent ";
+        $query .= ",:color ";
         $query .= ")";
         
         $params = array();
@@ -118,6 +166,8 @@ class Page{
         $params[":active"] = $active;
         $params[":icon"] = $icon;
         $params[":position"] = $position;
+        $params[":parent"] = $parent;
+        $params[":color"] = $color;
         
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -135,7 +185,7 @@ class Page{
         }
         $stmt = NULL;
 
-        $tmpInstance = new Page($id, $name, $description, $active,$icon,$position);
+        $tmpInstance = new Page($id, $name, $description, $active,$icon,$position,$parent,$color);
         
         return $tmpInstance;
     }

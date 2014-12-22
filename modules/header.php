@@ -6,7 +6,7 @@ $detect = new Mobile_Detect;
 
 $deviceType = ($detect->isMobile()) ? 'mobile' : 'computer';
 $GLOBALS["dbconnec"]=connectDB();
-$pages= Page::getPages(TRUE);
+$pages= Page::getPageNonFilles();
 
 //get log level 
 $logLevel=10;

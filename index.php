@@ -13,6 +13,7 @@ $tmpDevices=array();
 foreach($devices as $device){
     $tmpDevices[$device->id]=$device;
 }
+$pagesParent=Page::getPageParents();
 
 //Récupération Logs
 $logs = Log::getLastLogs(20);
@@ -39,7 +40,7 @@ $logs = Log::getLastLogs(20);
                 <div id="dashboard">
                         <!-- BEGIN DASHBOARD STATS -->
                         <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box" type="freebox">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box-action" type="freebox">
                                         <div class="dashboard-stat blue-madison">
                                                 <div class="visual">
                                                         <i class="fa fa-play-circle"></i>
@@ -57,7 +58,7 @@ $logs = Log::getLastLogs(20);
                                                 </a>						
                                         </div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box" type="sce-cd">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box-action" type="sce-cd">
                                         <div class="dashboard-stat yellow">
                                                 <div class="visual">
                                                         <i class="fa fa-bullhorn"></i>
@@ -71,7 +72,7 @@ $logs = Log::getLastLogs(20);
                                                 </a>						
                                         </div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box" >
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box-action" >
                                         <div class="dashboard-stat purple">
                                                 <div class="visual">
                                                         <i class="fa fa-picture-o"></i>
@@ -85,7 +86,7 @@ $logs = Log::getLastLogs(20);
                                                 </a>						
                                         </div>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box" type="extinction">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 box-action" type="extinction">
                                         <div class="dashboard-stat red">
                                                 <div class="visual">
                                                         <i class="fa fa-power-off "></i>
@@ -99,11 +100,32 @@ $logs = Log::getLastLogs(20);
                                                 </a>						
                                         </div>
                                 </div>
+<?php
+foreach($pagesParent as $pageParent){
+?>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pageParent" idPageParent="<?php echo $pageParent->id; ?>">
+                                        <div class="dashboard-stat <?php echo $pageParent->color; ?>">
+                                                <div class="visual">
+                                                        <i class="fa <?php echo $pageParent->icon; ?> "></i>
+                                                </div>
+                                                <div class="details">
+                                                        <div class="number"><?php echo $pageParent->name; ?></div>
+                                                        <div class="desc"><?php echo $pageParent->description; ?></div>
+                                                </div>
+                                                <a class="more" href="#">
+                                                    &nbsp;<i class="m-icon-swapright m-icon-white"></i>
+                                                </a>						
+                                        </div>
+                                </div>
+                            
+<?php
+}
+?>
                                 <!--</div>-->
                             </div>
                         </div>
                         <div class="tiles">
-                            <img src="http://192.168.1.24:8080/video"/>
+                            <!--<img src="http://192.168.1.24:8080/video"/>-->
                                 <?php
                                 foreach($devices as $device){
                                     if(strtolower($device->type) != "sensor" && strtolower($device->type) != "sensor_humidity"){
@@ -281,15 +303,15 @@ $logs = Log::getLastLogs(20);
 </div>
 <!-- END PAGE -->
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.box').bind('click',function(e){
-          $.ajax({
+$(document).ready(function () {
+    $('.box-action').bind('click',function(e){
+        $.ajax({
             url: "ajax/action.php",
             type: "POST",
             data: {
-               type:  encodeURIComponent($(this).attr('type')),
-               deviceId: $(this).attr('deviceId'),
-               action: $(this).attr('action')
+                type:  encodeURIComponent($(this).attr('type')),
+                deviceId: $(this).attr('deviceId'),
+                action: $(this).attr('action')
             },
             error: function(data){
                 toastr.error("Une erreur est survenue");
@@ -298,11 +320,27 @@ $logs = Log::getLastLogs(20);
                 toastr.success("Action exécutée");
             }
         });
-      });
-        $('.dashboard-tile').bind( "click", function() {
-            
+    });
+
+    $('.pageParent').bind('click',function(e){
+        $.ajax({
+            url: "ajax/user/load_pages_filles.php",
+            type: "POST",
+            data: {
+                idPageParent: $(this).attr('idPageParent')
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            success: function(data){
+                eval(data);
+            }
         });
     });
+            
+    $('.dashboard-tile').bind( "click", function() {
+    });
+});
     var ui="toastr";
 </script>
 <?php
