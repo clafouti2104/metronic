@@ -65,7 +65,7 @@ if($type=="myfox"){
     exec('cd /var/www/metronic/scripts/calaos;php getStateAlarm.php',$output);
 
     $stateAlarm=(is_array($output)) ? $output[0] : $output;
-print_r($stateAlarm);
+//print_r($stateAlarm);
 
     switch(strtolower($stateAlarm)){
         case "disarmed":
