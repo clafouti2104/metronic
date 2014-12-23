@@ -64,6 +64,7 @@ if($type=="myfox"){
 } elseif($type=="calaos"){
     exec('cd /var/www/metronic/scripts/calaos;php getStateAlarm.php',$output);
     
+    print_r($output);
     print_r($output["inputs"]);
     $stateAlarm="";
     foreach($output["inputs"] as $type=>$result){
