@@ -70,6 +70,7 @@ if($type=="myfox"){
             continue;
         }
         foreach($result as $calaosId => $value){
+            echo "<br/>ID=".$calaosId." ==> ".$value;
             if(strtolower($value) == "true"){
                 if($calaosId == "intern_4"){
                     $stateAlarm="armed";
