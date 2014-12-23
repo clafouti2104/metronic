@@ -63,14 +63,54 @@ if($type=="myfox"){
     }
 } elseif($type=="calaos"){
     exec('cd /var/www/metronic/scripts/calaos;php getStateAlarm.php',$output);
-    print_r($output);
-    
-    $imgState="alarm_disarmed";
-    $linkState="disarmed";
-    $imgFirst="alarm_partial";
-    $linkFirst="partial";
-    $imgSecond="alarm_armed";
-    $linkSecond="armed";
+    //print_r($output);
+    $stateAlarm="";
+    foreach($output as $type=>$result){
+        if(count($result)==0){
+            continue;
+        }
+        foreach($result as $calaosId => $value){
+            if(strtolower($value) == "true"){
+                if($calaosId == "intern_4"){
+                    $stateAlarm="armed";
+                }
+                if($calaosId == "intern_5"){
+                    $stateAlarm="partial";
+                }
+                if($calaosId == "intern_6"){
+                    $stateAlarm="disarmed";
+                }
+                break;
+            }
+        }
+    }
+    switch(strtolower($stateAlarm)){
+        case "disarmed":
+            $imgState="alarm_disarmed";
+            $linkState="disarmed";
+            $imgFirst="alarm_partial";
+            $linkFirst="partial";
+            $imgSecond="alarm_armed";
+            $linkSecond="armed";
+            break;
+        case "armed":
+            $imgState="alarm_armed";
+            $linkState="armed";
+            $imgFirst="alarm_partial";
+            $linkFirst="partial";
+            $imgSecond="alarm_disarmed";
+            $linkSecond="disarmed";
+            break;
+        case "partial":
+            $imgState="alarm_partial";
+            $linkState="partial";
+            $imgFirst="alarm_armed";
+            $linkFirst="armed";
+            $imgSecond="alarm_disarmed";
+            $linkSecond="disarmed";
+            break;
+        default :
+    }
 }
 
 ?>
