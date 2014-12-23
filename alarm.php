@@ -64,12 +64,12 @@ if($type=="myfox"){
 } elseif($type=="calaos"){
     exec('cd /var/www/metronic/scripts/calaos;php getStateAlarm.php',$output);
     
-    print_r($output);
+    print_r($output["inputs"]);
     $stateAlarm="";
     foreach($output["inputs"] as $type=>$result){
-        if(count($result)==0){
+        /*if(count($result)==0){
             continue;
-        }
+        }*/
         foreach($result as $calaosId => $value){
             echo "<br/>ID=".$calaosId." ==> ".$value;
             if(strtolower($value) == "true"){
