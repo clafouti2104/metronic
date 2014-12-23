@@ -62,6 +62,8 @@ if($type=="myfox"){
         default :
     }
 } elseif($type=="calaos"){
+    print_r(exec('cd /var/www/metronic/scripts/calaos/getStateAlarm.php'));
+    
     $imgState="alarm_disarmed";
     $linkState="disarmed";
     $imgFirst="alarm_partial";
@@ -99,6 +101,7 @@ if($type=="myfox"){
                 <input type="text" id="hidden2" class="keypad" style="display:none;" action="<?php echo $linkFirst; ?>" />
             </div>
         </div>
+    </div>
     </div>
 </div>
     <div id="keypad"></div>
