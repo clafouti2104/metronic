@@ -8,8 +8,28 @@ include "modules/header.php";
 include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
+?>
+<style type="text/css" media="screen">
+.ui-widget-content{
+    background: url("images/ui-bg_inset-soft_25_000000_1x100.png") repeat-x scroll 50% bottom #000000;
+    border: 1px solid #666666;
+    color: #ffffff;
+    <?php if($detect->isMobile()){
+        echo "margin-top:100px;";
+        echo "margin-left:100px;";
+
+    } else {
+        echo "margin-top:200px;";
+        echo "margin-left:250px;";
+
+    } ?>
+
+}
+</style>
+<?php
 
 $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+$ini = parse_ini_file("tools/parameters.ini");
 
 foreach($ini as $title => $value){
     if($title == "myfox_token" && $value != ""){
@@ -66,6 +86,7 @@ if($type=="myfox"){
 
     $stateAlarm=(is_array($output)) ? $output[0] : $output;
 //print_r($stateAlarm);
+    $stateAlarm="disarmed";
 
     switch(strtolower($stateAlarm)){
         case "disarmed":
@@ -253,6 +274,8 @@ $(document).ready(function() {
         $('#hidden').trigger('focus.keyboard');
         $('#hidden').getkeyboard().reveal();
         $('#hidden').blur();
+        $('.ui-widget-content').css({'margin-top':'150px','margin-left':'50px'});
+        $('.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default').css({'width':'73px','height':'60px'});
     });
 
     $('.alarm-second').click(function() {
@@ -261,8 +284,11 @@ $(document).ready(function() {
         $('#hidden2').trigger('focus.keyboard');
         $('#hidden2').getkeyboard().reveal();
         $('#hidden2').blur();
+        $('.ui-widget-content').css({'margin-top':'150px','margin-left':'50px'});
+        $('.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default').css({'width':'73px','height':'60px'});
     });
 
+    
     /*$('.alarm-action').click(function() {
         $('#action_tmp').val($(this).attr('action'));
         $('#element_tmp').val($(this).attr('element'));
