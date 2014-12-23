@@ -62,7 +62,7 @@ if($type=="myfox"){
         default :
     }
 } elseif($type=="calaos"){
-    print_r(exec('cd /var/www/metronic/scripts/calaos/getStateAlarm.php'));
+    print_r(exec('cd /var/www/metronic/scripts/calaos;php getStateAlarm.php'));
     
     $imgState="alarm_disarmed";
     $linkState="disarmed";
