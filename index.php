@@ -16,7 +16,7 @@ foreach($devices as $device){
 $pagesParent=Page::getPageParents();
 
 //Récupération Logs
-$logs = Log::getLastLogs(20);
+//$logs = Log::getLastLogs(20);
 
 ?>
 <!-- BEGIN PAGE -->
@@ -156,8 +156,7 @@ foreach($pagesParent as $pageParent){
                         <!-- END DASHBOARD STATS -->
                         <div class="clearfix"></div>
                         <div class="row">
-                                <div class="col-md-6">
-                                    <!-- BEGIN PORTLET-->
+                                <!--<div class="col-md-6">
                                     <div class="portlet box blue-hoki">
                                         <div class="portlet-title">
                                             <div class="caption">
@@ -173,7 +172,7 @@ foreach($pagesParent as $pageParent){
                                                         <th colspan="2">Etat</th>
                                                     </tr>
                                                     <?php
-                                                        foreach($devices as $device){
+                                                        /*foreach($devices as $device){
                                                             switch(strtolower($device->type)){
                                                                 case "presence":
                                                                     $icon="eye";
@@ -214,16 +213,15 @@ foreach($pagesParent as $pageParent){
                                                                 echo "<td><span class=\"label label-".$color." label-mini\">".$state."</span></td>";
                                                                 echo "<td><div class=\"date\">".$device->last_update."</div></td>";
                                                                 echo "</tr>";
-                                                        }
+                                                        }*/
                                                     ?>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- END PORTLET-->
                                 </div>
-                                <div class="col-md-6">
-                                        <!-- BEGIN PORTLET-->
+                                <!-- END PORTLET-->
+                                <!--<div class="col-md-6">
                                         <div class="portlet box blue-hoki">
                                             <div class="portlet-title">
                                                 <div class="caption">
@@ -231,13 +229,12 @@ foreach($pagesParent as $pageParent){
                                                 </div>
                                             </div>
                                             <div class="portlet-body">
-                                                <!--BEGIN TABS-->
                                                 
                                                         <div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
                                                             <ul class="feeds">
                                                                 <?php
                                                                     //print_r($logs);
-                                                                    foreach($logs as $log){
+                                                                    /*foreach($logs as $log){
                                                                         $device = ($log->deviceid != '' && isset($tmpDevices[$log->deviceid])) ? $tmpDevices[$log->deviceid]->name : $log->rfid;
                                                                         $tmpInfo="";
                                                                         switch(strtolower($log->value)){
@@ -287,7 +284,7 @@ foreach($pagesParent as $pageParent){
                                                                         echo "<div class=\"date\">".$log->date."</div>";
                                                                         echo "</div>";
                                                                         echo "</li>";
-                                                                    }
+                                                                    }*/
                                                                 ?>
                                                             </ul>
                                                         </div>

@@ -63,11 +63,10 @@ if($type=="myfox"){
     }
 } elseif($type=="calaos"){
     exec('cd /var/www/metronic/scripts/calaos;php getStateAlarm.php',$output);
-    
-    print_r($output);
-    print_r($output["inputs"]);
-    $stateAlarm="";
-    
+
+    $stateAlarm=(is_array($output)) ? $output[0] : $output;
+print_r($stateAlarm);
+
     switch(strtolower($stateAlarm)){
         case "disarmed":
             $imgState="alarm_disarmed";
@@ -106,9 +105,9 @@ if($type=="myfox"){
     <div class="container-fluid">
     <div class="row">
             <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                 <h3 class="page-title">
-                    Alarme				
+                    Alarme
                     <small>Mise en/hors service</small>
                 </h3>
                 <!-- END PAGE TITLE & BREADCRUMB-->
@@ -147,11 +146,11 @@ $(document).ready(function() {
         restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
         preventPaste : true,  // prevent ctrl-v and right click
         position: {
-            of : $('.alarm-first'), 
-            my : 'center top', 
-            at : 'center top' 
+            of : $('.alarm-first'),
+            my : 'center top',
+            at : 'center top'
         },
-        validate    : function(keyboard, value, isClosing) { 
+        validate    : function(keyboard, value, isClosing) {
             $.ajax({
                 url: "ajax/check_keypad_alarm.php    ",
                 type: "POST",
@@ -189,7 +188,7 @@ $(document).ready(function() {
         }
     })
     .addTyping();
-    
+
     $('#hidden2').keyboard({
         //openOn : null,
         layout: 'custom',
@@ -205,11 +204,11 @@ $(document).ready(function() {
         restrictInput : true, // Prevent keys not in the displayed keyboard from being typed in
         preventPaste : true,  // prevent ctrl-v and right click
         position: {
-            of : $('.alarm-first'), 
-            my : 'center top', 
-            at : 'center top' 
+            of : $('.alarm-first'),
+            my : 'center top',
+            at : 'center top'
         },
-        validate    : function(keyboard, value, isClosing) { 
+        validate    : function(keyboard, value, isClosing) {
             $.ajax({
                 url: "ajax/check_keypad_alarm.php    ",
                 type: "POST",
@@ -247,23 +246,23 @@ $(document).ready(function() {
         }
     })
     .addTyping();
-    
+
     $('.alarm-first').click(function() {
         $('#action_tmp').val($(this).attr('action'));
         $('#element_tmp').val($(this).attr('element'));
-        $('#hidden').trigger('focus.keyboard'); 
+        $('#hidden').trigger('focus.keyboard');
         $('#hidden').getkeyboard().reveal();
         $('#hidden').blur();
     });
-    
+
     $('.alarm-second').click(function() {
         $('#action_tmp').val($(this).attr('action'));
         $('#element_tmp').val($(this).attr('element'));
-        $('#hidden2').trigger('focus.keyboard'); 
+        $('#hidden2').trigger('focus.keyboard');
         $('#hidden2').getkeyboard().reveal();
         $('#hidden2').blur();
     });
-    
+
     /*$('.alarm-action').click(function() {
         $('#action_tmp').val($(this).attr('action'));
         $('#element_tmp').val($(this).attr('element'));
@@ -271,10 +270,10 @@ $(document).ready(function() {
         $('.ui-keyboard').css('top','80%');
         //on centre la position du keyboard
         var keyboard = document.getElementsByClassName('ui-keyboard ui-widget-content ui-widget ui-corner-all ui-helper-clearfix ui-keyboard-has-focus').item();
-		keyboard.style.top='10%';
-		keyboard.style.left='50%';
-		keyboard.style.marginLeft='-131px';
-		keyboard.style.marginTop='-30%';
+                keyboard.style.top='10%';
+                keyboard.style.left='50%';
+                keyboard.style.marginLeft='-131px';
+                keyboard.style.marginTop='-30%';
     });*/
 });
 </script>
