@@ -10,50 +10,66 @@ include "modules/sidebar.php";
 $GLOBALS["dbconnec"] = connectDB();
 
 $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+
 foreach($ini as $title => $value){
-    if($title == "myfox_token"){
+    if($title == "myfox_token" && $value != ""){
+        $type="myfox";
         $token=$value;
         break;
     }
+    if($title == "calaos_login" && $value != ""){
+        $type="calaos";
+    }
 }
-if($token == ""){
-    $token=getToken();
-}
-$securityState = exec("curl https://api.myfox.me:443/v2/site/10562/security?access_token=".$token);
-$securityState = json_decode($securityState);
-if(isset($securityState->status) && $securityState->status == "KO" && $securityState->error == "invalid_token"){
-    $token=getToken();
+
+if($type=="myfox"){
+    if($token == ""){
+        $token=getToken();
+    }
     $securityState = exec("curl https://api.myfox.me:443/v2/site/10562/security?access_token=".$token);
     $securityState = json_decode($securityState);
+    if(isset($securityState->status) && $securityState->status == "KO" && $securityState->error == "invalid_token"){
+        $token=getToken();
+        $securityState = exec("curl https://api.myfox.me:443/v2/site/10562/security?access_token=".$token);
+        $securityState = json_decode($securityState);
+    }
+    $status = $securityState->payload->statusLabel;
+    switch(strtolower($status)){
+        case "disarmed":
+            $imgState="alarm_disarmed";
+            $linkState="disarmed";
+            $imgFirst="alarm_partial";
+            $linkFirst="partial";
+            $imgSecond="alarm_armed";
+            $linkSecond="armed";
+            break;
+        case "armed":
+            $imgState="alarm_armed";
+            $linkState="armed";
+            $imgFirst="alarm_partial";
+            $linkFirst="partial";
+            $imgSecond="alarm_disarmed";
+            $linkSecond="disarmed";
+            break;
+        case "partial":
+            $imgState="alarm_partial";
+            $linkState="partial";
+            $imgFirst="alarm_armed";
+            $linkFirst="armed";
+            $imgSecond="alarm_disarmed";
+            $linkSecond="disarmed";
+            break;
+        default :
+    }
+} elseif($type=="calaos"){
+    $imgState="alarm_disarmed";
+    $linkState="disarmed";
+    $imgFirst="alarm_partial";
+    $linkFirst="partial";
+    $imgSecond="alarm_armed";
+    $linkSecond="armed";
 }
-$status = $securityState->payload->statusLabel;
-switch(strtolower($status)){
-    case "disarmed":
-        $imgState="alarm_disarmed";
-        $linkState="disarmed";
-        $imgFirst="alarm_partial";
-        $linkFirst="partial";
-        $imgSecond="alarm_armed";
-        $linkSecond="armed";
-        break;
-    case "armed":
-        $imgState="alarm_armed";
-        $linkState="armed";
-        $imgFirst="alarm_partial";
-        $linkFirst="partial";
-        $imgSecond="alarm_disarmed";
-        $linkSecond="disarmed";
-        break;
-    case "partial":
-        $imgState="alarm_partial";
-        $linkState="partial";
-        $imgFirst="alarm_armed";
-        $linkFirst="armed";
-        $imgSecond="alarm_disarmed";
-        $linkSecond="disarmed";
-        break;
-    default :
-}
+
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
