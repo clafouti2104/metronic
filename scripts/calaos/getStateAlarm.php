@@ -46,7 +46,7 @@ file_put_contents("/var/www/metronic/scripts/calaos/state_alarm.json", $json);
 exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/state_alarm.json --output-document /var/www/metronic/scripts/calaos/result_alarm.json https://'.$ipAddress.'/api.php',$response);
 $results = file_get_contents('/var/www/metronic/scripts/calaos/result_alarm.json');
 $results = json_decode($results,TRUE);
-print_r($response);
+print_r($results);
 /*
 foreach($results as $type=>$result){
         if(count($result)==0){
