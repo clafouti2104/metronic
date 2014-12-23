@@ -47,6 +47,26 @@ exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/s
 $results = file_get_contents('/var/www/metronic/scripts/calaos/result_alarm.json');
 $results = json_decode($results,TRUE);
 
+foreach($results["inputs"] as $type=>$result){
+        /*if(count($result)==0){
+            continue;
+        }*/
+        foreach($result as $calaosId => $value){
+            echo "<br/>ID=".$calaosId." ==> ".$value;
+            if(strtolower($value) == "true"){
+                if($calaosId == "intern_4"){
+                    $stateAlarm="armed";
+                }
+                if($calaosId == "intern_5"){
+                    $stateAlarm="partial";
+                }
+                if($calaosId == "intern_6"){
+                    $stateAlarm="disarmed";
+                }
+                break;
+            }
+        }
+    }
 return $results;
 /*
 foreach($results as $type=>$result){

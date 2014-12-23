@@ -67,26 +67,7 @@ if($type=="myfox"){
     print_r($output);
     print_r($output["inputs"]);
     $stateAlarm="";
-    foreach($output["inputs"] as $type=>$result){
-        /*if(count($result)==0){
-            continue;
-        }*/
-        foreach($result as $calaosId => $value){
-            echo "<br/>ID=".$calaosId." ==> ".$value;
-            if(strtolower($value) == "true"){
-                if($calaosId == "intern_4"){
-                    $stateAlarm="armed";
-                }
-                if($calaosId == "intern_5"){
-                    $stateAlarm="partial";
-                }
-                if($calaosId == "intern_6"){
-                    $stateAlarm="disarmed";
-                }
-                break;
-            }
-        }
-    }
+    
     switch(strtolower($stateAlarm)){
         case "disarmed":
             $imgState="alarm_disarmed";
