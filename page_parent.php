@@ -46,14 +46,14 @@ $pageFilles = Page::getPageFilles($_GET["pageId"]);
             <div class="packery">
     <?php 
     foreach($pageFilles as $pageFille){
-        echo "<div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12\" onclick=\"location.href=\'page.php?pageId=".$pagesFille->id."\'; \">";
-        echo "<div class=\"dashboard-stat ".$pagesFille->color." \">";
+        echo "<div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12\" onclick=\"location.href=\'page.php?pageId=".$pageFille->id."\'; \">";
+        echo "<div class=\"dashboard-stat ".$pageFille->color." \">";
         echo "<div class=\"visual\">";
-        echo "<i class=\"fa ".$pagesFille->icon."\" ></i>";
+        echo "<i class=\"fa ".$pageFille->icon."\" ></i>";
         echo "</div>";
         echo "<div class=\"details\">";
-        echo "<div class=\"number\">".$pagesFille->name."</div>";
-        echo "<div class=\"desc\">".$pagesFille->description."</div>";
+        echo "<div class=\"number\">".$pageFille->name."</div>";
+        echo "<div class=\"desc\">".$pageFille->description."</div>";
         echo "</div>";
         echo "<a class=\"more\" href=\"#\">";
         echo "&nbsp;<i class=\"m-icon-swapright m-icon-white\"></i>";
