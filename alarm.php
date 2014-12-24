@@ -127,7 +127,7 @@ if($type=="myfox"){
         </div>
     </div>
     </div>
-    <div id="homeKeypad" style="position: absolute; top: 50px;left: 100px; width: 300px; display: block;">
+    <div id="homeKeypad" style="position: absolute; top: 50px;left: 50px; width: 300px; display: block;">
         <div class="keypadElem ui-dialog-titlebar-close" style="width:225px;height:20px;padding:0;text-align: right;" value="close">
             x
         </div>
@@ -144,6 +144,7 @@ if($type=="myfox"){
     <input type="hidden" id="actionType" value="" />
     <input type="hidden" id="codePin" value="" />
     <div id="keypad"></div>
+</div>
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
