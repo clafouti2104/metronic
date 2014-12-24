@@ -136,13 +136,13 @@ if($type=="myfox"){
     </div>
     <div class="row">
         <div class="col-md-12 ">
-            <img class="alarm-status" action="<?php echo $linkState; ?>" src="assets/img/<?php echo $imgState; ?>.png" width="300" />
+            <img class="alarm-status" action="<?php echo $linkState; ?>" src="assets/img/<?php echo $imgState; ?>.png" width="250" />
         </div>
         <div class="row">
             <div class="col-md-6 ">
-                <img class="alarm-action alarm-first" action="<?php echo $linkFirst; ?>" element="first" src="assets/img/<?php echo $imgFirst; ?>.png" width="130" style="margin-right:20px;" />
+                <img class="alarm-action alarm-first" action="<?php echo $linkFirst; ?>" element="first" src="assets/img/<?php echo $imgFirst; ?>.png" width="110" style="margin-right:20px;" />
                 <input type="text" id="hidden" class="keypad" style="display:none;" action="<?php echo $linkFirst; ?>" />
-                <img class="alarm-action alarm-second" action="<?php echo $linkSecond; ?>" element="second" src="assets/img/<?php echo $imgSecond; ?>.png" width="130" />
+                <img class="alarm-action alarm-second" action="<?php echo $linkSecond; ?>" element="second" src="assets/img/<?php echo $imgSecond; ?>.png" width="110" />
                 <input type="text" id="hidden2" class="keypad" style="display:none;" action="<?php echo $linkFirst; ?>" />
             </div>
         </div>
