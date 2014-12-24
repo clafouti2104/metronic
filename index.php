@@ -125,17 +125,12 @@ foreach($pagesParent as $pageParent){
                             </div>
                         </div>
                         <div class="tiles">
-                            <!--<img src="http://192.168.1.24:8080/video"/>-->
                                 <?php
-                                foreach($devices as $device){
+                                /*foreach($devices as $device){
                                     if(strtolower($device->type) != "sensor" && strtolower($device->type) != "sensor_humidity"){
                                         continue;
                                     }
                                     
-                                    /*if($device->model == "ds18b20"){
-                                        $temp = number_format(substr($device->state,0,strlen($device->state)-1)/100,2,",","");
-                                    } else {
-                                    }*/
                                     $temp = number_format($device->state,2,",","");
                                     
                                     $type=(strtolower($device->type) == "sensor") ? "°C" : "%";
@@ -150,7 +145,7 @@ foreach($pagesParent as $pageParent){
                                     echo '<div class="number">'.$type.'</div>';
                                     echo '</div>';
                                     echo '</div>';
-                                }
+                                }*/
                                 ?>
                         </div>
                         <!-- END DASHBOARD STATS -->
