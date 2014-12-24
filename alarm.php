@@ -136,7 +136,7 @@ if($type=="myfox"){
     </div>
     <div class="row">
         <div class="col-md-12 ">
-            <img class="alarm-status" action="<?php echo $linkState; ?>" src="assets/img/<?php echo $imgState; ?>.png" width="250" />
+            <img class="alarm-status" action="<?php echo $linkState; ?>" src="assets/img/<?php echo $imgState; ?>.png" width="200" />
         </div>
         <div class="row">
             <div class="col-md-6 ">
