@@ -8362,3 +8362,24 @@ Purple Seance
     margin-top: 10px;
     width: 30px;
 }
+.keypadElem {
+    background: url("images/ui-bg_glass_20_555555_1x400.png") repeat-x scroll 50% 50% #555555;
+    border: 1px solid #666666;
+    color: #eeeeee;
+    font-weight: bold;
+    float:left;
+    width:75px;
+    height:80px;
+    font-family: Segoe UI,Arial,sans-serif;
+    font-size: 1em;
+    cursor:pointer;
+    padding-left:30px;
+    padding-top:30px;
+}
+
+.keypadElem:hover{
+    background-color: #0078a3;
+    border: 1px solid #59b4d4;
+    color: #ffffff;
+    font-weight: bold;
+}
