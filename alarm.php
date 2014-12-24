@@ -268,6 +268,12 @@ $(document).ready(function() {
     })
     .addTyping();
 
+    $('.ui-keyboard-button').click(function() {
+        $('.ui-keyboard-preview-wrapper input').focusout();
+        $('.ui-keyboard-preview').focusout();
+        $("input").blur();
+        $('#hidden').blur();
+    });
     $('.alarm-first').click(function() {
         $("input").blur();
         $('#action_tmp').val($(this).attr('action'));
