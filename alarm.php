@@ -137,6 +137,9 @@ if($type=="myfox"){
         <div class="keypadElem" style="clear:left;" value="4">4</div>
         <div class="keypadElem" value="5">5</div>
         <div class="keypadElem" value="6">6</div>
+        <div class="keypadElem" style="clear:left;" value="1">1</div>
+        <div class="keypadElem" value="2">2</div>
+        <div class="keypadElem" value="3">3</div>
         <div class="keypadElem" value="clear" style="clear:left;">⌫</div>
         <div class="keypadElem" value="0">0</div>
         <div class="keypadElem" value="accept" style="background:#f58400;">✔</div>
