@@ -49,11 +49,11 @@ $pageAdmin=array(
 				                <?php
                                 foreach($pages as $pageTmp){
                                     $class=($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/page.php?pageId=".$pageTmp->id) ? "active" : "";
-                                    $link = ($pageTmp->hasFilles()) ? "page_parent" : "";
+                                    $link = ($pageTmp->hasFilles()) ? "_parent" : "";
                                     
                                     echo "
                                     <li class=\"".$class."\">
-                                            <a href=\"".$GLOBALS['path']."/".$link.".php?pageId=".$pageTmp->id."\">
+                                            <a href=\"".$GLOBALS['path']."/page".$link.".php?pageId=".$pageTmp->id."\">
                                             <i class=\"fa ".$pageTmp->icon."\"></i> 
                                             <span class=\"title\">".$pageTmp->name."</span>
                                             </a>
