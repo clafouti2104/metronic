@@ -24,9 +24,9 @@ $themes=array(
 );
 
 $logLevelBDD = 10;
-$alertRecallBDD=$emailBDD=$chartDefaultDevicesBDD=$loginGmailBDD=$passwordGmailBDD=$themeBDD="";
+$alertRecallBDD=$emailBDD=$chartDefaultDevicesBDD=$loginGmailBDD=$passwordGmailBDD=$themeBDD=$pinAlarmBDD="";
 
-$sql = "SELECT * FROM config WHERE name IN ('log_level','chart_default_devices', 'general_email', 'login_gmail', 'password_gmail', 'theme', 'alert_recall')";
+$sql = "SELECT * FROM config WHERE name IN ('log_level','chart_default_devices', 'general_email', 'login_gmail', 'password_gmail', 'theme', 'alert_recall', 'pin_alarm')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -52,6 +52,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         case 'alert_recall':
             $alertRecallBDD = $row["value"];
             break;
+        case 'pin_alarm':
+            $pinAlarmBDD = $row["value"];
+            break;
         default:
     }
 }
@@ -63,25 +66,28 @@ $login_gmail= ($isPost) ? $_POST["login_gmail"] : $loginGmailBDD;
 $password_gmail= ($isPost) ? $_POST["password_gmail"] : $passwordGmailBDD;
 $theme= ($isPost) ? $_POST["theme"] : $themeBDD;
 $alertRecall= ($isPost) ? $_POST["alert_recall"] : $alertRecallBDD;
+$pinAlarm= ($isPost) ? $_POST["pin_alarm"] : $pinAlarmBDD;
 
 if($isPost){
     if(isset($_POST["chart_default_devices"])){
         $chartDefaultDevices = implode("~", $chartDefaultDevices);
     }
     
-    $sql="UPDATE config SET value='".$logLevel."' WHERE name='log_level'";
-    $stmt = $GLOBALS["dbconnec"]->exec($sql);
-    $sql="UPDATE config SET value='".$chartDefaultDevices."' WHERE name='chart_default_devices'";
-    $stmt = $GLOBALS["dbconnec"]->exec($sql);
-    $sql="UPDATE config SET value='".$email."' WHERE name='general_email'";
-    $stmt = $GLOBALS["dbconnec"]->exec($sql);
-    $sql="UPDATE config SET value='".$login_gmail."' WHERE name='login_gmail'";
-    $stmt = $GLOBALS["dbconnec"]->exec($sql);
-    $sql="UPDATE config SET value='".$password_gmail."' WHERE name='password_gmail'";
-    $stmt = $GLOBALS["dbconnec"]->exec($sql);
-    $sql="UPDATE config SET value='".$theme."' WHERE name='theme'";
-    $stmt = $GLOBALS["dbconnec"]->exec($sql);
-    $sql="UPDATE config SET value='".$alertRecall."' WHERE name='alert_recall'";
+    $sql="UPDATE config SET value='".$logLevel."' WHERE name='log_level';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$chartDefaultDevices."' WHERE name='chart_default_devices';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$email."' WHERE name='general_email';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$login_gmail."' WHERE name='login_gmail';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$password_gmail."' WHERE name='password_gmail';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$theme."' WHERE name='theme';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$alertRecall."' WHERE name='alert_recall';";
+    //$stmt = $GLOBALS["dbconnec"]->exec($sql);
+    $sql.="UPDATE config SET value='".$pinAlarm."' WHERE name='pin_alarm';";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
     
     $info="Modifications enregistrées avec succès";
@@ -206,6 +212,19 @@ foreach($devices as $tmpDevice){
 ?>
                         </select>
                         <span class="help-inline">Détermine les valeurs du graph à afficher par défaut</span>
+                    </div>
+                </div>
+                <h3 class="form-section"><i class="fa fa-bullhorn"></i>&nbsp;Alarme</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="pin_alarm">Code Alarme</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input class="form-control " name="pin_alarm" id="pin_alarm" type="password" value="<?php echo $pinAlarm; ?>">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-actions">
