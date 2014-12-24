@@ -269,27 +269,31 @@ $(document).ready(function() {
     .addTyping();
 
     $('.alarm-first').click(function() {
+        $("input").blur();
         $('#action_tmp').val($(this).attr('action'));
         $('#element_tmp').val($(this).attr('element'));
-        $('#hidden').trigger('focus.keyboard');
+        //$('#hidden').trigger('focus.keyboard');
         $('#hidden').getkeyboard().reveal();
         $('#hidden').blur();
         //$('.ui-keyboard-preview-wrapper').hide();
         $('.ui-keyboard-preview-wrapper input').focusout();
         $('.ui-keyboard-preview').focusout();
+        $("input").blur();
         $('.ui-widget-content').css({'margin-top':'150px','margin-left':'50px'});
         $('.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default').css({'width':'73px','height':'60px'});
     });
 
     $('.alarm-second').click(function() {
+        $("input").blur();
         $('#action_tmp').val($(this).attr('action'));
         $('#element_tmp').val($(this).attr('element'));
-        $('#hidden2').trigger('focus.keyboard');
+        //$('#hidden2').trigger('focus.keyboard');
         $('#hidden2').getkeyboard().reveal();
         $('#hidden2').blur();
         //$('.ui-keyboard-preview-wrapper').hide();
         $('.ui-keyboard-preview-wrapper input').focusout();
         $('.ui-keyboard-preview').focusout();
+        $("input").blur();
         $('.ui-widget-content').css({'margin-top':'150px','margin-left':'50px'});
         $('.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default').css({'width':'73px','height':'60px'});
     });
