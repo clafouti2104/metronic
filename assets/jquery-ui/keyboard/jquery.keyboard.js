@@ -535,7 +535,7 @@ $.keyboard = function(el, options){
 				action = action === ':' ? ':' : action.split(':')[0];
 				if (timer - (base.lastEventTime || 0) < o.preventDoubleEventTime) { return; }
 				base.lastEventTime = timer;
-				base.$preview.focus();
+				//base.$preview.focus();
 				base.$lastKey = $this;
 				base.lastKey = $this.attr('data-curtxt');
 				// Start caret in IE when not focused (happens with each virtual keyboard button click
@@ -554,7 +554,7 @@ $.keyboard = function(el, options){
 					}
 				}
 				// set caret if caret moved by action function; also, attempt to fix issue #131
-				base.$preview.focus().caret( base.lastCaret );
+				//base.$preview.focus().caret( base.lastCaret );
 				base.checkCombos();
 				base.checkMaxLength();
 				if ($.isFunction(o.change)){ o.change( $.Event("change"), base, base.el ); }
@@ -619,7 +619,7 @@ $.keyboard = function(el, options){
 				if (/(mouseleave|touchend|touchcancel)/.test(e.type)) {
 					$(this).removeClass(o.css.buttonHover); // needed for touch devices
 				} else {
-					if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
+					//if (base.isVisible() && base.isCurrent()) { base.$preview.focus(); }
 					if (base.checkCaret) { base.$preview.caret( base.lastCaret ); }
 				}
 				base.mouseRepeat = [false,''];
@@ -899,11 +899,11 @@ $.keyboard = function(el, options){
 				isAccepted = base.close(isAccepted);
 				if (!isAccepted) { return; }
 				kb = all.eq(indx).data('keyboard');
-				if (kb && kb.options.openOn.length) {
+				/*if (kb && kb.options.openOn.length) {
 					kb.focusOn();
 				} else {
 					all.eq(indx).focus();
-				}
+				}*/
 			}
 		}
 		return false;
@@ -939,9 +939,9 @@ $.keyboard = function(el, options){
 			if (o.openOn) {
 				// rebind input focus - delayed to fix IE issue #72
 				base.timer = setTimeout(function(){
-					base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
+					//base.$el.bind( o.openOn + '.keyboard', function(){ base.focusOn(); });
 					// remove focus from element (needed for IE since blur doesn't seem to work)
-					if ($(':focus')[0] === base.el) { base.$el.blur(); }
+					//if ($(':focus')[0] === base.el) { base.$el.blur(); }
 				}, 500);
 			}
 			if (!o.alwaysOpen && base.$keyboard) {
@@ -1518,7 +1518,7 @@ $.keyboard = function(el, options){
 		alwaysOpen   : false,
 
 		// give the preview initial focus when the keyboard becomes visible
-		initialFocus : true,
+		initialFocus : false,
 
 		// if true, keyboard will remain open even if the input loses focus, but closes on escape
 		// or when another keyboard opens.
@@ -1764,7 +1764,7 @@ $.fn.caret = function(options,opt2) {
 			selRange.select();
 		}
 		// must be visible or IE8 crashes; IE9 in compatibility mode works fine - issue #56
-		if (this.is(':visible') || this.css('visibility') !== 'hidden') { this.focus(); }
+		//if (this.is(':visible') || this.css('visibility') !== 'hidden') { this.focus(); }
 		t.scrollTop = sTop;
 		return this;
 	} else {
