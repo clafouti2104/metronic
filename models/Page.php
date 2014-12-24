@@ -131,6 +131,19 @@ class Page{
         return self::getPage($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
+    public function hasFilles(){
+        $nbFilles=0;
+        $query = "SELECT COUNT(id) as nbFilles FROM page";
+        $query .= " WHERE parent=".$this->id." ";
+        
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $nbFilles = $row["nbFilles"];
+        }
+        $return = ($nbFilles > 0) ? TRUE : FALSE;
+        return $return;
+    }
+    
     public static function createPage($name,$description,$active=1,$icon,$parent,$color) {
         $position=0;
         $sqlPosition="SELECT TOP 1 position FROM page ORDER BY position DESC";

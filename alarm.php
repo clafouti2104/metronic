@@ -274,6 +274,9 @@ $(document).ready(function() {
         $('#hidden').trigger('focus.keyboard');
         $('#hidden').getkeyboard().reveal();
         $('#hidden').blur();
+        //$('.ui-keyboard-preview-wrapper').hide();
+        $('.ui-keyboard-preview-wrapper input').focusout();
+        $('.ui-keyboard-preview').focusout();
         $('.ui-widget-content').css({'margin-top':'150px','margin-left':'50px'});
         $('.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default').css({'width':'73px','height':'60px'});
     });
@@ -284,6 +287,9 @@ $(document).ready(function() {
         $('#hidden2').trigger('focus.keyboard');
         $('#hidden2').getkeyboard().reveal();
         $('#hidden2').blur();
+        //$('.ui-keyboard-preview-wrapper').hide();
+        $('.ui-keyboard-preview-wrapper input').focusout();
+        $('.ui-keyboard-preview').focusout();
         $('.ui-widget-content').css({'margin-top':'150px','margin-left':'50px'});
         $('.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default').css({'width':'73px','height':'60px'});
     });
