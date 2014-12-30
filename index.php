@@ -1,10 +1,10 @@
 <?php
-include "modules/header.php";
-include "modules/sidebar.php";
+include_once "modules/header.php";
+include_once "modules/sidebar.php";
 
 $GLOBALS["dbconnec"]=connectDB();
-include "models/Device.php";
-include "models/Log.php";
+include_once "models/Device.php";
+include_once "models/Log.php";
 
 //Récupération Devices
 $devices = Device::getDevices();
