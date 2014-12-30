@@ -19,6 +19,7 @@ class Log{
     
     private static $levels = array(
             10 => 'info', //Temperature
+            40 => 'alert', // alert
             50 => 'important', // Alarme
             80 => 'error', // Perte de communication
     );

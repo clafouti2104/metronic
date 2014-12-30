@@ -444,8 +444,10 @@ class Device{
                 curl_close ($ch);
 
                 $alert->sent = 1;
-                $alert->last_sent = $now-format('Y-m-d H:i:s');
+                $alert->last_sent = $now->format('Y-m-d H:i:s');
                 $alert->update();
+                
+                $log = Log::createLog("Alerte ".$alert->name." déclenchée", $state, $now->format('Y-m-d H:i:s'), $id, 40);
             }
         }
 

@@ -1,4 +1,5 @@
 <?php
+include_once "Log.php";
 
 class Alert{
     public $id;
@@ -67,7 +68,7 @@ class Alert{
         
         // On récupère les élèments
         foreach ($ids as $id) {
-            $params = array(":id"	=> $id);
+            $params = array(":id" => $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $tmp_alert = new Alert($row['id'],$row['deviceId'],$row['operator'],$row["value"],$row["notificationId"],$row["message"], $row["sent"], $row["last_sent"]);
@@ -87,10 +88,8 @@ class Alert{
         $query = "SELECT id FROM alert";
         $query = " WHERE deviceId=".$deviceId;
         $query .= " ORDER BY deviceId";
-        echo "<br/><br/>".$query;
-        exit;
+        
         $stmt = $GLOBALS["dbconnec"]->query($query);
-
         return self::getAlert($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
