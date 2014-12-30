@@ -451,8 +451,8 @@ class Device{
                 }
                 
                 if(isset($notificationId)){
-                    $ch = curl_init('http://api.pushingbox.com/pushingbox?devid='.$alert->notificationId);
-                    file_put_contents("/tmp/info", "PUSHING BOX = http://api.pushingbox.com/pushingbox?devid=".$alert->notificationId);
+                    $ch = curl_init('http://api.pushingbox.com/pushingbox?devid='.$notificationId);
+                    file_put_contents("/tmp/info", "PUSHING BOX = http://api.pushingbox.com/pushingbox?devid=".$notificationId);
                     curl_exec ($ch);
                     curl_close ($ch);
 
