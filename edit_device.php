@@ -76,6 +76,18 @@ $models=Device::getModels();
 $dataTypes=Device::getDataTypes();
 $products=Product::getProducts();
 $_POST["incremental"]=$incremental;
+//Recupere notification pushing box
+$notifications=array();
+$sqlNotifications = "SELECT * FROM config WHERE name='pushing_box'";
+$stmt = $GLOBALS["dbconnec"]->prepare($sqlNotifications);
+$stmt->execute(array());
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $notifications[] = array(
+        "id"=>$row["id"],
+        "name"=>$row["comment"],
+        "deviceId"=>$row["value"]
+    );
+}
 
 if($isPost){
     //Controle
@@ -96,7 +108,6 @@ if($isPost){
                 "formula"=>$stateFormula
             ));
         }
-        
         
         //$_POST["alert_lost_communication"] = (!isset($_POST["alert_lost_communication"]) || $_POST["alert_lost_communication"] == "") ? NULL : $_POST["alert_lost_communication"];
         if($_POST["iddevice"]>0){
@@ -551,12 +562,6 @@ if($product != ""){
             </div>
         </div>
     </div>
-        <!--<div class="form-actions" style="background-color: #f7f7f7;padding: 20px 10px;display: table;box-sizing: border-box;border-top: 1px solid #e5e5e5;width:100%;">
-            <button class="btn blue" type="submit">
-                <i class="icon-ok"></i>Valider
-            </button>
-            <a href="admin_device.php"><button class="btn" type="button">Retourner</button></a>
-        </div>-->
     </form>
     </div>
 </div>
@@ -568,20 +573,50 @@ if($product != ""){
                 <i class="fa fa-edit"></i>&nbsp;<span id="labelEditMessageDevice">Ajout d'une alerte</span>
             </div>
             <div class="modal-body">
+                <div id="alertError" style="display:none;" class="alert alert-danger"></div>
                 <div class="row">
+                    <h5 class="form-section"><i class="fa fa-dashboard"></i>&nbsp;Conditions</h3>
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="alertOperator">Opérateur</label>
+                            <label class="control-label col-md-3" for="alertOperator">Si</label>
                             <div class="col-md-9">
                                 <select id="alertOperator" name="alertOperator" class="form-control">
-                                    <option value="<">supérieur à </option>
-                                    <option value=">">inférieur à </option>
+                                    <option value="<">inférieur à </option>
+                                    <option value=">">supérieur à </option>
                                     <option value="=">égal à</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12" style="margin-top:10px;">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="alertValue">à</label>
+                            <div class="col-md-9">
+                                <input id="alertValue" name="alertValue" class="form-control" value="" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="form-section"><i class="fa fa-envelope"></i>&nbsp;Notification</h3>
+                    <div class="col-md-12" style="margin-top:10px;">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="alertPushingbox">Pushing Box</label>
+                            <div class="col-md-9">
+                                <select id="alertPushingbox" name="alertPushingbox" class="form-control">
+                                    <option value="-1"></option>
+                                    <?php 
+                                    foreach($notifications as $notification){
+                                        echo "<option value=\"".$notification["id"]."\">".$notification["name"]."-".$notification["deviceId"]."</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btnCancelAlert" data-dismiss="modal" type="button">Annuler</button>
+                <button class="btn btn-primary btnSubmitAlert" type="button">Valider</button>
             </div>
         </div>
     </div>
@@ -662,6 +697,19 @@ if($product != ""){
             <div class="modal-footer">
                 <button class="btn btn-default btnCancelMessageDeviceDeletion" data-dismiss="modal" type="button">Annuler</button>
                 <button class="btn red btnDeleteMessageDeviceConfirm" type="button">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteAlert" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="modal-title">Confirmez vous la suppression d'alerte?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btnCancelAlertDeletion" data-dismiss="modal" type="button">Annuler</button>
+                <button class="btn red btnDeleteAlertConfirm" type="button">Supprimer</button>
             </div>
         </div>
     </div>
@@ -751,6 +799,11 @@ $(document).ready(function () {
         $('#idmessagedevice').val(idMessage);
     });
     
+    $('.btnDeleteAlert').bind('click',function(e){
+        var idAlert=$(this).attr('idAlert');
+        $('#idalert').val(idAlert);
+    });
+    
     $('.btnEditMessage').bind('click',function(e){
         $('#labelEditMessageDevice').text("Edition d'une commande");
         var idMessage=$(this).attr('idMessage');
@@ -770,6 +823,70 @@ $(document).ready(function () {
                 } else {
                     eval(data);
                     eval(data.responseText);
+                }
+            }
+        });
+    });
+    
+    $('.btnSubmitAlert').bind('click',function(e){
+        if($('#alertValue').val() == ""){
+            $('#alertError').text('Veuillez renseigner une valeur');
+            $('#alertError').show();
+            return false;
+        }
+        if($('#alertPushingbox').val() == "-1"){
+            $('#alertError').text('Veuillez renseigner une notification');
+            $('#alertError').show();
+            return false;
+        }
+        $('#alertError').text('');
+        $('#alertError').hide();
+        
+        $.ajax({
+            url: "ajax/alert_submit.php",
+            type: "POST",
+            data: {
+                alertId:$('#idalert').val(),
+                deviceId: $('#iddevice').val(),
+                operator: $('#alertOperator').val(),
+                value: $('#alertValue').val(),
+                pushingbox: $('#alertPushingbox').val()
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            success: function(data){
+                if(data.responseText == "error"){
+                    toastr.error("Une erreur est survenue");
+                } else {
+                    $('.btnCancelAlert').click();
+                    toastr.info("Veuillez recharger","Alerte ajoutée");  
+                }
+            }
+        });
+    });
+    
+    $('.btnDeleteAlertConfirm').bind('click',function(e){
+        var alertId=$('#idalert').val();
+        $.ajax({
+            url: "ajax/delete_alert.php",
+            type: "POST",
+            data: {
+                alertId:  alertId
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                if(data.responseText == "success"){
+                    $('.btnCancelAlertDeletion').click();
+                    $('#line-alert-'+alertId).fadeOut(300, function(){ 
+                       $('#line-alert-'+alertId).remove(); 
+                    });
+                    toastr.info("Alerte supprimée");
+                }
+                if(data.responseText == "error"){
+                    toastr.error("Une erreur est survenue");
                 }
             }
         });
@@ -902,7 +1019,36 @@ function generateInputResultState(){
     });
     params += "}";
     $('#state_results').val(params);
-    console.debug(params);
+    //console.debug(params);
+}
+
+function editAlert(idAlert){
+    $.ajax({
+        url: "ajax/alert_load.php",
+        type: "POST",
+        data: {
+            alertId:  idAlert
+        },
+        beforeSend: function(data){
+            Metronic.blockUI({boxed: true});
+        },
+        error: function(data){
+            toastr.error("Une erreur est survenue");
+            Metronic.unblockUI();
+        },
+        complete: function(data){
+            if(data.responseText == "error"){
+                toastr.error("Une erreur est survenue");
+                return true;
+            }
+            if(data == "error"){
+                toastr.error("Une erreur est survenue");
+                return true;
+            }
+            eval(data.responseText);
+            Metronic.unblockUI();
+        }
+    });
 }
 
 </script>

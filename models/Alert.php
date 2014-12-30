@@ -7,14 +7,18 @@ class Alert{
     public $value;
     public $notificationId;
     public $message;
+    public $sent;
+    public $last_sent;
     
-    public function __construct($id, $deviceId, $operator, $value, $notificationId, $message) {
+    public function __construct($id, $deviceId, $operator, $value, $notificationId, $message, $sent, $last_sent) {
         $this->id = $id;
         $this->deviceId = $deviceId;
         $this->operator = $operator;
         $this->value = $value;
         $this->notificationId = $notificationId;
         $this->message = $message;
+        $this->sent = $sent;
+        $this->last_sent = $last_sent;
     }
     
     public static function AlertExists($idAlert) {
@@ -54,6 +58,8 @@ class Alert{
         $query .= ",value";
         $query .= ",notificationId";
         $query .= ",message";
+        $query .= ",sent";
+        $query .= ",last_sent";
         $query .= " FROM alert ";
         $query .= " WHERE id=:id";
         
@@ -64,7 +70,7 @@ class Alert{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_alert = new Alert($row['id'],$row['deviceId'],$row['operator'],$row["value"],$row["notificationId"],$row["message"]);
+                    $tmp_alert = new Alert($row['id'],$row['deviceId'],$row['operator'],$row["value"],$row["notificationId"],$row["message"], $row["sent"], $row["last_sent"]);
 
                     $result[] = $tmp_alert;
                     $tmp_alert = NULL;
@@ -77,8 +83,9 @@ class Alert{
     /**
     * @desc Renvoie tous les Alerts pour un device donné
     */
-    public static function getAlertsByDevice() {
+    public static function getAlertsByDevice($deviceId) {
         $query = "SELECT id FROM alert";
+        $query = " WHERE deviceId=".$deviceId;
         $query .= " ORDER BY deviceId";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
@@ -155,6 +162,35 @@ class Alert{
         $stmt->execute(array(":id" => $this->id));      
         $stmt=NULL;
         
+    }
+    
+    public function update() {
+        
+        $query = "UPDATE alert SET";
+        $query .= " operator=:operator";
+        $query .= ", value=:value";
+        $query .= ", notificationId=:notificationId";
+        $query .= ", message=:message";
+        $query .= ", sent=:sent";
+        $query .= ", last_sent=:last_sent";
+        $query .= " WHERE id=:id";
+        
+        $params = array();
+        $params[':id'] = $this->id;
+        $params[':operator'] = $this->operator;
+        $params[':value'] = $this->value;
+        $params[':notificationId'] = $this->notificationId;
+        $params[':message'] = $this->message;
+        $params[':sent'] = $this->sent;
+        $params[':last_sent'] = $this->last_sent;
+
+        $stmt = $GLOBALS['dbconnec']->prepare($query);
+        if (!$stmt->execute($params)) {
+                throw new Exception("ERREUR : Impossible de mettre a jour le messagedevice '".$this->id."'.");
+        }
+        $stmt = NULL;
+
+        return TRUE;
     }
     
     

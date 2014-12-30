@@ -390,6 +390,63 @@ class Device{
                 throw new Exception("ERREUR : Impossible de mettre a jour le device '".$id."'.");
         }
         $stmt = NULL;
+        
+        //Récupère les alertes associés au device
+        $alerts = Alert::getAlertsByDevice($id);
+        if(count($alerts) == 0){
+            return TRUE;
+        }
+        foreach($alerts as $alert){
+            $check=false;
+            switch(strtolower($alert->operator)){
+                case "<":
+                    if($state < $alert->value){
+                        $check = true;
+                    }
+                    break;
+                case ">":
+                    if($state > $alert->value){
+                        $check = true;
+                    }
+                    break;
+                case "=":
+                    if(strtolower($state) == strtolower($alert->value)){
+                        $check = true;
+                    }
+                    break;
+                default:
+            }
+            if(!$check){
+                continue;
+            }
+            if($alert->notificationId == ""){
+                continue;
+            }
+            
+            $now = new DateTime('now');
+            $toSend=true;
+            if($alert->sent){
+                if(is_null($alert->last_sent)){
+                   $toSend=true; 
+                }else{
+                    $lastSent=new DateTime($alert->last_sent);
+                    //LastSent > 1 jour
+                    if(($now->getTimestamp() - $lastSent->getTimestamp()) > 86400){
+                        $lastSent=true;
+                    }
+                }
+            }
+            
+            if($toSend){
+                $ch = curl_init('http://api.pushingbox.com/pushingbox?devid='.$alert->notificationId);
+                curl_exec ($ch);
+                curl_close ($ch);
+
+                $alert->sent = 1;
+                $alert->last_sent = $now-format('Y-m-d H:i:s');
+                $alert->update();
+            }
+        }
 
         return TRUE;
     }
