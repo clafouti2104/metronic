@@ -87,7 +87,7 @@ class Alert{
         $query = "SELECT id FROM alert";
         $query = " WHERE deviceId=".$deviceId;
         $query .= " ORDER BY deviceId";
-        
+        echo "<br/><br/>".$query;
         $stmt = $GLOBALS["dbconnec"]->query($query);
 
         return self::getAlert($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
