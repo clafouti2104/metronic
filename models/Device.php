@@ -419,6 +419,9 @@ class Device{
                 default:
             }
             if(!$check){
+                $alert->sent = 0;
+                $alert->last_sent = $now->format('Y-m-d H:i:s');
+                $alert->update();
                 continue;
             }
             if($alert->notificationId == ""){
@@ -440,16 +443,25 @@ class Device{
             }
             
             if($toSend){
-                $ch = curl_init('http://api.pushingbox.com/pushingbox?devid='.$alert->notificationId);
-                file_put_contents("/tmp/info", "PUSHING BOX = http://api.pushingbox.com/pushingbox?devid=".$alert->notificationId);
-                curl_exec ($ch);
-                curl_close ($ch);
-
-                $alert->sent = 1;
-                $alert->last_sent = $now->format('Y-m-d H:i:s');
-                $alert->update();
+                $sqlNotifications = "SELECT * FROM config WHERE name='pushing_box' AND id=".$alert->notificationId;
+                $stmt = $GLOBALS["dbconnec"]->prepare($sqlNotifications);
+                $stmt->execute(array());
+                if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $notificationId = $row["value"];
+                }
                 
-                $log = Log::createLog("Alerte déclenchée", $state, $now->format('Y-m-d H:i:s'), $id, 40);
+                if(isset($notificationId)){
+                    $ch = curl_init('http://api.pushingbox.com/pushingbox?devid='.$alert->notificationId);
+                    file_put_contents("/tmp/info", "PUSHING BOX = http://api.pushingbox.com/pushingbox?devid=".$alert->notificationId);
+                    curl_exec ($ch);
+                    curl_close ($ch);
+
+                    $alert->sent = 1;
+                    $alert->last_sent = $now->format('Y-m-d H:i:s');
+                    $alert->update();
+
+                    $log = Log::createLog("Alerte déclenchée", $state, $now->format('Y-m-d H:i:s'), $id, 40);
+                }
             }
         }
 
