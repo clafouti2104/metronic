@@ -1,4 +1,5 @@
 <?php
+include_once "Alert.php";
 include_once "Product.php";
 
 class Device{
