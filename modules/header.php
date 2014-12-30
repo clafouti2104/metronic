@@ -1,6 +1,7 @@
 <?php
 include_once "tools/config.php";
 include_once "models/Alert.php";
+include_once "models/Log.php";
 include_once "models/Page.php";
 require_once 'tools/Mobile_Detect.php';
 $detect = new Mobile_Detect;

@@ -1,5 +1,4 @@
 <?php
-include_once "Log.php";
 
 class Alert{
     public $id;
