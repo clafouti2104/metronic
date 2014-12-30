@@ -85,7 +85,7 @@ class Alert{
     */
     public static function getAlertsByDevice($deviceId) {
         $query = "SELECT id FROM alert";
-        $query = " WHERE deviceId=".$deviceId;
+        $query .= " WHERE deviceId=".$deviceId;
         $query .= " ORDER BY deviceId";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
