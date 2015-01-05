@@ -114,6 +114,8 @@ if($action == "disarmed"){
 } elseif($action == "armed"){
     //Extinction de ttes les lumières si MES
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42429/play?access_token=".$token);
+    //Extinction Ampli
+    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=50");
     //Extinction TV
     file_get_contents("http://192.168.1.67/tvdown.php");
 }

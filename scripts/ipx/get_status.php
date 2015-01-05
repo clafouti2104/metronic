@@ -7,8 +7,6 @@ require("../../models/Device.php");
 
 $db = connectDB();
 $GLOBALS["dbconnec"] = connectDB();
-//Récupération état alarme
-$ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
 
 $timeout = array('http' => array('timeout' => 10));
 $context = stream_context_create($timeout);
