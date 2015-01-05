@@ -377,8 +377,14 @@ class Device{
     */
     public static function updateState($id, $state, $last_update="NOW()") {
         $device=self::getDevice($id);
-        $deviceState = self::decodeState($state, $device->state_parameters, $device->state_results);
-        $state = $deviceState;
+        if($device->state_parameters != ""){
+            $deviceState = self::decodeState($state, $device->state_parameters, $device->state_results);
+        } elseif($device->state_results != ""){
+            $deviceState = self::decodeState($state, $device->state_parameters, $device->state_results);
+        }
+        if(isset($deviceState)){
+            $state = $deviceState;
+        }
         
         $last_update = ($last_update == "NOW()") ? "NOW()" : "'".$last_update."'";
         $query = "UPDATE device SET";
