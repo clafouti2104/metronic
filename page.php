@@ -268,11 +268,22 @@ $( document ).ready(function() {
             echo " }";
             echo "},";
             echo "yAxis: {";
-            if($chart->scaleMin != ""){
-                echo " min: ".$chart->scaleMin.",";
+            $incremental=FALSE;
+            foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+                $device=Device::getDevice($chartDevice->deviceid);
+
+                if($device->incremental != "" && $device->incremental != "0"){
+                    $incremental=TRUE;
+                }
             }
-            if($chart->scaleMax != ""){
-                echo " max: ".$chart->scaleMax.",";
+            if($incremental){
+                if($chart->scaleMin != ""){
+                    echo " min: ".$chart->scaleMin.",";
+                }
+                if($chart->scaleMax != ""){
+                    echo " max: ".$chart->scaleMax.",";
+                }
+                
             }
             echo "title: {";
             echo "text: '".$chart->ordonne."'";
