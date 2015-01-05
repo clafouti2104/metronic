@@ -276,7 +276,7 @@ $( document ).ready(function() {
                     $incremental=TRUE;
                 }
             }
-            if($incremental){
+            if(!$incremental){
                 if($chart->scaleMin != ""){
                     echo " min: ".$chart->scaleMin.",";
                 }
