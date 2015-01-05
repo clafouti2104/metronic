@@ -251,7 +251,7 @@ class History{
                 $auj = date('Y-m-d');
                 $weekdays =  self::generateWeekDays($auj);
                 $query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." 23:59:59'";
-                //echo $query;
+                echo $query;
                 break;
             case '3':
                 $query .= " date BETWEEN '".date('Y-m-')."01 00:00:00' AND '".date('Y-m-t')." 23:59:59'";
