@@ -347,10 +347,10 @@ class History{
                 $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')." 00:00:00' AND '".$dateFrom->format('Y-m-d H:i:s')."'";
                 break;
             case '2':
-                $auj = date('Y-m-d');
                 $interval=new DateInterval("P7D");
                 $interval->invert=1;
                 $dateFrom->add($interval);
+                $auj = $dateFrom->format('Y-m-d');
                 $weekdays =  self::generateWeekDays($auj);
                 //$query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." 23:59:59'";
                 //$dateTimeBegin=new DateTime($weekdays[0]." 00:00:00");
