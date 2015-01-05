@@ -17,9 +17,12 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="adminadvanced"){
     $isPost=TRUE;
 }
 
-$myfoxLoginBDD=$myfoxPasswordBDD=$netatmoClientIdBDD=$netatmoClientSecretBDD=$netatmoLoginBDD=$netatmoPasswordBDD=$calaosIpAddressBDD=$calaosLoginBDD=$calaosPasswordBDD="";
+$myfoxLoginBDD=$myfoxPasswordBDD="";
+$netatmoClientIdBDD=$netatmoClientSecretBDD=$netatmoLoginBDD=$netatmoPasswordBDD="";
+$calaosIpAddressBDD=$calaosLoginBDD=$calaosPasswordBDD="";
+$zibaseLoginBDD=$zibasePasswordBDD="";
 
-$sql = "SELECT * FROM config WHERE name IN ('myfox_login','myfox_password', 'netatmo_client_id', 'netatmo_client_secret', 'netatmo_login', 'netatmo_password', 'calaos_ip_address', 'calaos_login', 'calaos_password')";
+$sql = "SELECT * FROM config WHERE name IN ('myfox_login','myfox_password', 'netatmo_client_id', 'netatmo_client_secret', 'netatmo_login', 'netatmo_password', 'calaos_ip_address', 'calaos_login', 'calaos_password', 'zibase_login', 'zibase_password')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -51,6 +54,12 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         case 'calaos_password':
             $calaosPasswordBDD = $row["value"];
             break;
+        case 'zibase_login':
+            $zibaseLoginBDD = $row["value"];
+            break;
+        case 'zibase_password':
+            $zibasePasswordBDD = $row["value"];
+            break;
         default:
     }
 }
@@ -64,6 +73,8 @@ $netatmoPassword= ($isPost) ? $_POST["netatmo_password"] : $netatmoPasswordBDD;
 $calaosIpAddress= ($isPost) ? $_POST["calaos_ip_address"] : $calaosIpAddressBDD;
 $calaosLogin= ($isPost) ? $_POST["calaos_login"] : $calaosLoginBDD;
 $calaosPassword= ($isPost) ? $_POST["calaos_password"] : $calaosPasswordBDD;
+$zibaseLogin= ($isPost) ? $_POST["zibase_login"] : $zibaseLoginBDD;
+$zibasePassword= ($isPost) ? $_POST["zibase_password"] : $zibasePasswordBDD;
 
 
 if($isPost){
@@ -77,6 +88,8 @@ if($isPost){
     $sql.="UPDATE config SET value='".$calaosIpAddress."' WHERE name='calaos_ip_address';";
     $sql.="UPDATE config SET value='".$calaosLogin."' WHERE name='calaos_login';";
     $sql.="UPDATE config SET value='".$calaosPassword."' WHERE name='calaos_password';";
+    $sql.="UPDATE config SET value='".$zibaseLogin."' WHERE name='zibase_login';";
+    $sql.="UPDATE config SET value='".$zibasePassword."' WHERE name='zibase_password';";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
     
     $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
@@ -109,6 +122,12 @@ if($isPost){
                 break;
             case 'calaos_password':
                 $value = $calaosPassword;
+                break;
+            case 'zibase_login':
+                $value = $zibaseLogin;
+                break;
+            case 'zibase_password':
+                $value = $zibasePassword;
                 break;
             default:
         }
@@ -230,6 +249,25 @@ if($isPost){
                             <label class="control-label col-md-3" for="calaos_ip_address">Adresse IP</label>
                             <div class="col-md-9">
                                 <input class="form-control"name="calaos_ip_address" id="calaos_ip_address" type="text" value="<?php echo $calaosIpAddress; ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Zibase</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="zibase_login">Login</label>
+                            <div class="col-md-9">
+                                <input class="form-control"name="zibase_login" id="zibase_login" type="text" value="<?php echo $zibaseLogin; ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="zibase_password">Mot de passe</label>
+                            <div class="col-md-9">
+                                <input class="form-control"name="zibase_password" id="zibase_password" type="password" value="<?php echo $zibasePassword; ?>">
                             </div>
                         </div>
                     </div>

@@ -376,6 +376,9 @@ class Device{
     * @desc Met à jour le status du device
     */
     public static function updateState($id, $state, $last_update="NOW()") {
+        $device=self::getDevice($id);
+        $deviceState = self::decodeState($state, $device->state_parameters, $device->result_parameters);
+        
         $last_update = ($last_update == "NOW()") ? "NOW()" : "'".$last_update."'";
         $query = "UPDATE device SET";
         $query .= " state='".$state."'";
