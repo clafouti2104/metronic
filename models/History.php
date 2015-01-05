@@ -311,7 +311,7 @@ class History{
                 $interval=new DateInterval("P1Y");
                 $interval->invert=1;
                 $dateFrom->add($interval);
-                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01 00:00:00' AND '".$dateFrom->format('Y-')."12-31 23:59:59'";
+                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01 00:00:00' AND '".$dateFrom->format('Y-m-d')." 23:59:59'";
                 break;
             default:
                 return '$ERRPeriode incorrecte';
@@ -365,8 +365,8 @@ class History{
                 $interval=new DateInterval("P1Y");
                 $interval->invert=1;
                 $dateFrom->add($interval);
-                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01 00:00:00' AND '".$dateFrom->format('Y-')."12-31 ".date('H:i:s')."'";
-                echo $query;
+                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01 00:00:00' AND '".$dateFrom->format('Y-m-d')." ".date('H:i:s')."'";
+                //echo $query;
                 break;
             default:
                 return '$ERRPeriode incorrecte';
