@@ -283,7 +283,11 @@ $( document ).ready(function() {
             foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
                 $device=Device::getDevice($chartDevice->deviceid);
 
-                $data=History::getHistoryHighchartLine($chartDevice->deviceid, $chart->period, $chart->from);
+                if($device->incremental != "" && $device->incremental != "0"){
+                    $data=History::getHistoryHighchartLineIncremental($chartDevice->deviceid, $chart->period, $chart->from);
+                } else {
+                    $data=History::getHistoryHighchartLine($chartDevice->deviceid, $chart->period, $chart->from);
+                }
                 if($i>0){
                     echo ",";
                 }

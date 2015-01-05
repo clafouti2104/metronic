@@ -86,6 +86,143 @@ class History{
         return $jsSerie;
     }
     
+    public static function getHistoryHighchartLineIncremental($deviceid,$period,$from){
+        $result = array();
+        //echo "rentre";exit;
+        $dateFrom=new DateTime('now');
+        if($from != ""){
+            $interval=new DateInterval($from);
+            $interval->invert=1;
+            $dateFrom->add($interval);
+        }
+        
+        $jsSerie="";
+        switch($period){
+            case '1': //Jour
+                $duration='1';
+
+                for($i=0;$i<=23;$i++){
+                    $dateEnd=clone $dateFrom;
+
+                    $query = "SELECT ";
+                    $query .= " SUM(value) as somme";
+                    $query .= " FROM releve_$deviceid";
+                    $query .= " WHERE ";
+                    $query .= " date > '".$dateFrom->format('Y-m-d H').":00:00' AND date < '".$dateEnd->format('Y-m-d H').":59:59'";
+                     // echo "\n  ".$query;
+                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt->execute(array());
+                    $value=0;
+                    if($stmt->rowCount() > 0){
+                        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            if($row["somme"]!=""){
+                                $value = $row["somme"];
+                            }
+                        }
+                    }
+                    //echo "==>".$value;
+                    
+                    $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
+                    $month--;
+                    $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
+                    $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
+                    $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
+                    $jsSerie .= ($jsSerie == "") ? "" : ",";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $stmt=NULL;
+                    //echo $query." - ";
+                    $dateEnd->add(new DateInterval("PT1H"));
+                    $dateFrom->add(new DateInterval("PT1H"));
+                }
+                break;
+            case '2': //Semaine
+                $duration='7';
+                for($i=0;$i<=6;$i++){
+                    $dateEnd=clone $dateFrom;
+                    $dateEnd->add(new DateInterval("P1D"));
+
+                    $query = "SELECT ";
+                    $query .= " SUM(value) as somme";
+                    $query .= " FROM releve_$deviceid";
+                    $query .= " WHERE ";
+                    $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateEnd->format('Y-m-d')." 23:59:59'";
+                    //echo "\n".$query."\n  ";
+                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt->execute(array());
+                    $value=0;
+                    if($stmt->rowCount() > 0){
+                        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            if($row["somme"]!=""){
+                                $value = $row["somme"];
+                            }
+                        }
+                    }
+                    $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
+                    $month--;
+                    $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
+                    $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
+                    $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
+                    $jsSerie .= ($jsSerie == "") ? "" : ",";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $stmt=NULL;
+                    //echo $query." - ";
+                    $dateFrom->add(new DateInterval("P1D"));
+                }
+                break;
+            case '3': // Mois
+                $duration='31';
+                for($i=0;$i<=31;$i++){
+                    $dateEnd=clone $dateFrom;
+                    $dateEnd->add(new DateInterval("P1D"));
+
+                    $query = "SELECT ";
+                    $query .= " SUM(value) as somme";
+                    $query .= " FROM releve_$deviceid";
+                    $query .= " WHERE ";
+                    $query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
+                    //echo $query;
+                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt->execute(array());
+                    $value=0;
+                    if($stmt->rowCount() > 0){
+                        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            if($row["somme"]!=""){
+                                $value = $row["somme"];
+                            }
+                        }
+                    }
+                    $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
+                    $month--;
+                    $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
+                    $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
+                    $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
+                    $jsSerie .= ($jsSerie == "") ? "" : ",";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $stmt=NULL;
+                    //echo $query." - ";
+                    $dateFrom->add(new DateInterval("P1D"));
+                }
+                break;
+            case '4': //Annee
+                $duration='365';
+                break;
+            default:
+                $duration='1';
+        }
+        
+        
+        //echo $query;
+        /*$stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $params = array();
+        $stmt->execute($params);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            
+        }*/
+        //print_r($jsSerie);
+        
+        return $jsSerie;
+    }
+    
     public static function getHistoryHighchartBarre($deviceid,$period,$from){
         $result = array();
         //echo "rentre";exit;
