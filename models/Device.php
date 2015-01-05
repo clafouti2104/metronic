@@ -399,7 +399,7 @@ class Device{
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
-                throw new Exception("ERREUR : Impossible de mettre a jour le device '".$id."'.");
+            throw new Exception("ERREUR : Impossible de mettre a jour le device '".$id."'.");
         }
         $stmt = NULL;
         

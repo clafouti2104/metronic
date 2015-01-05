@@ -358,7 +358,7 @@ class History{
                 $interval=new DateInterval("P1M");
                 $interval->invert=1;
                 $dateFrom->add($interval);
-                $query .= " date BETWEEN '".$dateFrom->format('Y-m-')."01 00:00:00' AND '".$dateFrom->format('Y-m-t')." ".date('H:i:s')."'";
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-')."01 00:00:00' AND '".$dateFrom->format('Y-m-').date('d')." ".date('H:i:s')."'";
                 break;
             case '4':
                 $interval=new DateInterval("P1Y");
