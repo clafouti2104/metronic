@@ -250,7 +250,7 @@ $( document ).ready(function() {
             if($chart->type=='temps'){
                 echo " zoomType: 'x'";
             }elseif($chart->type=='ligne'){
-                echo " type: 'line'";
+                echo " type: 'spline'";
             }
             //echo ",height:'".$heightChart."px'";
             //echo ",width:'375px'";
@@ -296,8 +296,8 @@ $( document ).ready(function() {
                     echo "type:'area',";  
                 }
                 echo "name:'".$device->name."',";  
-                echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
-                //echo "data:[ ".$data." ]";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";  
                 echo "}";
                 $i++;
             }
