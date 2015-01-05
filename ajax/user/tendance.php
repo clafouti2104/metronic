@@ -23,8 +23,8 @@ $dataYearLastNow=History::getCountForLastPeriodUntilNow($device->id, '4');
 
 $percentDay=($dataDay/$dataDayLastNow)*100;
 $percentWeek=($dataWeek/$dataWeekLastNow)*100;
-$percentMonth=($dataMonth/$dataMonthLast)*100;
-$percentYear=($dataYear/$dataYearLast)*100;
+$percentMonth=($dataMonth/$dataMonthLastNow)*100;
+$percentYear=($dataYear/$dataYearLastNow)*100;
 ?>
 <div class="modal-content">
     <div class="modal-header">

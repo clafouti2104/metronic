@@ -353,6 +353,7 @@ class History{
                 $auj = date('Y-m-d');
                 $weekdays = self::generateWeekDays($dateFrom->format('Y-m-d'));
                 $query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." ".date('H:i:s')."'";
+                echo $query;
                 break;
             case '3':
                 $interval=new DateInterval("P1M");
