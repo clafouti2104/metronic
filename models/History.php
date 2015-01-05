@@ -251,7 +251,7 @@ class History{
                 $auj = date('Y-m-d');
                 $weekdays =  self::generateWeekDays($auj);
                 $query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." 23:59:59'";
-                echo $query;
+                //echo $query;
                 break;
             case '3':
                 $query .= " date BETWEEN '".date('Y-m-')."01 00:00:00' AND '".date('Y-m-t')." 23:59:59'";
@@ -352,12 +352,8 @@ class History{
                 $dateFrom->add($interval);
                 $auj = $dateFrom->format('Y-m-d');
                 $weekdays =  self::generateWeekDays($auj);
-                //$query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." 23:59:59'";
-                //$dateTimeBegin=new DateTime($weekdays[0]." 00:00:00");
-                //$auj = date('Y-m-d');
-                //$weekdays = self::generateWeekDays($dateFrom->format('Y-m-d'));
                 $query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$dateFrom->format('Y-m-d H:i:s')."'";
-                echo $query;
+                //echo $query;
                 break;
             case '3':
                 $interval=new DateInterval("P1M");
@@ -370,6 +366,7 @@ class History{
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01 00:00:00' AND '".$dateFrom->format('Y-')."12-31 ".date('H:i:s')."'";
+                echo $query;
                 break;
             default:
                 return '$ERRPeriode incorrecte';
