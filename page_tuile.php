@@ -7,6 +7,7 @@ if($item->params != "" && $item->params !="Array"){
     $linkTendance= " data-target=\"#ajaxTendance\" data-toggle=\"modal\" ";
 }
 $color=(isset($params->color)) ? $params->color : $tuile->color; 
+$width=(isset($params->width)) ? $params->width : 2; 
 $name=(isset($params->description)) ? $params->description : $tuile->name; 
 $refreshClass=(isset($params->description)) ? "" : "stateDeviceId"; 
 //Récupération des consommations
@@ -20,7 +21,7 @@ if($item->params != "" && $lastStateNow != 0){
     $name .= " | ".$percent."%";
 }
 ?>
-<div class="cell col-lg-2 col-md-2 col-sm-6 col-xs-12 boxPackery <?php if($item->params != "" && $item->params !="Array"){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
+<div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if($item->params != "" && $item->params !="Array"){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
     <div class="dashboard-stat <?php echo $color; ?>">
         <div class="visual">
             
