@@ -18,6 +18,7 @@ if(!$slider){
     return false;
 }
 $width='4';
+$width= (isset($itemParams->width)) ? $itemParams->width : $width;
 $height=$width*66;
 $bgcolor=(isset($itemParams->color) && $itemParams->color != "") ? $itemParams->color : "blue";
 $sliderColor=(isset($itemParams->colorSlider) && $itemParams->colorSlider != "" && $itemParams->colorSlider != "NULL") ? $itemParams->colorSlider : "yellow";
