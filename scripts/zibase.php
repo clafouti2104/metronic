@@ -2,8 +2,8 @@
 /**
  * Récupération des états des teleinfo GCE Eco Device
  */
-require("../../tools/config.php");
-require("../../models/Device.php");
+require("../tools/config.php");
+require("../models/Device.php");
 
 $db = connectDB();
 $GLOBALS["dbconnec"] = connectDB();
