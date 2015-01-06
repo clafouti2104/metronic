@@ -27,8 +27,8 @@ include "modules/header.php";
 include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
-include "models/Log.php";
-include "models/Device.php";
+include_once "models/Log.php";
+include_once "models/Device.php";
 
 $devices=Device::getDevices();
 $deviceByType=$devicesArr=array();

@@ -4,7 +4,7 @@
  */
 
 include("../tools/config.php");
-include "../models/Log.php";
+include_once "../models/Log.php";
 
 $GLOBALS["dbconnec"] = connectDB();
 

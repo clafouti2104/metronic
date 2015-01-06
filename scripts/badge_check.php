@@ -7,7 +7,7 @@
  */
 
 include("../tools/config.php");
-include "../models/Log.php";
+include_once "../models/Log.php";
 
 $date = new DateTime('now');
 $GLOBALS["dbconnec"] = connectDB();

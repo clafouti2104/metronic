@@ -9,7 +9,7 @@ include "modules/header.php";
 include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
-include "models/Log.php";
+include_once "models/Log.php";
 
 $isPost=FALSE;
 if(isset($_POST["formname"]) && $_POST["formname"]=="adminlogs"){

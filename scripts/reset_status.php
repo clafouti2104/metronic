@@ -6,7 +6,7 @@ include("../tools/config.php");
 
 $GLOBALS["dbconnec"] = connectDB();
 include "../models/Device.php";
-include "../models/Log.php";
+include_once "../models/Log.php";
 
 //Récupère les devices pour lesquels une alerte de perte de communication a été renseigné
 $sqlDevices="SELECT id,collect,last_update FROM device WHERE ";

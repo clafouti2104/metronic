@@ -3,8 +3,8 @@ include "modules/header.php";
 include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
-include "models/Device.php";
-include "models/Log.php";
+include_once "models/Device.php";
+include_once "models/Log.php";
 
 
 $isPost=FALSE;
