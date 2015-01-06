@@ -403,6 +403,7 @@ class Device{
         }
         $stmt = NULL;
         
+        $now = new DateTime('now');
         //Récupère les alertes associés au device
         $alerts = Alert::getAlertsByDevice($id);
         if(count($alerts) == 0){
@@ -438,7 +439,7 @@ class Device{
                 continue;
             }
             
-            $now = new DateTime('now');
+            
             $toSend=true;
             if($alert->sent){
                 if(is_null($alert->last_sent)){
