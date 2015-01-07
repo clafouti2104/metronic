@@ -100,15 +100,15 @@ if($isPost){
     }
     
     if($error == ""){
-        $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
-        $_POST["price"] = ($_POST["price"] == "") ? 0 : $_POST["price"];
+        $_POST["price"] = (!isset($_POST["price"]) || $_POST["price"] == "") ? 0 : $_POST["price"];
         $_POST["from"]=($_POST["from"] != "") ? "P".$_POST["from"]."D" : "";
         if($_POST["idchart"]>0){
             $sql="UPDATE chart SET name='".$_POST["name"]."', description='".$_POST["description"]."', type='".$_POST["type"]."',";
             $sql.="period='".$_POST["period"]."', froms='".$_POST["from"]."', size=".$_POST["size"].", ";
             $sql.="abs='".$_POST["abs"]."', ord='".$_POST["ord"]."', ";
-            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."', price='".$_POST["price"]."'";
+            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."', price=".$_POST["price"];
             $sql.=" WHERE id=".$_POST["idchart"];
+            echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
 
             //Suppression des device associés au chart
