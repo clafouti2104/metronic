@@ -9,6 +9,9 @@
 include("../tools/config.php");
 include_once "../models/Log.php";
 
+$timeout = array('http' => array('timeout' => 10));
+$context = stream_context_create($timeout);
+
 $date = new DateTime('now');
 $GLOBALS["dbconnec"] = connectDB();
 if(!isset($_GET["uid"])){
@@ -91,12 +94,15 @@ $status = $securityState->payload->statusLabel;
 switch(strtolower($status)){
     case "disarmed":
         $action="armed";
+        $ledAction="on";
         break;
     case "armed":
         $action="disarmed";
+        $ledAction="on";
         break;
     case "partial":
         $action="disarmed";
+        $ledAction="off";
         break;
     default :
 }
@@ -115,10 +121,13 @@ if($action == "disarmed"){
     //Extinction de ttes les lumières si MES
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42429/play?access_token=".$token);
     //Extinction Ampli
-    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=50");
+    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=50", false, $context);
     //Extinction TV
-    file_get_contents("http://192.168.1.67/tvdown.php");
+    file_get_contents("http://192.168.1.67/tvdown.php", false, $context);
 }
+
+//LED Control
+file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
 
 //Badge Pox
 if($_GET["uid"] == "10E98225"){
