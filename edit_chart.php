@@ -44,6 +44,7 @@ if($isPost && isset($_POST["idchart"])){
     $size= $_POST["size"];
     $abs= $_POST["abs"];
     $ord= $_POST["ord"];
+    $price= $_POST["price"];
     $scaleMin= ($_POST["scaleMin"] == "") ? NULL : $_POST["scaleMin"];
     $scaleMax= ($_POST["scaleMax"] == "") ? NULL : $_POST["scaleMax"];
     $idchart=$_POST["idchart"];
@@ -71,6 +72,7 @@ if($isPost && isset($_POST["idchart"])){
     $ord= (!is_object($chart)) ? NULL : $chart->ordonne;
     $scaleMin= (!is_object($chart)) ? NULL : $chart->scaleMin;
     $scaleMax= (!is_object($chart)) ? NULL : $chart->scaleMax;
+    $price= (!is_object($chart)) ? FALSE : $chart->price;
 }
 $from = ($from != "") ? str_replace("P", "", $from) : $from;
 $from = ($from != "") ? str_replace("D", "", $from) : $from;
@@ -99,12 +101,13 @@ if($isPost){
     
     if($error == ""){
         $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
+        $_POST["price"] = ($_POST["price"] == "") ? 0 : $_POST["price"];
         $_POST["from"]=($_POST["from"] != "") ? "P".$_POST["from"]."D" : "";
         if($_POST["idchart"]>0){
             $sql="UPDATE chart SET name='".$_POST["name"]."', description='".$_POST["description"]."', type='".$_POST["type"]."',";
             $sql.="period='".$_POST["period"]."', froms='".$_POST["from"]."', size=".$_POST["size"].", ";
             $sql.="abs='".$_POST["abs"]."', ord='".$_POST["ord"]."', ";
-            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."'";
+            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."', price='".$_POST["price"]."'";
             $sql.=" WHERE id=".$_POST["idchart"];
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
 
@@ -116,7 +119,7 @@ if($isPost){
 
             $info="La graphique a été modifié";
         } else {
-            $chart=Chart::createChart($_POST["name"], $_POST["description"], $_POST["type"], $_POST["period"], $_POST["from"],$_POST["size"], $_POST["abs"],$_POST["ord"],$_POST["scaleMin"],$_POST["scaleMax"]);
+            $chart=Chart::createChart($_POST["name"], $_POST["description"], $_POST["type"], $_POST["period"], $_POST["from"],$_POST["size"], $_POST["abs"],$_POST["ord"],$_POST["scaleMin"],$_POST["scaleMax"],$_POST["price"]);
             $idchart=$chart->id;
             foreach($_POST["my_multi_select2"] as $deviceTmp){
                 ChartDevice::createChartDevice($idchart, $deviceTmp);
@@ -249,6 +252,16 @@ if(isset($idchart) && $idchart > 0){
         ?>
                                                         </select>
                                                 </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 10px;">
+                                    <div class="col-md-12 ">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" for="price">Prix</label>
+                                            <div class="col-md-9">
+                                                <input id="price" name="price" class="form-control" value="1" <?php if($price){echo " checked=\"checked\"";} ?> type="checkbox">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

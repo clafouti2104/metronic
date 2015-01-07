@@ -295,7 +295,8 @@ $( document ).ready(function() {
                 $device=Device::getDevice($chartDevice->deviceid);
 
                 if($device->incremental != "" && $device->incremental != "0"){
-                    $data=History::getHistoryHighchartLineIncremental($chartDevice->deviceid, $chart->period, $chart->from, $device->chart_formula);
+                    $chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
+                    $data=History::getHistoryHighchartLineIncremental($chartDevice->deviceid, $chart->period, $chart->from, $chartFormula);
                 } else {
                     $data=History::getHistoryHighchartLine($chartDevice->deviceid, $chart->period, $chart->from);
                 }
@@ -362,7 +363,8 @@ $( document ).ready(function() {
             foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
                 $device=Device::getDevice($chartDevice->deviceid);
 
-                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from, $device->chart_formula);
+                $chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
+                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from, $chartFormula);
                 //print_r($data);
                 //exit;
                 //$data=0;

@@ -12,8 +12,9 @@ class Chart{
     public $ordonne;
     public $scaleMin;
     public $scaleMax;
+    public $price;
     
-    public function __construct($id, $name, $description, $type, $period, $from, $size, $abscisse, $ordonne, $scaleMin, $scaleMax) {
+    public function __construct($id, $name, $description, $type, $period, $from, $size, $abscisse, $ordonne, $scaleMin, $scaleMax, $price) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
@@ -24,6 +25,7 @@ class Chart{
         $this->abscisse = $abscisse;
         $this->scaleMin = $scaleMin;
         $this->scaleMax = $scaleMax;
+        $this->price = $price;
     }
         
     private static $types = array(
@@ -89,6 +91,7 @@ class Chart{
         $query .= ",ord";
         $query .= ",scaleMin";
         $query .= ",scaleMax";
+        $query .= ",price";
         $query .= " FROM chart ";
         $query .= " WHERE id=:id";
         
@@ -99,7 +102,7 @@ class Chart{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_chart = new Chart($row['id'],$row['name'],$row['description'],$row["type"],$row["period"],$row["froms"], $row["size"], $row["abs"], $row["ord"], $row["scaleMin"], $row["scaleMax"]);
+                    $tmp_chart = new Chart($row['id'],$row['name'],$row['description'],$row["type"],$row["period"],$row["froms"], $row["size"], $row["abs"], $row["ord"], $row["scaleMin"], $row["scaleMax"], $row["price"]);
 
                     $result[] = $tmp_chart;
                     $tmp_chart = NULL;
@@ -121,7 +124,7 @@ class Chart{
         return self::getChart($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createChart($name,$description,$type,$period,$from,$size,$abs,$ord,$scaleMin,$scaleMax) {
+    public static function createChart($name,$description,$type,$period,$from,$size,$abs,$ord,$scaleMin,$scaleMax, $price) {
         
         $query = "INSERT INTO chart (";
         $query .= "name";
@@ -134,6 +137,7 @@ class Chart{
         $query .= ",ord ";
         $query .= ",scaleMin ";
         $query .= ",scaleMax ";
+        $query .= ",price ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":name";
@@ -146,6 +150,7 @@ class Chart{
         $query .= ",:ord ";
         $query .= ",:scaleMin ";
         $query .= ",:scaleMax ";
+        $query .= ",:price ";
         $query .= ")";
         
         $params = array();
@@ -159,6 +164,7 @@ class Chart{
         $params[":ord"] = $ord;
         $params[":scaleMin"] = $scaleMin;
         $params[":scaleMax"] = $scaleMax;
+        $params[":price"] = $price;
         
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -176,7 +182,7 @@ class Chart{
         }
         $stmt = NULL;
 
-        $tmpInstance = new Chart($id, $name, $description, $type, $period, $from, $size, $abs, $ord, $scaleMin, $scaleMax);
+        $tmpInstance = new Chart($id, $name, $description, $type, $period, $from, $size, $abs, $ord, $scaleMin, $scaleMax, $price);
         
         return $tmpInstance;
     }
