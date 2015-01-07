@@ -73,7 +73,7 @@ if($isPost && isset($_POST["idchart"])){
     $ord= (!is_object($chart)) ? NULL : $chart->ordonne;
     $scaleMin= (!is_object($chart)) ? NULL : $chart->scaleMin;
     $scaleMax= (!is_object($chart)) ? NULL : $chart->scaleMax;
-    $modePrix= (!is_object($chart)) ? NULL : $chart->price;
+    $modePrix= (!is_object($chart)) ? "0" : $chart->price;
 }
 $from = ($from != "") ? str_replace("P", "", $from) : $from;
 $from = ($from != "") ? str_replace("D", "", $from) : $from;
@@ -240,17 +240,6 @@ if(isset($idchart) && $idchart > 0){
                                 </div>
                                 <div class="row" style="margin-bottom: 10px;">
                                     <div class="col-md-12 ">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3" for="modePrix">Prix</label>
-                                            <div class="col-md-9">
-                                                <input id="modePrix" name="modePrix" class="form-control" value="<?php echo $modePrix; ?>" type="text">
-                                                <!--<input id="modePrix" name="modePrix" class="form-control" value="1" checked="checked"<?php //if($price){echo " checked=\"checked\"";} ?> type="checkbox">-->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-bottom: 10px;">
-                                    <div class="col-md-12 ">
                                         <div class="form-group last">
                                                 <label class="control-label col-md-3">Device</label>
                                                 <div class="col-md-9">
@@ -267,6 +256,18 @@ if(isset($idchart) && $idchart > 0){
         ?>
                                                         </select>
                                                 </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 10px;">
+                                    <div class="col-md-12 ">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" for="modePrix">Prix</label>
+                                            <div class="col-md-9">
+                                                <input id="modePrix" name="modePrix" class="form-control" value="<?php echo $modePrix; ?>" type="text">
+                                                <span class="help-block">1=Actif, 0=Inactif</span>
+<!--<input id="modePrix" name="modePrix" class="form-control" value="1" checked="checked"<?php //if($price){echo " checked=\"checked\"";} ?> type="checkbox">-->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
