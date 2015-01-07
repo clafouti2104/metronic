@@ -58,6 +58,7 @@ $pages = Page::getPages(FALSE);
                 <thead>
                 <tr>
                     <th>Nom</th>
+                    <th>Prix</th>
                     <th>Actif</th>
                     <th>Action</th>
                 </tr>
@@ -66,9 +67,11 @@ $pages = Page::getPages(FALSE);
 <?php
 foreach($pages as $page){
     $actif=($page->active) ? "fa fa-check-square" : "fa fa-square";
+    $money=($page->price) ? "<i class=\"fa fa-eur\"></i>" : "";
     echo "<tr class=\"odd gradeX linepage-".$page->id."\" >";
     echo "<td><a class=\"black\" href=\"edit_page.php?idPage=".$page->id."\">".$page->name."</a></td>";
     echo "<td><i class=\"".$actif."\"></i></td>";
+    echo "<td>".$money."</td>";
     echo "<td><a href=\"edit_page.php?idPage=".$page->id."\"><i class=\"fa fa-edit\" style=\"color:black;\"></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeletePage\" style=\"color:black;\" pageId=\"".$page->id."\"></i></a></td>";
     echo "</tr>";
