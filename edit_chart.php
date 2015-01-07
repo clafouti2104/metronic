@@ -241,8 +241,8 @@ if(isset($idchart) && $idchart > 0){
                                                 <div class="col-md-9">
                                                         <select multiple="multiple" class="multi-select" id="my_multi_select2" name="my_multi_select2[]">
         <?php
-        foreach($deviceTab as $type=>$deviceType){
-            echo "<optgroup label=\"".ucwords($type)."\">";
+        foreach($deviceTab as $typeT=>$deviceType){
+            echo "<optgroup label=\"".ucwords($typeT)."\">";
             foreach($deviceType as $deviceTmp){
                 $selected = (in_array($deviceTmp->id, $_POST["my_multi_select2"])) ? " selected=\"selected\" " : "";
                 echo "<option value=\"".$deviceTmp->id."\" $selected>".ucwords($deviceTmp->name)."</option>";
