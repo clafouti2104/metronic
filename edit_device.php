@@ -470,10 +470,10 @@ if($product != ""){
                                 </div>
                                 <div class="col-md-6 ">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3" for="chartFormula">Formule</label>
+                                        <label class="control-label col-md-3" for="chartFormula">Formule Graphique</label>
                                         <div class="col-md-9">
                                             <input id="chartFormula" name="chartFormula" class="form-control" value="<?php echo $chartFormula; ?>" type="text">
-                                            <span class="help-block">Exemple: x + 12</span>
+                                            <span class="help-block">Exemple: x + 12 (valeur calculée dans les graphiques)</span>
                                         </div>
                                     </div>
                                 </div>
