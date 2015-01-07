@@ -54,6 +54,7 @@ $charts = Chart::getCharts();
                 <tr>
                     <th>Nom</th>
                     <th>Type</th>
+                    <th>Période</th>
                     <th>Prix</th>
                     <th>Action</th>
                 </tr>
@@ -70,6 +71,7 @@ foreach($charts as $chart){
     echo "<tr class=\"odd gradeX linechart-".$chart->id."\" >";
     echo "<td><a class=\"black\" href=\"edit_chart.php?idChart=".$chart->id."\">".$chart->name."</a></td>";
     echo "<td>".$chart->type."</td>";
+    echo "<td>".$chart->period."</td>";
     echo "<td>".$money."</td>";
     echo "<td><a href=\"edit_chart.php?idChart=".$chart->id."\"><i class=\"fa fa-edit\" style=\"color:black;\"></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeleteChart\" style=\"color:black;\" chartId=\"".$chart->id."\"></i></a></td>";
