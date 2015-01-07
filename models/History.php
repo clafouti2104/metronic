@@ -286,6 +286,7 @@ class History{
                         echo "FORMULA".$formula;
                         $fonction = str_replace("x", $value, $formula);
                         echo "<br/>".$fonction;
+                        exit;
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
                             $value = round($stateTemp, 1)."";
