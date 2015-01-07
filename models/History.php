@@ -86,7 +86,7 @@ class History{
         return $jsSerie;
     }
     
-    public static function getHistoryHighchartLineIncremental($deviceid,$period,$from){
+    public static function getHistoryHighchartLineIncremental($deviceid,$period,$from,$formula=NULL){
         $result = array();
         //echo "rentre";exit;
         $dateFrom=new DateTime('now');
@@ -121,6 +121,14 @@ class History{
                         }
                     }
                     //echo "==>".$value;
+                    
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = round($stateTemp, 1);
+                        }
+                    }
                     
                     $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
                     $month--;
@@ -157,6 +165,14 @@ class History{
                             }
                         }
                     }
+                    
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = round($stateTemp, 1);
+                        }
+                    }
                     $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
                     $month--;
                     $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
@@ -191,6 +207,14 @@ class History{
                             }
                         }
                     }
+                    
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = round($stateTemp, 1);
+                        }
+                    }
                     $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
                     $month--;
                     $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
@@ -223,7 +247,7 @@ class History{
         return $jsSerie;
     }
     
-    public static function getHistoryHighchartBarre($deviceid,$period,$from){
+    public static function getHistoryHighchartBarre($deviceid,$period,$from,$formula=NULL){
         $result = array();
         //echo "rentre";exit;
         $dateFrom=new DateTime('now');
@@ -257,6 +281,14 @@ class History{
                             }
                         }
                     }
+                    
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = round($stateTemp, 1);
+                        }
+                    }
                     //echo "==>".$value;
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
                     $jsSerie .= $value;
@@ -288,6 +320,13 @@ class History{
                             }
                         }
                     }
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = round($stateTemp, 1);
+                        }
+                    }
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
                     $jsSerie .= $value;
                     $stmt=NULL;
@@ -317,6 +356,13 @@ class History{
                             }
                         }
                     }
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = round($stateTemp, 1);
+                        }
+                    }
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
                     $jsSerie .= $value;
                     $stmt=NULL;
@@ -344,7 +390,7 @@ class History{
         return $jsSerie;
     }
     
-    public static function getHistoryHighchartBarreCustom($deviceid,$dateFrom,$durationDays){
+    public static function getHistoryHighchartBarreCustom($deviceid,$dateFrom,$durationDays,$formula){
         $jsSerie="";
         $dateFrom = new DateTime($dateFrom);
         for($i=1;$i<=$durationDays;$i++){
@@ -363,6 +409,13 @@ class History{
                     if($row["somme"]!=""){
                         $value = $row["somme"];
                     }
+                }
+            }
+            if(!is_null($formula)){
+                $fonction = str_replace("x", $value, $formula);
+                @eval('$stateTemp='.$fonction.';');
+                if(isset($stateTemp)){
+                    $value = round($stateTemp, 1);
                 }
             }
             $jsSerie .= ($jsSerie == "") ? "" : ",";

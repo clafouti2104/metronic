@@ -29,6 +29,7 @@ if($isPost && isset($_POST["iddevice"])){
     $alertMinute=(isset($_POST["alertMinute"]) && $_POST["alertMinute"] != "") ? $_POST["alertMinute"] : NULL;
     $collect=$_POST["collect"];
     $stateFormula=$_POST["stateFormula"];
+    $chartFormula=$_POST["chartFormula"];
     $stateResults=$_POST["state_results"];
     $txtMode=($idDevice==0) ? "Création" : "Edition";
     $txtModeDesc=($idDevice==0) ? "Création d'un device" : "Edition d'un device";
@@ -64,6 +65,7 @@ if($isPost && isset($_POST["iddevice"])){
     $collect= (!isset($device) || !is_object($device)) ? NULL : $device->collect;
     $unite= (!isset($device) || !is_object($device)) ? NULL : $device->unite;
     $dataType= (!isset($device) || !is_object($device)) ? NULL : $device->data_type;
+    $chartFormula= (!isset($device) || !is_object($device)) ? NULL : $device->chart_formula;
     $_POST["param1"]= (!isset($device) || !is_object($device)) ? NULL : $device->param1;
     $_POST["param2"]= (!isset($device) || !is_object($device)) ? NULL : $device->param2;
     $_POST["param3"]= (!isset($device) || !is_object($device)) ? NULL : $device->param3;
@@ -114,12 +116,13 @@ if($isPost){
             $sql="UPDATE device SET name='".$_POST["name"]."', type='".$_POST["type"]."', product_id=".$_POST["product"].",ip_address='".$_POST["ipaddress"]."', active=".$_POST["active"].", incremental=".$_POST["incremental"];
             $sql.=", alert_lost_communication='".$alertMinute."', param1='".$_POST["param1"]."', param2='".$_POST["param2"]."', param3='".$_POST["param3"]."', param4='".$_POST["param4"]."', param5='".$_POST["param5"]."'";
             $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"].", state_parameters='".$stateParameters."', state_results='".addslashes($stateResults)."' ";
+            $sql.=", chart_formula='".$_POST["chart_formula"]."'";
             $sql.=" WHERE id=".$_POST["iddevice"];
             //echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
             $info="Le device a été modifié";
         } else {
-            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"],$stateParameters, $stateResults);
+            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"],$stateParameters, $stateResults,$_POST["chart_formula"]);
             $idDevice=$device->id;
             $info="Le device a été modifié";
         }
@@ -461,6 +464,15 @@ if($product != ""){
                                         <label class="control-label col-md-3" for="stateFormula">Formule</label>
                                         <div class="col-md-9">
                                             <input id="stateFormula" name="stateFormula" class="form-control" value="<?php echo $stateFormula; ?>" type="text">
+                                            <span class="help-block">Exemple: x + 12</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3" for="chartFormula">Formule</label>
+                                        <div class="col-md-9">
+                                            <input id="chartFormula" name="chartFormula" class="form-control" value="<?php echo $chartFormula; ?>" type="text">
                                             <span class="help-block">Exemple: x + 12</span>
                                         </div>
                                     </div>

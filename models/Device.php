@@ -28,8 +28,9 @@ class Device{
     public $data_type;
     public $state_parameters;
     public $state_results;
+    public $chart_formula;
     
-    public function __construct($id, $name, $type, $state, $states, $last_update, $ip_address,$model,$active,$parameters,$alert_lost_communication,$last_alert,$product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite, $data_type, $state_parameters, $state_results) {
+    public function __construct($id, $name, $type, $state, $states, $last_update, $ip_address,$model,$active,$parameters,$alert_lost_communication,$last_alert,$product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite, $data_type, $state_parameters, $state_results, $chart_formula) {
         $this->id = $id;
         $this->name = $name;
         $this->type = $type;
@@ -54,6 +55,7 @@ class Device{
         $this->data_type = $data_type;
         $this->state_parameters = $state_parameters;
         $this->state_results = $state_results;
+        $this->chart_formula = $chart_formula;
     }
     
     private static $types = array(
@@ -151,6 +153,7 @@ class Device{
         $query .= ", data_type ";
         $query .= ", state_parameters ";
         $query .= ", state_results ";
+        $query .= ", chart_formula ";
         $query .= " FROM device ";
         $query .= " WHERE id=:id";
         
@@ -161,7 +164,7 @@ class Device{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_device = new Device($row['id'],$row['name'],$row['type'], $row['state'], $row['states'], $row['last_update'], $row['ip_address'], $row['model'], $row['active'],$row["parameters"], $row["alert_lost_communication"], $row["last_alert"],$row["product_id"],$row["param1"],$row["param2"],$row["param3"],$row["param4"],$row["param5"],$row["collect"],$row["incremental"], $row["unite"], $row["data_type"], $row["state_parameters"], $row["state_results"]);
+                    $tmp_device = new Device($row['id'],$row['name'],$row['type'], $row['state'], $row['states'], $row['last_update'], $row['ip_address'], $row['model'], $row['active'],$row["parameters"], $row["alert_lost_communication"], $row["last_alert"],$row["product_id"],$row["param1"],$row["param2"],$row["param3"],$row["param4"],$row["param5"],$row["collect"],$row["incremental"], $row["unite"], $row["data_type"], $row["state_parameters"], $row["state_results"], $row["chart_formula"]);
 
                     $result[] = $tmp_device;
                     $tmp_device = NULL;
@@ -204,7 +207,7 @@ class Device{
         return self::getDevice($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createDevice($name,$type,$state,$states,$last_update=NULL,$ip_address,$model,$active=1,$parameters,$alert_lost_communication, $last_alert,$product_id,$param1,$param2,$param3,$param4,$param5, $collect, $incremental,$unite,$data_type,$state_parameters=NULL, $state_results=NULL) {
+    public static function createDevice($name,$type,$state,$states,$last_update=NULL,$ip_address,$model,$active=1,$parameters,$alert_lost_communication, $last_alert,$product_id,$param1,$param2,$param3,$param4,$param5, $collect, $incremental,$unite,$data_type,$state_parameters=NULL, $state_results=NULL, $chart_formula=NULL) {
         
         $query = "INSERT INTO device (";
         $query .= "name";
@@ -230,6 +233,7 @@ class Device{
         $query .= ",data_type ";
         $query .= ",state_parameters ";
         $query .= ",state_results ";
+        $query .= ",chart_formula ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":name";
@@ -255,6 +259,7 @@ class Device{
         $query .= ",:data_type ";
         $query .= ",:state_parameters ";
         $query .= ",:state_results ";
+        $query .= ",:chart_formula ";
         $query .= ")";
         
         $params = array();
@@ -281,6 +286,7 @@ class Device{
         $params[":data_type"] = $data_type;
         $params[":state_parameters"] = $state_parameters;
         $params[":state_results"] = $state_results;
+        $params[":chart_formula"] = $chart_formula;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -298,7 +304,7 @@ class Device{
         }
         $stmt = NULL;
 
-        $tmpInstance = new Device($id, $name, $type, $state, $states, $last_update, $ip_address, $model, $active, $parameters, $alert_lost_communication, $last_alert, $product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite,$data_type,$state_parameters,$state_results);
+        $tmpInstance = new Device($id, $name, $type, $state, $states, $last_update, $ip_address, $model, $active, $parameters, $alert_lost_communication, $last_alert, $product_id,$param1,$param2,$param3,$param4,$param5,$collect,$incremental,$unite,$data_type,$state_parameters,$state_results, $chart_formula);
 
         //Création des messages device si un product est renseigné
         if($product_id != "" && $id != 0){
