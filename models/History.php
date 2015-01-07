@@ -126,7 +126,7 @@ class History{
                         $fonction = str_replace("x", $value, $formula);
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
-                            $value = round($stateTemp, 1)."€";
+                            $value = round($stateTemp, 1)."";
                         }
                     }
                     
@@ -170,7 +170,7 @@ class History{
                         $fonction = str_replace("x", $value, $formula);
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
-                            $value = round($stateTemp, 1)."€";
+                            $value = round($stateTemp, 1)."";
                         }
                     }
                     $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
@@ -212,7 +212,7 @@ class History{
                         $fonction = str_replace("x", $value, $formula);
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
-                            $value = round($stateTemp, 1)."€";
+                            $value = round($stateTemp, 1)."";
                         }
                     }
                     $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
@@ -286,7 +286,7 @@ class History{
                         $fonction = str_replace("x", $value, $formula);
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
-                            $value = round($stateTemp, 1)."€";
+                            $value = round($stateTemp, 1)."";
                         }
                     }
                     //echo "==>".$value;
@@ -324,7 +324,7 @@ class History{
                         $fonction = str_replace("x", $value, $formula);
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
-                            $value = round($stateTemp, 1)."€";
+                            $value = round($stateTemp, 1)."";
                         }
                     }
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
@@ -360,7 +360,7 @@ class History{
                         $fonction = str_replace("x", $value, $formula);
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
-                            $value = round($stateTemp, 1)."€";
+                            $value = round($stateTemp, 1)."";
                         }
                     }
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
