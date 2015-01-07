@@ -60,7 +60,7 @@ if($isPost && isset($_POST["iddevice"])){
     $product= (!isset($device) || !is_object($device)) ? NULL : $device->product_id;
     $ipAddress= (!isset($device) || !is_object($device)) ? NULL : $device->ip_address;
     $active= (!isset($device) || !is_object($device)) ? TRUE : $device->active;
-    $incremental= (!isset($device) || !is_object($device)) ? TRUE : $device->incremental;
+    $incremental= (!isset($device) || !is_object($device)) ? FALSE : $device->incremental;
     $alertMinute= (!isset($device) || !is_object($device)) ? NULL : $device->alert_lost_communication;
     $collect= (!isset($device) || !is_object($device)) ? NULL : $device->collect;
     $unite= (!isset($device) || !is_object($device)) ? NULL : $device->unite;
@@ -116,13 +116,13 @@ if($isPost){
             $sql="UPDATE device SET name='".$_POST["name"]."', type='".$_POST["type"]."', product_id=".$_POST["product"].",ip_address='".$_POST["ipaddress"]."', active=".$_POST["active"].", incremental=".$_POST["incremental"];
             $sql.=", alert_lost_communication='".$alertMinute."', param1='".$_POST["param1"]."', param2='".$_POST["param2"]."', param3='".$_POST["param3"]."', param4='".$_POST["param4"]."', param5='".$_POST["param5"]."'";
             $sql.=", collect='".$_POST["collect"]."', unite='".utf8_encode($_POST["unite"])."', data_type=".$_POST["dataType"].", state_parameters='".$stateParameters."', state_results='".addslashes($stateResults)."' ";
-            $sql.=", chart_formula='".$_POST["chart_formula"]."'";
+            $sql.=", chart_formula='".$_POST["chartFormula"]."'";
             $sql.=" WHERE id=".$_POST["iddevice"];
             //echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
             $info="Le device a été modifié";
         } else {
-            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"],$stateParameters, $stateResults,$_POST["chart_formula"]);
+            $device=Device::createDevice($_POST["name"], $_POST["type"], NULL, NULL, NULL, $_POST["ipaddress"], NULL, $_POST["active"],NULL,$alertMinute,NULL,$_POST["product"],$_POST["param1"],$_POST["param2"],$_POST["param3"],$_POST["param4"],$_POST["param5"],$_POST["collect"], $_POST["incremental"],$_POST["unite"],$_POST["dataType"],$stateParameters, $stateResults,$_POST["chartFormula"]);
             $idDevice=$device->id;
             $info="Le device a été modifié";
         }

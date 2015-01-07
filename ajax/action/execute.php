@@ -143,6 +143,11 @@ function executeMessage($messgeId, $valueToSend=NULL){
             calaos("input",$device,$message,$valueToSend);
             
             break;
+        case 'zibase_actuator':
+            echo "zibase_actuator";
+            zibase("actuator",$device,$message,$valueToSend);
+            
+            break;
         default:
             if(strtolower($message->type) == "http"){
                 $prefixCommand=(substr($message->command, 0, 1) == "/") ? "" : "/";
@@ -195,6 +200,46 @@ function calaos($type,$device,$message,$valueToSend=NULL){
 
     $results = file_get_contents('/var/www/metronic/scripts/calaos/result_action.json');
     $results = json_decode($results,TRUE);
+}
+
+function zibase($type,$device,$message,$valueToSend=NULL){
+    //Récupération état alarme
+    $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+
+    $login="maisonkling";
+    $password="lamaison";
+    $timeout = array('http' => array('timeout' => 10));
+    $context = stream_context_create($timeout);
+    
+    $contentToken=file_get_contents("https://zibase.net/api/get/ZAPI.php?login=".$login."&password=".$password."&service=get&target=token", false, $context);
+    if(is_null($contentToken)){
+        die('Error getting token');
+    }
+    if($contentToken == ""){
+        die('Error getting token');
+    }
+
+    $jsonToken = json_decode($contentToken);
+    if(!isset($jsonToken->body->token)){
+        die('Error getting token');
+    }
+    if(!isset($jsonToken->body->zibase)){
+        die('Error getting zibase');
+    }
+
+    $zibase=$jsonToken->body->zibase;
+    $token=$jsonToken->body->token;
+    
+    switch(strtolower($type)){
+        case 'actuator':
+            $valueToSend=(strtolower($valueToSend) == "on") ? "1" : "0";
+            $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=actuator&id=".$device->param1."&action=".$valueToSend, false, $context);
+            break;
+        case 'scenario':
+            $valueToSend=(strtolower($valueToSend) == "on") ? "1" : "0";
+            $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=scenario&id=".$device->param1, false, $context);
+            break;
+    }
 }
 
 switch ($_POST["type"]){

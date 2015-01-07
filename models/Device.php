@@ -59,14 +59,15 @@ class Device{
     }
     
     private static $types = array(
-            'raspberry',
             'light',
+            'electricy',
+            'music',
+            'presence',
+            'raspberry',
             'sensor',
             'sensor_humidity',
             'tv',
-            'website',
-            'music',
-            'presence'
+            'website'
     );
     
     private static $models = array(
@@ -368,6 +369,13 @@ class Device{
                         $msgOff=MessageDevice::createMessageDevice($id, "vol +", 0, NULL, NULL, NULL, 1, NULL, "volup");
                         $msgOff=MessageDevice::createMessageDevice($id, "vol -", 0, NULL, NULL, NULL, 1, NULL, "voldown");
                         $msgOff=MessageDevice::createMessageDevice($id, "mute", 0, NULL, NULL, NULL, 1, NULL, "mut");
+                        break;
+                    case 'zibase_actuator':
+                        $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on");
+                        $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");
+                        break;
+                    case 'zibase_scenario':
+                        $msgPlay=MessageDevice::createMessageDevice($id, "play", 0, NULL, NULL, "on", 1,NULL,"on");
                         break;
                     default:
                 }

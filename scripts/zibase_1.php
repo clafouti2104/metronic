@@ -8,7 +8,7 @@ require("../models/Device.php");
 $db = connectDB();
 $GLOBALS["dbconnec"] = connectDB();
 //Récupération état alarme
-$ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+//$ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
 
 $login="maisonkling";
 $password="lamaison";
@@ -19,7 +19,7 @@ $context = stream_context_create($timeout);
 $sql = "SELECT d.id, d.name, ip_address, last_update, param1, p.name as product_name FROM device d, product p WHERE p.id=d.product_id AND p.name LIKE 'zibase_%' AND d.active=1";
 $stmt = $db->prepare($sql);
 $stmt->execute();
-if($stmt->rowCount() > 0){
+//if($stmt->rowCount() > 0){
     $contentToken=file_get_contents("https://zibase.net/api/get/ZAPI.php?login=".$login."&password=".$password."&service=get&target=token", false, $context);
     if(is_null($contentToken)){
         die('Error getting token');
@@ -39,8 +39,8 @@ if($stmt->rowCount() > 0){
     $zibase=$jsonToken->body->zibase;
     $token=$jsonToken->body->token;
 
-}
-while($row = $stmt->fetch()){
+//}
+/*while($row = $stmt->fetch()){
     $type = explode('zibase_',$row["product_name"]);
     if(count($type) <= 1){
         continue;
@@ -54,20 +54,13 @@ while($row = $stmt->fetch()){
             Device::updateState($row["id"],$jsonProbe->body->val1, "NOW()");
         }
     }
-    if($type=="actuator"){
-        $contentData=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=get&target=actuator&id=".$row["param1"], false, $context);
-        $jsonData = json_decode($contentData);
-        print_r($jsonData);
-        if(isset($jsonData->body->status)){
-            Device::updateState($row["id"],$jsonProbe->body->status, "NOW()");
-        }
-    }
-}
+}*/
 
 
 //$contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=get&target=probe&id=OS706330880", false, $context);
 //$contentHome=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=get&target=home", false, $context);
-
+$contentData=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=get&target=actuator&id=A1", false, $context);
+        print_r(json_decode($contentData));
 
 
 
