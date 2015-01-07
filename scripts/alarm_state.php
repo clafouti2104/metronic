@@ -27,6 +27,7 @@ if($type=="myfox"){
     }
     $status = $securityState->payload->statusLabel;
     $result = array("state"=>strtolower($status));
-    print_r(json_encode($result));
+    echo $status;
+    //print_r(json_encode($result));
 }
 ?>
