@@ -311,7 +311,7 @@ $( document ).ready(function() {
                 //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
                 echo "data:[ ".$data." ]";  
                 
-                if($device->incremental != "" && $device->incremental != "0"){
+                if($chart->price && !is_null($device->chart_formula)){
                     echo ",tooltip: {";
                     echo " valueDecimals: 2,";
                     echo "valuePrefix: '€',";
@@ -385,7 +385,7 @@ $( document ).ready(function() {
                 echo "name:'".$device->name."',";  
                 //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
                 echo "data:[ ".$data." ]";
-                if($device->incremental != "" && $device->incremental != "0"){
+                if($chart->price && !is_null($device->chart_formula)){
                     echo ",tooltip: {";
                     echo " valueDecimals: 2,";
                     echo "valuePrefix: '€',";
