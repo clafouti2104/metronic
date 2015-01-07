@@ -283,7 +283,9 @@ class History{
                     }
                     
                     if(!is_null($formula)){
+                        echo "FORMULA".$formula;
                         $fonction = str_replace("x", $value, $formula);
+                        echo "<br/>".$fonction;
                         @eval('$stateTemp='.$fonction.';');
                         if(isset($stateTemp)){
                             $value = round($stateTemp, 1)."";
