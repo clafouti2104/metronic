@@ -21,6 +21,7 @@ if($item->params != "" && $lastStateNow != 0){
     //$name .= " | ".$percent."%";
     $icon = ($percent > 100) ? " fa-thumbs-down " : " fa-thumbs-up ";
     $diffConso = ($percent > 100) ? "+".($percent-100) : "-".(100-$percent); 
+    $diffConso = ($percent == 100) ? "0" : $diffConso;
 }
 ?>
 <div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if($item->params != "" && $item->params !="Array"){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
