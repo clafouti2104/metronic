@@ -46,7 +46,7 @@ while($row = $stmt->fetch()){
         continue;
     }
     
-    if($type=="probe"){
+    if($type[1]=="probe"){
         $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=get&target=probe&id=".$row["param1"], false, $context);
         $jsonProbe = json_decode($contentProbe);
         print_r($jsonProbe);
@@ -54,12 +54,12 @@ while($row = $stmt->fetch()){
             Device::updateState($row["id"],$jsonProbe->body->val1, "NOW()");
         }
     }
-    if($type=="actuator"){
+    if($type[1]=="actuator"){
         $contentData=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=get&target=actuator&id=".$row["param1"], false, $context);
         $jsonData = json_decode($contentData);
         print_r($jsonData);
         if(isset($jsonData->body->status)){
-            Device::updateState($row["id"],$jsonProbe->body->status, "NOW()");
+            Device::updateState($row["id"],$jsonData->body->status, "NOW()");
         }
     }
 }

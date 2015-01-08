@@ -65,7 +65,7 @@ if($type=="myfox"){
 
     $stateAlarm=(is_array($output)) ? $output[0] : $output;
 //print_r($stateAlarm);
-    $stateAlarm="disarmed";
+    //$stateAlarm="disarmed";
 
     switch(strtolower($stateAlarm)){
         case "disarmed":

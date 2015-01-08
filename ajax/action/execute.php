@@ -232,11 +232,10 @@ function zibase($type,$device,$message,$valueToSend=NULL){
     
     switch(strtolower($type)){
         case 'actuator':
-            $valueToSend=(strtolower($valueToSend) == "on") ? "1" : "0";
-            $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=actuator&id=".$device->param1."&action=".$valueToSend, false, $context);
+            $valueToExec=(strtolower($message->command) == "on") ? "1" : "0";
+            $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=actuator&id=".$device->param1."&action=".$valueToExec, false, $context);
             break;
         case 'scenario':
-            $valueToSend=(strtolower($valueToSend) == "on") ? "1" : "0";
             $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=scenario&id=".$device->param1, false, $context);
             break;
     }
