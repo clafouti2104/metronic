@@ -38,7 +38,7 @@ if($item->params != "" && $lastStateNow != 0){
                 </div>
         </div>
         <a class="more btnDeletePageItem" iditempage="<?php echo $item->id; ?>" data-toggle="modal" href="page.php#deleteItemPage">
-          <?php echo $name;if(isset($diffConso)){echo "| ".$diffConso;} ?><i class="fa fa-trash-o" ></i>
+          <?php echo $name;if(isset($diffConso)){echo "| ".$diffConso."%";} ?><i class="fa fa-trash-o" ></i>
         </a>						
     </div>
 </div>
