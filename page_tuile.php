@@ -2,6 +2,7 @@
 $tuile=Tuile::getTuile($item->tuileId);
 $tuileDevice=Device::getDevice($tuile->deviceid);
 $linkTendance=$percent="";
+$state=(isset($params->description)) ? History::getCountForPeriod($tuile->deviceid,$params->period)." ".$tuileDevice->unite : $tuileDevice->showState();
 if($item->params != "" && $item->params !="Array"){
     $params=json_decode($item->params);
     $linkTendance= " data-target=\"#ajaxTendance\" data-toggle=\"modal\" ";
@@ -19,7 +20,7 @@ $width=(isset($params->width)) ? $params->width : 2;
 $name=(isset($params->description)) ? $params->description : $tuile->name; 
 $refreshClass=(isset($params->description)) ? "" : "stateDeviceId"; 
 //Récupération des consommations
-$state=(isset($params->description)) ? History::getCountForPeriod($tuile->deviceid,$params->period)." ".$tuileDevice->unite : $tuileDevice->showState(); 
+ 
 
 
 
