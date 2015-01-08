@@ -19,12 +19,17 @@ if($item->params != "" && $lastStateNow != 0){
     $percent = ($state/$lastStateNow)*100;
     $percent = number_format($percent,0);
     $name .= " | ".$percent."%";
+    $icon = ($percent > 100) ? " fa-thumbs-down " : " fa-thumbs-up ";
 }
 ?>
 <div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if($item->params != "" && $item->params !="Array"){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
     <div class="dashboard-stat <?php echo $color; ?>">
         <div class="visual">
-            
+            <?php
+            if(isset($icon)){
+                echo "<i class=\"fa ".$icon."\"></i>";
+            }
+            ?>
         </div>
         <div class="details">
                 <div class="number <?php echo $refreshClass; ?> stateDeviceId-tile-<?php echo $tuileDevice->id; ?> stateDeviceId-<?php echo $tuileDevice->id; ?>" stateDeviceId="<?php echo $tuileDevice->id; ?>">
