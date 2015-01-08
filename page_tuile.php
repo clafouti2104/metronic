@@ -2,7 +2,12 @@
 $tuile=Tuile::getTuile($item->tuileId);
 $tuileDevice=Device::getDevice($tuile->deviceid);
 $linkTendance=$percent="";
+$name=(isset($params->description)) ? $params->description : $tuile->name; 
 $state=(isset($params->description)) ? History::getCountForPeriod($tuile->deviceid,$params->period)." ".$tuileDevice->unite : $tuileDevice->showState();
+$color=(isset($params->color)) ? $params->color : $tuile->color; 
+$width=(isset($params->width)) ? $params->width : 2; 
+$refreshClass=(isset($params->description)) ? "" : "stateDeviceId"; 
+
 if($item->params != "" && $item->params !="Array"){
     $params=json_decode($item->params);
     $linkTendance= " data-target=\"#ajaxTendance\" data-toggle=\"modal\" ";
@@ -15,16 +20,8 @@ if($item->params != "" && $item->params !="Array"){
         $icon = ($percent > 100) ? " fa-thumbs-down " : " fa-thumbs-up ";
     }
 }
-$color=(isset($params->color)) ? $params->color : $tuile->color; 
-$width=(isset($params->width)) ? $params->width : 2; 
-$name=(isset($params->description)) ? $params->description : $tuile->name; 
-$refreshClass=(isset($params->description)) ? "" : "stateDeviceId"; 
+
 //Récupération des consommations
- 
-
-
-
-
 ?>
 <div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if($item->params != "" && $item->params !="Array"){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
     <div class="dashboard-stat <?php echo $color; ?>">
