@@ -38,7 +38,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     </div>
     <div class="row">
         <div class="col-md-6">
-            
             <div class="portlet light bg-inverse">
                 <div class="portlet-title">
                     <div class="caption font-red-sunglo">
@@ -140,7 +139,6 @@ if(count($devicesTab) > 1){
             </div>
         </div>
         <div class="col-md-6">
-            
             <div class="portlet light bg-inverse">
                 <div class="portlet-title">
                     <div class="caption font-red-sunglo">
@@ -239,7 +237,108 @@ if(count($devicesTab) > 1){
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!-- END PORTLET -->
+    
+        <div class="col-md-6">
+            <div class="portlet light bg-inverse">
+                <div class="portlet-title">
+                    <div class="caption font-red-sunglo">
+                        <i class="icon-share font-red-sunglo"></i>
+                        <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Mensuel</span>
+                        <span class="caption-helper"></span>
+                    </div>
+                    <div class="actions"></div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 style="font-variant: small-caps;">Actuel</h4>
+<?php 
+$totalActual=$totalLast=0;
+$totalMoneyActual=$totalMoneyLast=0;
+$i=0;
+foreach($devicesTab as $deviceId => $deviceInfo){
+    //Récupération de l'historique
+    $dataDay=History::getCountForPeriod($deviceId, '3');
+    $totalActual +=$dataDay;
+    $newLine=($i>0) ? "<br/>" : "";
+    $i++;
+    echo $newLine;
+    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    if($deviceInfo["chart_formula"] != ""){
+        $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+        @eval('$stateTemp='.$fonction.';');
+        if(isset($stateTemp)){
+            $money = $stateTemp."";
+            $totalMoneyActual += $money;
+        }
+        if(isset($money)){
+            echo " soit ".  number_format($money, 2, ",", " ")."€";
+        }
+        //soit 2,54€";
+    }
+}
+if(count($devicesTab) > 1){
+    echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+}
+?>
+                            
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <h4 style="font-variant: small-caps;">Précédent</h4>
+<?php 
+$i=0;
+foreach($devicesTab as $deviceId => $deviceInfo){
+    //Récupération de l'historique
+    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '3');
+    $totalLast +=$dataDayLastNow;
+    $newLine=($i>0) ? "<br/>" : "";
+    $i++;
+    echo $newLine;
+    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    if($deviceInfo["chart_formula"] != ""){
+        $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+        @eval('$stateTemp='.$fonction.';');
+        if(isset($stateTemp)){
+            $money = $stateTemp."";
+            $totalMoneyLast += $money;
+        }
+        if(isset($money)){
+            echo " soit ".  number_format($money, 2, ",", " ")."€";
+        }
+    }
+    $i++;
+}
+
+$percent=($totalActual/$totalLast)*100;
+$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+$diffConso = ($percent == 100) ? "0" : $diffConso;
+
+$signConso = ($percent > 100) ? "+" : "-";
+$signConso = ($percent == 100) ? "" : $signConso;
+
+$colorConso = ($percent > 100) ? "red" : "blue";
+$colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+if(count($devicesTab) > 1){
+    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+}
+?>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="easy-pie-chart">
+                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                    <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- END PORTLET -->
     </div>
 </div>
 </div>
