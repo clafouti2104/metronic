@@ -114,8 +114,10 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 }
 
 $percent=($totalActual/$totalLast)*100;
-$diffConso = ($percent > 100) ? "+".($percent-100) : "-".(100-$percent); 
+$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
 $diffConso = ($percent == 100) ? "0" : $diffConso;
+$signConso = ($percent > 100) ? "+" : "-";
+$signConso = ($percent == 100) ? "" : $signConso;
 
 if(count($devicesTab) > 1){
     echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
@@ -125,7 +127,7 @@ if(count($devicesTab) > 1){
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
                                 <div class="number transactions" data-percent="<?php $diffConso ?>" style="width:100px;height: 100px;line-height: 100px;">
-                                    <span> <?php $diffConso ?> %</span>
+                                    <span> <?php $signConso.$diffConso ?> %</span>
                                 </div>
                             </div>
                             <!--<div class="progress">
