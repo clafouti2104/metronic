@@ -242,7 +242,7 @@ if(count($devicesTab) > 1){
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('.easy-pie-chart .number.transactions-blue').easyPieChart({
+    $('.easy-pie-chart .number.transactions').easyPieChart({
         animate: 1000,
         size: 100,
         lineWidth: 4,
