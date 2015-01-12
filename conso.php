@@ -10,12 +10,16 @@ include_once "models/History.php";
 include_once "models/Device.php";
 $GLOBALS["dbconnec"] = connectDB();
 
-$sql="SELECT id,name FROM device WHERE type='electricy'";
+$sql="SELECT id,name,state_parameters FROM device WHERE type='electricy'";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 $devicesTab = array();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $devicesTab[$row["id"]]=$row["name"];
+    $devicesTab[$row["id"]]=array(
+        "name"=>$row["name"],
+        "unity"=>$row["unite"],
+        "state_parameters"=>$row["state_parameters"]
+    );
 }
 print_r($devicesTab);
 ?>
@@ -51,11 +55,14 @@ print_r($devicesTab);
                             <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
 <?php 
 $i=0;
-foreach($devicesTab as $deviceId => $deviceName){
+foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '1');
     $newLine=($i>0) ? "<br/>" : "";
-    echo $newLine.$deviceName.": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay." Wh</span> soit 2,54€";
+    echo $newLine.$deviceInfo["name"].": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
+    if($deviceInfo["state_parameters"] != ""){
+        //soit 2,54€";
+    }
 }
 ?>
                             
@@ -68,7 +75,7 @@ foreach($devicesTab as $deviceId => $deviceName){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
     $newLine=($i>0) ? "<br/>" : "";
-    echo $newLine.$deviceName.": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." Wh</span> soit 2,54€";
+    echo $newLine.$deviceInfo["name"].": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span> soit 2,54€";
 }
 ?>
                         </div>
