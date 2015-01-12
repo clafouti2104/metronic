@@ -39,6 +39,12 @@ print_r($devicesTab);
     </div>
     <div class="row">
         <div class="col-md-6">
+            <span class="progress">
+                                <span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="sr-only">
+                                    40% Complete </span>
+                                </span>
+                            </span>
             <div class="portlet light bg-inverse">
                 <div class="portlet-title">
                     <div class="caption font-red-sunglo">
@@ -74,12 +80,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 }
 ?>
                             
-                            <span class="progress">
-                                <span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="sr-only">
-                                    40% Complete </span>
-                                </span>
-                            </span>
+                            
                         </div>
                         <div class="col-md-6">
                             <h4 style="font-variant: small-caps;">Hier</h4>
