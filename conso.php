@@ -128,7 +128,7 @@ if(count($devicesTab) > 1){
                         </div>
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
-                                <div class="number transactions" color="blue" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                <div class="number transactions blue" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
                                     <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                 </div>
                             </div>
@@ -227,7 +227,7 @@ if(count($devicesTab) > 1){
                         </div>
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
-                                <div class="number transactions" color="red" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                <div class="number transactions red" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
                                     <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                 </div>
                             </div>
@@ -242,11 +242,17 @@ if(count($devicesTab) > 1){
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('.easy-pie-chart .number.transactions').easyPieChart({
+    $('.easy-pie-chart .number.transactions.blue').easyPieChart({
         animate: 1000,
         size: 100,
         lineWidth: 4,
-        barColor: Metronic.getBrandColor($(this).attr('color'))
+        barColor: Metronic.getBrandColor('blue')
+    });
+    $('.easy-pie-chart .number.transactions.red').easyPieChart({
+        animate: 1000,
+        size: 100,
+        lineWidth: 4,
+        barColor: Metronic.getBrandColor('red')
     });
     $(".dial").knob();
     // general knob
