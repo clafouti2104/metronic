@@ -56,12 +56,12 @@ foreach($devicesTab as $deviceId => $deviceName){
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
 }
 ?>
-                            <?php echo $dataDay; ?>kWh<br/>
+                            <span style="font-variant:small-caps;font-size: larger;"><?php echo $dataDay; ?></span> Wh<br/>
                             soit 2,54€
                         </div>
                         <div class="col-md-6">
                             <h4 style="font-variant: small-caps;">Hier</h4>
-                            <?php echo $dataDayLastNow; ?> kWh<br/>
+                            <span style="font-variant:small-caps;font-size: larger;"><?php echo $dataDayLastNow; ?></span> Wh<br/>
                             soit 2,54€
                         </div>
                     </div>
@@ -95,12 +95,12 @@ foreach($devicesTab as $deviceId => $deviceName){
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '2');
 }
 ?>
-                            <?php echo $dataDay; ?>kWh<br/>
+                            <?php echo $dataDay; ?> Wh<br/>
                             soit 2,54€
                         </div>
                         <div class="col-md-6">
                             <h4 style="font-variant: small-caps;">Précédent</h4>
-                            <?php echo $dataDayLastNow; ?> kWh<br/>
+                            <?php echo $dataDayLastNow; ?> Wh<br/>
                             soit 2,54€
                         </div>
                     </div>
