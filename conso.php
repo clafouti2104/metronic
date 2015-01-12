@@ -50,19 +50,27 @@ print_r($devicesTab);
                             <!--<p class="text-center"> Aujourd'hui </p>-->
                             <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
 <?php 
+$i=0;
 foreach($devicesTab as $deviceId => $deviceName){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '1');
-    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
+    $newLine=($i>0) ? "<br/>" : "";
+    echo $newLine.$deviceName.": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay." Wh</span> soit 2,54€";
 }
 ?>
-                            <span style="font-variant:small-caps;font-size: larger;"><?php echo $dataDay; ?></span> Wh<br/>
-                            soit 2,54€
+                            
                         </div>
                         <div class="col-md-6">
                             <h4 style="font-variant: small-caps;">Hier</h4>
-                            <span style="font-variant:small-caps;font-size: larger;"><?php echo $dataDayLastNow; ?></span> Wh<br/>
-                            soit 2,54€
+<?php 
+$i=0;
+foreach($devicesTab as $deviceId => $deviceName){
+    //Récupération de l'historique
+    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
+    $newLine=($i>0) ? "<br/>" : "";
+    echo $newLine.$deviceName.": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." Wh</span> soit 2,54€";
+}
+?>
                         </div>
                     </div>
                     <!--<div class="easy-pie-chart">
