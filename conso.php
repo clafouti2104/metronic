@@ -120,6 +120,8 @@ $diffConso = ($percent == 100) ? "0" : $diffConso;
 $signConso = ($percent > 100) ? "+" : "-";
 $signConso = ($percent == 100) ? "" : $signConso;
 
+$colorConso = ($percent > 100) ? "red" : "blue";
+$colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
     echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
@@ -128,7 +130,7 @@ if(count($devicesTab) > 1){
                         </div>
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
-                                <div class="number transactions blue" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
                                     <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                 </div>
                             </div>
@@ -219,6 +221,8 @@ $diffConso = ($percent == 100) ? "0" : $diffConso;
 $signConso = ($percent > 100) ? "+" : "-";
 $signConso = ($percent == 100) ? "" : $signConso;
 
+$colorConso = ($percent > 100) ? "red" : "blue";
+$colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
     echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
@@ -227,7 +231,7 @@ if(count($devicesTab) > 1){
                         </div>
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
-                                <div class="number transactions red" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
                                     <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                 </div>
                             </div>
@@ -253,6 +257,12 @@ $(document).ready(function() {
         size: 100,
         lineWidth: 4,
         barColor: Metronic.getBrandColor('red')
+    });
+    $('.easy-pie-chart .number.transactions.yellow').easyPieChart({
+        animate: 1000,
+        size: 100,
+        lineWidth: 4,
+        barColor: Metronic.getBrandColor('yellow')
     });
     $(".dial").knob();
     // general knob
