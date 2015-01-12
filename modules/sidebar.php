@@ -85,6 +85,12 @@ $pageAdmin=array(
 					<span class="title">Alarme</span>
 					</a>
 				</li>
+                <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/conso.php") echo "active"; ?>">
+					<a href="<?php echo $GLOBALS['path']; ?>/conso.php">
+                                            <i class="fa fa-tachometer"></i> 
+                                            <span class="title">Consommations</span>
+					</a>
+				</li>
                 <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/system.php") echo "active"; ?>">
 					<a href="<?php echo $GLOBALS['path']; ?>/system.php">
                                             <i class="fa fa-wrench"></i> 
