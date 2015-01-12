@@ -21,7 +21,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "chart_formula"=>$row["chart_formula"]
     );
 }
-print_r($devicesTab);
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
@@ -65,7 +64,9 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '1');
     $newLine=($i>0) ? "<br/>" : "";
-    echo $newLine.$deviceInfo["name"].": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
+    echo $newLine;
+    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -86,7 +87,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
                             <h4 style="font-variant: small-caps;">Hier</h4>
 <?php 
 $i=0;
-foreach($devicesTab as $deviceId => $deviceName){
+foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
     $newLine=($i>0) ? "<br/>" : "";
