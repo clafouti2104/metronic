@@ -38,11 +38,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="progress">
-              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                <span class="sr-only">80% Complete (danger)</span>
-              </div>
-            </div>
+            
             <div class="portlet light bg-inverse">
                 <div class="portlet-title">
                     <div class="caption font-red-sunglo">
@@ -58,11 +54,14 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <!--<p class="text-center"> Aujourd'hui </p>-->
                             <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
 <?php 
+$totalActual=$totalLast=0;
 $i=0;
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '1');
+    $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
+    $i++;
     echo $newLine;
     if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
     echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
@@ -89,7 +88,9 @@ $i=0;
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
+    $totalLast +=$dataDayLastNow;
     $newLine=($i>0) ? "<br/>" : "";
+    $i++;
     echo $newLine;
     if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
     echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
@@ -102,10 +103,23 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         if(isset($money)){
             echo " soit ".  number_format($money, 2, ",", " ")."€";
         }
-        //soit 2,54€";
     }
+    $i++;
 }
+
+$percent=($totalActual/$totalLast)*100;
+$diffConso = ($percent > 100) ? "+".($percent-100) : "-".(100-$percent); 
+$diffConso = ($percent == 100) ? "0" : $diffConso;
+
+
 ?>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo substr($diffConso,1) ?>%">
+                                <span class="sr-only"><?php $diffConso ?>% Complete (danger)</span>
+                              </div>
+                            </div>
                         </div>
                     </div>
                     <!--<div class="easy-pie-chart">
