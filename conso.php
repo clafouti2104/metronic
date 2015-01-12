@@ -74,6 +74,12 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 }
 ?>
                             
+                            <span class="progress">
+                                <span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="sr-only">
+                                    40% Complete </span>
+                                </span>
+                            </span>
                         </div>
                         <div class="col-md-6">
                             <h4 style="font-variant: small-caps;">Hier</h4>
