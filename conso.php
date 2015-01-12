@@ -123,11 +123,16 @@ if(count($devicesTab) > 1){
 ?>
                         </div>
                         <div class="col-md-12">
-                            <div class="progress">
+                            <div class="easy-pie-chart">
+                                <div class="number transactions" data-percent="<?php $diffConso ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                    <span> <?php $diffConso ?> %</span>
+                                </div>
+                            </div>
+                            <!--<div class="progress">
                               <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo substr($diffConso,1) ?>%">
                                 <span class="sr-only"><?php $diffConso ?>% Complete (danger)</span>
                               </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <!--<div class="easy-pie-chart">
@@ -169,17 +174,9 @@ foreach($devicesTab as $deviceId => $deviceName){
                             soit 2,54€
                         </div>
                     </div>
-                    <!--<div class="easy-pie-chart">
-                        <div class="number transactions" data-percent="75" style="width:100px;height: 100px;line-height: 100px;">
-                            <span> +75 %</span>
-                        </div>
-                    </div>-->
+                    
                 </div>
             </div>
-        </div>
-        
-        <div class="col-md-4">
-            <input type="text" value="75" class="dial">
         </div>
     </div>
 </div>
