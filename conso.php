@@ -55,6 +55,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
 <?php 
 $totalActual=$totalLast=0;
+$totalMoneyActual=$totalMoneyLast=0;
 $i=0;
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
@@ -70,12 +71,16 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         @eval('$stateTemp='.$fonction.';');
         if(isset($stateTemp)){
             $money = $stateTemp."";
+            $totalMoneyActual += $money;
         }
         if(isset($money)){
             echo " soit ".  number_format($money, 2, ",", " ")."€";
         }
         //soit 2,54€";
     }
+}
+if(count($devicesTab) > 1){
+    echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
 }
 ?>
                             
@@ -99,6 +104,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         @eval('$stateTemp='.$fonction.';');
         if(isset($stateTemp)){
             $money = $stateTemp."";
+            $totalMoneyLast += $money;
         }
         if(isset($money)){
             echo " soit ".  number_format($money, 2, ",", " ")."€";
@@ -111,7 +117,9 @@ $percent=($totalActual/$totalLast)*100;
 $diffConso = ($percent > 100) ? "+".($percent-100) : "-".(100-$percent); 
 $diffConso = ($percent == 100) ? "0" : $diffConso;
 
-
+if(count($devicesTab) > 1){
+    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+}
 ?>
                         </div>
                         <div class="col-md-12">
