@@ -12,7 +12,7 @@ $timeout = array('http' => array('timeout' => 10));
 $context = stream_context_create($timeout);
 
 //Récupération des devices actifs de type sonde de températures
-$sql = "SELECT d.id, d.name, ip_address, last_update, param1, p.name as productName FROM device d, product p WHERE p.id=d.product_id AND p.name='gce_teleinfo' AND d.active=1";
+$sql = "SELECT d.id, d.name, ip_address, last_update, param1, p.name as productName FROM device d, product p WHERE p.id=d.product_id AND p.name LIKE 'gce_%' AND d.active=1";
 $stmt = $db->prepare($sql);
 $stmt->execute();
 while($row = $stmt->fetch()){
