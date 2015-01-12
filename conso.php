@@ -38,12 +38,11 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     </div>
     <div class="row">
         <div class="col-md-6">
-            <span class="progress">
-                                <span style="width: 40%;" class="progress-bar progress-bar-success" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="sr-only">
-                                    40% Complete </span>
-                                </span>
-                            </span>
+            <div class="progress">
+              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                <span class="sr-only">80% Complete (danger)</span>
+              </div>
+            </div>
             <div class="portlet light bg-inverse">
                 <div class="portlet-title">
                     <div class="caption font-red-sunglo">
