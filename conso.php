@@ -51,6 +51,7 @@ print_r($devicesTab);
                             <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
 <?php 
 foreach($devicesTab as $deviceId => $deviceName){
+    echo "<br/>".$deviceId;
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '1');
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
