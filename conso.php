@@ -151,8 +151,7 @@ if(count($devicesTab) > 1){
                 <div class="portlet-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <!--<p class="text-center"> Aujourd'hui </p>-->
-                            <h4 style="font-variant: small-caps;">S</h4>
+                            <h4 style="font-variant: small-caps;">Actuel</h4>
 <?php 
 $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
@@ -187,7 +186,7 @@ if(count($devicesTab) > 1){
                             
                         </div>
                         <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">S-1</h4>
+                            <h4 style="font-variant: small-caps;">Précédent</h4>
 <?php 
 $i=0;
 foreach($devicesTab as $deviceId => $deviceInfo){
