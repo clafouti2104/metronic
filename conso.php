@@ -130,7 +130,7 @@ if(count($devicesTab) > 1){
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
                                 <div class="number transactions" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
-                                    <span> <?php echo $signConso.$diffConso; ?> %</span>
+                                    <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                 </div>
                             </div>
                             <!--<div class="progress">
