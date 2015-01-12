@@ -114,10 +114,13 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 }
 
 $percent=($totalActual/$totalLast)*100;
+echo "<br/>PERCENT = ".$percent;
 $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
 $diffConso = ($percent == 100) ? "0" : $diffConso;
+echo "<br/>DIFF = ".$diffConso;
 $signConso = ($percent > 100) ? "+" : "-";
 $signConso = ($percent == 100) ? "" : $signConso;
+echo "<br/>SIGN = ".$signConso;
 
 if(count($devicesTab) > 1){
     echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
