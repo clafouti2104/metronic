@@ -10,7 +10,7 @@ include_once "models/History.php";
 include_once "models/Device.php";
 $GLOBALS["dbconnec"] = connectDB();
 
-$sql="SELECT id,name,chart_formula FROM device WHERE type='electricy'";
+$sql="SELECT id,name,chart_formula, unite FROM device WHERE type='electricy'";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 $devicesTab = array();
@@ -83,7 +83,9 @@ foreach($devicesTab as $deviceId => $deviceName){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
     $newLine=($i>0) ? "<br/>" : "";
-    echo $newLine.$deviceInfo["name"].": <span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
+    echo $newLine;
+    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
