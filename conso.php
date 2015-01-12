@@ -66,7 +66,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     $newLine=($i>0) ? "<br/>" : "";
     echo $newLine;
     if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -93,7 +93,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     $newLine=($i>0) ? "<br/>" : "";
     echo $newLine;
     if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unite"]."</span>";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
