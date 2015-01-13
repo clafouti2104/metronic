@@ -1,5 +1,5 @@
 <?php
-$name=$color="";
+$name=$color=$params="";
 $params = $item->params;
 $params = json_decode($params);
 $size = (isset($params->size)) ? $params->size : 4;

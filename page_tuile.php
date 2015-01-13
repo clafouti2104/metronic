@@ -1,4 +1,5 @@
 <?php
+$color=$width=$name=$percent=$params="";
 $tuile=Tuile::getTuile($item->tuileId);
 $tuileDevice=Device::getDevice($tuile->deviceid);
 $linkTendance="";
@@ -14,7 +15,6 @@ $refreshClass=(isset($params->description)) ? "" : "stateDeviceId";
 $state=(isset($params->description)) ? History::getCountForPeriod($tuile->deviceid,$params->period)." ".$tuileDevice->unite : $tuileDevice->showState(); 
 $lastStateNow=(isset($params->description)) ? History::getCountForLastPeriodUntilNow($tuile->deviceid,$params->period) : 0; 
 
-$percent="";
 if($item->params != "" && $lastStateNow != 0){
     $percent = ($state/$lastStateNow)*100;
     $percent = number_format($percent,0);

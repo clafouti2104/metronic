@@ -1,4 +1,5 @@
 <?php
+$color=$width=$bgcolor=$itemParams=$params="";
 $itemParams=json_decode($item->params);
 $device=Device::getDevice($item->deviceId);
 $msgs =MessageDevice::getMessageDevicesForDevice($item->deviceId);
