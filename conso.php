@@ -100,11 +100,14 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     
     $txt.= $newLine;
     if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    $txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
+    //$txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
+    $txt.="<span style=\"font-variant:small-caps;font-size: larger;\">";
     $txt.= $dataDayLastNow;
-    $txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
+    //$txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
+    $txt.=" </span> <span style=\"font-size:8px;\">";
     $txt .= $deviceInfo["unity"];
-    $txt.=(count($devicesTab) <= 1) ? " </span> " : "";
+    //$txt.=(count($devicesTab) <= 1) ? " </span> " : "";
+    $txt.=" </span> ";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
