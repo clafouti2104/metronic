@@ -32,7 +32,7 @@ $color="#FFF";
         </div>
         <div class="details col-md-9" style="width: 85%;">
             <div class="number">
-                    <?php echo $device->name; ?>
+                    ù<?php echo $device->name; ?>
             </div>
             <div class="desc">									
                 <div class="slider slider-basic slider-basic-<?php echo $item->deviceId; ?> bg-<?php echo $sliderColor; ?> stateDeviceId" elementId="<?php echo $msg->id; ?>" stateDeviceId="<?php echo $device->id; ?>" deviceId="<?php echo $device->id; ?>"></div>
