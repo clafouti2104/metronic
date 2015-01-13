@@ -1,5 +1,5 @@
 <?php
-$color=$width=$bgcolor=$itemParams=$params="";
+$color=$width=$bgcolor=$itemParams=$params=$diffConso=$linkTendance="";
 $itemParams=json_decode($item->params);
 $device=Device::getDevice($item->deviceId);
 $msgs =MessageDevice::getMessageDevicesForDevice($item->deviceId);

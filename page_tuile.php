@@ -1,8 +1,8 @@
 <?php
-$color=$width=$name=$percent=$params="";
+$color=$width=$name=$percent=$params=$diffConso=$linkTendance="";
 $tuile=Tuile::getTuile($item->tuileId);
 $tuileDevice=Device::getDevice($tuile->deviceid);
-$linkTendance="";
+
 if($item->params != "" && $item->params !="Array"){
     $params=json_decode($item->params);
     $linkTendance= " data-target=\"#ajaxTendance\" data-toggle=\"modal\" ";
