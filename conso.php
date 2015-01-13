@@ -544,6 +544,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $totalActual=$totalLast=0;
             $totalMoneyActual=$totalMoneyLast=0;
             $i=0;
+            $txt="";
             foreach($devicesEau as $deviceId => $deviceInfo){
                 //Récupération de l'historique
                 $dataDay=History::getCountForPeriod($deviceId, '1');
