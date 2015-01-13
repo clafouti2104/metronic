@@ -126,7 +126,7 @@ $colorConso = ($percent > 100) ? "red" : "blue";
 $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"TEST\" data-original-title=\"Détails\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
 } else {
     echo $txt;
 }
@@ -135,7 +135,7 @@ if(count($devicesTab) > 1){
                         <div class="col-md-12">
                             <?php
                             if(count($devicesTab) > 1){
-                                echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".addslashes($txt)."\" data-original-title=\"Détails\">Détails</button>";
+                                //echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".addslashes($txt)."\" data-original-title=\"Détails\">Détails</button>";
                             }
                             ?>
                             <div class="easy-pie-chart">
