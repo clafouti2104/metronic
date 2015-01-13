@@ -62,9 +62,9 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
-    echo $newLine;
-    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    $txt.= $newLine;
+    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -73,14 +73,16 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $totalMoneyActual += $money;
         }
         if(isset($money)){
-            echo " soit ".  number_format($money, 2, ",", " ")."€";
+            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
         }
         //soit 2,54€";
     }
 }
 if(count($devicesTab) > 1){
     //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+} else {
+    echo $txt;
 }
 ?>
                             
