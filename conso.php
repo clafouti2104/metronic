@@ -79,7 +79,8 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     }
 }
 if(count($devicesTab) > 1){
-    echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
 }
 ?>
                             
@@ -125,7 +126,7 @@ $colorConso = ($percent > 100) ? "red" : "blue";
 $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
-    echo $totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
 } else {
     echo $txt;
 }
