@@ -368,7 +368,7 @@ $( document ).ready(function() {
             echo "text: '".$chart->ordonne."'";
             echo "}";
             echo ",stackLabels: {";
-            echo "enabled: true,";
+            //echo "enabled: true,";
             echo "style: {";
             echo "fontWeight: 'bold',";
             echo "color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'";
