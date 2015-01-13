@@ -134,7 +134,7 @@ if(count($devicesTab) > 1){
                         <div class="col-md-12">
                             <?php
                             if(count($devicesTab) > 1){
-                                echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".$txt."\" data-original-title=\"Détails\">Détails</button>";
+                                echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".addslashes($txt)."\" data-original-title=\"Détails\">Détails</button>";
                             }
                             ?>
                             <div class="easy-pie-chart">
