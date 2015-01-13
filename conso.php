@@ -175,6 +175,7 @@ if(count($devicesTab) > 1){
 $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '2');
@@ -211,6 +212,7 @@ if(count($devicesTab) > 1){
                             <h4 style="font-variant: small-caps;">Précédent</h4>
 <?php 
 $i=0;
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '2');
@@ -283,15 +285,16 @@ if(count($devicesTab) > 1){
 $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
+$txt ="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '3');
     $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
-    echo $newLine;
-    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    $txt.= $newLine;
+    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -300,13 +303,16 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $totalMoneyActual += $money;
         }
         if(isset($money)){
-            echo " soit ".  number_format($money, 2, ",", " ")."€";
+            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
         }
         //soit 2,54€";
     }
 }
 if(count($devicesTab) > 1){
-    echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+} else {
+    echo $txt;
 }
 ?>
                             
@@ -316,15 +322,16 @@ if(count($devicesTab) > 1){
                             <h4 style="font-variant: small-caps;">Précédent</h4>
 <?php 
 $i=0;
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '3');
     $totalLast +=$dataDayLastNow;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
-    echo $newLine;
-    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    $txt .= $newLine;
+    if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
+    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -333,7 +340,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $totalMoneyLast += $money;
         }
         if(isset($money)){
-            echo " soit ".  number_format($money, 2, ",", " ")."€";
+            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
         }
     }
     $i++;
@@ -350,7 +357,10 @@ $colorConso = ($percent > 100) ? "red" : "blue";
 $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
-    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+    //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+} else {
+    echo $txt;
 }
 ?>
                         </div>
@@ -383,15 +393,16 @@ if(count($devicesTab) > 1){
 $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDay=History::getCountForPeriod($deviceId, '4');
     $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
-    echo $newLine;
-    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    $txt .= $newLine;
+    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -400,31 +411,33 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $totalMoneyActual += $money;
         }
         if(isset($money)){
-            echo " soit ".  number_format($money, 2, ",", " ")."€";
+            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
         }
         //soit 2,54€";
     }
 }
 if(count($devicesTab) > 1){
-    echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+} else {
+    echo $txt;
 }
-?>
-                            
-                            
+?>    
                         </div>
                         <div class="col-md-6">
                             <h4 style="font-variant: small-caps;">Précédent</h4>
 <?php 
 $i=0;
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '4');
     $totalLast +=$dataDayLastNow;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
-    echo $newLine;
-    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    $txt .= $newLine;
+    if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
+    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -433,7 +446,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $totalMoneyLast += $money;
         }
         if(isset($money)){
-            echo " soit ".  number_format($money, 2, ",", " ")."€";
+            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
         }
     }
     $i++;
@@ -451,6 +464,9 @@ $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
     echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+} else {
+    echo $txt;
 }
 ?>
                         </div>
