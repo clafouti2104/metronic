@@ -1,5 +1,5 @@
 <?php
-$color=$width=$name=$percent=$params=$diffConso=$linkTendance="";
+$color=$width=$name=$percent=$params=$linkTendance="";
 $tuile=Tuile::getTuile($item->tuileId);
 $tuileDevice=Device::getDevice($tuile->deviceid);
 
@@ -26,7 +26,7 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
     $diffConso = ($percent == 100) ? "0" : $diffConso;
 }
 ?>
-<div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if($item->params != "" && $item->params !="Array"){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
+<div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if(isset($params->period)){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
     <div class="dashboard-stat <?php echo $color; ?>">
         <div class="visual">
             <?php
