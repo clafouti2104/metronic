@@ -33,7 +33,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "chart_formula"=>$row["chart_formula"]
     );
 }
-print_r($devicesEau);
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
