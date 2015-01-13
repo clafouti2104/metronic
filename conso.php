@@ -89,15 +89,17 @@ if(count($devicesTab) > 1){
                             <h4 style="font-variant: small-caps;">Hier</h4>
 <?php 
 $i=0;
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
     $totalLast +=$dataDayLastNow;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
-    echo $newLine;
-    if(count($devicesTab) > 1) echo $deviceInfo["name"].": ";
-    echo "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+    
+    $txt.= $newLine;
+    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
     if($deviceInfo["chart_formula"] != ""){
         $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
         @eval('$stateTemp='.$fonction.';');
@@ -106,7 +108,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $totalMoneyLast += $money;
         }
         if(isset($money)){
-            echo " soit ".  number_format($money, 2, ",", " ")."€";
+            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
         }
     }
     $i++;
@@ -123,11 +125,18 @@ $colorConso = ($percent > 100) ? "red" : "blue";
 $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 if(count($devicesTab) > 1){
-    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+    echo $totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+} else {
+    echo $txt;
 }
 ?>
                         </div>
                         <div class="col-md-12">
+                            <?php
+                            if(count($devicesTab) > 1){
+                                echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".$txt."\" data-original-title=\"Détails\">Détails</button>";
+                            }
+                            ?>
                             <div class="easy-pie-chart">
                                 <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
                                     <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
@@ -226,6 +235,7 @@ if(count($devicesTab) > 1){
     echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
 }
 ?>
+                            
                         </div>
                         <div class="col-md-12">
                             <div class="easy-pie-chart">
