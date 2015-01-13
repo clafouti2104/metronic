@@ -375,6 +375,17 @@ $( document ).ready(function() {
             echo "}";
             echo "}";
             echo "},";
+            echo "plotOptions: {";
+            echo "column: {";
+            echo "stacking: 'normal',";
+            echo " dataLabels: {";
+            echo " color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',";
+            echo "style: {";
+            echo "textShadow: '0 0 3px black'";
+            echo "}";
+            echo "}";
+            echo "}";
+            echo "},";
             echo "series: [";
             $k=0;
             foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
