@@ -103,7 +103,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt.= $newLine;
                 if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -119,7 +119,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesTab) > 1){
                 //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -174,7 +174,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
             if(count($devicesTab) > 1){
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -223,7 +223,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt.= $newLine;
                 if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -239,7 +239,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesTab) > 1){
                 //echo $totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -261,7 +261,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDayLastNow,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -288,7 +288,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             if(count($devicesTab) > 1){
             //    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -334,7 +334,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt.= $newLine;
                 if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -350,7 +350,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesTab) > 1){
                 //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -371,7 +371,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDayLastNow,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -398,7 +398,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             if(count($devicesTab) > 1){
                 //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -442,7 +442,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -458,7 +458,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesTab) > 1){
                 //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -477,7 +477,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDayLastNow,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -504,7 +504,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             if(count($devicesTab) > 1){
                 //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -553,7 +553,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt.= $newLine;
                 if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -569,7 +569,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesEau) > 1){
                 //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -624,7 +624,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
             if(count($devicesEau) > 1){
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -668,7 +668,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt.= $newLine;
                 if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -684,7 +684,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesEau) > 1){
                 //echo $totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -706,7 +706,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesEau) > 1) $txt .= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDayLastNow,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -733,7 +733,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             if(count($devicesEau) > 1){
             //    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -779,7 +779,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt.= $newLine;
                 if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -795,7 +795,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesEau) > 1){
                 //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -816,7 +816,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesEau) > 1) $txt .= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDayLastNow,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -843,7 +843,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             if(count($devicesEau) > 1){
                 //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -887,7 +887,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -903,7 +903,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             }
             if(count($devicesEau) > 1){
                 //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
@@ -922,7 +922,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $i++;
                 $txt .= $newLine;
                 if(count($devicesEau) > 1) $txt .= $deviceInfo["name"].": ";
-                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDayLastNow,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
                 if($deviceInfo["chart_formula"] != ""){
                     $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
                     @eval('$stateTemp='.$fonction.';');
@@ -949,7 +949,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
             if(count($devicesEau) > 1){
                 //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
             } else {
                 echo $txt;
             }
