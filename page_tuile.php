@@ -5,17 +5,19 @@ $tuileDevice=Device::getDevice($tuile->deviceid);
 
 if($item->params != "" && $item->params !="Array"){
     $params=json_decode($item->params);
-    $linkTendance= " data-target=\"#ajaxTendance\" data-toggle=\"modal\" ";
+    if(isset($params->period)){
+        $linkTendance= " data-target=\"#ajaxTendance\" data-toggle=\"modal\" ";
+    }
 }
 $color=(isset($params->color)) ? $params->color : $tuile->color; 
 $width=(isset($params->width)) ? $params->width : 2; 
 $name=(isset($params->description)) ? $params->description : $tuile->name; 
 $refreshClass=(isset($params->description)) ? "" : "stateDeviceId"; 
 //Récupération des consommations
-$state=(isset($params->description)) ? History::getCountForPeriod($tuile->deviceid,$params->period)." ".$tuileDevice->unite : $tuileDevice->showState(); 
-$lastStateNow=(isset($params->description)) ? History::getCountForLastPeriodUntilNow($tuile->deviceid,$params->period) : 0; 
+$state=(isset($params->period)) ? History::getCountForPeriod($tuile->deviceid,$params->period)." ".$tuileDevice->unite : $tuileDevice->showState(); 
+$lastStateNow=(isset($params->period)) ? History::getCountForLastPeriodUntilNow($tuile->deviceid,$params->period) : 0; 
 
-if($item->params != "" && $lastStateNow != 0){
+if($item->params != "" && isset($params->period) && $lastStateNow != 0){
     $percent = ($state/$lastStateNow)*100;
     $percent = number_format($percent,0);
     //$name .= " | ".$percent."%";
