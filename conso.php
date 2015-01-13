@@ -33,6 +33,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "chart_formula"=>$row["chart_formula"]
     );
 }
+print_r($devicesEau);
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
@@ -52,15 +53,27 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>
+    <?php
+    if(count($devicesEau) > 0){
+    ?>
     <div class="tabbable-custom ">
-        <ul class="nav nav-tabs ">
-            <li class="active">
-                <a href="conso.php#tab_electricite" data-toggle="tab">Electricité</a>
-            </li>
-            <li>
-                <a href="conso.php#tab_eau" data-toggle="tab">Eau</a>
-            </li>
-        </ul>
+    <?php
+    }
+    ?>
+        <?php
+        if(count($devicesEau) > 0){
+        ?>
+            <ul class="nav nav-tabs ">
+                <li class="active">
+                    <a href="conso.php#tab_electricite" data-toggle="tab">Electricité</a>
+                </li>
+                <li>
+                    <a href="conso.php#tab_eau" data-toggle="tab">Eau</a>
+                </li>
+            </ul>
+        <?php
+        }
+        ?>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_electricite">
                 <div class="row">
@@ -956,7 +969,13 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 </div><!-- DIV ROW-->
             </div><!-- DIV TAB EAU-->
         </div><!-- DIV CONTENT-->
+    <?php
+    if(count($devicesEau) > 0){
+    ?>
     </div><!-- DIV TABBABLE CUSTOM -->
+    <?php
+    }
+    ?>
 </div>
 </div>
 </div>
