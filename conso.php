@@ -21,6 +21,18 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         "chart_formula"=>$row["chart_formula"]
     );
 }
+
+$sql="SELECT id,name,chart_formula, unite FROM device WHERE type='eau'";
+$stmt = $GLOBALS["dbconnec"]->prepare($sql);
+$stmt->execute(array());
+$devicesEau = array();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $devicesEau[$row["id"]]=array(
+        "name"=>$row["name"],
+        "unity"=>$row["unite"],
+        "chart_formula"=>$row["chart_formula"]
+    );
+}
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
@@ -31,457 +43,920 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
             <h3 class="page-title">
                 Suivi des consommations
-                <small>Electriques</small>
+                <?php
+                if(count($devicesEau) == 0){
+                    echo "<small>Electriques</small>";
+                }
+                ?>
             </h3>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="portlet light bg-inverse">
-                <div class="portlet-title">
-                    <div class="caption font-red-sunglo">
-                        <i class="icon-share font-red-sunglo"></i>
-                        <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Journalier</span>
-                        <span class="caption-helper"></span>
-                    </div>
-                    <div class="actions"></div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!--<p class="text-center"> Aujourd'hui </p>-->
-                            <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
-<?php 
-$totalActual=$totalLast=0;
-$totalMoneyActual=$totalMoneyLast=0;
-$i=0;
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDay=History::getCountForPeriod($deviceId, '1');
-    $totalActual +=$dataDay;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt.= $newLine;
-    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyActual += $money;
-        }
-        if(isset($money)){
-            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-        //soit 2,54€";
-    }
-}
-if(count($devicesTab) > 1){
-    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                            
-                            
-                        </div>
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Hier</h4>
-<?php 
-$i=0;
-$txt="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
-    $totalLast +=$dataDayLastNow;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    
-    $txt.= $newLine;
-    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    //$txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
-    $txt.="<span style=\"font-variant:small-caps;font-size: larger;\">";
-    $txt.= $dataDayLastNow;
-    //$txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
-    $txt.=" </span> <span style=\"font-size:8px;\">";
-    $txt .= $deviceInfo["unity"];
-    //$txt.=(count($devicesTab) <= 1) ? " </span> " : "";
-    $txt.=" </span> ";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyLast += $money;
-        }
-        if(isset($money)){
-            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-    }
-    $i++;
-}
+    <div class="tabbable-custom ">
+        <ul class="nav nav-tabs ">
+            <li class="active">
+                <a href="conso.php#tab_electricite" data-toggle="tab">Electricité</a>
+            </li>
+            <li>
+                <a href="conso.php#tab_eau" data-toggle="tab">Eau</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_electricite">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Journalier</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!--<p class="text-center"> Aujourd'hui </p>-->
+                                        <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '1');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt.= $newLine;
+                if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesTab) > 1){
+                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
 
-$percent=($totalActual/$totalLast)*100;
-$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
-$diffConso = ($percent == 100) ? "0" : $diffConso;
 
-$signConso = ($percent > 100) ? "+" : "-";
-$signConso = ($percent == 100) ? "" : $signConso;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Hier</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
 
-$colorConso = ($percent > 100) ? "red" : "blue";
-$colorConso = ($percent == 100) ? "yellow" : $colorConso;
+                $txt.= $newLine;
+                if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+                //$txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
+                $txt.="<span style=\"font-variant:small-caps;font-size: larger;\">";
+                $txt.= $dataDayLastNow;
+                //$txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
+                $txt.=" </span> <span style=\"font-size:8px;\">";
+                $txt .= $deviceInfo["unity"];
+                //$txt.=(count($devicesTab) <= 1) ? " </span> " : "";
+                $txt.=" </span> ";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
 
-if(count($devicesTab) > 1){
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                        </div>
-                        <div class="col-md-12">
-                            <?php
-                            if(count($devicesTab) > 1){
-                                //echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".addslashes($txt)."\" data-original-title=\"Détails\">Détails</button>";
-                            }
-                            ?>
-                            <div class="easy-pie-chart">
-                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
-                                    <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesTab) > 1){
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <?php
+                                        if(count($devicesTab) > 1){
+                                            //echo "<button class=\"btn popovers\" data-trigger=\"hover\" data-placement=\"top\" data-content=\"".addslashes($txt)."\" data-original-title=\"Détails\">Détails</button>";
+                                        }
+                                        ?>
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="portlet light bg-inverse">
-                <div class="portlet-title">
-                    <div class="caption font-red-sunglo">
-                        <i class="icon-share font-red-sunglo"></i>
-                        <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Hebdomadaire</span>
-                        <span class="caption-helper"></span>
-                    </div>
-                    <div class="actions"></div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Actuel</h4>
-<?php 
-$totalActual=$totalLast=0;
-$totalMoneyActual=$totalMoneyLast=0;
-$i=0;
-$txt="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDay=History::getCountForPeriod($deviceId, '2');
-    $totalActual +=$dataDay;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt.= $newLine;
-    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyActual += $money;
-        }
-        if(isset($money)){
-            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-        //soit 2,54€";
-    }
-}
-if(count($devicesTab) > 1){
-    //echo $totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                            
-                            
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Hebdomadaire</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Actuel</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            $txt="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '2');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt.= $newLine;
+                if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesTab) > 1){
+                //echo $totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLast=History::getCountForLastPeriod($deviceId, '2');
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '2');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
+
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesTab) > 1){
+            //    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Précédent</h4>
-<?php 
-$i=0;
-$txt="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '2');
-    $totalLast +=$dataDayLastNow;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt .= $newLine;
-    if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
-    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyLast += $money;
-        }
-        if(isset($money)){
-            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-    }
-    $i++;
-}
+                    </div><!-- END PORTLET -->
 
-$percent=($totalActual/$totalLast)*100;
-$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
-$diffConso = ($percent == 100) ? "0" : $diffConso;
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Mensuel</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Actuel</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            $txt ="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '3');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt.= $newLine;
+                if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesTab) > 1){
+                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
 
-$signConso = ($percent > 100) ? "+" : "-";
-$signConso = ($percent == 100) ? "" : $signConso;
 
-$colorConso = ($percent > 100) ? "red" : "blue";
-$colorConso = ($percent == 100) ? "yellow" : $colorConso;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '3');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
 
-if(count($devicesTab) > 1){
-//    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                            
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesTab) > 1){
+                //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="easy-pie-chart">
-                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
-                                    <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                    </div><!-- END PORTLET -->
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Annuel</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Actuel</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            $txt="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '4');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesTab) > 1){
+                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>    
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesTab as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '4');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
+
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesTab) > 1){
+                //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- END PORTLET -->
+                </div><!-- DIV ROW-->
+            </div><!-- DIV TAB ELECTRICITE-->
+            <div class="tab-pane" id="tab_eau">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Journalier</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!--<p class="text-center"> Aujourd'hui </p>-->
+                                        <h4 style="font-variant: small-caps;">Aujourd'hui</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '1');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt.= $newLine;
+                if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesEau) > 1){
+                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Hier</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '1');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+
+                $txt.= $newLine;
+                if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
+                //$txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
+                $txt.="<span style=\"font-variant:small-caps;font-size: larger;\">";
+                $txt.= $dataDayLastNow;
+                //$txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
+                $txt.=" </span> <span style=\"font-size:8px;\">";
+                $txt .= $deviceInfo["unity"];
+                //$txt.=(count($devicesTab) <= 1) ? " </span> " : "";
+                $txt.=" </span> ";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
+
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesEau) > 1){
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div><!-- END PORTLET -->
-    
-        <div class="col-md-6">
-            <div class="portlet light bg-inverse">
-                <div class="portlet-title">
-                    <div class="caption font-red-sunglo">
-                        <i class="icon-share font-red-sunglo"></i>
-                        <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Mensuel</span>
-                        <span class="caption-helper"></span>
-                    </div>
-                    <div class="actions"></div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Actuel</h4>
-<?php 
-$totalActual=$totalLast=0;
-$totalMoneyActual=$totalMoneyLast=0;
-$i=0;
-$txt ="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDay=History::getCountForPeriod($deviceId, '3');
-    $totalActual +=$dataDay;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt.= $newLine;
-    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyActual += $money;
-        }
-        if(isset($money)){
-            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-        //soit 2,54€";
-    }
-}
-if(count($devicesTab) > 1){
-    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                            
-                            
-                        </div>
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Précédent</h4>
-<?php 
-$i=0;
-$txt="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '3');
-    $totalLast +=$dataDayLastNow;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt .= $newLine;
-    if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
-    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyLast += $money;
-        }
-        if(isset($money)){
-            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-    }
-    $i++;
-}
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Hebdomadaire</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Actuel</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            $txt="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '2');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt.= $newLine;
+                if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesEau) > 1){
+                //echo $totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
 
-$percent=($totalActual/$totalLast)*100;
-$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
-$diffConso = ($percent == 100) ? "0" : $diffConso;
 
-$signConso = ($percent > 100) ? "+" : "-";
-$signConso = ($percent == 100) ? "" : $signConso;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLast=History::getCountForLastPeriod($deviceId, '2');
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '2');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesEau) > 1) $txt .= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
 
-$colorConso = ($percent > 100) ? "red" : "blue";
-$colorConso = ($percent == 100) ? "yellow" : $colorConso;
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
 
-if(count($devicesTab) > 1){
-    //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="easy-pie-chart">
-                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
-                                    <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesEau) > 1){
+            //    echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- END PORTLET -->
-        <div class="col-md-6">
-            <div class="portlet light bg-inverse">
-                <div class="portlet-title">
-                    <div class="caption font-red-sunglo">
-                        <i class="icon-share font-red-sunglo"></i>
-                        <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Annuel</span>
-                        <span class="caption-helper"></span>
-                    </div>
-                    <div class="actions"></div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Actuel</h4>
-<?php 
-$totalActual=$totalLast=0;
-$totalMoneyActual=$totalMoneyLast=0;
-$i=0;
-$txt="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDay=History::getCountForPeriod($deviceId, '4');
-    $totalActual +=$dataDay;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt .= $newLine;
-    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyActual += $money;
-        }
-        if(isset($money)){
-            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-        //soit 2,54€";
-    }
-}
-if(count($devicesTab) > 1){
-    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>    
-                        </div>
-                        <div class="col-md-6">
-                            <h4 style="font-variant: small-caps;">Précédent</h4>
-<?php 
-$i=0;
-$txt="";
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '4');
-    $totalLast +=$dataDayLastNow;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt .= $newLine;
-    if(count($devicesTab) > 1) $txt .= $deviceInfo["name"].": ";
-    $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyLast += $money;
-        }
-        if(isset($money)){
-            $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-    }
-    $i++;
-}
+                    </div><!-- END PORTLET -->
 
-$percent=($totalActual/$totalLast)*100;
-$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
-$diffConso = ($percent == 100) ? "0" : $diffConso;
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Mensuel</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Actuel</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            $txt ="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '3');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt.= $newLine;
+                if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesEau) > 1){
+                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
 
-$signConso = ($percent > 100) ? "+" : "-";
-$signConso = ($percent == 100) ? "" : $signConso;
 
-$colorConso = ($percent > 100) ? "red" : "blue";
-$colorConso = ($percent == 100) ? "yellow" : $colorConso;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '3');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesEau) > 1) $txt .= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
 
-if(count($devicesTab) > 1){
-    //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
-} else {
-    echo $txt;
-}
-?>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="easy-pie-chart">
-                                <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
-                                    <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesEau) > 1){
+                //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- END PORTLET -->
-    </div>
+                    </div><!-- END PORTLET -->
+                    <div class="col-md-6">
+                        <div class="portlet light bg-inverse">
+                            <div class="portlet-title">
+                                <div class="caption font-red-sunglo">
+                                    <i class="icon-share font-red-sunglo"></i>
+                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> Annuel</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="actions"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Actuel</h4>
+            <?php 
+            $totalActual=$totalLast=0;
+            $totalMoneyActual=$totalMoneyLast=0;
+            $i=0;
+            $txt="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDay=History::getCountForPeriod($deviceId, '4');
+                $totalActual +=$dataDay;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesEau) > 1) $txt.= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDay."</span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyActual += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                    //soit 2,54€";
+                }
+            }
+            if(count($devicesEau) > 1){
+                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Actuel\"  style=\"font-variant:small-caps;font-size: larger;\">".$totalActual." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>    
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+            <?php 
+            $i=0;
+            $txt="";
+            foreach($devicesEau as $deviceId => $deviceInfo){
+                //Récupération de l'historique
+                $dataDayLastNow=History::getCountForLastPeriodUntilNow($deviceId, '4');
+                $totalLast +=$dataDayLastNow;
+                $newLine=($i>0) ? "<br/>" : "";
+                $i++;
+                $txt .= $newLine;
+                if(count($devicesEau) > 1) $txt .= $deviceInfo["name"].": ";
+                $txt .= "<span style=\"font-variant:small-caps;font-size: larger;\">".$dataDayLastNow." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
+                if($deviceInfo["chart_formula"] != ""){
+                    $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+                    @eval('$stateTemp='.$fonction.';');
+                    if(isset($stateTemp)){
+                        $money = $stateTemp."";
+                        $totalMoneyLast += $money;
+                    }
+                    if(isset($money)){
+                        $txt .= " soit ".  number_format($money, 2, ",", " ")."€";
+                    }
+                }
+                $i++;
+            }
+
+            $percent=($totalActual/$totalLast)*100;
+            $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+            $diffConso = ($percent == 100) ? "0" : $diffConso;
+
+            $signConso = ($percent > 100) ? "+" : "-";
+            $signConso = ($percent == 100) ? "" : $signConso;
+
+            $colorConso = ($percent > 100) ? "red" : "blue";
+            $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesEau) > 1){
+                //echo "<br/>Total: ".$totalLast.$deviceInfo["unity"]." soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Précédent\" style=\"font-variant:small-caps;font-size: larger;\">".$totalLast." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
+            ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- END PORTLET -->
+                </div><!-- DIV ROW-->
+            </div><!-- DIV TAB EAU-->
+        </div><!-- DIV CONTENT-->
+    </div><!-- DIV TABBABLE CUSTOM -->
 </div>
 </div>
 </div>
