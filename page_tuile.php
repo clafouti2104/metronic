@@ -26,8 +26,8 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
     $diffConso = ($percent == 100) ? "0" : $diffConso;
 }
 ?>
-<div class="cell col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if(isset($params->period)){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
-    <div class="dashboard-stat <?php echo $color; ?>">
+<div class="cell cell-<?php echo $item->id; ?> col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if(isset($params->period)){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
+    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; ?> <?php echo $color; ?>">
         <div class="visual">
             <?php
             if(isset($icon)){
@@ -40,8 +40,14 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
                     <?php echo $state; ?>
                 </div>
         </div>
-        <a class="more btnDeletePageItem" iditempage="<?php echo $item->id; ?>" data-toggle="modal" href="page.php#deleteItemPage">
-          <?php echo $name;if(isset($diffConso)){echo "| ".$diffConso."%";} ?><i class="fa fa-trash-o" ></i>
-        </a>						
+        <div class="more ">
+            <a class="btnEditPageItem" iditempage="<?php echo $item->id; ?>" href="ajax/user/itempage_edit.php?itemPageId=<?php echo $item->id; ?>" data-target="#ajaxEditPageItem" data-toggle="modal">
+                <i style="float:left;color:#fff;cursor:pointer;" class="fa fa-edit"></i>
+            </a>
+            &nbsp;<?php echo $name;if(isset($diffConso)){echo "| ".$diffConso."%";} ?>
+            <a class="btnDeletePageItem" style="float:right;color:#fff;" iditempage="<?php echo $item->id; ?>" data-toggle="modal" href="page.php#deleteItemPage">
+                <i class="fa fa-trash-o" ></i>
+            </a>
+        </div>
     </div>
 </div>

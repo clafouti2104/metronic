@@ -105,6 +105,17 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
         </div>
     </div>
 </div>
+<div class="modal fade" id="ajaxEditPageItem" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>
+        &nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ajaxTendance" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
             <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
@@ -121,7 +132,10 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
 <script type="text/javascript">
 $( document ).ready(function() {
     $('#editMode').val('0');
+    $('.btnEditPageItem').hide();
+    
     $('.btnEditMode').bind('click',function(e){
+        $('.btnEditPageItem').toggle();
         if($('#editMode').val() == "0"){
             $(this).removeClass("default");
             $(this).addClass("green");

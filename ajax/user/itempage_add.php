@@ -137,7 +137,7 @@ foreach($plugins as $type=>$params){
             <div class="col-md-12 " style="text-align: left;">
                 <h4><i class="fa fa-gears"></i>Options</h4>
             </div>
-            <div class="col-md-4 ">
+            <div class="col-md-4 optionColor">
                 <p class="text-center">Couleur</p>
                 <select id="selectColor" style="width: 100%;">
 <?php
@@ -185,7 +185,7 @@ $colorSlider=array(
                 <p class="text-center">Description</p>
                 <input type="text" id="inputDescription" style="width: 100%;">
             </div>
-            <div class="col-md-4 ">
+            <div class="col-md-4 optionLargeur">
                 <p class="text-center">Largeur</p>
                 <select id="selectWidth" style="width: 100%;">
 <?php
@@ -210,12 +210,16 @@ $colorSlider=array(
 <script type="text/javascript">
 $( document ).ready(function() {
     $('#selectTuile').bind('change',function(e){
+        $('.optionTuile').show();
+        $('.optionLargeur').show();
+        $('.optionColor').show();
+        
         if($('#selectTuile option:selected').attr('mode') == "incremental"){
-            $('.optionTuile').show();
+            //$('.optionTuile').show();
             $('.optionPeriod').show();
             $('.optionDescription').show();
         } else {
-            $('.optionTuile').hide();
+            //$('.optionTuile').hide();
             $('.optionPeriod').hide();
             $('.optionDescription').hide();
         }

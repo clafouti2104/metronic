@@ -213,5 +213,38 @@ class PageItem{
         $stmt->execute(array(":id" => $this->id));      
         $stmt=NULL;
     }
+    
+    public function update() {
+        
+        $query = "UPDATE pageitem SET";
+        $query .= " pageId=:pageId";
+        $query .= ", position=:position";
+        $query .= ", tuileId=:tuileId";
+        $query .= ", scenarioId=:scenarioId";
+        $query .= ", chartId=:chartId";
+        $query .= ", listeId=:listeId";
+        $query .= ", params=:params";
+        $query .= ", deviceId=:deviceId";
+        $query .= " WHERE id=:id";
+        
+        $params = array();
+        $params[":pageId"] = $this->pageId;
+        $params[":position"] = $this->position;
+        $params[":tuileId"] = $this->tuileId;
+        $params[":scenarioId"] = $this->scenarioId;
+        $params[":chartId"] = $this->chartId;
+        $params[":listeId"] = $this->listeId;
+        $params[":params"] = $this->params;
+        $params[":deviceId"] = $this->deviceId;
+        $params[":id"] = $this->id;
+
+        $stmt = $GLOBALS['dbconnec']->prepare($query);
+        if (!$stmt->execute($params)) {
+                throw new Exception("ERREUR : Impossible de mettre a jour le messagedevice '".$this->id."'.");
+        }
+        $stmt = NULL;
+
+        return TRUE;
+    }
 }
 ?>

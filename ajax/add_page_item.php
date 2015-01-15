@@ -11,6 +11,7 @@ if(!isset($_POST["pageid"]) || !isset($_POST["scenarioid"]) || !isset($_POST["ch
     echo "Une erreur est survenue";
     return FALSE;
 }
+
 $_POST["tuileid"] = ($_POST["tuileid"] == "") ? NULL : $_POST["tuileid"];
 $_POST["scenarioid"] = ($_POST["scenarioid"] == "") ? NULL : $_POST["scenarioid"];
 $_POST["chartid"] = ($_POST["chartid"] == "") ? NULL : $_POST["chartid"];
@@ -25,34 +26,41 @@ $_POST["period"] = ($_POST["period"] == "") ? NULL : $_POST["period"];
 $_POST["width"] = ($_POST["width"] == "") ? NULL : $_POST["width"];
 $_POST["height"] = ($_POST["height"] == "") ? NULL : $_POST["height"];
 
-$params="";
+$params=array();
 //Tuile Incremental ==> Consommation
 if($_POST["incremental"]){
-    $params=json_encode(array(
+    $params=array(
         'color'=>$_POST["color"],
         'description'=>$_POST["description"],
         'width'=>$_POST["width"],
         'period'=>$_POST["period"]
-    ));
-}
-//Slider
-if($_POST["slider"] == "true"){
-    $params=json_encode(array(
+    );
+}elseif($_POST["slider"] == "true"){//Slider
+    $params=array(
         'color'=>$_POST["color"],
         //'description'=>$_POST["description"],
         'width'=>$_POST["width"],
         'colorSlider'=>$_POST["colorSlider"]
-    ));
-}
-if($_POST["plugin"] != ""){
-    $params = json_encode(array(
+    );
+}elseif($_POST["plugin"] != ""){//Plugin
+    $params = array(
         "plugin"=>$_POST["pluginType"],
         "color"=>$_POST["color"],
         "width"=>$_POST["width"],
         "height"=>$_POST["height"],
         "id"=>$_POST["plugin"]
-    ));
+    );
+}else{
+    if($_POST["color"] != ""){
+        $params["color"] = $_POST["color"];
+    }
+    if($_POST["width"] != ""){
+        $params["width"] = $_POST["width"];
+    }
 }
+
+
+$params = (count($params) > 0) ? json_encode($params) : NULL;
 
 if( $_POST["scenarioid"] != "" || $_POST["chartid"] != "" || $_POST["tuileid"] != "" || $_POST["listeid"] != "" || $_POST["deviceid"] != ""){
     //Vérifie que le device n'est pas déjà présent sur cette page
