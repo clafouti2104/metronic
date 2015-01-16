@@ -11,15 +11,15 @@ $GLOBALS["dbconnec"] = connectDB();
 <div class="page-content-wrapper">
 <div class="page-content">
     <div class="row">
-        <div class="col-md-12 page-404">
-            <div class="number">
-                 404
+        <div class="col-md-12 page-500">
+            <div class=" number">
+                     500
             </div>
-            <div class="details">
-                <h3>Oups! Vous êtes perdu.</h3>
+            <div class=" details">
+                <h3>Oups! Une erreur est survenue lors de l'affichage de cette page.</h3>
                 <p>
-                    Nous ne pouvons trouvé la page que vous cherchez.<br/>
-                    <a href="index.php">Retour à l'accueil </a>
+                    Nous sommes en train de corriger le problèmee!<br/>
+                    Veuillez réessayer plus tard.<br/><br/>
                 </p>
             </div>
         </div>
