@@ -132,6 +132,9 @@ $pageAdmin=array(
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_plugins.php") echo "active"; ?>">
                                                 <a href="admin_plugins.php">Plugins</a>
                                             </li>
+                                            <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_maintenance.php") echo "active"; ?>">
+                                                <a href="admin_maintenance.php">Maintenance</a>
+                                            </li>
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_logs.php") echo "active"; ?>">
                                                 <a href="admin_logs.php">Logs</a>
                                             </li>

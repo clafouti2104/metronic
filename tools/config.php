@@ -3,11 +3,15 @@ $ipRpi="192.168.1.67";
 $ipPopcorn="192.168.1.15";
 $server="192.168.1.23/domo";
 $urlFreebox="http://hd1.freebox.fr/pub/remote_control?code=79232598";
+$dbHost="l-pma";
+$dbName="domo";
+$dbUser="root";
+$dbPassword="pAss4dom";
 
 $GLOBALS['path']="..";
 
 function connectDB(){
-    $db = new PDO('mysql:host=l-pma;dbname=domo', 'root', 'pAss4dom');
+    $db = new PDO('mysql:host='.$dbHost.';dbname='.$dbHost, $dbUser, $dbPassword);
     //$db = new PDO('mysql:host=192.168.1.23;dbname=domo', 'root', 'triplm');
     return $db;
 }
