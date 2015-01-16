@@ -90,9 +90,10 @@ $directory = '/var/www/save';
 $scanned_directory = array_diff(scandir($directory), array('..', '.'));
 //print_r($scanned_directory);
 foreach($scanned_directory as $file){
+    $size = filesize($directory."/".$file)/1000000;
     echo "<tr>";
     echo "<td>".$file."</td>";
-    echo "<td>".  filesize($directory."/".$file)."</td>";
+    echo "<td>". number_format($size,2) ." Mo</td>";
     echo "<td><i class=\"fa fa-download\"></i></td>";
     echo "</tr>";
 }
