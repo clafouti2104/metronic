@@ -66,7 +66,37 @@ print_r($distribInfos);
             </div>
             <div class="tab-pane" id="tab_save">
                 <div class="row">
-                    <div class="col-md-6 col-sm-12">
+                    <div class="col-md-9 col-sm-12">
+                        <div class="portlet blue-hoki box">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-save"></i>
+                                    Fichiers
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Taille</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+<?php 
+$directory = '/var/www/save';
+$scanned_directory = array_diff(scandir($directory), array('..', '.'));
+print_r($scanned_directory);
+?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
                         <div class="portlet yellow-crusta box">
                             <div class="portlet-title">
                                 <div class="caption">
@@ -96,9 +126,7 @@ $(document).ready(function () {
             url: "ajax/system/save.php",
             type: "POST",
             data: {
-                type:  encodeURIComponent($(this).attr('type')),
-                deviceId: $(this).attr('deviceId'),
-                action: $(this).attr('action')
+                action: "save"
             },
             beforeSend: function(data){
                 Metronic.blockUI({boxed: true});
@@ -108,15 +136,10 @@ $(document).ready(function () {
                 Metronic.unblockUI();
             },
             success: function(data){
-                toastr.success("Action exécutée");
+                toastr.success("Sauvegarde effectuée");
                 Metronic.unblockUI();
             }
         });
-        /*Metronic.blockUI({boxed: true});
-
-        window.setTimeout(function () {
-            Metronic.unblockUI();
-        }, 2000);*/
     });
 });
 </script>

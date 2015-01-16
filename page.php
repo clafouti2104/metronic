@@ -96,7 +96,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
     
 <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>
         &nbsp;&nbsp;Loading... </span>
     </div>
@@ -107,7 +107,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
 </div>
 <div class="modal fade" id="ajaxEditPageItem" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>
         &nbsp;&nbsp;Loading... </span>
     </div>
@@ -118,7 +118,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
 </div>
 <div class="modal fade" id="ajaxTendance" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-            <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+            <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
             <span>
             &nbsp;&nbsp;Loading... </span>
     </div>
