@@ -88,7 +88,14 @@ print_r($distribInfos);
 <?php 
 $directory = '/var/www/save';
 $scanned_directory = array_diff(scandir($directory), array('..', '.'));
-print_r($scanned_directory);
+//print_r($scanned_directory);
+foreach($scanned_directory as $file){
+    echo "<tr>";
+    echo "<td>".$file."</td>";
+    echo "<td>".  filesize($directory."/".$file)."</td>";
+    echo "<td><i class=\"fa fa-download\"></i></td>";
+    echo "</tr>";
+}
 ?>
                                         </tbody>
                                     </table>
