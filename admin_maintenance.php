@@ -100,11 +100,16 @@ $(document).ready(function () {
                 deviceId: $(this).attr('deviceId'),
                 action: $(this).attr('action')
             },
+            beforeSend: function(data){
+                Metronic.blockUI({boxed: true});
+            },
             error: function(data){
                 toastr.error("Une erreur est survenue");
+                Metronic.unblockUI();
             },
             success: function(data){
                 toastr.success("Action exécutée");
+                Metronic.unblockUI();
             }
         });
         /*Metronic.blockUI({boxed: true});
