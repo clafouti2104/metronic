@@ -94,7 +94,7 @@ foreach($scanned_directory as $file){
     echo "<tr>";
     echo "<td>".$file."</td>";
     echo "<td>". number_format($size,2) ." Mo</td>";
-    echo "<td><i class=\"fa fa-download\"></i></td>";
+    echo "<td><a href=\"save/$file\"><i class=\"fa fa-download\"></i></a></td>";
     echo "</tr>";
 }
 ?>
