@@ -42,7 +42,7 @@ $ipAddress=$_SERVER['REMOTE_ADDR'];
 
 //Hard Disk
 ob_start();
-passthru("df -h | grep '^/dev/sda1'");
+passthru("df -h | grep '^//dev/mapper'");
 $dd = ob_get_contents();
 preg_match('#/dev/sda1(.+)#', $dd, $matches);
 $hard_disk = trim($matches[1]);

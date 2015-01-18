@@ -117,6 +117,8 @@ if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_tok
 //Allumage du groupe lumière salon si MHS
 if($action == "disarmed"){
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42428/play?access_token=".$token);
+    //Allumage Ampli
+    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=49", false, $context);
 } elseif($action == "armed"){
     //Extinction de ttes les lumières si MES
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42429/play?access_token=".$token);
@@ -132,9 +134,11 @@ file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $cont
 //Badge Pox
 if($_GET["uid"] == "10E98225"){
     exec("curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pox_".$action."\"");
+    echo "curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pox_".$action."\"";
 }
 if($_GET["uid"] == "439294F4"){
     exec("curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pouch_".$action."\"");
+    echo "curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pouch_".$action."\"";
 }
 
 Log::createLog("badge", "Badge ".$_GET["uid"]." accepté", $date, NULL, 80);
