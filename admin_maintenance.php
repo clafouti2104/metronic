@@ -15,7 +15,43 @@ foreach($output as $distribInfo){
         $systemDistrib=$distribInfo[1];
     }
 }
-print_r($distribInfos);
+
+//Processor
+ob_start();
+passthru('cat /proc/cpuinfo | grep "model name"');
+$proc = ob_get_contents();
+preg_match('#model name\t:(.+)#', $proc, $matches);
+$proc_model = $matches[1];
+ob_end_clean();
+
+//Load Average
+ob_start();
+passthru('uptime');
+$load = ob_get_contents();
+ob_end_clean();
+preg_match('#(.+)average:(.+)#', $load, $matches);
+
+//Network
+ob_start();
+passthru('/sbin/ifconfig');
+$ifconfig = ob_get_contents();
+ob_end_clean();
+preg_match('#(.+) HWaddr (.{17})(.+)#', $ifconfig, $matches);
+$macAddress = $matches[2];
+$ipAddress=$_SERVER['REMOTE_ADDR'];
+
+//Hard Disk
+ob_start();
+passthru("df -h | grep '^/dev/sda1'");
+$dd = ob_get_contents();
+preg_match('#/dev/sda1(.+)#', $dd, $matches);
+$hard_disk = trim($matches[1]);
+$hard_disk = explode(" ", $hard_disk);
+$hd_total = $hard_disk[0];
+$hd_used = $hard_disk[3];
+$hd_free = $hard_disk[5];
+ob_end_clean();
+
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
@@ -59,6 +95,58 @@ print_r($distribInfos);
                                     <div class="col-md-7 value"> <?php echo $systemDistrib; ?> </div>
                                 </div>
                                 <?php }?>
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Processeur: </div>
+                                    <div class="col-md-7 value"> <?php echo $proc_model; ?> </div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Charge Moyenne: </div>
+                                    <div class="col-md-7 value"> <?php echo $load; ?> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="portlet yellow-crusta box">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-signal "></i>
+                                    Réseau
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Adresse IP: </div>
+                                    <div class="col-md-7 value"> <?php echo $ipAddress; ?> </div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Adresse MAC: </div>
+                                    <div class="col-md-7 value"> <?php echo $macAddress; ?> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="portlet blue-hoki box">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-hdd-o "></i>
+                                    Stockage
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Total: </div>
+                                    <div class="col-md-7 value"> <?php echo $hd_total; ?> </div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Disponible: </div>
+                                    <div class="col-md-7 value"> <?php echo $hd_free; ?> </div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-5 name"> Utilisé: </div>
+                                    <div class="col-md-7 value"> <?php echo $hd_used; ?> </div>
+                                </div>
                             </div>
                         </div>
                     </div>
