@@ -131,14 +131,15 @@ if($action == "disarmed"){
 //LED Control
 file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
 
+$urlCurl="https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2ZmmiyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=";
 //Badge Pox
 if($_GET["uid"] == "10E98225"){
-    exec("curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pox_".$action."\"");
-    echo "curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pox_".$action."\"";
+    exec("curl \"".$urlCurl."badge_pox_".$action."\"");
+    echo "curl \"".$urlCurl."badge_pox_".$action."\"";
 }
 if($_GET["uid"] == "439294F4"){
-    exec("curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pouch_".$action."\"");
-    echo "curl \"https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa56Lx-cnnmtiUCi0BUO2aG50G5XC3Xe_dG7QBgV69MORZkO1mXIsmQaxrfITmRdFGB2gnZmyAZBUzijYU6GicPfTkyOGHPzQSRQpy-mgNtWtsqvYRMF0DSCEO3N5_zK7V_V915epsvLRpVt2HCNB-Z57wl73D_UdxabPw8I&message=badge_pouch_".$action."\"";
+    exec("curl \"".$urlCurl."badge_pouch_".$action."\"");
+    echo "curl \"".$urlCurl."badge_pouch_".$action."\"";
 }
 
 Log::createLog("badge", "Badge ".$_GET["uid"]." accepté", $date, NULL, 80);
