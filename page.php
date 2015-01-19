@@ -5,6 +5,7 @@ $includeJS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js"
 //$includeJS[] = "/assets/admin/pages/scripts/components-jqueryui-sliders.js";   
 
 $includeJS[] = "/assets/js/wurfl.js";   
+$includeCSS[] = "/assets/svg/fontcustom.css"; 
 $includeCSS[] = "/assets/meteo/css/weather-icons.css"; 
 $includeCSS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.css"; 
 $includeCSS[] = "/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"; 
@@ -68,7 +69,26 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
         }elseif($item->listeId != ""){
             include "page_liste.php";
         }elseif($item->deviceId != ""){
-            include "page_device.php";
+            $itemParams=json_decode($item->params);
+            $device=Device::getDevice($item->deviceId);
+            $msgs =MessageDevice::getMessageDevicesForDevice($item->deviceId);
+            $slider=false;
+            if(count($msgs) == 1){
+                //Parcours msg
+                foreach($msgs as $msg){
+                    $params = json_decode($msg->parameters);
+                    if(isset($params->slider)){
+                        $slider=true;
+                        break;
+                    }
+                }
+            }
+            
+            if($slider){
+                include "page_device_slider.php";
+            } else {
+                include "page_device.php";
+            }
         }else{
             include "page_plugin.php";
         }
@@ -517,6 +537,12 @@ function refreshStatus(){
                     }
                 }
                 if(value.toLowerCase() == "on"){
+                    if($('.icon-status-'+index).size() >= 1){
+                        if($('.icon-status-'+index).attr('type') == 'light'){
+                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
+                        }
+                    }
+                    
                     $('.make-switch-'+index).bootstrapSwitch('state', true, false);
                     
                     $('.stateDeviceId-badge-'+index).removeClass("badge-danger");
@@ -527,7 +553,13 @@ function refreshStatus(){
                     //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
+                    if($('.icon-status-'+index).size() >= 1){
+                        if($('.icon-status-'+index).attr('type') == 'light'){
+                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
+                        }
+                    }
                     $('.make-switch-'+index).bootstrapSwitch('state', false, false);
+
                     $('.stateDeviceId-badge-'+index).removeClass("badge-success");
                     $('.stateDeviceId-badge-'+index).addClass("badge-danger");
                     $('.stateDeviceId-tile-'+index).removeClass("tile-success");

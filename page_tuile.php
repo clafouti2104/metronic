@@ -32,6 +32,19 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
             <?php
             if(isset($icon)){
                 echo "<i class=\"fa ".$icon."\"></i>";
+            } else {
+                switch(strtolower($tuileDevice->type)){
+                    case 'sensor' :
+                        $icon="icon-thermometer14";
+                        break;
+                    case 'light' :
+                        $icon="icon-light-on";
+                        break;
+                    default :
+                }
+                if(isset($icon)){
+                    echo "<i class=\"".$icon." icon-status-".$device->id."\" type=\"".strtolower($tuileDevice->type)."\" statedeviceid=\"".$device->id."\"></i>";
+                }
             }
             ?>
         </div>

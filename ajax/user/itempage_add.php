@@ -15,7 +15,12 @@ $sqlDevices .= " WHERE incremental=1 ";
 $sqlDevices .= " OR id IN (";
 $sqlDevices .= " SELECT deviceId FROM messagedevice";
 $sqlDevices .= " WHERE parameters LIKE '%slider%'";
-$sqlDevices .= ")";
+$sqlDevices .= ") ";
+$sqlDevices .= " OR id IN (";
+$sqlDevices .= " SELECT deviceId FROM messagedevice";
+$sqlDevices .= " WHERE active=1";
+$sqlDevices .= ") ";
+$sqlDevices .= " ORDER BY name ASC ";
 $stmt = $GLOBALS["dbconnec"]->prepare($sqlDevices);
 $stmt->execute(array());
 $devicesTab = array();
@@ -23,6 +28,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $devicesTab[$row["id"]]=array(
         "id"=>$row["id"],
         "name"=>$row["name"],
+        "type"=>$row["type"],
         "parameters"=>$row["parameters"],
         "incremental"=>$row["incremental"]
     );
@@ -108,7 +114,8 @@ foreach($devicesTab as $deviceTmp){
     $pos = strpos($deviceTmp["parameters"], "slider");
     $type = ($pos !== false) ? "slider" : "";
     $type = ($deviceTmp["incremental"] == "1") ? "incremental" : $type;
-    echo "<option value=\"".$deviceTmp["id"]."\" type=\"".$type."\">".$deviceTmp["name"]."</option>";
+    $typeTxt = ($deviceTmp["type"] != "") ? " - ".$deviceTmp["type"] : "";
+    echo "<option value=\"".$deviceTmp["id"]."\" type=\"".$type."\">".$deviceTmp["name"].$typeTxt."</option>";
 }
 ?>
                 </select>

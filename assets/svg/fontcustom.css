@@ -1,0 +1,71 @@
+/*
+  Icon Font: fontcustom
+*/
+
+@font-face {
+  font-family: "fontcustom";
+  src: url("./fontcustom_3c12a3b1f7c1165c7c19a5627444988d.eot");
+  src: url("./fontcustom_3c12a3b1f7c1165c7c19a5627444988d.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_3c12a3b1f7c1165c7c19a5627444988d.woff") format("woff"),
+       url("./fontcustom_3c12a3b1f7c1165c7c19a5627444988d.ttf") format("truetype"),
+       url("./fontcustom_3c12a3b1f7c1165c7c19a5627444988d.svg#fontcustom") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "fontcustom";
+    src: url("./fontcustom_3c12a3b1f7c1165c7c19a5627444988d.svg#fontcustom") format("svg");
+  }
+}
+
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
+.icon-done:before,
+.icon-electricity:before,
+.icon-electricity2:before,
+.icon-light-off:before,
+.icon-light-on:before,
+.icon-locked:before,
+.icon-locked2:before,
+.icon-television4:before,
+.icon-thermometer14:before,
+.icon-thermometer4:before,
+.icon-thermometer48:before,
+.icon-thermometer57:before,
+.icon-thermometer61:before,
+.icon-unlock2:before,
+.icon-unlocked:before,
+.icon-water61:before {
+  display: inline-block;
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.icon-done:before { content: "\f102"; }
+.icon-electricity:before { content: "\f103"; }
+.icon-electricity2:before { content: "\f104"; }
+.icon-light-off:before { content: "\f105"; }
+.icon-light-on:before { content: "\f106"; }
+.icon-locked:before { content: "\f107"; }
+.icon-locked2:before { content: "\f108"; }
+.icon-television4:before { content: "\f109"; }
+.icon-thermometer14:before { content: "\f10a"; }
+.icon-thermometer4:before { content: "\f10b"; }
+.icon-thermometer48:before { content: "\f10c"; }
+.icon-thermometer57:before { content: "\f10d"; }
+.icon-thermometer61:before { content: "\f10e"; }
+.icon-unlock2:before { content: "\f10f"; }
+.icon-unlocked:before { content: "\f110"; }
+.icon-water61:before { content: "\f111"; }
