@@ -7,7 +7,7 @@ $height=$width*66;
 $bgcolor=(isset($itemParams->color) && $itemParams->color != "") ? $itemParams->color : "blue";
 $color="#FFF";
 
-switch(strtolower($tuileDevice->type)){
+switch(strtolower($device->type)){
     case 'sensor' :
         $icon="icon-thermometer14";
         break;
@@ -23,7 +23,7 @@ switch(strtolower($tuileDevice->type)){
         <div class="visual ">
 <?php 
 if(isset($icon)){
-    echo "<i class=\"".$icon." icon-status-".$device->id."\" type=\"".strtolower($tuileDevice->type)."\" statedeviceid=\"".$device->id."\"></i>";
+    echo "<i class=\"".$icon." icon-status-".$device->id."\" type=\"".strtolower($device->type)."\" statedeviceid=\"".$device->id."\"></i>";
 }
 ?>
         </div>
