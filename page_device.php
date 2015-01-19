@@ -12,7 +12,11 @@ switch(strtolower($device->type)){
         $icon="icon-thermometer14";
         break;
     case 'light' :
-        $icon="icon-light-on";
+        if(strtolower($device->state) == "on"){
+            $icon="icon-light-on";
+        } else {
+            $icon="icon-light-off";
+        }
         break;
     default :
 }

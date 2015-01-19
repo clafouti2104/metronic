@@ -39,6 +39,11 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
                         break;
                     case 'light' :
                         $icon="icon-light-on";
+                        if(strtolower($tuileDevice->state) == "on"){
+                            $icon="icon-light-on";
+                        } else {
+                            $icon="icon-light-off";
+                        }
                         break;
                     default :
                 }
