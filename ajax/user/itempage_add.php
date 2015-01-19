@@ -42,7 +42,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
 //Récupère meteo
 $plugins=array();
 $sqlPlugins = "SELECT * FROM config ";
-$sqlPlugins .= " WHERE name IN ('meteo','website','camera') ";
+$sqlPlugins .= " WHERE name IN ('meteo','website','camera','gauge') ";
 $sqlPlugins .= " ORDER BY name, value ";
 $stmt = $GLOBALS["dbconnec"]->prepare($sqlPlugins);
 $stmt->execute(array());
@@ -131,6 +131,10 @@ foreach($plugins as $type=>$params){
         if($type == "meteo"){
             $pluginName=explode(",",$pluginName);
             $pluginName=ucwords($pluginName[0]);
+        } elseif($type == "gauge"){
+            $gaugeDevice=Device::getDevice($pluginName);
+            $typeTmp=($gaugeDevice->type != "") ? " - ".$gaugeDevice->type : ""; 
+            $pluginName=$gaugeDevice->name.$typeTmp;
         }
         echo "<option value=\"".$pluginId."\" type=\"".strtolower($type)."\">".$pluginName."</option>";
     }

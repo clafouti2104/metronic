@@ -2,6 +2,8 @@
 $includeJS=$includeCSS=array();
 $includeJS[] = "/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js";   
 $includeJS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js";   
+$includeJS[] = "/assets/js/raphael.2.1.0.min.js";   
+$includeJS[] = "/assets/js/justgage.1.0.1.min.js";   
 //$includeJS[] = "/assets/admin/pages/scripts/components-jqueryui-sliders.js";   
 
 $includeJS[] = "/assets/js/wurfl.js";   
@@ -280,6 +282,24 @@ $( document ).ready(function() {
     
     <?php
     foreach($items as $item){
+        if($item->chartId == "" && $item->tuileId == "" && $item->scenarioId == "" && $item->listeId == "" && $item->deviceId == "" && $item->params != ""){
+            $itemParams=json_decode($item->params);
+            if(!isset($itemParams->plugin) || $itemParams->plugin != gauge){
+                continue;
+            }
+            
+            echo "var valueGauge = $('#gauge-".$item->id."').attr('value');";
+            echo "var min = $('#gauge-".$item->id."').attr('min');";
+            echo "var max = $('#gauge-".$item->id."').attr('max');";
+            echo "var titleText = $('#gauge-".$item->id."').attr('titleText');";
+            echo "var v".$item->id."= new JustGage({";
+            echo " id: \"gauge-".$item->id."\", ";
+            echo " value: valueGauge, ";
+            echo " min: min, ";
+            echo " max: max, ";
+            echo " title: titleText ";
+            echo " }); ";
+        }
         
         if($item->chartId == ""){
             continue;

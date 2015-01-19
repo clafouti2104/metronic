@@ -14,6 +14,9 @@ if( $resultat = $resultats->fetch() ){
 }
 
 switch($params->plugin){
+    case 'gauge':
+        include "page_plugin_gauge.php";
+        break;
     case 'meteo':
         include "page_plugin_meteo.php";
         break;
