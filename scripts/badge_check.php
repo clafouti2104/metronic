@@ -135,11 +135,9 @@ $urlCurl="https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bG9YrLVKxa
 //Badge Pox
 if($_GET["uid"] == "10E98225"){
     exec("curl \"".$urlCurl."badge_pox_".$action."\"");
-    echo "curl \"".$urlCurl."badge_pox_".$action."\"";
 }
 if($_GET["uid"] == "439294F4"){
     exec("curl \"".$urlCurl."badge_pouch_".$action."\"");
-    echo "curl \"".$urlCurl."badge_pouch_".$action."\"";
 }
 
 Log::createLog("badge", "Badge ".$_GET["uid"]." accepté", $date, NULL, 80);
