@@ -11,7 +11,8 @@ $sqlHistorique="DELETE FROM temperature WHERE deviceid IN (";
 $sqlHistorique.=" SELECT id FROM device WHERE incremental=1";
 $sqlHistorique.=") ";
 $sqlHistorique.=" AND date < '".date('Y-m-d 00:00:00')."' ";
-$stmt = $GLOBALS["dbconnec"]->prepare($sqlHistorique);
-$stmt->execute(array());
+/*$stmt = $GLOBALS["dbconnec"]->prepare($sqlHistorique);
+$stmt->execute(array());*/
+echo $sqlHistorique;
 
 ?>
