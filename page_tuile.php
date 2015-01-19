@@ -37,6 +37,9 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
                     case 'sensor' :
                         $icon="icon-thermometer14";
                         break;
+                    case 'tv' :
+                        $icon="icon-television4";
+                        break;
                     case 'light' :
                         $icon="icon-light-on";
                         if(strtolower($tuileDevice->state) == "on"){

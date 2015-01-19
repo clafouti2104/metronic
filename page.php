@@ -153,6 +153,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
 $( document ).ready(function() {
     $('#editMode').val('0');
     $('.btnEditPageItem').hide();
+    $('.btnMoreMessage').hide();
     
     $('.btnEditMode').bind('click',function(e){
         $('.btnEditPageItem').toggle();

@@ -8,15 +8,18 @@ $bgcolor=(isset($itemParams->color) && $itemParams->color != "") ? $itemParams->
 $color="#FFF";
 
 switch(strtolower($device->type)){
-    case 'sensor' :
-        $icon="icon-thermometer14";
-        break;
     case 'light' :
         if(strtolower($device->state) == "on"){
             $icon="icon-light-on";
         } else {
             $icon="icon-light-off";
         }
+        break;
+    case 'sensor' :
+        $icon="icon-thermometer14";
+        break;
+    case 'tv' :
+        $icon="icon-television4";
         break;
     default :
 }
@@ -37,10 +40,22 @@ if(isset($icon)){
             </div>
             <div class="desc">	
 <?php
-
+$moreMsg = FALSE;
+$acceptedTypes = array(
+    "on","off","open","close"
+);
+foreach($msgs as $msg){
+    if($msg->active == "0"){
+        continue;
+    } 
+    
+    if(in_array(strtolower($msg->type), $acceptedTypes)){
+        echo "<button class=\"btn default box-action\" type=\"message\" elementId=\"".$msg->id."\" deviceId=\"".$device->id."\" style=\"margin-right:2px;\" >".  strtoupper($msg->name)."</button>";
+    } else {
+        $moreMsg = TRUE;
+    }
+}
 ?>
-                <button class="btn default" >ON</button>
-                <button class="btn default" >OFF</button>
             </div>            
         </div>				
         <div class="more ">
@@ -48,6 +63,13 @@ if(isset($icon)){
             <a class="btnEditPageItem" iditempage="<?php echo $item->id; ?>" href="ajax/user/itempage_edit.php?itemPageId=<?php echo $item->id; ?>" data-target="#ajaxEditPageItem" data-toggle="modal">
                 <i style="float:left;color:#fff;cursor:pointer;" class="fa fa-edit"></i>
             </a>
+<?php
+if($moreMsg){
+?>
+          &nbsp;<a  class="btnMoreMessage" idDevice="<?php echo $device->id; ?>" data-toggle="modal" href="ajax/user/more_messages.php#idDevice=<?php echo $device->id; ?>" style="float:left;color:#fff;"><i class="fa fa-plus" ></i></a>
+<?php
+}
+?>
           &nbsp;<a  class="btnDeletePageItem" iditempage="<?php echo $item->id; ?>" data-toggle="modal" href="page.php#deleteItemPage" style="float:right;color:#fff;"><i class="fa fa-trash-o" ></i></a>
         </div>
     </div>
