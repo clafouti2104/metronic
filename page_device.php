@@ -23,7 +23,7 @@ switch(strtolower($device->type)){
         <div class="visual ">
 <?php 
 if(isset($icon)){
-    echo "<i class=\"".$icon." icon-status-".$device->id."\" type=\"".strtolower($device->type)."\" statedeviceid=\"".$device->id."\"></i>";
+    echo "<i class=\"".$icon." stateDeviceId icon-status-".$device->id."\" type=\"".strtolower($device->type)."\" statedeviceid=\"".$device->id."\"></i>";
 }
 ?>
         </div>
