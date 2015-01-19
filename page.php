@@ -537,9 +537,9 @@ function refreshStatus(){
                     }
                 }
                 if(value.toLowerCase() == "on"){
-                    if($('.icon-status-'+index).size() >= 1){
+                    if($('.icon-status-'+index).length >= 1){
                         if($('.icon-status-'+index).attr('type') == 'light'){
-                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
+                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
                         }
                     }
                     
@@ -553,9 +553,9 @@ function refreshStatus(){
                     //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
-                    if($('.icon-status-'+index).size() >= 1){
+                    if($('.icon-status-'+index).length >= 1){
                         if($('.icon-status-'+index).attr('type') == 'light'){
-                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
+                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
                         }
                     }
                     $('.make-switch-'+index).bootstrapSwitch('state', false, false);
