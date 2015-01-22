@@ -114,6 +114,20 @@ if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_tok
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$action."?access_token=".$token);
 }
 
+//LED Control
+file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
+
+//Tablet notification
+$urlCurl="https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bFrXnU6Mnp6RONLR42CqJgLcPkCTRGPGH_ZpCKuJA7MbakduKmEKBOfMLlieBnjQOwSH1EtvEVW1u7tB5ivtsJg5s5RBah1LeEjeYj9puYzsPFYbzAz8tDrPsoC32DaVVUM3jiXf9Ujml94lZ4OhBOQJgtbykqqIPNq-vAJX7Xu04HCCFA&message=";
+//Badge Pox
+if($_GET["uid"] == "10E98225"){
+    $random = rand(0,2);
+    exec("curl \"".$urlCurl."badge_pox_".$action."_".$random."\"");
+}
+if($_GET["uid"] == "439294F4"){
+    exec("curl \"".$urlCurl."badge_pouch_".$action."\"");
+}
+
 //Allumage du groupe lumière salon si MHS
 if($action == "disarmed"){
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42428/play?access_token=".$token);
@@ -128,17 +142,6 @@ if($action == "disarmed"){
     file_get_contents("http://192.168.1.67/tvdown.php", false, $context);
 }
 
-//LED Control
-file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
-
-$urlCurl="https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bFrXnU6Mnp6RONLR42CqJgLcPkCTRGPGH_ZpCKuJA7MbakduKmEKBOfMLlieBnjQOwSH1EtvEVW1u7tB5ivtsJg5s5RBah1LeEjeYj9puYzsPFYbzAz8tDrPsoC32DaVVUM3jiXf9Ujml94lZ4OhBOQJgtbykqqIPNq-vAJX7Xu04HCCFA&message=";
-//Badge Pox
-if($_GET["uid"] == "10E98225"){
-    exec("curl \"".$urlCurl."badge_pox_".$action."\"");
-}
-if($_GET["uid"] == "439294F4"){
-    exec("curl \"".$urlCurl."badge_pouch_".$action."\"");
-}
 
 Log::createLog("badge", "Badge ".$_GET["uid"]." accepté", $date, NULL, 80);
 ?>
