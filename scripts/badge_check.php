@@ -121,11 +121,11 @@ file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $cont
 $urlCurl="https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bFrXnU6Mnp6RONLR42CqJgLcPkCTRGPGH_ZpCKuJA7MbakduKmEKBOfMLlieBnjQOwSH1EtvEVW1u7tB5ivtsJg5s5RBah1LeEjeYj9puYzsPFYbzAz8tDrPsoC32DaVVUM3jiXf9Ujml94lZ4OhBOQJgtbykqqIPNq-vAJX7Xu04HCCFA&message=";
 //Badge Pox
 if($_GET["uid"] == "10E98225"){
-    $random = rand(0,2);
+    $random = rand(0,3);
     exec("curl \"".$urlCurl."badge_pox_".$action."_".$random."\"");
 }
 if($_GET["uid"] == "439294F4"){
-    exec("curl \"".$urlCurl."badge_pouch_".$action."\"");
+    exec("curl \"".$urlCurl."badge_pouch_".$action."_1\"");
 }
 
 //Allumage du groupe lumière salon si MHS
