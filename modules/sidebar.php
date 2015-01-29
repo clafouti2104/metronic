@@ -5,6 +5,7 @@ $pageAdmin=array(
     $GLOBALS['path']."/admin_advanced.php",
     $GLOBALS['path']."/admin_page.php",
     $GLOBALS['path']."/admin_scenario.php",
+    $GLOBALS['path']."/admin_sce_cond.php",
     $GLOBALS['path']."/admin_tuile.php",
     $GLOBALS['path']."/admin_logs.php",
     $GLOBALS['path']."/admin_chart.php",

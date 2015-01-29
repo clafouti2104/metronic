@@ -417,10 +417,10 @@ class Device{
         $stmt = NULL;
         
         //Vérifie si scénario conditionnel associé
-        $this->checkScenarioConditionnel();
+        checkScenarioConditionnel($id);
         
         //Vérifie si alerte associée
-        $this->checkAlert();
+        checkAlert($id);
         
         return TRUE;
     }
@@ -430,7 +430,7 @@ class Device{
     /**
      *  Vérification des scénario conditionnel
      */
-    function checkScenarioConditionnel(){
+    function checkScenarioConditionnel($id){
         $now = new DateTime('now');
         //Récupère les alertes associés au device
         $conds = Cond::getCondsByDevice($id);
@@ -529,7 +529,7 @@ class Device{
     /**
      *  Vérification des alertes
      */
-    function checkAlert(){
+    function checkAlert($id){
         $now = new DateTime('now');
         //Récupère les alertes associés au device
         $alerts = Alert::getAlertsByDevice($id);
