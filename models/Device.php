@@ -517,9 +517,12 @@ class Device{
                     case 'action_message':
                         executeMessage($condAction->action);
                         break;
+                    case 'action_scenario':
+                        executeScenario($condAction->action);
+                        break;
                 }
-                
             }
+            $log = Log::createLog("scenario_conditionnel", $cond->name, $now->format('Y-m-d H:i:s'), $cond->id, 40);
         }
     }
     
