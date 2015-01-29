@@ -1,4 +1,8 @@
 <?php
+include_once "../models/Device.php";
+include_once "../models/MessageDevice.php";
+include_once "../models/ScenarioMessage.php";
+
 
 function executeMessage($messgeId, $valueToSend=NULL){
     echo "execute message";
