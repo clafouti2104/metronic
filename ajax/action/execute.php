@@ -1,12 +1,12 @@
 <?php
 //include("myfox.php");
-include("../../tools/config.php");
-include("../../tools/action.php");
+include_once("../../tools/config.php");
+include_once("../../tools/action.php");
 $GLOBALS["dbconnec"]=connectDB();
-include "../../models/Device.php";
-include "../../models/MessageDevice.php";
-include "../../models/Scenario.php";
-include "../../models/ScenarioMessage.php";
+include_once "../../models/Device.php";
+include_once "../../models/MessageDevice.php";
+include_once "../../models/Scenario.php";
+include_once "../../models/ScenarioMessage.php";
 
 $timeout = array('http' => array('timeout' => 10));
 $context = stream_context_create($timeout);
