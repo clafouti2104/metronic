@@ -120,6 +120,9 @@ $pageAdmin=array(
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_scenario.php") echo "active"; ?>">
                                                 <a href="admin_scenario.php">Scénario</a>
                                             </li>
+                                            <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_conditional.php") echo "active"; ?>">
+                                                <a href="admin_conditional.php">Sce. Conditionnel</a>
+                                            </li>
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_liste.php") echo "active"; ?>">
                                                 <a href="admin_liste.php">Liste</a>
                                             </li>

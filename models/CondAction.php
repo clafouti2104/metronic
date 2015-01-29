@@ -1,37 +1,35 @@
 <?php
 
-class Condition{
+class CondAction{
     public $id;
     public $condId;
     public $type;
-    public $operator;
+    public $action;
     public $value;
-    public $objectId;
     
-    public function __construct($id, $condId, $type, $operator, $value, $objectId) {
+    public function __construct($id, $condId, $type, $action, $value) {
         $this->id = $id;
         $this->condId = $condId;
         $this->type = $type;
-        $this->operator = $operator;
+        $this->action = $action;
         $this->value = $value;
-        $this->objectId = $objectId;
     }
     
-    public static function ConditionExists($idCondition) {
+    public static function CondActionExists($idCondAction) {
             $query = "SELECT COUNT(*) ";
-            $query .= " FROM conditions";
+            $query .= " FROM condaction";
             $query .= " WHERE id=:id";
 
             $stmt = $GLOBALS["dbconnec"]->prepare($query);
 
-            $stmt->execute(array(":id" => $idCondition));
+            $stmt->execute(array(":id" => $idCondAction));
             $row = $stmt->fetch(PDO::FETCH_COLUMN, 0);
             $stmt = NULL;
 
             return (intval($row[0]) ? TRUE : FALSE);
     }
     
-    public static function getCondition($ids){
+    public static function getCondAction($ids){
         $result = array();
         
         // On vérifie le value d'arguement passé en paramètre
@@ -51,10 +49,9 @@ class Condition{
         $query .= "id";
         $query .= ",condId";
         $query .= ",type";
-        $query .= ",operator";
+        $query .= ",action";
         $query .= ",value";
-        $query .= ",objectId";
-        $query .= " FROM conditions ";
+        $query .= " FROM condaction ";
         $query .= " WHERE id=:id";
         
         $stmt = $GLOBALS["dbconnec"]->prepare($query);
@@ -64,93 +61,73 @@ class Condition{
             $params = array(":id" => $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_condition = new Condition($row['id'], $row["condId"],$row['type'],$row['operator'],$row["value"],$row["objectId"]);
+                    $tmp_condaction = new CondAction($row['id'],$row['condId'],$row['type'],$row['action'],$row["value"]);
 
-                    $result[] = $tmp_condition;
-                    $tmp_condition = NULL;
+                    $result[] = $tmp_condaction;
+                    $tmp_condaction = NULL;
             }
         }
         $stmt = NULL;
         return ($return_array ? $result : $result[0]);
     }
     
-    public static function getConditionForCond($ids){
-        $result = array();
-        
-        $query = "SELECT ";
-        $query .= "id";
-        $query .= ",condId";
-        $query .= ",type";
-        $query .= ",operator";
-        $query .= ",value";
-        $query .= ",objectId";
-        $query .= " FROM conditions ";
-        $query .= " WHERE condId=:id";
-        
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
-        
-        // On récupère les élèments
-        $params = array(":id" => $ids);
-        $stmt->execute($params);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $tmp_condition = new Condition($row['id'], $row["condId"],$row['type'],$row['operator'],$row["value"],$row["objectId"]);
-
-                $result[] = $tmp_condition;
-                $tmp_condition = NULL;
-        }
-        $stmt = NULL;
-        return $result;
-    }
-    
     /**
-    * @desc Renvoie tous les Conditions pour un device donné
+    * @desc Renvoie tous les CondActions pour un device donné
     */
-    public static function getConditionsByDevice($type) {
-        $query = "SELECT id FROM conditions";
+    public static function getCondActionsByDevice($type) {
+        $query = "SELECT id FROM condaction";
         $query .= " WHERE type=".$type;
         $query .= " ORDER BY type";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
-        return self::getCondition($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        return self::getCondAction($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
     /**
-    * @desc Renvoie tous les Conditions
+    * @desc Renvoie tous les CondActions pour le condId donné
     */
-    public static function getConditions() {
-        $query = "SELECT id FROM condition";
+    public static function getCondActionForCond($condId) {
+        $query = "SELECT id FROM condaction";
+        $query .= " WHERE condId=".$condId;
         $query .= " ORDER BY type";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
 
-        return self::getCondition($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+        return self::getCondAction($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createCondition($condId,$type,$operator,$value,$objectId) {
+    /**
+    * @desc Renvoie tous les CondActions
+    */
+    public static function getCondActions() {
+        $query = "SELECT id FROM condaction";
+        $query .= " ORDER BY type";
         
-        $query = "INSERT INTO conditions (";
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+
+        return self::getCondAction($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+    }
+    
+    public static function createCondAction($condId,$type,$action,$value) {
+        
+        $query = "INSERT INTO condaction (";
         $query .= "condId";
         $query .= ",type";
-        $query .= ",operator";
+        $query .= ",action";
         $query .= ",value ";
-        $query .= ",objectId ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":condId";
         $query .= ",:type";
-        $query .= ",:operator";
+        $query .= ",:action";
         $query .= ",:value ";
-        $query .= ",:objectId ";
         $query .= ")";
-        
-        echo $query;
         
         $params = array();
         $params[":condId"] = $condId;
         $params[":type"] = $type;
-        $params[":operator"] = $operator;
+        $params[":action"] = $action;
         $params[":value"] = $value;
-        $params[":objectId"] = $objectId;
         
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -159,7 +136,7 @@ class Condition{
         $stmt = NULL;
         
         // On récupère l'id de l'élément
-        $query = "SELECT id FROM conditions ORDER BY id DESC LIMIT 1";
+        $query = "SELECT id FROM condaction ORDER BY id DESC LIMIT 1";
         $stmt = $GLOBALS["dbconnec"]->prepare($query);
         $stmt->execute(array());
         $id = 0;
@@ -168,17 +145,17 @@ class Condition{
         }
         $stmt = NULL;
 
-        $tmpInstance = new Condition($id, $condId, $type, $operator, $value, $objectId);
+        $tmpInstance = new CondAction($id, $condId, $type, $action, $value);
         
         return $tmpInstance;
     }
     
     
     /**
-    * @desc Suppression d'un Condition
+    * @desc Suppression d'un CondAction
     */
     public function delete() {		
-        $query = "DELETE FROM conditions";
+        $query = "DELETE FROM condaction";
         $query .= " WHERE id=:id;";
         
         $stmt = $GLOBALS["dbconnec"]->prepare($query);
@@ -189,20 +166,18 @@ class Condition{
     
     public function update() {
         
-        $query = "UPDATE conditions SET";
+        $query = "UPDATE condaction SET";
         $query .= " condId=:condId";
-        $query .= ", operator=:operator";
+        $query .= ", action=:action";
         $query .= ", value=:value";
-        $query .= ", objectId=:objectId";
         $query .= ", type=:type";
         $query .= " WHERE id=:id";
         
         $params = array();
         $params[':id'] = $this->id;
         $params[':condId'] = $this->condId;
-        $params[':operator'] = $this->operator;
+        $params[':action'] = $this->action;
         $params[':value'] = $this->value;
-        $params[':objectId'] = $this->objectId;
         $params[':type'] = $this->type;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);

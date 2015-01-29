@@ -2,7 +2,7 @@
 	<!-- BEGIN FOOTER -->
 <div class="page-footer">
 	<div class="page-footer-inner">
-		 2014 &copy; Pouchkine.
+		 <?php echo date('Y'); ?> &copy; Pouchkine.
 	</div>
 	<div class="page-footer-tools">
 		<span class="go-top">

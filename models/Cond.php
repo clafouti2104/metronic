@@ -66,6 +66,18 @@ class Cond{
     }
     
     /**
+    * @desc Renvoie tous les Conds associés à un device
+    */
+    public static function getCondsByDevice($idDevice) {
+        $query = "SELECT condId FROM conditions ";
+        $query .= " WHERE type='device' AND objectId=".$idDevice;
+        
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+
+        return self::getCond($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+    }
+    
+    /**
     * @desc Renvoie tous les Conds
     */
     public static function getConds() {
@@ -120,7 +132,11 @@ class Cond{
     */
     public function delete() {		
         $query = "DELETE FROM cond";
-        $query .= " WHERE id=:id";
+        $query .= " WHERE id=:id;";
+        $query .= "DELETE FROM condition";
+        $query .= " WHERE condId=:id;";
+        $query .= "DELETE FROM condaction";
+        $query .= " WHERE condId=:id;";
         
         $stmt = $GLOBALS["dbconnec"]->prepare($query);
         $stmt->execute(array(":id" => $this->id));      

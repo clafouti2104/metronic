@@ -2,6 +2,7 @@
 include_once "Alert.php";
 include_once "Log.php";
 include_once "Product.php";
+include_once "../tools/actions.php";
 
 class Device{
     public $id;
@@ -408,9 +409,6 @@ class Device{
         $query .= " WHERE id=$id";
         
         $params = array();
-        //$params[':id'] = $id;
-        //$params[':state'] = $state;
-        //$params[':last_update'] = $last_update;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -418,6 +416,117 @@ class Device{
         }
         $stmt = NULL;
         
+        //Vérifie si scénario conditionnel associé
+        $this->checkScenarioConditionnel();
+        
+        //Vérifie si alerte associée
+        $this->checkAlert();
+        
+        return TRUE;
+    }
+    
+    
+    
+    /**
+     *  Vérification des scénario conditionnel
+     */
+    function checkScenarioConditionnel(){
+        $now = new DateTime('now');
+        //Récupère les alertes associés au device
+        $conds = Cond::getCondsByDevice($id);
+        
+        //Pas de scenarios
+        if(count($scenarios) == 0){
+            return true;
+        }
+        
+        //Parcours des scenarios
+        foreach($conds as $cond){
+            $conditions = Condition::getConditionForCond($cond->id);
+            $condActions = CondAction::getCondActionForCond($cond->id);
+            
+            if(count($conditions) == 0){
+                continue;
+            }
+            
+            if(count($condActions) == 0){
+                continue;
+            }
+            
+            $check=true;
+            foreach($conditions as $condition){
+                $state="";
+                //Récupération du status
+                if(strtolower($condition->type) != "device" && strtolower($condition->type) != "variable"){
+                    continue;
+                }
+                
+                if(strtolower($condition->type) == "device"){
+                    $deviceTmp=Device::getDevice($condition->objectId);
+                    $state=$deviceTmp->state;
+                }elseif(strtolower($condition->type) == "variable"){
+                    $sqlVariable = "SELECT comment FROM config ";
+                    $sqlVariable .= " WHERE name ='variable' AND id=".$condition->objectId;
+                    $stmt = $GLOBALS["dbconnec"]->prepare($sqlVariable);
+                    $stmt->execute(array());
+                    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $state =$row["comment"];
+                    }
+                }
+                
+                if($state==""){
+                    continue;
+                }
+                
+                switch(strtolower($condition->operator)){
+                    case "<":
+                        if($state >= $condition->value){
+                            $check = false;
+                        }
+                        break;
+                    case ">":
+                        if($state <= $condition->value){
+                            $check = false;
+                        }
+                        break;
+                    case "=":
+                        if(strtolower($state) != strtolower($condition->value)){
+                            $check = false;
+                        }
+                        break;
+                    case "!=":
+                        if(strtolower($state) == strtolower($condition->value)){
+                            $check = false;
+                        }
+                        break;
+                    default:
+                }
+                
+                if(!$check){
+                    break;
+                }
+            } //End foreach conditions
+            
+            if(!$check){
+                continue;
+            }
+            
+            //Parcours des actions
+            foreach($condActions as $condAction){
+                switch (strtolower($condAction->type)){
+                    case 'action_message':
+                        executeMessage($condAction->action);
+                        break;
+                }
+                
+            }
+        }
+    }
+    
+    /**
+     *  Vérification des alertes
+     */
+    function checkAlert(){
         $now = new DateTime('now');
         //Récupère les alertes associés au device
         $alerts = Alert::getAlertsByDevice($id);
@@ -490,8 +599,7 @@ class Device{
                 }
             }
         }
-
-        return TRUE;
+        return true;
     }
     
     /**
@@ -624,6 +732,11 @@ class Device{
         }
         
         return $state;
+    }
+    
+    public function printDeviceName(){
+        $type=($this->type != "") ? " - ".$this->type : "";
+        return $this->name.$type;
     }
 }
 ?>
