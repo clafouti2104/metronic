@@ -417,10 +417,10 @@ class Device{
         $stmt = NULL;
         
         //Vérifie si scénario conditionnel associé
-        checkScenarioConditionnel($id);
+        self::checkScenarioConditionnel($id);
         
         //Vérifie si alerte associée
-        checkAlert($id);
+        self::checkAlert($id);
         
         return TRUE;
     }
