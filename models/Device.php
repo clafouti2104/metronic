@@ -5,7 +5,7 @@ include_once "Condition.php";
 include_once "CondAction.php";
 include_once "Log.php";
 include_once "Product.php";
-include_once "../tools/actions.php";
+include_once "/var/www/metronic/tools/actions.php";
 
 class Device{
     public $id;
