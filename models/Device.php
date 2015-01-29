@@ -1,5 +1,8 @@
 <?php
 include_once "Alert.php";
+include_once "Cond.php";
+include_once "Condition.php";
+include_once "CondAction.php";
 include_once "Log.php";
 include_once "Product.php";
 include_once "../tools/actions.php";
