@@ -6,9 +6,11 @@ $includeJS[] = "/assets/global/plugins/select2/select2.min.js";
 $includeJS[] = "/assets/global/plugins/jquery-validation/js/jquery.validate.min.js";   
 $includeJS[] = "/assets/global/plugins/jquery-validation/js/additional-methods.min.js"; 
 $includeJS[] = "/assets/global/plugins/jquery-nestable/jquery.nestable.js"; 
+$includeJS[] = "/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"; 
 //$includeJS[] = "/assets/admin/pages/scripts/ui-nestable.js"; 
 
 $includeCSS[] = "/assets/global/plugins/select2/select2.css";   
+$includeCSS[] = "/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css";   
 $includeCSS[] = "/assets/global/plugins/jquery-nestable/jquery.nestable.css";   
 
 include "modules/header.php";
@@ -20,15 +22,21 @@ include_once "models/Condition.php";
 include_once "models/CondAction.php";
 include_once "models/Device.php";
 include_once "models/MessageDevice.php";
+include_once "models/Scenario.php";
 
 //$devices=  Device::getDevices();
-$variables=array();
+$variables=$notifications=array();
 $sqlPlugins = "SELECT * FROM config ";
-$sqlPlugins .= " WHERE name ='variable'";
+$sqlPlugins .= " WHERE name IN ('variable','pushing_box' )";
 $stmt = $GLOBALS["dbconnec"]->prepare($sqlPlugins);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $variables[$row["id"]]=$row["value"];
+    if($row["name"] == "variable"){
+        $variables[$row["id"]]=$row["value"];
+    }
+    if($row["name"] == "pushing_box"){
+        $notifications[$row["value"]]=$row["comment"];
+    }
 }
 
 $isPost=FALSE;
@@ -163,16 +171,14 @@ if(isset($idCond) && $idCond > 0){
                             <?php if($idCond != "" && $idCond > 0){ ?>
                             <li>
                                 <a href="edit_sce_cond.php#conditions" data-toggle="tab" class="step">
-                                <span class="number">
-                                2 </span>
+                                <span class="number">2</span>
                                 <span class="desc">
                                 <i class="fa fa-check"></i> Conditions </span>
                                 </a>
                             </li>
                             <li>
                                 <a href="edit_sce_cond.php#messages" data-toggle="tab" class="step">
-                                <span class="number">
-                                2 </span>
+                                <span class="number">3</span>
                                 <span class="desc">
                                 <i class="fa fa-check"></i> Actions </span>
                                 </a>
@@ -217,7 +223,7 @@ if(isset($idCond) && $idCond > 0){
                                                  Status
                                             </div>
                                         </a>
-                                        <a href="#" class="icon-btn btnAddHour" style="clear:left;">
+                                        <a data-toggle="modal" href="edit_sce_cond.php#editHour" class="icon-btn btnAddHour" style="clear:left;">
                                             <i class="fa fa-clock-o"></i>
                                             <div>
                                                  Gestion Horaires
@@ -232,7 +238,7 @@ if(isset($idCond) && $idCond > 0){
                                     </div>
                                     <div class="col-md-9 ">
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover" id="tableCondition">
                                                 <thead>
                                                     <tr>
                                                         <th>Type</th>
@@ -284,22 +290,28 @@ if(isset($idCond) && $idCond > 0){
                                                  Action
                                             </div>
                                         </a>
-                                        <!--<a href="#" class="icon-btn" style="clear:left;">
+                                        <a data-target="#ajaxScenario" data-toggle="modal" href="ajax/user/sce_cond_scenario.php?idCond=<?php echo $idCond; ?>" class="icon-btn" style="clear:left;">
                                             <i class="fa fa-clock-o"></i>
                                             <div>
                                                  Scenario
                                             </div>
                                         </a>
-                                        <a data-target="#ajax" data-toggle="modal" href="edit_sce_cond.php#execVariable" class="icon-btn">
+                                        <a data-target="#ajaxVariable" data-toggle="modal" href="ajax/user/sce_cond_variable.php?idCond=<?php echo $idCond; ?>" class="icon-btn">
                                             <i class="fa fa-tasks"></i>
                                             <div>
                                                  Variables
                                             </div>
-                                        </a>-->
+                                        </a>
+                                        <a data-target="#ajaxNotification" data-toggle="modal" href="ajax/user/sce_cond_notification.php?idCond=<?php echo $idCond; ?>" class="icon-btn">
+                                            <i class="fa fa-cloud-upload "></i>
+                                            <div>
+                                                 Notifications
+                                            </div>
+                                        </a>
                                     </div>
                                     <div class="col-md-9 ">
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover" id="tableCondAction">
                                                 <thead>
                                                     <tr>
                                                         <th>Type</th>
@@ -318,10 +330,24 @@ if(isset($idCond) && $idCond > 0){
                                                             $type="Action";
                                                             $object.=$deviceTmp->name." - ".$messageTmp->name;
                                                             break;
-                                                        case 'scenario':
+                                                        case 'action_scenario':
                                                             $scenarioTmp=Scenario::getScenario($condAction->action);
                                                             $type="Scénario";
                                                             $object.=$scenarioTmp->name;
+                                                            break;
+                                                        case 'action_variable':
+                                                            $object.=$condAction->more; 
+                                                            if(isset($variables[$condAction->action])){
+                                                                $object.=" ".$variables[$condAction->action];
+                                                                $object.=" ".$condAction->value;
+                                                            }
+                                                            $type="variable";
+                                                            break;
+                                                        case 'notification':
+                                                            if(isset($notifications[$condAction->action])){
+                                                                $object.=" envoie ".$notifications[$condAction->action];
+                                                            }
+                                                            $type="notification";
                                                             break;
                                                         default:
                                                     }
@@ -349,12 +375,45 @@ if(isset($idCond) && $idCond > 0){
 </div>
     
     
+<div class="modal fade" id="ajaxVariable" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>&nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+    
 <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
         <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
     <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade" id="ajaxScenario" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>&nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:400px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+    
+<div class="modal fade" id="ajaxNotification" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>&nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:400px;">
         <div class="modal-content">
         </div>
     </div>
@@ -413,6 +472,80 @@ if(isset($idCond) && $idCond > 0){
             <div class="modal-footer">
                 <button class="btn btn-default btnCancelCondition" data-dismiss="modal" type="button">Annuler</button>
                 <button class="btn btn-primary btnSubmitCondition" type="button">Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editHour" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;">
+        <input type="hidden" id="idhour" value="" />
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fa fa-gears"></i>&nbsp;<span id="labelEditHour">Gestion Horaire</span>
+            </div>
+            <div class="modal-body">
+                <div id="hourError" style="display:none;" class="alert alert-danger"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="hourDay">Jours</label>
+                            <div class="col-md-9">
+                                <div class="checkbox-list">
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="monday" value="1"> Lundi </label>
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="tuesday" value="2"> Mardi </label>
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="wednesday" value="3"> Mercredi </label>
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="thursday" value="4"> Jeudi </label>
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="friday" value="5"> Vendredi </label>
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="saturday" value="6"> Samedi </label>
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" class="hourDay" id="sunday" value="7"> Dimanche </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:30px;">
+                    <div class="col-md-6">
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="hourBegin">Entre</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                        <input type="text" id="hourBegin" name="hourBegin" class="form-control timepicker timepicker-24">
+                                        <span class="input-group-btn">
+                                        <button class="btn default" type="button"><i class="fa fa-clock-o"></i></button>
+                                        </span>
+                                </div>
+                                <!--<input id="hourBegin" name="hourBegin" class="form-control" value="" type="text">-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="hourEnd">et</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                        <input type="text" id="hourEnd" name="hourEnd" class="form-control timepicker timepicker-24">
+                                        <span class="input-group-btn">
+                                        <button class="btn default" type="button"><i class="fa fa-clock-o"></i></button>
+                                        </span>
+                                </div>
+                                <!--<input id="hourEnd" name="hourEnd" class="form-control" value="" type="text">-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default btnCancelHour" data-dismiss="modal" type="button">Annuler</button>
+                <button class="btn btn-primary btnSubmitHour" type="button">Valider</button>
             </div>
         </div>
     </div>
@@ -502,50 +635,12 @@ $(document).ready(function () {
     
     $('.btnDeleteCondition').bind('click',function(e){
         var conditionId=$(this).attr('conditionId');
-        if(confirm("Etes vous sur de vouloir supprimer la condition?")){
-            $.ajax({
-                url: "ajax/condition_delete.php",
-                type: "POST",
-                data: {
-                    conditionId: conditionId
-                },
-                error: function(data){
-                    toastr.error("Une erreur est survenue");
-                },
-                complete: function(data){
-                    if(data = "done"){
-                        toastr.info("Condition supprimée");
-                        $('#line-condition-'+conditionId).toggle('hide');
-                    } else {
-                        toastr.error("Une erreur est survenue");
-                    }
-                }
-            });
-        }
+        deleteCondition(conditionId);
     });
     
     $('.btnDeleteCondAction').bind('click',function(e){
         var condActionId=$(this).attr('condActionId');
-        if(confirm("Etes vous sur de vouloir supprimer l'action?")){
-            $.ajax({
-                url: "ajax/condaction_delete.php",
-                type: "POST",
-                data: {
-                    condActionId: condActionId
-                },
-                error: function(data){
-                    toastr.error("Une erreur est survenue");
-                },
-                complete: function(data){
-                    if(data = "done"){
-                        toastr.info("Action supprimée");
-                        $('#line-condaction-'+condActionId).toggle('hide');
-                    } else {
-                        toastr.error("Une erreur est survenue");
-                    }
-                }
-            });
-        }
+        deleteCondAction(condActionId);
     });
     
     $('.fa').bind('click',function(e){
@@ -619,8 +714,58 @@ $(document).ready(function () {
                 if(data.responseText == "error"){
                     toastr.error("Une erreur est survenue");
                 } else {
+                    $('#tableCondition tbody:last').append('<tr id="line-condition-'+data.responseText+'"><td>Device</td><td>si '+$('#conditionDevice option:selected').text()+' est '+$('#conditionOperator').val()+' '+$('#conditionValue').val()+'</td><td><i class="fa fa-trash-o" style="cursor:pointer;" onclick="deleteCondition('+data.responseText+');"></i></td></tr>');
+                    $('.close').click();
                     $('.btnCancelCondition').click();
-                    toastr.info("Veuillez recharger","Condition ajoutée");
+                    toastr.info("Condition ajoutée");
+                    
+                }
+            }
+        });
+    });
+    
+    $('.btnSubmitHour').bind('click',function(e){
+        if($('.hourDay:checked').length == 0){
+            $('#hourError').text('Veuillez sélectionner au moins un jour');
+            $('#hourError').show();
+            return true;
+        }
+        $('#hourError').hide();
+        $('#hourError').text('');
+        
+        var days = new Array();
+        //Status
+        //$('.stateDeviceId:visible').each(function() {
+        $('.hourDay:checked').each(function() {
+            if ($(this).val() != 0) {
+                if ($.inArray($(this).val(),days) == -1) {
+                    days.push($(this).val());
+                }
+            }
+        });
+        
+        $.ajax({
+            url: "ajax/sce_cond_hour_submit.php",
+            type: "POST",
+            data: {
+                condId: $('#idscenario').val(),
+                days: days.join(','),
+                hourBegin: $('#hourBegin').val(),
+                hourEnd: $('#hourEnd').val()
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            success: function(data){
+                if(data.responseText == "error"){
+                    toastr.error("Une erreur est survenue");
+                } else if(data.responseText == "wrongError") {
+                    toastr.error("Les heures saisies sont incorrectes");
+                } else {
+                    //$('#tableCondition tbody:last').append('<tr id="line-condition-'+data.responseText+'"><td>Device</td><td>si '+$('#conditionDevice option:selected').text()+' est '+$('#conditionOperator').val()+' '+$('#conditionValue').val()+'</td><td><i class="fa fa-trash-o" style="cursor:pointer;" onclick="deleteCondition('+data.responseText+');"></i></td></tr>');
+                    $('.close').click();
+                    $('.btnCancelCondition').click();
+                    toastr.info("Condition ajoutée");
                     
                 }
             }
@@ -653,190 +798,66 @@ $(document).ready(function () {
                 if(data.responseText == "error"){
                     toastr.error("Une erreur est survenue");
                 } else {
+                    $('#tableCondition tbody:last').append('<tr id="line-condition-'+data.responseText+'"><td>Variable</td><td>si '+$('#variableDevice option:selected').text()+' est '+$('#variableOperator').val()+' '+$('#variableValue').val()+'</td><td><i class="fa fa-trash-o" style="cursor:pointer;" onclick="deleteCondition('+data.responseText+');"></i></td></tr>');
+                    $('.close').click();
                     $('.btnCancelVariable').click();
-                    toastr.info("Veuillez recharger","Condition ajoutée");
+                    toastr.info("Action ajoutée");
+                    //toastr.info("Veuillez recharger","Condition ajoutée");
                     
                 }
             }
         });
     });
     
-    var nestablecount=4;
-    $('.btnAddMessage').bind('click',function(e){
-        var messageId=$(this).attr('messageId');
-        var deviceName=$(this).attr('deviceName');
-        $('ol.affect').append('<li class="dd-item" data-id="' + nestablecount + '"><div class="dd-handle" messageId="'+messageId+'">' + deviceName + '</div></li>');
-        var params="";
-        $('#nestable_list_2 div.dd-handle').each(function( index ) {
-            var messageId=$(this).attr('messageId');
-            if(messageId != "" && typeof(messageId) !== "undefined"){
-                if(params != ""){
-                    params = params + "~";
-                }
-                params = params + index + ":" + messageId;
-            }
-        });
-        $.ajax({
-            url: "ajax/scenario_message_update_order.php",
-            method: "POST",
-            data: {
-                scenarioid:  $('#idscenario').val(),
-                messages: params
-            },
-            error: function(data){
-                toastr.error("Une erreur est survenue");
-            },
-            complete: function(data){
-                if(data.responseText == "error"){
-                    toastr.error("Une erreur est survenue");
-                }
-            }
-        });
-        nestablecount++;
-    });
-    
-    var UINestable = function () {
-
-    var updateOutput = function (e) {
-        var list = e.length ? e : $(e.target),
-            output = list.data('output');
-        if (window.JSON) {
-            output.val(window.JSON.stringify(list.nestable('serialize'))); //, null, 2));
-        } else {
-            output.val('JSON browser support required for this demo.');
-        }
-    };
-    
-    function domoUpdateOutput(){
-        if($('#idscenario').val() == ""){
-            toastr.error("Une erreur est survenue", "Sauvegarder le scenario");
-            return false;
-        }
-        
-        var params="";
-        $('#nestable_list_2 div.dd-handle').each(function( index ) {
-            var messageId=$(this).attr('messageId');
-            if(messageId != "" && typeof(messageId) !== "undefined"){
-                if(params != ""){
-                    params = params + "~";
-                }
-                params = params + index + ":" + messageId;
-            }
-        });
-        $.ajax({
-            url: "ajax/scenario_message_update_order.php",
-            method: "POST",
-            data: {
-                scenarioid:  $('#idscenario').val(),
-                messages: params
-            },
-            error: function(data){
-                toastr.error("Une erreur est survenue");
-            },
-            complete: function(data){
-                if(data.responseText == "error"){
-                    toastr.error("Une erreur est survenue");
-                }
-            }
-        });
-        
-        return true;
-    }
-
-
-    return {
-        //main function to initiate the module
-        init: function () {
-
-            // activate Nestable for list 1
-            $('#nestable_list_1').nestable({
-                group: 1
-                
-            })
-                .on('change', updateOutput);
-
-            // activate Nestable for list 2
-            $('#nestable_list_2').nestable({
-                group: 1
-            })
-                .on('change', domoUpdateOutput);
-
-            // output initial serialised data
-            updateOutput($('#nestable_list_1').data('output', $('#nestable_list_1_output')));
-            updateOutput($('#nestable_list_2').data('output', $('#nestable_list_2_output')));
-            
-            $('#nestable_list_menu').on('click', function (e) {
-                var target = $(e.target),
-                    action = target.data('action');
-                if (action === 'expand-all') {
-                    $('.dd').nestable('expandAll');
-                }
-                if (action === 'collapse-all') {
-                    $('.dd').nestable('collapseAll');
-                }
-            });
-            
-            $('.dd').nestable('collapseAll');
-
-        }
-
-    };
-
-    }();
-    
-    $('.btnAddPause').bind('click',function(e){
-        if($('#txtPause').val() == ""){
-            toastr.error("Veuillez renseigner un temps de pause");
-            return false;
-        }
-        
-        $.ajax({
-            url: "ajax/scenario_add_pause.php",
-            method: "POST",
-            data: {
-                scenarioId:  $('#idscenario').val(),
-                pause:  $('#txtPause').val()
-            },
-            error: function(data){
-                toastr.error("Une erreur est survenue");
-            },
-            complete: function(data){
-                if(data.responseText == "error"){
-                    toastr.error("Une erreur est survenue");
-                } else {
-                    eval(data.responseText);
-                }
-            }
-        });
-    });
-    
-    $('.btnRemoveCondMessage').bind('click',function(e){
-        var scenarioMessageId = $(this).attr('scenarioMessageId');
-        var messageId = $(this).attr('messageId');
-        $.ajax({
-            url: "ajax/delete_scenario_message.php",
-            method: "POST",
-            data: {
-                scenarioMessageId:  scenarioMessageId
-            },
-            error: function(data){
-                toastr.error("Une erreur est survenue");
-            },
-            complete: function(data){
-                if(data.responseText == "error"){
-                    toastr.error("Une erreur est survenue");
-                } else {
-                    $('#nestable_list_2 .messageId-'+messageId).toggle('hide');
-                    //domoUpdateOutput();
-                }
-            }
-        });
-    });
-    
-    UINestable.init();
 });
 var ui="wizard";
-var ui2="nestable";
+
+function deleteCondAction(condActionId){
+    if(confirm("Etes vous sur de vouloir supprimer l'action?")){
+        $.ajax({
+            url: "ajax/condaction_delete.php",
+            type: "POST",
+            data: {
+                condActionId: condActionId
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                if(data = "done"){
+                    toastr.info("Action supprimée");
+                    $('#line-condaction-'+condActionId).toggle('hide');
+                } else {
+                    toastr.error("Une erreur est survenue");
+                }
+            }
+        });
+    }
+}
+
+function deleteCondition(conditionId){
+    if(confirm("Etes vous sur de vouloir supprimer la condition?")){
+        $.ajax({
+            url: "ajax/condition_delete.php",
+            type: "POST",
+            data: {
+                conditionId: conditionId
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                if(data = "done"){
+                    toastr.info("Condition supprimée");
+                    $('#line-condition-'+conditionId).toggle('hide');
+                } else {
+                    toastr.error("Une erreur est survenue");
+                }
+            }
+        });
+    }
+}
+
 </script>
 <?php
 include "modules/footer.php";

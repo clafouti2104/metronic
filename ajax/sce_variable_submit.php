@@ -34,5 +34,5 @@ if($_POST["variableId"] != ""){
     $cond=Condition::createCondition($_POST["condId"], "variable", $_POST["operator"], $_POST["value"], $_POST["deviceId"]);
 }
 
-echo "success";
+echo $cond->id;
 ?>

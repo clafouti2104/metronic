@@ -475,6 +475,35 @@ class Device{
                     if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         $state =$row["comment"];
                     }
+                }elseif(strtolower($condition->type) == "hour"){
+                    //Gestion Horaire
+                    if($condition->value == ""){
+                        continue;
+                    }
+                    $json=json_decode($condition->value);
+                    if(!isset($json->days)){
+                        continue;
+                    }
+                    //Vérification Jour
+                    $acceptedDays=explode(",",$condition->value);
+                    if(!in_array(date('N'),$acceptedDays)){
+                        $check=false;
+                        continue;
+                    }
+                    
+                    if(!isset($json->beginHour) || !isset($json->beginMinute) || !isset($json->endHour) || !isset($json->endMinute)){
+                        continue;
+                    }
+                    //Verification Heure
+                    $currentDate=date('G')*60+date('i');
+                    $beginHour=intval($json->beginHour)*60+intval($json->beginMinute);
+                    $endHour=intval($json->endHour)*60+intval($json->endMinute);
+                    if($currentDate < $beginHour){
+                        $check=false;
+                    }
+                    if($currentDate > $endHour){
+                        $check=false;
+                    }
                 }
                 
                 if($state==""){
@@ -516,6 +545,8 @@ class Device{
             
             //Parcours des actions
             foreach($condActions as $condAction){
+                $sqlVariable = "";
+                
                 switch (strtolower($condAction->type)){
                     case 'action_message':
                         executeMessage($condAction->action);
@@ -523,6 +554,31 @@ class Device{
                     case 'action_scenario':
                         executeScenario($condAction->action);
                         break;
+                    case 'variable':
+                        switch(strtolower($condAction->more)){
+                            case 'inc':
+                                $sqlVariable="UPDATE config SET value=value+".$condAction->value." WHERE id=".$condAction->action.";";
+                                break;
+                            case 'dec':
+                                $sqlVariable="UPDATE config SET value=value-".$condAction->value." WHERE id=".$condAction->action.";";
+                                break;
+                            case 'set':
+                                $sqlVariable="UPDATE config SET value='".$condAction->value."' WHERE id=".$condAction->action.";";
+                                break;
+                        }
+                        if(isset($sqlVariable) && $sqlVariable != ""){
+                            $stmt->query($sqlVariable);
+                        }
+                        break;
+                    case 'notification':
+                        if(isset($condAction->action)){
+                            $ch = curl_init('http://api.pushingbox.com/pushingbox?devid='.$condAction->action);
+                            file_put_contents("/tmp/info", "PUSHING BOX = http://api.pushingbox.com/pushingbox?devid=".$condAction->action);
+                            curl_exec ($ch);
+                            curl_close ($ch);
+                        }
+                        break;
+                    default:
                 }
             }
             $log = Log::createLog("scenario_conditionnel", $cond->name, $now->format('Y-m-d H:i:s'), $cond->id, 40);

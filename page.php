@@ -480,6 +480,77 @@ $( document ).ready(function() {
             echo "});";
         }
         
+        if($chart->type == "mix"){
+            echo "$('.container-".$item->id."').highcharts({";
+            echo " chart: {";
+            echo " zoomType: 'xy' ";
+            echo " }, ";
+            echo "title: {";
+            echo " text: '".$chart->name."'";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+            echo "},";
+            echo "xAxis: {";
+            echo "type: 'datetime'";
+            echo "},";
+            echo "yAxis: [{";
+            echo "title: { text: 'Temperature'}";
+            echo "},{";
+            echo "title: { text: '".$chart->ordonne."' }";
+            echo "}],";
+            echo "tooltip: {";
+            echo "shared: true";
+            echo "},";
+            echo "series: [";
+            $k=0;
+            foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+                $device=Device::getDevice($chartDevice->deviceid);
+
+                $chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
+                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from, $chartFormula,NULL,TRUE);
+                //print_r($data);
+                //exit;
+                //$data=0;
+                if($k>0){
+                    echo ",";
+                }
+                echo "{";  
+                echo "yaxis: 1,";
+                echo "name:'".$device->name."',";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";
+                if($chart->price && !is_null($device->chart_formula)){
+                    echo ",tooltip: {";
+                    echo " valueDecimals: 2,";
+                    echo "valuePrefix: '€',";
+                    echo "valueSuffix: ' EUR'";
+                    echo "}";
+                }
+                
+                echo "}";
+                $k++;
+            }
+            if($chart->deviceIdLine != ""){
+                $devicesIdLine = explode(",", $chart->deviceIdLine);
+                foreach($devicesIdLine as $deviceIdLine){
+                    $device=Device::getDevice($deviceIdLine);
+
+                    $data=History::getHistoryHighchartLine($deviceIdLine, $chart->period, $chart->from);
+                    if($k>0){
+                        echo ",";
+                    }
+                    echo "{";  
+                    echo "name:'".$device->name."',";  
+                    echo "data:[ ".$data." ]";
+                    echo "}";
+                    $k++;
+                }
+            }
+            echo "]";
+            echo "});";
+        }
+        
     }
     ?>
             

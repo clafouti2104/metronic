@@ -244,6 +244,9 @@ var ComponentsDropdowns = function () {
         $('#my_multi_select2').multiSelect({
             selectableOptgroup: true
         });
+        $('#my_multi_select3').multiSelect({
+            selectableOptgroup: true
+        });
     }
 
     return {

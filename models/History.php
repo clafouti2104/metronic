@@ -247,7 +247,7 @@ class History{
         return $jsSerie;
     }
     
-    public static function getHistoryHighchartBarre($deviceid,$period,$from,$formula=NULL){
+    public static function getHistoryHighchartBarre($deviceid,$period,$from,$formula=NULL,$showDate=FALSE){
         $result = array();
         //echo "rentre";exit;
         $dateFrom=new DateTime('now');
@@ -289,9 +289,23 @@ class History{
                             $value = $stateTemp."";
                         }
                     }
+                    
+                    if($showDate){
+                        $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
+                        $month--;
+                        $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
+                        $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
+                        $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                        
+                    } else {
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= $value;
+                        
+                    }
+                    
                     //echo "==>".$value;
-                    $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= $value;
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateEnd->add(new DateInterval("PT1H"));
@@ -328,8 +342,23 @@ class History{
                             $value = $stateTemp."";
                         }
                     }
-                    $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= $value;
+                    
+                    if($showDate){
+                        $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
+                        $month--;
+                        $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
+                        $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
+                        $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                        
+                    } else {
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= $value;
+                        
+                    }
+                    //$jsSerie .= ($jsSerie == "") ? "" : ",";
+                    //$jsSerie .= $value;
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateFrom->add(new DateInterval("P1D"));

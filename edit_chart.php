@@ -58,9 +58,15 @@ if($isPost && isset($_POST["idchart"])){
         $chart = Chart::getChart($idchart);
         $chartdevices = ChartDevice::getChartDeviceForChart($idchart);
         
-        $_POST["my_multi_select2"]=array();
+        $_POST["my_multi_select2"]=$_POST["my_multi_select3"]=array();
         foreach($chartdevices as $chartdevice){
             $_POST["my_multi_select2"][] =$chartdevice->deviceid;
+        }
+        
+        $deviceLines=explode(",",$chart->deviceIdLine);
+        //print_r($deviceLines);
+        foreach($deviceLines as $deviceLine){
+            $_POST["my_multi_select3"][] =$deviceLine;
         }
     } 
     $name= (!is_object($chart)) ? NULL : $chart->name;
@@ -104,13 +110,18 @@ if($isPost){
 //        $_POST["modePrix"] = (!isset($_POST["modePrix"]) || $_POST["modePrix"] == "") ? 0 : $_POST["modePrix"];
         $_POST["modePrix"] = ($_POST["modePrix"] == "") ? 0 : $_POST["modePrix"];
 //        $_POST["active"] = ($_POST["active"] == "") ? 0 : $_POST["active"];
+        $deviceLine=NULL;
+        if($_POST["type"]=="mix"){
+            $deviceLine=implode(",", $_POST["my_multi_select3"]);
+        }
 
         $_POST["from"]=($_POST["from"] != "") ? "P".$_POST["from"]."D" : "";
         if($_POST["idchart"]>0){
+            
             $sql="UPDATE chart SET name='".$_POST["name"]."', description='".$_POST["description"]."', type='".$_POST["type"]."',";
             $sql.="period='".$_POST["period"]."', froms='".$_POST["from"]."', size=".$_POST["size"].", ";
             $sql.="abs='".$_POST["abs"]."', ord='".$_POST["ord"]."', ";
-            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."', price=".$_POST["modePrix"];
+            $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."', price=".$_POST["modePrix"].", deviceIdLine='".$deviceLine."'";
             $sql.=" WHERE id=".$_POST["idchart"];
             //echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
@@ -123,7 +134,7 @@ if($isPost){
 
             $info="La graphique a été modifié";
         } else {
-            $chart=Chart::createChart($_POST["name"], $_POST["description"], $_POST["type"], $_POST["period"], $_POST["from"],$_POST["size"], $_POST["abs"],$_POST["ord"],$_POST["scaleMin"],$_POST["scaleMax"],$_POST["modePrix"]);
+            $chart=Chart::createChart($_POST["name"], $_POST["description"], $_POST["type"], $_POST["period"], $_POST["from"],$_POST["size"], $_POST["abs"],$_POST["ord"],$_POST["scaleMin"],$_POST["scaleMax"],$_POST["modePrix"], $deviceLine);
             $idchart=$chart->id;
             foreach($_POST["my_multi_select2"] as $deviceTmp){
                 ChartDevice::createChartDevice($idchart, $deviceTmp);
@@ -241,7 +252,7 @@ if(isset($idchart) && $idchart > 0){
                                 <div class="row" style="margin-bottom: 10px;">
                                     <div class="col-md-12 ">
                                         <div class="form-group last">
-                                                <label class="control-label col-md-3">Device</label>
+                                                <label class="control-label col-md-3">Objet</label>
                                                 <div class="col-md-9">
                                                         <select multiple="multiple" class="multi-select" id="my_multi_select2" name="my_multi_select2[]">
         <?php
@@ -323,15 +334,15 @@ if(isset($idchart) && $idchart > 0){
                                             <div class="col-md-9">
                                                 <div id="spinner1">
                                                         <div class="input-group input-small">
-                                                                <input type="text" name="size" id="spinner1" class="spinner-input form-control" maxlength="2" value="<?php echo $size; ?>" readonly>
-                                                                <div class="spinner-buttons input-group-btn btn-group-vertical">
-                                                                        <button type="button" class="btn spinner-up btn-xs blue">
-                                                                        <i class="fa fa-angle-up"></i>
-                                                                        </button>
-                                                                        <button type="button" class="btn spinner-down btn-xs blue">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                        </button>
-                                                                </div>
+                                                            <input type="text" name="size" id="spinner1" class="spinner-input form-control" maxlength="2" value="<?php echo $size; ?>" readonly>
+                                                            <div class="spinner-buttons input-group-btn btn-group-vertical">
+                                                                <button type="button" class="btn spinner-up btn-xs blue">
+                                                                    <i class="fa fa-angle-up"></i>
+                                                                </button>
+                                                                <button type="button" class="btn spinner-down btn-xs blue">
+                                                                    <i class="fa fa-angle-down"></i>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                 </div>
                                             </div>
@@ -374,6 +385,27 @@ if(isset($idchart) && $idchart > 0){
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row objectLine" style="margin-bottom: 10px;">
+                                    <div class="col-md-12 ">
+                                        <div class="form-group last">
+                                                <label class="control-label col-md-3">Objet Mode Ligne</label>
+                                                <div class="col-md-9">
+                                                        <select multiple="multiple" class="multi-select" id="my_multi_select3" name="my_multi_select3[]">
+        <?php
+        foreach($deviceTab as $typeT=>$deviceType){
+            echo "<optgroup label=\"".ucwords($typeT)."\">";
+            foreach($deviceType as $deviceTmp){
+                $selected = (in_array($deviceTmp->id, $_POST["my_multi_select3"])) ? " selected=\"selected\" " : "";
+                echo "<option value=\"".$deviceTmp->id."\" $selected>".ucwords($deviceTmp->name)."</option>\r\n";
+            }
+            echo "</optgroup>";
+        }
+        ?>
+                                                        </select>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -386,8 +418,30 @@ if(isset($idchart) && $idchart > 0){
     </div>
 </div>
 <script deviceid="text/javascript">
-    var ui="dropdown";
+var ui="dropdown";
 $(document).ready(function () {
+    if($('#type').val() == "mix"){
+        $('.objectLine').show();
+    } else {
+        $('.objectLine').hide();
+    }
+    $('#type').change(function(){
+        if($(this).val() == "mix"){
+            $('.objectLine').show();
+        } else {
+            $('.objectLine').hide();
+        }
+    });
+    
+    $('#period').change(function(){
+        if($(this).val() == "2"){
+            $('#from').val('6');
+        } else if($(this).val() == "1") {
+            $('#from').val('1');
+        }
+    });
+    
+    
     $('#spinner1').spinner({min: 3, max: 12});
 });
 </script>

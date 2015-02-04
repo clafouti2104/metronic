@@ -6,13 +6,15 @@ class CondAction{
     public $type;
     public $action;
     public $value;
+    public $more;
     
-    public function __construct($id, $condId, $type, $action, $value) {
+    public function __construct($id, $condId, $type, $action, $value, $more) {
         $this->id = $id;
         $this->condId = $condId;
         $this->type = $type;
         $this->action = $action;
         $this->value = $value;
+        $this->more = $more;
     }
     
     public static function CondActionExists($idCondAction) {
@@ -51,6 +53,7 @@ class CondAction{
         $query .= ",type";
         $query .= ",action";
         $query .= ",value";
+        $query .= ",more";
         $query .= " FROM condaction ";
         $query .= " WHERE id=:id";
         
@@ -61,7 +64,7 @@ class CondAction{
             $params = array(":id" => $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_condaction = new CondAction($row['id'],$row['condId'],$row['type'],$row['action'],$row["value"]);
+                    $tmp_condaction = new CondAction($row['id'],$row['condId'],$row['type'],$row['action'],$row["value"],$row["more"]);
 
                     $result[] = $tmp_condaction;
                     $tmp_condaction = NULL;
@@ -108,19 +111,21 @@ class CondAction{
         return self::getCondAction($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createCondAction($condId,$type,$action,$value) {
+    public static function createCondAction($condId,$type,$action,$value,$more=NULL) {
         
         $query = "INSERT INTO condaction (";
         $query .= "condId";
         $query .= ",type";
         $query .= ",action";
         $query .= ",value ";
+        $query .= ",more ";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":condId";
         $query .= ",:type";
         $query .= ",:action";
         $query .= ",:value ";
+        $query .= ",:more ";
         $query .= ")";
         
         $params = array();
@@ -128,6 +133,7 @@ class CondAction{
         $params[":type"] = $type;
         $params[":action"] = $action;
         $params[":value"] = $value;
+        $params[":more"] = $more;
         
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -145,7 +151,7 @@ class CondAction{
         }
         $stmt = NULL;
 
-        $tmpInstance = new CondAction($id, $condId, $type, $action, $value);
+        $tmpInstance = new CondAction($id, $condId, $type, $action, $value,$more);
         
         return $tmpInstance;
     }
@@ -171,6 +177,7 @@ class CondAction{
         $query .= ", action=:action";
         $query .= ", value=:value";
         $query .= ", type=:type";
+        $query .= ", more=:more";
         $query .= " WHERE id=:id";
         
         $params = array();
@@ -179,6 +186,7 @@ class CondAction{
         $params[':action'] = $this->action;
         $params[':value'] = $this->value;
         $params[':type'] = $this->type;
+        $params[':more'] = $this->more;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {

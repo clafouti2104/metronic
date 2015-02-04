@@ -1,5 +1,6 @@
 <?php 
 $pageAdmin=array(
+    $GLOBALS['path']."/admin_conditional.php",
     $GLOBALS['path']."/admin_device.php",
     $GLOBALS['path']."/admin_parameters.php",
     $GLOBALS['path']."/admin_advanced.php",
@@ -107,7 +108,7 @@ $pageAdmin=array(
 					</a>
                                         <ul class="sub-menu">
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_device.php") echo "active"; ?>">
-                                                <a href="admin_device.php">Device</a>
+                                                <a href="admin_device.php">Objet</a>
                                             </li>
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_parameters.php") echo "active"; ?>">
                                                 <a href="admin_parameters.php">Paramètres</a>

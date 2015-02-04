@@ -39,11 +39,17 @@ while( $resultat = $resultats->fetch() )
 }
 
 //echo "DATE ==>"."SELECT * FROM log WHERE date > '".$lastDate->format('Y-m-d H:i:s')."'";
+$unknownNotif=0;
 $notifications=array();
-$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND date > '".$lastDate->format('Y-m-d H:i:s')."' AND level >= ".$logLevel." ORDER BY date DESC");
+//$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND date > '".$lastDate->format('Y-m-d H:i:s')."' AND level >= ".$logLevel." ORDER BY date DESC");
+$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND level >= ".$logLevel." ORDER BY date DESC LIMIT 0,15");
 $resultatLogs->setFetchMode(PDO::FETCH_OBJ);
 while( $resultatLog = $resultatLogs->fetch() )
 {
+    $date = new DateTime($resultatLog->date);
+    if($date->format('U') > $lastDate->format('U') ){
+        $unknownNotif++;
+    }
     $notifications[]=array(
         "deviceId"=>$resultatLog->deviceId,
         "deviceName"=>$resultatLog->name,
@@ -134,9 +140,9 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
 					<i class="fa fa-warning"></i>
 						<i class="icon-warning-sign"></i>
                                                 <?php 
-                                                if( count($notifications) > 0){
+                                                if( $unknownNotif > 0){
                                                 ?>
-                                                    <span class="badge badge-default"><?php echo count($notifications); ?></span>
+                                                    <span class="badge badge-default"><?php echo $unknownNotif; ?></span>
                                                 <?php
                                                 }
                                                 ?>
@@ -148,7 +154,7 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
                                                         <?php 
                                                         foreach ($notifications as $notification){
                                                             $device= ($notification["deviceName"] != "") ? $notification["deviceName"] : $notification["rfId"];
-                                                            $tmpInfo="";
+                                                            $tmpInfo=$prefix="";
                                                             switch (strtolower($notification["value"])){
                                                                 case "on":
                                                                     $label="success";
@@ -159,14 +165,17 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
                                                                     $icon="bolt";
                                                                     break;
                                                                 case "armed":
+                                                                    $prefix="MES ";
                                                                     $label="danger";
                                                                     $icon="bullhorn";
                                                                     break;
                                                                 case "disarmed":
+                                                                    $prefix="MHS ";
                                                                     $label="success";
                                                                     $icon="bullhorn";
                                                                     break;
                                                                 case "partial":
+                                                                    $prefix="MES ";
                                                                     $label="warning";
                                                                     $icon="bullhorn";
                                                                     break;
@@ -191,7 +200,7 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
                                                             echo "<li>";
                                                             echo "<a href='javascript:;' onclick='App.onNotificationClick(1)'>";
                                                             echo "<span class='label label-".$label."'><i class='fa fa-".$icon."'></i></span>";
-                                                            echo $device.". ";
+                                                            echo " ".$prefix.$device.". ";
                                                             echo "<span class='time'>".$date->format('d-m-Y H:i')."</span>";
                                                             echo "</a>";
                                                             echo "</li>";

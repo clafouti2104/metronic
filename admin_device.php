@@ -22,13 +22,13 @@ $devices = Device::getDevices();
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                 <h3 class="page-title">
-                    Device				
-                    <small>Liste des devices</small>
+                    Objets				
+                    <small>Liste des objets</small>
                 </h3>
                 <!--<a href="edit_device.php" style="float:right;margin: 20px 0 15px;"><button class="btn green" type="button"><i class="icon-plus"></i>&nbsp;Ajouter un device</button></a>-->
                 <ul class="page-breadcrumb breadcrumb">
                     <li class="btn-group">
-                        <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_device.php';"><i class="fa fa-plus"></i>Ajouter un device</button>
+                        <button class="btn btn-primary" type="button" onclick="javascript:location.href='edit_device.php';"><i class="fa fa-plus"></i>Ajouter un objet</button>
                     </li>
                     <li>
                         <i class="fa fa-home"></i>
@@ -36,7 +36,7 @@ $devices = Device::getDevices();
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>   
-                        <a href="#">Liste des devices</a>
+                        <a href="#">Liste des objets</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
