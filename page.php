@@ -508,7 +508,7 @@ $( document ).ready(function() {
                 $device=Device::getDevice($chartDevice->deviceid);
 
                 $chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
-                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from, $chartFormula,NULL,TRUE);
+                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from, $chartFormula,TRUE);
                 //print_r($data);
                 //exit;
                 //$data=0;
@@ -516,7 +516,7 @@ $( document ).ready(function() {
                     echo ",";
                 }
                 echo "{";  
-                echo "yaxis: 1,";
+                echo "yAxis: 1,";
                 echo "name:'".$device->name."',";  
                 //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
                 echo "data:[ ".$data." ]";
