@@ -20,6 +20,7 @@ $sqlDevices .= " OR id IN (";
 $sqlDevices .= " SELECT deviceId FROM messagedevice";
 $sqlDevices .= " WHERE active=1";
 $sqlDevices .= ") ";
+$sqlDevices .= " OR (type='door') ";
 $sqlDevices .= " ORDER BY name ASC ";
 $stmt = $GLOBALS["dbconnec"]->prepare($sqlDevices);
 $stmt->execute(array());
