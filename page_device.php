@@ -8,6 +8,13 @@ $bgcolor=(isset($itemParams->color) && $itemParams->color != "") ? $itemParams->
 $color="#FFF";
 
 switch(strtolower($device->type)){
+    case 'door' :
+        if(strtolower($device->state) == "on"){
+            $icon="icon-unlocked";
+        } else {
+            $icon="icon-locked";
+        }
+        break;
     case 'light' :
         if(strtolower($device->state) == "on"){
             $icon="icon-light-on";

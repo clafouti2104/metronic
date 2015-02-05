@@ -639,6 +639,9 @@ function refreshStatus(){
                 }
                 if(value.toLowerCase() == "on"){
                     if($('.icon-status-'+index).length >= 1){
+                        if($('.icon-status-'+index).attr('type') == 'door'){
+                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-unlocked');
+                        }
                         if($('.icon-status-'+index).attr('type') == 'light'){
                             $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
                         }
@@ -655,6 +658,9 @@ function refreshStatus(){
                 }
                 if(value.toLowerCase() == "off"){
                     if($('.icon-status-'+index).length >= 1){
+                        if($('.icon-status-'+index).attr('type') == 'door'){
+                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-locked');
+                        }
                         if($('.icon-status-'+index).attr('type') == 'light'){
                             $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
                         }
