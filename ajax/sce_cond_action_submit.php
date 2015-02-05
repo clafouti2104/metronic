@@ -25,6 +25,9 @@ switch(strtolower($_POST["type"])){
     case 'notification':
         $type="notification";
         break;
+    case 'commandline':
+        $type="commandline";
+        break;
     default:
         return true;
 }

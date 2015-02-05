@@ -578,6 +578,11 @@ class Device{
                             curl_close ($ch);
                         }
                         break;
+                    case 'commandline':
+                        if(isset($condAction->action)){
+                            $ch = exec($condAction->action);
+                        }
+                        break;
                     default:
                 }
             }

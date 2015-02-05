@@ -308,6 +308,12 @@ if(isset($idCond) && $idCond > 0){
                                                  Notifications
                                             </div>
                                         </a>
+                                        <a data-target="#ajaxCommandLine" data-toggle="modal" href="ajax/user/sce_cond_command_line.php?idCond=<?php echo $idCond; ?>" class="icon-btn">
+                                            <i class="fa fa-code "></i>
+                                            <div>
+                                                 Ligne de Commandes
+                                            </div>
+                                        </a>
                                     </div>
                                     <div class="col-md-9 ">
                                         <div class="table-responsive">
@@ -374,6 +380,16 @@ if(isset($idCond) && $idCond > 0){
     </div>
 </div>
     
+<div class="modal fade" id="ajaxCommandLine" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>&nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:600px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
     
 <div class="modal fade" id="ajaxVariable" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
