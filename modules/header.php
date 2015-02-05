@@ -136,7 +136,7 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
 			<ul class="nav navbar-nav pull-right">
 					<!-- BEGIN NOTIFICATION DROPDOWN -->	
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
-						<a href="components_editors.html#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 					<i class="fa fa-warning"></i>
 						<i class="icon-warning-sign"></i>
                                                 <?php 
