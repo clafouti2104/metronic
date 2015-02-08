@@ -10,29 +10,6 @@ include_once "models/History.php";
 include_once "models/Device.php";
 $GLOBALS["dbconnec"] = connectDB();
 
-$months=array(
-    1=>"Janvier",
-    2=>"Février",
-    3=>"Mars",
-    4=>"Avril",
-    5=>"Mai",
-    6=>"Juin",
-    7=>"Juillet",
-    8=>"Août",
-    9=>"Septembre",
-    10=>"Octobre",
-    11=>"Novembre",
-    12=>"Décembre"
-);
-
-$isPost=FALSE;
-if(isset($_POST["formname"]) && $_POST["formname"]=="formconso"){
-    $isPost=TRUE;
-}
-
-$_POST["period"] = ($isPost) ? $_POST["period"] : NULL;
-$_POST["month"] = ($isPost) ? $_POST["month"] : date('n');
-
 $sql="SELECT id,name,chart_formula, unite FROM device WHERE type='electricy'";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
@@ -71,67 +48,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<small>Electriques</small>";
                 }
                 ?>
-                <i class="fa fa-search btnSearch"></i>
             </h3>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
-    </div>
-    <div class="row divRecherche">
-        <form class="form-horizontal" id="formConso" method="POST" action="conso.php">
-            <input type="hidden" name="formname" id="formname" value="formconso" />
-            <div class="form-body">
-                <h4 class="form-section">Recherche</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Période</label>
-                            <div class="col-md-9">
-                                <select class="form-control" id="period" name="period">
-                                    <option></option>
-                                    <option value="day" <?php if($_POST["period"] == "day")echo " selected=\"selected\""; ?>>Jour</option>
-                                    <option value="week" <?php if($_POST["period"] == "week")echo " selected=\"selected\""; ?>>Semaine</option>
-                                    <option value="month" <?php if($_POST["period"] == "month")echo " selected=\"selected\""; ?>>Mois</option>
-                                    <option value="year" <?php if($_POST["period"] == "year")echo " selected=\"selected\""; ?>>Année</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 divDay">
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Jour</label>
-                            <div class="col-md-9">
-                                <input class="form-control form-control-inline input-medium date-picker" id="day" type="text" value="" size="16">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 divMonth">
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Mois</label>
-                            <div class="col-md-9">
-                                <select class="form-control" id="month" name="month">
-                                    <?php 
-                                    foreach($months as $idMonth=>$month){
-                                        $selected = ($idMonth == $_POST["month"]) ? " selected=\"selected\" " : "";
-                                        echo "<option value=\"".$idMonth."\" $selected>".$month."</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-actions fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="col-md-offset-3 col-md-9">
-                            <button class="btn green" type="submit">Rechercher</button>
-                        </div>
-                    </div>
-                    <div class="col-md-6"> </div>
-                </div>
-            </div>
-        </form>
     </div>
     <?php
     if(count($devicesEau) > 0){
@@ -139,6 +58,8 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     <div class="tabbable-custom ">
     <?php
     }
+    ?>
+        <?php
         if(count($devicesEau) > 0){
         ?>
             <ul class="nav nav-tabs ">
@@ -155,81 +76,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <div class="tab-content">
             <div class="tab-pane active" id="tab_electricite">
                 <div class="row">
-                    <?php if($isPost){ 
-$title="Journalier"; 
-switch($_POST["period"]){
-    case "day":
-        $title="Journalier";
-        break;
-    case "week":
-        $title="Hebdomadaire";
-        break;
-    case "month":
-        $title="Mensuel";
-        break;
-    case "year":
-        $title="Annuel";
-        break;
-    default:
-}
-?>
-                    <div class="col-md-12">
-                        <div class="portlet light bg-inverse">
-                            <div class="portlet-title">
-                                <div class="caption font-red-sunglo">
-                                    <i class="icon-share font-red-sunglo"></i>
-                                    <span class="caption-subject bold uppercase" style="text-transform:uppercase !important;"> <?php echo $title; ?></span>
-                                    <span class="caption-helper"></span>
-                                </div>
-                                <div class="actions"></div>
-                            </div>
-                            <div class="portlet-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h4 style="font-variant: small-caps;">Courant</h4>
-<?php
-$totalActual=$totalLast=0;
-$totalMoneyActual=$totalMoneyLast=0;
-$i=0;
-foreach($devicesTab as $deviceId => $deviceInfo){
-    //Récupération de l'historique
-    $dataDay=History::getCountForPeriod($deviceId, '3', $_POST["month"]);
-    $totalActual +=$dataDay;
-    $newLine=($i>0) ? "<br/>" : "";
-    $i++;
-    $txt.= $newLine;
-    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
-    $txt.= "<span style=\"font-variant:small-caps;font-size: larger;\">".number_format($dataDay,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span>";
-    if($deviceInfo["chart_formula"] != ""){
-        $fonction = str_replace("x", $dataDay, $deviceInfo["chart_formula"]);
-        @eval('$stateTemp='.$fonction.';');
-        if(isset($stateTemp)){
-            $money = $stateTemp."";
-            $totalMoneyActual += $money;
-        }
-        if(isset($money)){
-            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
-        }
-                    
-    }
-}
-            if(count($devicesTab) > 1){
-                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-            } else {
-                echo $txt;
-            }
-
-
-?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                   
-<?php                        } 
-                    ?>
-                    <?php if(!$isPost){ ?>
                     <div class="col-md-6">
                         <div class="portlet light bg-inverse">
                             <div class="portlet-title">
@@ -675,10 +521,8 @@ foreach($devicesTab as $deviceId => $deviceInfo){
                             </div>
                         </div>
                     </div><!-- END PORTLET -->
-                    <?php } ?>
                 </div><!-- DIV ROW-->
             </div><!-- DIV TAB ELECTRICITE-->
-            
             <div class="tab-pane" id="tab_eau">
                 <div class="row">
                     <div class="col-md-6">
@@ -1137,18 +981,6 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('.divRecherche').hide ();
-    $('.btnSearch').click(function(){
-        $('.divRecherche').toggle();
-    });
-    $('#period').change(function(){
-        if($(this).val() == "month"){
-            $('#divMonth').show();
-        } else {
-            $('#divMonth').hide();
-        }
-    });
-    
     $('.easy-pie-chart .number.transactions.blue').easyPieChart({
         animate: 1000,
         size: 100,

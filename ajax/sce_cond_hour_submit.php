@@ -33,7 +33,7 @@ $value["days"]=$_POST["days"];
 $value["beginHour"]=$hourBegin[0];
 $value["beginMinute"]=$hourBegin[1];
 $value["endHour"]=$hourEnd[0];
-$value["beginMinute"]=$hourEnd[1];
+$value["endMinute"]=$hourEnd[1];
 
 if($_POST["conditionId"] != ""){
     /*$cond = Condition::getCondition($_POST["conditionId"]);

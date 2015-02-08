@@ -461,7 +461,7 @@ class Device{
             foreach($conditions as $condition){
                 $state="";
                 //Récupération du status
-                if(strtolower($condition->type) != "device" && strtolower($condition->type) != "variable"){
+                if(strtolower($condition->type) != "device" && strtolower($condition->type) != "hour" && strtolower($condition->type) != "variable"){
                     continue;
                 }
                 
@@ -555,20 +555,20 @@ class Device{
                     case 'action_scenario':
                         executeScenario($condAction->action);
                         break;
-                    case 'variable':
+                    case 'action_variable':
                         switch(strtolower($condAction->more)){
                             case 'inc':
-                                $sqlVariable="UPDATE config SET value=value+".$condAction->value." WHERE id=".$condAction->action.";";
+                                $sqlVariable="UPDATE config SET comment=comment+".$condAction->value." WHERE id=".$condAction->action.";";
                                 break;
                             case 'dec':
-                                $sqlVariable="UPDATE config SET value=value-".$condAction->value." WHERE id=".$condAction->action.";";
+                                $sqlVariable="UPDATE config SET comment=comment-".$condAction->value." WHERE id=".$condAction->action.";";
                                 break;
                             case 'set':
-                                $sqlVariable="UPDATE config SET value='".$condAction->value."' WHERE id=".$condAction->action.";";
+                                $sqlVariable="UPDATE config SET comment='".$condAction->value."' WHERE id=".$condAction->action.";";
                                 break;
                         }
                         if(isset($sqlVariable) && $sqlVariable != ""){
-                            $stmt->query($sqlVariable);
+                            $stmt = $GLOBALS["dbconnec"]->query($sqlVariable);
                         }
                         break;
                     case 'notification':
