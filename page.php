@@ -141,65 +141,19 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Responsive & Scrollable</h4>
+                <h4 class="modal-title modalTitleMoreMessage"></h4>
             </div>
             <div class="modal-body">
                 <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
                     <div class="row">
-                        <div class="col-md-6">
-                                <h4>Some Input</h4>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                        </div>
-                        <div class="col-md-6">
-                                <h4>Some More Input</h4>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
-                                <p>
-                                        <input type="text" class="col-md-12 form-control">
-                                </p>
+                        <div class="col-md-12 contentMoreMessage">
+                                
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn default">Close</button>
-                <button type="button" class="btn green">Save changes</button>
+                <button type="button" data-dismiss="modal" class="btn default">Fermer</button>
             </div>
         </div>
     </div>
@@ -265,6 +219,22 @@ $( document ).ready(function() {
             }
         });
     });
+    
+    $('.btnMoreMessage').bind('click',function(e){
+        var idDevice=$(this).attr('idDevice');
+        $.ajax({
+            url: "ajax/user/more_messages.php",
+            type: "GET",
+            data: {
+                idDevice:  idDevice
+            },
+            complete: function(data){
+                eval(data.responseText);
+            }
+        });
+    });
+    
+    
     
     $('.btnDeletePageItem').bind('click',function(e){
         $('#iditempagetodelete').val($(this).attr('iditempage'));
