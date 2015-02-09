@@ -341,7 +341,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     $i++;
 }
 ?>
-                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+                                        <h4 style="font-variant: small-caps;"><?php echo $txtDescription; ?></h4>
                                     </div>
 <?php 
 $percent=($totalActual/$totalLast)*100;
