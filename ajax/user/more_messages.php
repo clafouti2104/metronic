@@ -42,6 +42,7 @@ $messages = MessageDevice::getMessageDevicesForDevice($device->id);
         <h4 class="modal-title"><i class="fa fa-flash"></i>&nbsp;&nbsp;Exécution de Commandes</h4>
     </div>
     <div class="modal-body">
+        <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
         <div id="alert" class=""></div>
         <div class="row">
 <?php 
@@ -86,6 +87,7 @@ foreach($messages as $message){
 }
 ?>
         </div>
+    </div>
     </div>
     <!--<div class="modal-footer">
         <button type="button" class="btn btn-primary btnSubmitEditPageItem">Modifier</button>

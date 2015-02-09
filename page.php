@@ -136,7 +136,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
         </div>
     </div>
 </div>
-<div class="modal fade" id="ajaxShowMoreMessages" role="basic" aria-hidden="true">
+<div class="modal fade" id="ajaxShowMoreMessages" tabindex="-1"  aria-hidden="true">
     <div class="page-loading page-loading-boxed">
         <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
