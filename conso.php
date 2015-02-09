@@ -312,6 +312,12 @@ $signConso = ($percent == 100) ? "" : $signConso;
 
 $colorConso = ($percent > 100) ? "red" : "blue";
 $colorConso = ($percent == 100) ? "yellow" : $colorConso;
+
+            if(count($devicesTab) > 1){
+                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Hier\" style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalLast,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyLast, 2, ",", " ")."€";
+            } else {
+                echo $txt;
+            }
 ?>
                                     <div class="col-md-12">
                                         <div class="easy-pie-chart">
