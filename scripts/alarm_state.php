@@ -37,7 +37,7 @@ if($type=="myfox"){
     $stmt = $db->prepare($sql);
     $stmt->execute();
     if($row = $stmt->fetch()){
-        Device::updateState($row["id"],$status, $date);
+        Device::updateState($row["id"],$status);
     }
     
     //print_r(json_encode($result));
