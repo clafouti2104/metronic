@@ -403,6 +403,7 @@ class Device{
     */
     public static function updateState($id, $state, $last_update="NOW()") {
         $device=self::getDevice($id);
+        $lastState=$device->state;
         if($device->state_parameters != ""){
             $deviceState = self::decodeState($state, $device->state_parameters, $device->state_results);
         } elseif($device->state_results != ""){
@@ -426,6 +427,9 @@ class Device{
         }
         $stmt = NULL;
         
+        if(strtolower($lastState) == $state){
+            return TRUE;
+        }
         //Vérifie si scénario conditionnel associé
         self::checkScenarioConditionnel($id);
         
