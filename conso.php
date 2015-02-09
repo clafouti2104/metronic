@@ -35,6 +35,7 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="formconso"){
 
 $_POST["period"] = ($isPost) ? $_POST["period"] : NULL;
 $_POST["month"] = ($isPost) ? $_POST["month"] : date('n');
+$_POST["year"] = ($isPost) ? $_POST["year"] : date('Y');
 
 $sql="SELECT id,name,chart_formula, unite FROM device WHERE type='electricy'";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
@@ -99,7 +100,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 divDay">
+                    <div class="col-md-6 divDay" style="<?php if($_POST["period"] != "day" && $_POST["period"] != "week")echo "display:none;"; ?>">
                         <div class="form-group">
                             <label class="control-label col-md-3">Jour</label>
                             <div class="col-md-9">
@@ -107,7 +108,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 divMonth">
+                    <div class="col-md-6 divMonth" style="<?php if($_POST["period"] != "month")echo "display:none;"; ?>">
                         <div class="form-group">
                             <label class="control-label col-md-3">Mois</label>
                             <div class="col-md-9">
@@ -116,6 +117,17 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     foreach($months as $idMonth=>$month){
                                         $selected = ($idMonth == $_POST["month"]) ? " selected=\"selected\" " : "";
                                         echo "<option value=\"".$idMonth."\" $selected>".$month."</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <select class="form-control" id="year" name="year">
+                                    <?php 
+                                    $year=date('Y');
+                                    $beginYear=$year - 5;
+                                    while($beginYear<=$year){
+                                        $selected = ($beginYear == $_POST["year"]) ? " selected=\"selected\" " : "";
+                                        echo "<option value=\"".$beginYear."\" $selected>".$beginYear."</option>";
+                                        $beginYear++;
                                     }
                                     ?>
                                 </select>
@@ -195,8 +207,18 @@ $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
 foreach($devicesTab as $deviceId => $deviceInfo){
+    $monthTmp=$yearTmp=NULL;
+    if($_POST["period"] == "day" || $_POST["period"] == "week"){
+        $monthTmp=$_POST["day"];
+        $explTmp=explode("/",$_POST["day"]);
+        $monthTmp=$explTmp[2]."-".$explTmp[1]."-".$explTmp[0];
+    }
+    if($_POST["period"] == "month"){
+        $monthTmp=$_POST["month"];
+        $yearTmp=$_POST["year"];
+    }
     //Récupération de l'historique
-    $dataDay=History::getCountForPeriodDate($deviceId, '3', $_POST["month"]);
+    $dataDay=History::getCountForPeriodDate($deviceId, '3', $monthTmp, $yearTmp);
     $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
@@ -216,15 +238,32 @@ foreach($devicesTab as $deviceId => $deviceInfo){
                     
     }
 }
-            if(count($devicesTab) > 1){
-                //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-                echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
-            } else {
-                echo $txt;
-            }
 
+if(count($devicesTab) > 1){
+    //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+    echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
+} else {
+    echo $txt;
+}
+
+$percent=($totalActual/$totalLast)*100;
+$diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
+$diffConso = ($percent == 100) ? "0" : $diffConso;
+
+$signConso = ($percent > 100) ? "+" : "-";
+$signConso = ($percent == 100) ? "" : $signConso;
+
+$colorConso = ($percent > 100) ? "red" : "blue";
+$colorConso = ($percent == 100) ? "yellow" : $colorConso;
 
 ?>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="easy-pie-chart">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                                <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1141,8 +1180,8 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 <script type="text/javascript">
 $(document).ready(function() {
     $('.divRecherche').hide();
-    $('.divDay').hide();
-    $('.divMonth').hide();
+    //$('.divDay').hide();
+    //$('.divMonth').hide();
     $('.btnSearch').click(function(){
         $('.divRecherche').toggle();
     });

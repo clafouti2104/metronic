@@ -457,7 +457,9 @@ class History{
     }
     
     //Renvoie les données de consommations à partir de la période
-    public static function getCountForPeriodDate($deviceid, $period, $date){
+    public static function getCountForPeriodDate($deviceid, $period, $date=NULL, $year=NULL){
+        $year = (is_null($year)) ? date('Y') : $year;
+        $date = (is_null($date)) ? date('m') : $date;
         $query = "SELECT SUM(value) as somme ";
         $query .= " FROM releve_".$deviceid." ";
         $query .= " WHERE ";
@@ -465,20 +467,20 @@ class History{
         
         switch($period){
             case '1':
-                $query .= " date BETWEEN '".date('Y-m-d')." 00:00:00' AND '".date('Y-m-d')." 23:59:59'";
+                $query .= " date BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'";
                 break;
             case '2':
-                $auj = date('Y-m-d');
+                $auj = $date;
                 $weekdays =  self::generateWeekDays($auj);
                 $query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." 23:59:59'";
                 //echo $query;
                 break;
             case '3':
-                $query .= " date BETWEEN '".date('Y')."-".$date."-01 00:00:00' AND '".date('Y')."-".$date."-".date('t')." 23:59:59'";
+                $query .= " date BETWEEN '".$year."-".$date."-01 00:00:00' AND '".$year."-".$date."-".date('t')." 23:59:59'";
                 //echo $query;
                 break;
             case '4':
-                $query .= " date BETWEEN '".date('Y-')."01-01 00:00:00' AND '".date('Y-')."12-31 23:59:59'";
+                $query .= " date BETWEEN '".$year."-01-01 00:00:00' AND '".$year."-12-31 23:59:59'";
                 break;
             default:
                 return '$ERRPeriode incorrecte';
