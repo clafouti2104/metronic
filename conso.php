@@ -282,7 +282,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         $dateMonth=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-".date('d'));
         $interval=new DateInterval("P1M");
         $interval->invert=1;
-        $dateFrom->add($interval);
+        $dateMonth->add($interval);
         $numberOfDaysLast=$dateMonth->format('t');
     }
     //Récupération de l'historique
