@@ -22,6 +22,9 @@ switch(strtolower($device->type)){
             $icon="icon-light-off";
         }
         break;
+    case 'music' :
+        $icon="fa fa-music";
+        break;
     case 'sensor' :
         $icon="icon-thermometer14";
         break;

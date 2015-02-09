@@ -39,7 +39,5 @@ if($type=="myfox"){
     if($row = $stmt->fetch()){
         Device::updateState($row["id"],$status);
     }
-    
-    //print_r(json_encode($result));
 }
 ?>
