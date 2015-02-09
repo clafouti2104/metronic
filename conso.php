@@ -225,6 +225,8 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
         $yearTmp=$_POST["year"];
+        $dateMonth=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-".date('d'));
+        $numberOfDaysCurrent=$dateMonth->format('t');
     }
     //Récupération de l'historique
     $dataDay=History::getCountForPeriodDate($deviceId, $typeNumber, $monthTmp, $yearTmp);
@@ -244,6 +246,12 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         if(isset($money)){
             $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
         }
+    }
+    
+    if(isset($numberOfDaysCurrent)){
+        $consoPerDay=$dataDay/$numberOfDaysCurrent;
+        $consoPerDay=number_format($number, 2);
+        $txt .= " <br/> W / jour";
     }
 }
 
@@ -271,6 +279,11 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
         $yearTmp=$_POST["year"];
+        $dateMonth=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-".date('d'));
+        $interval=new DateInterval("P1M");
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        $numberOfDaysLast=$dateMonth->format('t');
     }
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForPeriodDateLast($deviceId, $typeNumber, $monthTmp, $yearTmp);
@@ -298,6 +311,12 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         if(isset($money)){
             $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
         }
+    }
+    
+    if(isset($numberOfDaysLast)){
+        $consoPerDay=$dataDayLastNow/$numberOfDaysLast;
+        $consoPerDay=number_format($number, 2);
+        $txt .= " <br/> W / jour";
     }
     $i++;
 }
