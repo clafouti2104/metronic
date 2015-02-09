@@ -172,18 +172,23 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 <div class="row">
                     <?php if($isPost){ 
 $title="Journalier"; 
+$typeNumber=""; 
 switch($_POST["period"]){
     case "day":
         $title="Journalier";
+        $typeNumber='1';
         break;
     case "week":
         $title="Hebdomadaire";
+        $typeNumber='2';
         break;
     case "month":
         $title="Mensuel";
+        $typeNumber='3';
         break;
     case "year":
         $title="Annuel";
+        $typeNumber='4';
         break;
     default:
 }
@@ -218,7 +223,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         $yearTmp=$_POST["year"];
     }
     //Récupération de l'historique
-    $dataDay=History::getCountForPeriodDate($deviceId, '3', $monthTmp, $yearTmp);
+    $dataDay=History::getCountForPeriodDate($deviceId, $typeNumber, $monthTmp, $yearTmp);
     $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
@@ -235,7 +240,6 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         if(isset($money)){
             $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
         }
-                    
     }
 }
 
