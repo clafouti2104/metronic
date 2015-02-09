@@ -196,7 +196,7 @@ $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
 foreach($devicesTab as $deviceId => $deviceInfo){
     //Récupération de l'historique
-    $dataDay=History::getCountForPeriod($deviceId, '3', $_POST["month"]);
+    $dataDay=History::getCountForPeriodDate($deviceId, '3', $_POST["month"]);
     $totalActual +=$dataDay;
     $newLine=($i>0) ? "<br/>" : "";
     $i++;
