@@ -502,6 +502,63 @@ class History{
     }
     
     //Renvoie les données de consommations à partir de la période
+    public static function getCountForPeriodDateLast($deviceid, $period, $date=NULL, $year=NULL){
+        $year = (is_null($year)) ? date('Y') : $year;
+        $date = (is_null($date)) ? date('m') : $date;
+        $query = "SELECT SUM(value) as somme ";
+        $query .= " FROM releve_".$deviceid." ";
+        $query .= " WHERE ";
+        
+        
+        switch($period){
+            case '1':
+                $dateFrom=new DateTime($date);
+                $interval=new DateInterval("P1D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')." 00:00:00' AND '".$dateFrom->format('Y-m-d')." 23:59:59'";
+                //echo $query;
+                break;
+            case '2':
+                $auj = $date;
+                $dateFrom=new DateTime($date);
+                $interval=new DateInterval("P7D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $weekdays =  self::generateWeekDays($dateFrom->format("Y-m-d"));
+                $query .= " date BETWEEN '".$weekdays[0]." 00:00:00' AND '".$weekdays[6]." 23:59:59'";
+                //echo $query;
+                break;
+            case '3':
+                $dateFrom=new DateTime($year."-".$date.date('d'));
+                $interval=new DateInterval("P1M");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m')."-01 00:00:00' AND '".$dateFrom->format('Y-m')."-".date('t')." 23:59:59'";
+                //echo $query;
+                break;
+            case '4':
+                $query .= " date BETWEEN '".$year."-01-01 00:00:00' AND '".$year."-12-31 23:59:59'";
+                break;
+            default:
+                return '$ERRPeriode incorrecte';
+        }
+        
+        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt->execute(array());
+        $value=0;
+        if($stmt->rowCount() > 0){
+            if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if($row["somme"]!=""){
+                    $value = $row["somme"];
+                }
+            }
+        }
+        
+        return $value;
+    }
+    
+    //Renvoie les données de consommations à partir de la période
     public static function getCountForPeriod($deviceid, $period){
         $query = "SELECT SUM(value) as somme ";
         $query .= " FROM releve_".$deviceid." ";

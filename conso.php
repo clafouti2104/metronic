@@ -37,6 +37,30 @@ $_POST["period"] = ($isPost) ? $_POST["period"] : NULL;
 $_POST["month"] = ($isPost) ? $_POST["month"] : date('n');
 $_POST["year"] = ($isPost) ? $_POST["year"] : date('Y');
 
+if($isPost){ 
+    $title="Journalier"; 
+    $typeNumber=""; 
+    switch($_POST["period"]){
+        case "day":
+            $title="Journalier";
+            $typeNumber='1';
+            break;
+        case "week":
+            $title="Hebdomadaire";
+            $typeNumber='2';
+            break;
+        case "month":
+            $title="Mensuel";
+            $typeNumber='3';
+            break;
+        case "year":
+            $title="Annuel";
+            $typeNumber='4';
+            break;
+        default:
+    }
+}
+
 $sql="SELECT id,name,chart_formula, unite FROM device WHERE type='electricy'";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
@@ -75,7 +99,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<small>Electriques</small>";
                 }
                 ?>
-                <i class="fa fa-search btnSearch"></i>
+                <i class="fa fa-search btnSearch" style="cursor:pointer;"></i>
             </h3>
             <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
@@ -170,29 +194,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <div class="tab-content">
             <div class="tab-pane active" id="tab_electricite">
                 <div class="row">
-                    <?php if($isPost){ 
-$title="Journalier"; 
-$typeNumber=""; 
-switch($_POST["period"]){
-    case "day":
-        $title="Journalier";
-        $typeNumber='1';
-        break;
-    case "week":
-        $title="Hebdomadaire";
-        $typeNumber='2';
-        break;
-    case "month":
-        $title="Mensuel";
-        $typeNumber='3';
-        break;
-    case "year":
-        $title="Annuel";
-        $typeNumber='4';
-        break;
-    default:
-}
-?>
+                    <?php if($isPost){ ?>
                     <div class="col-md-12">
                         <div class="portlet light bg-inverse">
                             <div class="portlet-title">
@@ -205,7 +207,7 @@ switch($_POST["period"]){
                             </div>
                             <div class="portlet-body">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <h4 style="font-variant: small-caps;">Courant</h4>
 <?php
 $totalActual=$totalLast=0;
@@ -250,7 +252,57 @@ if(count($devicesTab) > 1){
 } else {
     echo $txt;
 }
+?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
+                                        
+<?php
+$i=0;
+$txt="";
+foreach($devicesTab as $deviceId => $deviceInfo){
+    $monthTmp=$yearTmp=NULL;
+    if($_POST["period"] == "day" || $_POST["period"] == "week"){
+        $monthTmp=$_POST["day"];
+        $explTmp=explode("/",$_POST["day"]);
+        $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+    }
+    if($_POST["period"] == "month"){
+        $monthTmp=$_POST["month"];
+        $yearTmp=$_POST["year"];
+    }
+    //Récupération de l'historique
+    $dataDayLastNow=History::getCountForPeriodDateLast($deviceId, $typeNumber, $monthTmp, $yearTmp);
+    $totalLast +=$dataDayLastNow;
+    $newLine=($i>0) ? "<br/>" : "";
+    $i++;
 
+    $txt.= $newLine;
+    if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
+    //$txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
+    $txt.="<span style=\"font-variant:small-caps;font-size: larger;\">";
+    $txt.= $dataDayLastNow;
+    //$txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
+    $txt.=" </span> <span style=\"font-size:8px;\">";
+    $txt .= $deviceInfo["unity"];
+    //$txt.=(count($devicesTab) <= 1) ? " </span> " : "";
+    $txt.=" </span> ";
+    if($deviceInfo["chart_formula"] != ""){
+        $fonction = str_replace("x", $dataDayLastNow, $deviceInfo["chart_formula"]);
+        @eval('$stateTemp='.$fonction.';');
+        if(isset($stateTemp)){
+            $money = $stateTemp."";
+            $totalMoneyLast += $money;
+        }
+        if(isset($money)){
+            $txt.= " soit ".  number_format($money, 2, ",", " ")."€";
+        }
+    }
+    $i++;
+}
+?>
+                                    </div>
+<?php 
 $percent=($totalActual/$totalLast)*100;
 $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
 $diffConso = ($percent == 100) ? "0" : $diffConso;
@@ -260,9 +312,7 @@ $signConso = ($percent == 100) ? "" : $signConso;
 
 $colorConso = ($percent > 100) ? "red" : "blue";
 $colorConso = ($percent == 100) ? "yellow" : $colorConso;
-
 ?>
-                                    </div>
                                     <div class="col-md-12">
                                         <div class="easy-pie-chart">
                                             <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
