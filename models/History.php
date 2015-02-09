@@ -530,12 +530,12 @@ class History{
                 //echo $query;
                 break;
             case '3':
-                $dateFrom=new DateTime($year."-".$date.date('d'));
+                $dateFrom=new DateTime($year."-".str_pad($date, 2, '0', STR_PAD_LEFT)."-".date('d'));
                 $interval=new DateInterval("P1M");
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $query .= " date BETWEEN '".$dateFrom->format('Y-m')."-01 00:00:00' AND '".$dateFrom->format('Y-m')."-".date('t')." 23:59:59'";
-                echo $query;
+                //echo $query;
                 break;
             case '4':
                 $query .= " date BETWEEN '".$year."-01-01 00:00:00' AND '".$year."-12-31 23:59:59'";
