@@ -36,6 +36,7 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="formconso"){
 
 $_POST["period"] = ($isPost) ? $_POST["period"] : NULL;
 $_POST["month"] = ($isPost) ? $_POST["month"] : date('n');
+$_POST["day"] = ($isPost) ? $_POST["day"] : NULL;
 $_POST["year"] = ($isPost) ? $_POST["year"] : date('Y');
 
 if($isPost){ 
@@ -224,7 +225,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         $explTmp=explode("/",$_POST["day"]);
         $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
         $prefix=($_POST["period"] == "day") ? "Jour: " : "Semaine: ";
-        $txtDescription=$prefix.$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+        $txtDescription=$prefix.$explTmp[1]."-".$explTmp[0]."-".$explTmp[2];
     }
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
@@ -293,7 +294,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
             $dateDay->add($interval);
         }
         $prefix=($_POST["period"] == "day") ? "Jour: " : "Semaine: ";
-        $txtDescription=$prefix.$dateDay->format('d-m-Y');
+        $txtDescription=$prefix.$dateDay->format('d-mY');
     }
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
@@ -315,7 +316,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     if(count($devicesTab) > 1) $txt.= $deviceInfo["name"].": ";
     //$txt.=(count($devicesTab) <= 1) ? "<span style=\"font-variant:small-caps;font-size: larger;\">" : "";
     $txt.="<span style=\"font-variant:small-caps;font-size: larger;\">";
-    $txt.= $dataDayLastNow;
+    $txt.= number_format($dataDayLastNow,0,",", " ");
     //$txt.=(count($devicesTab) <= 1) ? " </span> <span style=\"font-size:8px;\">" : "";
     $txt.=" </span> <span style=\"font-size:8px;\">";
     $txt .= $deviceInfo["unity"];
@@ -342,7 +343,6 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 }
 ?>
                                         <h4 style="font-variant: small-caps;"><?php echo $txtDescription; ?></h4>
-                                    </div>
 <?php 
 $percent=($totalActual/$totalLast)*100;
 $diffConso = ($percent > 100) ? ($percent-100) : (100-$percent); 
@@ -360,12 +360,21 @@ $colorConso = ($percent == 100) ? "yellow" : $colorConso;
                 echo $txt;
             }
 ?>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="easy-pie-chart">
                                             <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
                                                 <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="container-current"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="container-previous"></div>
                                     </div>
                                 </div>
                             </div>
@@ -393,6 +402,7 @@ $colorConso = ($percent == 100) ? "yellow" : $colorConso;
             $totalActual=$totalLast=0;
             $totalMoneyActual=$totalMoneyLast=0;
             $i=0;
+            $txt="";
             foreach($devicesTab as $deviceId => $deviceInfo){
                 //Récupération de l'historique
                 $dataDay=History::getCountForPeriod($deviceId, '1');
@@ -823,6 +833,7 @@ $colorConso = ($percent == 100) ? "yellow" : $colorConso;
                 </div><!-- DIV ROW-->
             </div><!-- DIV TAB ELECTRICITE-->
             
+            <?php if(count($devicesEau) > 0){ ?>
             <div class="tab-pane" id="tab_eau">
                 <div class="row">
                     <div class="col-md-6">
@@ -1268,6 +1279,7 @@ $colorConso = ($percent == 100) ? "yellow" : $colorConso;
                     </div><!-- END PORTLET -->
                 </div><!-- DIV ROW-->
             </div><!-- DIV TAB EAU-->
+            <?php } ?>
         </div><!-- DIV CONTENT-->
     <?php
     if(count($devicesEau) > 0){
@@ -1333,6 +1345,239 @@ $(document).ready(function() {
         $(this).data('easyPieChart').update(newValue);
         $('span', this).text(newValue);
     });*/
+    <?php      
+    if($isPost){
+    echo "$('.container-current').highcharts({";
+    echo " chart: {";
+    echo " type: 'column'";
+    echo " },";
+    echo "title: {";
+    echo " text: 'Consommation Electrique'";
+    echo "},";
+    //echo "subtitle: {";
+    //echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+    //echo "},";
+    echo "xAxis: {";
+    echo "categories: [";
+    switch($_POST["period"]){
+        case 'day':
+            //$j=$chart->getHeureFormatted();
+            for($i=0;$i<=23;$i++){
+                $j=($j > 23) ? 0 : $j;
+                if($i>0){echo ",";}
+                echo "'".$j."'";
+                $j++;
+            }
+            $monthTmp=$_POST["day"];
+            $explTmp=explode("/",$_POST["day"]);
+            $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+            $dateMonth=new DateTime($monthTmp);
+            break;
+        case 'week':
+            $monthTmp=$_POST["day"];
+            $explTmp=explode("/",$_POST["day"]);
+            $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+            $dateMonth=new DateTime($monthTmp);
+            $auj = $dateMonth->format("d-m-Y");
+            $weekdays =  History::generateWeekDays($auj);
+            $j=0;
+            foreach($weekdays as $weekday){
+                $weekday=explode("-", $weekday);
+                if($j>0)echo ",";
+                echo "'".$weekday[2]."'";
+                $j++;
+            }
+            $dateMonth=new DateTime($weekdays[0]);
+            break;
+        case 'month':
+            $monthTmp=$_POST["month"];
+            $yearTmp=$_POST["year"];
+            $dateMonth=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-01");
+            $daysPrint="";
+            for($i=1;$i<=$dateMonth->format('t');$i++){
+                $daysPrint.=($daysPrint=="") ? "" : ",";
+                $daysPrint.="'".$i."'";
+            }
+            echo $daysPrint;
+            break;
+    }
+    echo "]";
+    echo "},";
+    echo "yAxis: {";
+    echo "min: 0,";
+    echo "title: {";
+    echo "text: 'Wh'";
+    echo "}";
+    echo ",stackLabels: {";
+    //echo "enabled: true,";
+    echo "style: {";
+    echo "fontWeight: 'bold',";
+    echo "color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'";
+    echo "}";
+    echo "}";
+    echo "},";
+    echo "plotOptions: {";
+    echo "column: {";
+    echo "stacking: 'normal',";
+    echo " dataLabels: {";
+    echo " color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',";
+    echo "style: {";
+    echo "textShadow: '0 0 3px black'";
+    echo "}";
+    echo "}";
+    echo "}";
+    echo "},";
+    echo "series: [";
+    $k=0;
+    //foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+    foreach($devicesTab as $deviceId => $deviceInfo){
+        $device=Device::getDevice($deviceId);
+
+        //$chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
+        $data=History::getHistoryHighchartBarre($deviceId, $typeNumber, NULL, NULL, NULL, $dateMonth->format("Y-m-d"));
+        //print_r($data);
+        //exit;
+        //$data=0;
+        if($k>0){
+            echo ",";
+        }
+        echo "{";  
+        echo "name:'".$device->name."',";  
+        //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+        echo "data:[ ".$data." ]";
+        /*if($chart->price && !is_null($device->chart_formula)){
+            echo ",tooltip: {";
+            echo " valueDecimals: 2,";
+            echo "valuePrefix: '€',";
+            echo "valueSuffix: ' EUR'";
+            echo "}";
+        }*/
+        echo "}";
+        $k++;
+    }
+    echo "]";
+    echo "});";
+    echo "$('.container-previous').highcharts({";
+    echo " chart: {";
+    echo " type: 'column'";
+    echo " },";
+    echo "title: {";
+    echo " text: 'Consommation Electrique'";
+    echo "},";
+    //echo "subtitle: {";
+    //echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+    //echo "},";
+    echo "xAxis: {";
+    echo "categories: [";
+    switch($_POST["period"]){
+        case 'day':
+            //$j=$chart->getHeureFormatted();
+            for($i=0;$i<=23;$i++){
+                $j=($j > 23) ? 0 : $j;
+                if($i>0){echo ",";}
+                echo "'".$j."'";
+                $j++;
+            }
+            $monthTmp=$_POST["day"];
+            $explTmp=explode("/",$_POST["day"]);
+            $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+            $dateMonth=new DateTime($monthTmp);
+            $interval=new DateInterval("P1D");
+            $interval->invert=1;
+            $dateMonth->add($interval);
+            break;
+        case 'week':
+            $monthTmp=$_POST["day"];
+            $explTmp=explode("/",$_POST["day"]);
+            $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+            $dateMonth=new DateTime($monthTmp);
+            $interval=new DateInterval("P7D");
+            $interval->invert=1;
+            $dateMonth->add($interval);
+            $auj = $dateMonth->format("d-m-Y");
+            $weekdays =  History::generateWeekDays($auj);
+            $j=0;
+            foreach($weekdays as $weekday){
+                $weekday=explode("-", $weekday);
+                if($j>0)echo ",";
+                echo "'".$weekday[2]."'";
+                $j++;
+            }
+            $dateMonth=new DateTime($weekdays[0]);
+            break;
+        case 'month':
+            $monthTmp=$_POST["month"];
+            $yearTmp=$_POST["year"];
+            $dateMonth=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-01");
+            $interval=new DateInterval("P1M");
+            $interval->invert=1;
+            $dateMonth->add($interval);
+            $daysPrint="";
+            for($i=1;$i<=$dateMonth->format('t');$i++){
+                $daysPrint.=($daysPrint=="") ? "" : ",";
+                $daysPrint.="'".$i."'";
+            }
+            echo $daysPrint;
+            break;
+    }
+    echo "]";
+    echo "},";
+    echo "yAxis: {";
+    echo "min: 0,";
+    echo "title: {";
+    echo "text: 'Wh'";
+    echo "}";
+    echo ",stackLabels: {";
+    //echo "enabled: true,";
+    echo "style: {";
+    echo "fontWeight: 'bold',";
+    echo "color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'";
+    echo "}";
+    echo "}";
+    echo "},";
+    echo "plotOptions: {";
+    echo "column: {";
+    echo "stacking: 'normal',";
+    echo " dataLabels: {";
+    echo " color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',";
+    echo "style: {";
+    echo "textShadow: '0 0 3px black'";
+    echo "}";
+    echo "}";
+    echo "}";
+    echo "},";
+    echo "series: [";
+    $k=0;
+    //foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+    foreach($devicesTab as $deviceId => $deviceInfo){
+        $device=Device::getDevice($deviceId);
+
+        //$chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
+        $data=History::getHistoryHighchartBarre($deviceId, $typeNumber, NULL, NULL, NULL, $dateMonth->format("Y-m-d"));
+        //print_r($data);
+        //exit;
+        //$data=0;
+        if($k>0){
+            echo ",";
+        }
+        echo "{";  
+        echo "name:'".$device->name."',";  
+        //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+        echo "data:[ ".$data." ]";
+        /*if($chart->price && !is_null($device->chart_formula)){
+            echo ",tooltip: {";
+            echo " valueDecimals: 2,";
+            echo "valuePrefix: '€',";
+            echo "valueSuffix: ' EUR'";
+            echo "}";
+        }*/
+        echo "}";
+        $k++;
+    }
+    echo "]";
+    echo "});";
+    }
+    ?>
 });
 </script>
 <?php
