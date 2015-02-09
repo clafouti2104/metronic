@@ -49,7 +49,7 @@ foreach($messages as $message){
         default:
     }
     //echo "<div class=\"col-md-4\">";
-    $output.= "var data=data + '<a class=\"icon-btn box-action\" onclick=\"executeAction(NULL,$message->id);\" type=\"message\" elementId=\"".$message->id."\" deviceId=\"".$message->deviceId."\" href=\"#\" >';";
+    $output.= "var data=data + '<a class=\"icon-btn box-action\" onclick=\"executeAction(0,$message->id);\" type=\"message\" elementId=\"".$message->id."\" deviceId=\"".$message->deviceId."\" href=\"#\" >';";
     $output.= "var data=data + '<i class=\"$icon\"></i>';";
     $output.= "var data=data + '<div> ".addslashes($message->name)." </div>';";
     $output.= "var data=data + '</a>';";

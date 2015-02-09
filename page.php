@@ -624,7 +624,7 @@ $( document ).ready(function() {
 });
 
 function executeAction(type, elementId){
-    if(type==NULL){
+    if(type==0){
         var type='message';
     }
     $.ajax({
