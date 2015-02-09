@@ -260,7 +260,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     }
 }
 ?>
-                                        <h4 style="font-variant: small-caps;">Courant<?php echo $txtDescription; ?></h4>
+                                        <h4 style="font-variant: small-caps;"><?php echo $txtDescription; ?></h4>
 <?php 
 if(count($devicesTab) > 1){
     //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
@@ -271,17 +271,29 @@ if(count($devicesTab) > 1){
 ?>
                                     </div>
                                     <div class="col-md-6">
-                                        <h4 style="font-variant: small-caps;">Précédent</h4>
-                                        
 <?php
 $i=0;
 $txt="";
+$txtDescription="Précédent";
 foreach($devicesTab as $deviceId => $deviceInfo){
     $monthTmp=$yearTmp=NULL;
     if($_POST["period"] == "day" || $_POST["period"] == "week"){
         $monthTmp=$_POST["day"];
         $explTmp=explode("/",$_POST["day"]);
         $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+        
+        $dateDay=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-".date('d'));
+        if($_POST["period"] == "day"){
+            $interval=new DateInterval("P1D");
+            $interval->invert=1;
+            $dateDay->add($interval);
+        }else{
+            $interval=new DateInterval("P7D");
+            $interval->invert=1;
+            $dateDay->add($interval);
+        }
+        $prefix=($_POST["period"] == "day") ? "Jour: " : "Semaine: ";
+        $txtDescription=$prefix.$dateDay->format('d-m-Y');
     }
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
@@ -291,6 +303,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         $interval->invert=1;
         $dateMonth->add($interval);
         $numberOfDaysLast=$dateMonth->format('t');
+        $txtDescription=$months[$dateMonth->format('m')]." ".$dateMonth->format('Y');
     }
     //Récupération de l'historique
     $dataDayLastNow=History::getCountForPeriodDateLast($deviceId, $typeNumber, $monthTmp, $yearTmp);
@@ -328,6 +341,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     $i++;
 }
 ?>
+                                        <h4 style="font-variant: small-caps;">Précédent</h4>
                                     </div>
 <?php 
 $percent=($totalActual/$totalLast)*100;
