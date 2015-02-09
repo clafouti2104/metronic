@@ -363,7 +363,7 @@ $colorConso = ($percent == 100) ? "yellow" : $colorConso;
                                     </div>
                                     <div class="col-md-12">
                                         <div class="easy-pie-chart">
-                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" style="width:100px;height: 100px;line-height: 100px;">
+                                            <div class="number transactions <?php echo $colorConso; ?>" data-percent="<?php echo round($diffConso,0); ?>" >
                                                 <span> <?php echo $signConso.round($diffConso,0); ?> %</span>
                                             </div>
                                         </div>
