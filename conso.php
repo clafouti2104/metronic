@@ -209,25 +209,29 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <div class="portlet-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h4 style="font-variant: small-caps;">Courant</h4>
+                                        
 <?php
 $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
 //print_r($_POST["day"]);
 $txt="";
+$txtDescription="Courant";
 foreach($devicesTab as $deviceId => $deviceInfo){
     $monthTmp=$yearTmp=NULL;
     if($_POST["period"] == "day" || $_POST["period"] == "week"){
         $monthTmp=$_POST["day"];
         $explTmp=explode("/",$_POST["day"]);
         $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
+        $prefix=($_POST["period"] == "day") ? "Jour: " : "Semaine: ";
+        $txtDescription=$prefix.$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
     }
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
         $yearTmp=$_POST["year"];
         $dateMonth=new DateTime($yearTmp."-".str_pad($monthTmp, 2, '0', STR_PAD_LEFT)."-".date('d'));
         $numberOfDaysCurrent=$dateMonth->format('t');
+        $txtDescription=$months[$_POST["month"]]." ".$_POST["year"];
     }
     //Récupération de l'historique
     $dataDay=History::getCountForPeriodDate($deviceId, $typeNumber, $monthTmp, $yearTmp);
@@ -255,7 +259,9 @@ foreach($devicesTab as $deviceId => $deviceInfo){
         $txt .= " <br/> ".$consoPerDay."W / jour";
     }
 }
-
+?>
+                                        <h4 style="font-variant: small-caps;">Courant<?php echo $txtDescription; ?></h4>
+<?php 
 if(count($devicesTab) > 1){
     //echo "<br/>Total: ".$totalActual.$deviceInfo["unity"]." soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
     echo "<span class=\"popovers\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content='".  addslashes($txt)."' data-original-title=\"Aujourd'hui\"  style=\"cursor:pointer;font-variant:small-caps;font-size: larger;\">".number_format($totalActual,0,","," ")." </span> <span style=\"font-size:8px;\">".$deviceInfo["unity"]."</span> soit ".number_format($totalMoneyActual, 2, ",", " ")."€";
