@@ -2,6 +2,9 @@
 $includeCSS = $includeJS = array();
 $includeJS[] = "/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js";
 $includeJS[] = "/assets/global/plugins/jquery-knob/js/jquery.knob.js";
+$includeJS[] = "/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js";
+$includeJS[] = "/assets/admin/pages/scripts/components-pickers.js";
+$includeCSS[] = "/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css";
 
 include "modules/header.php";
 include "modules/sidebar.php";
@@ -1137,16 +1140,25 @@ foreach($devicesTab as $deviceId => $deviceInfo){
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('.divRecherche').hide ();
+    $('.divRecherche').hide();
+    $('.divDay').hide();
+    $('.divMonth').hide();
     $('.btnSearch').click(function(){
         $('.divRecherche').toggle();
     });
     $('#period').change(function(){
-        if($(this).val() == "month"){
-            $('#divMonth').show();
-        } else {
-            $('#divMonth').hide();
+        if($(this).val() == "day") {
+            $('.divDay').show();
+            $('.divMonth').hide();
         }
+        if($(this).val() == "week") {
+            $('.divDay').show();
+            $('.divMonth').hide();
+        }
+        if($(this).val() == "month"){
+            $('.divMonth').show();
+            $('.divDay').hide();
+        } 
     });
     
     $('.easy-pie-chart .number.transactions.blue').easyPieChart({
