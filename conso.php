@@ -4,6 +4,7 @@ $includeJS[] = "/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.m
 $includeJS[] = "/assets/global/plugins/jquery-knob/js/jquery.knob.js";
 $includeJS[] = "/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js";
 $includeJS[] = "/assets/admin/pages/scripts/components-pickers.js";
+$includeJS[] = "/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js";
 $includeCSS[] = "/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css";
 
 include "modules/header.php";
