@@ -265,20 +265,7 @@ $( document ).ready(function() {
     
     $('.box-action:visible').bind('click',function(e){
         //console.debug($(this).attr('class'));
-        $.ajax({
-            url: "ajax/action/execute.php",
-            type: "POST",
-            data: {
-               type:  encodeURIComponent($(this).attr('type')),
-               elementId: $(this).attr('elementId')
-            },
-            error: function(data){
-                toastr.error("Une erreur est survenue");
-            },
-            complete: function(data){
-                toastr.success("Action exécutée");
-            }
-        });
+        executeAction($(this).attr('type'), $(this).attr('elementId'));
     });
     
     
@@ -635,6 +622,26 @@ $( document ).ready(function() {
         //console.debug(sorts);
     }
 });
+
+function executeAction(type, elementId){
+    if(type==NULL){
+        var type='message';
+    }
+    $.ajax({
+        url: "ajax/action/execute.php",
+        type: "POST",
+        data: {
+           type:  type,
+           elementId: elementId
+        },
+        error: function(data){
+            toastr.error("Une erreur est survenue");
+        },
+        complete: function(data){
+            toastr.success("Action exécutée");
+        }
+    });
+}
 
 setTimeout("refreshStatus()", 3000);
 function refreshStatus(){
