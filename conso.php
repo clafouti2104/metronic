@@ -250,7 +250,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     
     if(isset($numberOfDaysCurrent)){
         $consoPerDay=$dataDay/$numberOfDaysCurrent;
-        $consoPerDay=number_format($number, 2);
+        $consoPerDay=number_format($consoPerDay, 2);
         $txt .= " <br/> W / jour";
     }
 }
@@ -315,7 +315,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     
     if(isset($numberOfDaysLast)){
         $consoPerDay=$dataDayLastNow/$numberOfDaysLast;
-        $consoPerDay=number_format($number, 2);
+        $consoPerDay=number_format($consoPerDay, 2);
         $txt .= " <br/> W / jour";
     }
     $i++;
