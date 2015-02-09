@@ -215,6 +215,7 @@ $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
 //print_r($_POST["day"]);
+$txt="";
 foreach($devicesTab as $deviceId => $deviceInfo){
     $monthTmp=$yearTmp=NULL;
     if($_POST["period"] == "day" || $_POST["period"] == "week"){
