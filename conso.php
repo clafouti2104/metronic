@@ -211,7 +211,7 @@ foreach($devicesTab as $deviceId => $deviceInfo){
     if($_POST["period"] == "day" || $_POST["period"] == "week"){
         $monthTmp=$_POST["day"];
         $explTmp=explode("/",$_POST["day"]);
-        $monthTmp=$explTmp[2]."-".$explTmp[1]."-".$explTmp[0];
+        $monthTmp=$explTmp[2]."-".$explTmp[0]."-".$explTmp[1];
     }
     if($_POST["period"] == "month"){
         $monthTmp=$_POST["month"];
