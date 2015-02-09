@@ -1433,17 +1433,12 @@ $(document).ready(function() {
     foreach($devicesTab as $deviceId => $deviceInfo){
         $device=Device::getDevice($deviceId);
 
-        //$chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
         $data=History::getHistoryHighchartBarre($deviceId, $typeNumber, NULL, NULL, NULL, $dateMonth->format("Y-m-d"));
-        //print_r($data);
-        //exit;
-        //$data=0;
         if($k>0){
             echo ",";
         }
         echo "{";  
         echo "name:'".$device->name."',";  
-        //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
         echo "data:[ ".$data." ]";
         /*if($chart->price && !is_null($device->chart_formula)){
             echo ",tooltip: {";
@@ -1552,25 +1547,13 @@ $(document).ready(function() {
     foreach($devicesTab as $deviceId => $deviceInfo){
         $device=Device::getDevice($deviceId);
 
-        //$chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
         $data=History::getHistoryHighchartBarre($deviceId, $typeNumber, NULL, NULL, NULL, $dateMonth->format("Y-m-d"));
-        //print_r($data);
-        //exit;
-        //$data=0;
         if($k>0){
             echo ",";
         }
         echo "{";  
         echo "name:'".$device->name."',";  
-        //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
         echo "data:[ ".$data." ]";
-        /*if($chart->price && !is_null($device->chart_formula)){
-            echo ",tooltip: {";
-            echo " valueDecimals: 2,";
-            echo "valuePrefix: '€',";
-            echo "valueSuffix: ' EUR'";
-            echo "}";
-        }*/
         echo "}";
         $k++;
     }

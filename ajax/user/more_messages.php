@@ -32,8 +32,20 @@ foreach($messages as $message){
         case 'mute':
             $icon = "fa fa-microphone-slash ";
             break;
+        case 'next':
+            $icon = "fa fa-step-forward ";
+            break;
+        case 'play':
+            $icon = "fa fa-play";
+            break;
         case 'power':
             $icon = "fa fa-power-off";
+            break;
+        case 'previous':
+            $icon = "fa fa-step-backward ";
+            break;
+        case 'stop':
+            $icon = "fa fa-stop";
             break;
         case 'vol_dec':
             $icon = "fa fa-volume-off ";

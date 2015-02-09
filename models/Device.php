@@ -376,6 +376,12 @@ class Device{
                         $msgOff=MessageDevice::createMessageDevice($id, "vol -", 0, NULL, NULL, NULL, 1, NULL, "voldown");
                         $msgOff=MessageDevice::createMessageDevice($id, "mute", 0, NULL, NULL, NULL, 1, NULL, "mut");
                         break;
+                    case 'rune_audio':
+                        $msgPlay=MessageDevice::createMessageDevice($id, "play", 0, NULL, NULL, NULL, 1,NULL,"play",NULL,NULL,"play");
+                        $msgOff=MessageDevice::createMessageDevice($id, "stop", 0, NULL, NULL, NULL, 1, NULL, "stop",NULL,NULL,"stop");
+                        $msgOff=MessageDevice::createMessageDevice($id, "next", 0, NULL, NULL, NULL, 1, NULL, "next",NULL,NULL,"next");
+                        $msgOff=MessageDevice::createMessageDevice($id, "previous", 0, NULL, NULL, NULL, 1, NULL, "previous",NULL,NULL,"previous");
+                        break;
                     case 'zibase_actuator':
                         $msgOn=MessageDevice::createMessageDevice($id, "on", 0, NULL, NULL, "on", 1,NULL,"on");
                         $msgOff=MessageDevice::createMessageDevice($id, "off", 0, NULL, NULL, "off", 1, NULL, "off");

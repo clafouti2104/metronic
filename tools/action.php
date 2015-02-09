@@ -17,6 +17,14 @@ function executeMessage($messgeId, $valueToSend=NULL){
     }
     echo "\nProdcut=".$productName;
     switch(strtolower($productName)){
+        case 'calaos_output':
+            echo "calaos output";
+            calaos("output",$device,$message,$valueToSend);
+            break;
+        case 'calaos_input':
+            echo "calaos input";
+            calaos("input",$device,$message,$valueToSend);
+            break;
         case 'freebox':
             echo "http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command;
             file_get_contents("http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command, false, $context);
@@ -90,15 +98,9 @@ function executeMessage($messgeId, $valueToSend=NULL){
         case 'popcorn':
             file_get_contents("http://".$device->ip_address.":9999/c200remote_web/webrc200.php?fcmd=".$message->command);
             break;
-        case 'calaos_output':
-            echo "calaos output";
-            calaos("output",$device,$message,$valueToSend);
-            
-            break;
-        case 'calaos_input':
-            echo "calaos input";
-            calaos("input",$device,$message,$valueToSend);
-            
+        case 'runeaudio':
+            echo "http://".$device->ip_address."/command/?cmd=".$message->command;
+            file_get_contents("http://".$device->ip_address."/command/?cmd=".$message->command, false, $context);
             break;
         case 'zibase_actuator':
             echo "zibase_actuator";

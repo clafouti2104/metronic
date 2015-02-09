@@ -49,7 +49,7 @@ foreach($coordonates as $coordonate){
         $elems=explode(".",$devicesTmp["path"]);
         $tab="";
         foreach($elems as $elem){
-            $tab.="[".$elem."]";
+            $tab.="[\"".$elem."\"]";
         }
         if($tab==""){
             continue;
