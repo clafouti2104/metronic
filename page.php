@@ -141,7 +141,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
         <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
-    <div class="modal-dialog" style="width:500px;">
+    <div class="modal-dialog">
         <div class="modal-content">
         </div>
     </div>
