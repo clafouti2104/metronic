@@ -129,7 +129,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         <div class="form-group">
                             <label class="control-label col-md-3">Jour</label>
                             <div class="col-md-9">
-                                <input class="form-control form-control-inline input-medium date-picker" id="day" name="day" type="text" value="" size="16">
+                                <input class="form-control form-control-inline input-medium date-picker" id="day" name="day" type="text" value="<?php echo $_POST["day"]; ?>" size="16">
                             </div>
                         </div>
                     </div>
