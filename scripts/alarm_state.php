@@ -2,6 +2,9 @@
 require("../tools/config.php");
 require("../models/Device.php");
 
+$db = connectDB();
+$GLOBALS["dbconnec"] = connectDB();
+
 $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
 foreach($ini as $title => $value){
     if($title == "myfox_token" && $value != ""){
