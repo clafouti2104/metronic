@@ -468,7 +468,7 @@ class History{
         switch($period){
             case '1':
                 $query .= " date BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'";
-                echo $query;
+                //echo $query;
                 break;
             case '2':
                 $auj = $date;

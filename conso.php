@@ -104,7 +104,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         <div class="form-group">
                             <label class="control-label col-md-3">Jour</label>
                             <div class="col-md-9">
-                                <input class="form-control form-control-inline input-medium date-picker" id="day" type="text" value="" size="16">
+                                <input class="form-control form-control-inline input-medium date-picker" id="day" name="day" type="text" value="" size="16">
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@ switch($_POST["period"]){
 $totalActual=$totalLast=0;
 $totalMoneyActual=$totalMoneyLast=0;
 $i=0;
-print_r($_POST["day"]);
+//print_r($_POST["day"]);
 foreach($devicesTab as $deviceId => $deviceInfo){
     $monthTmp=$yearTmp=NULL;
     if($_POST["period"] == "day" || $_POST["period"] == "week"){
