@@ -13,6 +13,28 @@ if(!isset($_GET["idDevice"])){
 $device=Device::getDevice($_GET["idDevice"]);
 $messages = MessageDevice::getMessageDevicesForDevice($device->id);
 ?>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<!-- END GLOBAL MANDATORY STYLES -->
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/bootstrap-summernote/summernote.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+<!-- END PAGE LEVEL STYLES -->
+<!-- BEGIN THEME STYLES -->
+<link href="<?php echo $GLOBALS['path']; ?>/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+<link id="style_color" href="<?php echo $GLOBALS['path']; ?>/assets/admin/layout/css/themes/<?php echo $theme; ?>.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $GLOBALS['path']; ?>/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- END THEME STYLES -->
+<link rel="shortcut icon" href="favicon.ico"/>
+        <script src="<?php echo $GLOBALS['path']; ?>/assets/js/jquery-1.8.3.min.js"></script>	
+
 <input type="hidden" id="idDevice" value="<?php echo $device->id; ?>" />
 <div class="modal-content">
     <div class="modal-header">
