@@ -76,7 +76,7 @@ foreach($msgs as $msg){
 <?php
 if($moreMsg){
 ?>
-          &nbsp;<a  class="btnMoreMessage" idDevice="<?php echo $device->id; ?>" data-toggle="modal" data-target="#ajaxShowMoreMessages" href="ajax/user/more_messages.php?idDevice=<?php echo $device->id; ?>" style="float:left;color:#fff;"><i class="fa fa-plus" ></i></a>
+          &nbsp;<a  class="btnMoreMessage" idDevice="<?php echo $device->id; ?>" data-toggle="modal" href="#ajaxShowMoreMessages" style="float:left;color:#fff;"><i class="fa fa-plus" ></i></a>
 <?php
 }
 ?>

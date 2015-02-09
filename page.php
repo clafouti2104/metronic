@@ -137,12 +137,70 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
     </div>
 </div>
 <div class="modal fade" id="ajaxShowMoreMessages" tabindex="-1"  aria-hidden="true">
-    <div class="page-loading page-loading-boxed">
-        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
-        <span>&nbsp;&nbsp;Loading... </span>
-    </div>
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Responsive & Scrollable</h4>
+            </div>
+            <div class="modal-body">
+                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
+                    <div class="row">
+                        <div class="col-md-6">
+                                <h4>Some Input</h4>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                        </div>
+                        <div class="col-md-6">
+                                <h4>Some More Input</h4>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                                <p>
+                                        <input type="text" class="col-md-12 form-control">
+                                </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn default">Close</button>
+                <button type="button" class="btn green">Save changes</button>
+            </div>
         </div>
     </div>
 </div>

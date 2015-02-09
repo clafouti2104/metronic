@@ -13,28 +13,6 @@ if(!isset($_GET["idDevice"])){
 $device=Device::getDevice($_GET["idDevice"]);
 $messages = MessageDevice::getMessageDevicesForDevice($device->id);
 ?>
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-<!-- END GLOBAL MANDATORY STYLES -->
-<!-- BEGIN PAGE LEVEL STYLES -->
-<link rel="stylesheet" type="text/css" href="/metronic/assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css"/>
-<link rel="stylesheet" type="text/css" href="/metronic/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css">
-<link rel="stylesheet" type="text/css" href="/metronic/assets/global/plugins/bootstrap-summernote/summernote.css">
-<link rel="stylesheet" type="text/css" href="/metronic/assets/global/plugins/bootstrap-toastr/toastr.min.css">
-<!-- END PAGE LEVEL STYLES -->
-<!-- BEGIN THEME STYLES -->
-<link href="/metronic/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
-<link id="style_color" href="/metronic/assets/admin/layout/css/themes/<?php echo $theme; ?>.css" rel="stylesheet" type="text/css"/>
-<link href="/metronic/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
-<!-- END THEME STYLES -->
-<link rel="shortcut icon" href="favicon.ico"/>
-        <script src="/metronic/assets/js/jquery-1.8.3.min.js"></script>	
-
 <input type="hidden" id="idDevice" value="<?php echo $device->id; ?>" />
 <div class="modal-content">
     <div class="modal-header">
@@ -42,7 +20,6 @@ $messages = MessageDevice::getMessageDevicesForDevice($device->id);
         <h4 class="modal-title"><i class="fa fa-flash"></i>&nbsp;&nbsp;Exécution de Commandes</h4>
     </div>
     <div class="modal-body">
-        <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible1="1">
         <div id="alert" class=""></div>
         <div class="row">
 <?php 
@@ -87,7 +64,6 @@ foreach($messages as $message){
 }
 ?>
         </div>
-    </div>
     </div>
     <!--<div class="modal-footer">
         <button type="button" class="btn btn-primary btnSubmitEditPageItem">Modifier</button>
