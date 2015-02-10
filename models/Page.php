@@ -146,13 +146,18 @@ class Page{
     
     public static function createPage($name,$description,$active=1,$icon,$parent,$color) {
         $position=0;
-        $sqlPosition="SELECT TOP 1 position FROM page ORDER BY position DESC";
-        $stmt = $GLOBALS['dbconnec']->prepare($sqlPosition);
-        if (!$stmt->execute($params)) {
-            if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $position = $row["position"] + 1;
+        if($parent != 0 && $parent != ""){
+            $sqlPosition="SELECT TOP 1 position FROM page WHERE parent=".$parent." ORDER BY position DESC";
+            //echo $sqlPosition;
+            $stmt = $GLOBALS['dbconnec']->prepare($sqlPosition);
+            if (!$stmt->execute(array())) {
+                if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                    $position = $row["position"] + 1;
+                }
             }
         }
+        $parent=($parent == "") ? NULL : $parent;
+        $parent=($parent == "NULL") ? NULL : $parent;
         
         $query = "INSERT INTO page (";
         $query .= "name";

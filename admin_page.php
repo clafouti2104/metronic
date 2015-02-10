@@ -58,7 +58,6 @@ $pages = Page::getPages(FALSE);
                 <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Prix</th>
                     <th>Actif</th>
                     <th>Action</th>
                 </tr>

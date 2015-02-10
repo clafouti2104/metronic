@@ -349,6 +349,14 @@ if(isset($idCond) && $idCond > 0){
                                                             }
                                                             $type="variable";
                                                             break;
+                                                        case 'commandline':
+                                                            if(strlen($condAction->action) > 10){
+                                                                $object.=' exécute <span title="'.str_replace('"', '', $condAction->action).'">'.substr($condAction->action,0,10).'...</span>';
+                                                            } else {
+                                                                $object.=" exécute ".$condAction->action;
+                                                            }
+                                                            $type="commande";
+                                                            break;
                                                         case 'notification':
                                                             if(isset($notifications[$condAction->action])){
                                                                 $object.=" envoie ".$notifications[$condAction->action];
