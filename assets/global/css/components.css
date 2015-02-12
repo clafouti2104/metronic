@@ -2964,8 +2964,8 @@ Portlets
 /* Portlet actions on mobile view */
 @media (max-width: 767px) {
   /* 767px */
-  .portlet > > .portlet-title > .actions.btn-set > .btn-group,
-  .portlet > > .portlet-title > .actions.btn-set > .btn {
+  .portlet > .portlet-title > .actions.btn-set > .btn-group,
+  .portlet > .portlet-title > .actions.btn-set > .btn {
     margin-top: 0px;
     margin-bottom: 5px;
   }

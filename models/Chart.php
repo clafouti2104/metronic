@@ -34,6 +34,7 @@ class Chart{
             "temps",
             "mix",
             "ligne",
+            "ligne_temps_reel",
             "barre"
     );
     
