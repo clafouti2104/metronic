@@ -582,7 +582,9 @@ $( document ).ready(function() {
             echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
             echo "},";
             echo "xAxis: {";
-            echo "type: 'datetime'";
+            echo "type: 'datetime',";
+            echo "tickPixelInterval: 150,";
+            echo "maxZoom: 20 * 1000";
             echo "},";
             echo "yAxis: {";
             echo "title: { text: '".$chart->ordonne."'}";
