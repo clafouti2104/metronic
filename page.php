@@ -606,8 +606,7 @@ $( document ).ready(function() {
         }
     }
     ?>
-            
-            
+    
     function requestData(chartId, itemId) {
         $.ajax({
             url: 'controllers/live-server-data.php',
