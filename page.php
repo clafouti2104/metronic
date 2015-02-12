@@ -567,11 +567,63 @@ $( document ).ready(function() {
             echo "});";
         }
         
+        if($chart->type == "ligne_temps_reel"){
+            echo "$('.container-".$item->id."').highcharts({";
+            echo " chart: {";
+            echo " type: 'spline' ";
+            echo " }, ";
+            echo "events: {";
+            echo "load: requestData(".$chart->id.", ".$item->id.")";
+            echo " }, ";
+            echo "title: {";
+            echo " text: '".$chart->name."'";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+            echo "},";
+            echo "xAxis: {";
+            echo "type: 'datetime'";
+            echo "},";
+            echo "yAxis: {";
+            echo "title: { text: '".$chart->ordonne."'}";
+            echo "},";
+            echo "series: [";
+            $k=0;
+            foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+                $device=Device::getDevice($chartDevice->deviceid);
+
+                if($k>0){
+                    echo ",";
+                }
+                echo "{";  
+                echo "name:'".$device->name."',";  
+                echo "data:[]";
+                echo "}";
+                $k++;
+            }
+            echo "]";
+            echo "});";
+        }
     }
     ?>
             
             
-    
+    function requestData(chartId, itemId) {
+        $.ajax({
+            url: 'controllers/live-server-data.php',
+            type:'POST',
+            data: {ids: chartId},
+            success: function(point) {
+                var series = $('.container-'+itemId).series[0],
+                shift = series.data.length > 20; // shift if the series is longer than 20
+                // add the point
+                $('.container-'+itemId).series[0].addPoint(eval(point), true, shift);
+                // call it again after one second
+                setTimeout(requestData, 10000);
+            },
+            cache: false
+        });
+    }
     
     var $container = $('.packery').packery({
         columnWidth: 80,
