@@ -79,9 +79,18 @@ foreach($chartDevices as $chartDevice){
     }
     
     if($value != ""){
-        $output .= "$('.container-".$_POST["itemId"]."').serie[".$i."].addPoint([".date('U').", ".$value."],true);";
+        //$output .= "";
+        $output .= "chart-".$_POST["itemId"].".serie[".$i."].addPoint([".date('U').", ".$value."],true);";
     }
     $value="";
     $i++;
 }
+/*
+var series = chart.series[0],
+shift = series.data.length > 20; // shift if the series is longer than 20
+// add the point
+chart.series[0].addPoint(eval(point), true, shift);
+// call it again after one second
+setTimeout(requestData, 10000);
+ */
 ?>

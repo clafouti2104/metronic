@@ -568,12 +568,14 @@ $( document ).ready(function() {
         }
         
         if($chart->type == "ligne_temps_reel"){
-            echo "$('.container-".$item->id."').highcharts({";
+            echo "var chart-".$item->id.";";
+            echo "chart-".$item->id." = new Highcharts.Chart({ ";
             echo " chart: {";
-            echo " type: 'spline' ";
-            echo " }, ";
-            echo "events: {";
-            echo "load: requestData(".$chart->id.", ".$item->id.")";
+            echo " renderTo: 'container-".$item->id."', ";
+            echo " type: 'spline', ";
+            echo " events: { ";
+            echo " load: requestData(".$chart->id.", ".$item->id.")";
+            echo " }";
             echo " }, ";
             echo "title: {";
             echo " text: '".$chart->name."'";
