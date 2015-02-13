@@ -42,7 +42,7 @@ foreach($chartDevices as $chartDevice){
         }
         
         //$xml = simplexml_load_file($contentTeleinfo);
-        $value=$contentCompteur[$device->param1];
+        $value=$contentTeleinfo[$device->param1];
         $lastType = "teleinfo";
     }
     
