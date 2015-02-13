@@ -82,7 +82,7 @@ foreach($chartDevices as $chartDevice){
         //$output .= "";
         //$output .= "var series = chart".$_POST["itemId"].".series[0];";
         $output .= "var shift = chart".$_POST["itemId"].".series[".$i."].data.length > 20;";
-        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([Date.now(), ".intval($value)."],true,shift);";
+        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([Date.now() + 3600, ".intval($value)."],true,shift);";
     }
     $value="";
     $i++;
