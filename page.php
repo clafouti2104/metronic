@@ -630,8 +630,8 @@ $( document ).ready(function() {
             data: {chartId: chartId, itemId: itemId},
             success: function(point) {
                 eval(point);
-                console.debug('ok');
-                //setTimeout(requestData(chartId, itemId), 8000000);
+                //console.debug('ok');
+                setTimeout(requestData(chartId, itemId), 8000000);
             },
             cache: false
         });
