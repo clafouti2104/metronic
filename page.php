@@ -173,6 +173,17 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
     <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
 <script type="text/javascript">
     var chart56;
+<?php
+    foreach($items as $item){
+        if($item->chartId == ""){
+            continue;
+        }
+        $chart=Chart::getChart($item->chartId);
+        if($chart->type == "ligne_temps_reel"){
+            echo "var chart".$item->id.";";
+        }
+    }
+?>
 $( document ).ready(function() {
     $('#editMode').val('0');
     $('.btnEditPageItem').hide();
