@@ -640,7 +640,7 @@ $( document ).ready(function() {
             },
             cache: false
         });
-        setTimeout(requestData(chartId, itemId), 8000);
+        setTimeout(requestData(chartId, itemId), 8000000);
     }
     
     var $container = $('.packery').packery({
