@@ -617,11 +617,12 @@ $( document ).ready(function() {
             type:'POST',
             data: {chartId: chartId, itemId: itemId},
             success: function(point) {
-                var series = $('.container-'+itemId).series[0],
+                eval(point);
+                /*var series = $('.container-'+itemId).series[0],
                 shift = series.data.length > 20; // shift if the series is longer than 20
                 // add the point
                 $('.container-'+itemId).series[0].addPoint(eval(point), true, shift);
-                // call it again after one second
+                // call it again after one second*/
                 setTimeout(requestData, 10000);
             },
             cache: false
