@@ -596,9 +596,9 @@ $( document ).ready(function() {
             echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
             echo "},";
             echo "xAxis: {";
-            echo "type: 'datetime',";
-            echo "tickPixelInterval: 150,";
-            echo "maxZoom: 20 * 1000";
+            echo "type: 'datetime'";
+            //echo "tickPixelInterval: 150,";
+            //echo "maxZoom: 20 * 1000";
             echo "},";
             echo "yAxis: {";
             echo "title: { text: '".$chart->ordonne."'}";
@@ -624,17 +624,19 @@ $( document ).ready(function() {
     ?>
     
     function requestDataDomokine(chartId, itemId) {
-        /*$.ajax({
+        $.ajax({
             url: 'controllers/live-server-data.php',
             type:'POST',
             data: {chartId: chartId, itemId: itemId},
             success: function(point) {
                 eval(point);
+                console.debug('ok');
+                //setTimeout(requestData(chartId, itemId), 8000000);
             },
             cache: false
-        });*/
-        console.debug('ok');
-        setInterval(requestDataDomokine(chartId, itemId), 8000);
+        });
+        
+        //setInterval(requestDataDomokine(chartId, itemId), 8000);
         //setTimeout(requestData(chartId, itemId), 8000000);
     }
     
