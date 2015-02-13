@@ -631,13 +631,13 @@ $( document ).ready(function() {
             success: function(point) {
                 eval(point);
                 //console.debug('ok');
-                setTimeout(requestData(chartId, itemId), 8000000);
+                setTimeout(requestDataDomokine(chartId, itemId), 8000000);
             },
             cache: false
         });
         
         //setInterval(requestDataDomokine(chartId, itemId), 8000);
-        //setTimeout(requestData(chartId, itemId), 8000000);
+        //setTimeout(requestDataDomokine(chartId, itemId), 8000000);
     }
     
     var $container = $('.packery').packery({
