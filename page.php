@@ -613,7 +613,7 @@ $( document ).ready(function() {
         $.ajax({
             url: 'controllers/live-server-data.php',
             type:'POST',
-            data: {ids: chartId},
+            data: {chartId: chartId, itemId: itemId},
             success: function(point) {
                 var series = $('.container-'+itemId).series[0],
                 shift = series.data.length > 20; // shift if the series is longer than 20
