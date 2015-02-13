@@ -637,10 +637,10 @@ $( document ).ready(function() {
                 // add the point
                 $('.container-'+itemId).series[0].addPoint(eval(point), true, shift);
                 // call it again after one second*/
-                setTimeout(requestData(chartId, itemId), 80000);
             },
             cache: false
         });
+        setTimeout(requestData(chartId, itemId), 8000);
     }
     
     var $container = $('.packery').packery({
