@@ -568,8 +568,8 @@ $( document ).ready(function() {
         }
         
         if($chart->type == "ligne_temps_reel"){
-            echo "var chart-".$item->id.";";
-            echo "chart-".$item->id." = new Highcharts.Chart({ ";
+            echo "var chart".$item->id.";";
+            echo "chart".$item->id." = new Highcharts.Chart({ ";
             echo " chart: {";
             echo " renderTo: 'container-".$item->id."', ";
             echo " type: 'spline', ";

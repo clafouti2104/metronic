@@ -80,7 +80,7 @@ foreach($chartDevices as $chartDevice){
     
     if($value != ""){
         //$output .= "";
-        $output .= "chart-".$_POST["itemId"].".serie[".$i."].addPoint([".date('U').", ".$value."],true);";
+        $output .= "chart".$_POST["itemId"].".serie[".$i."].addPoint([".date('U').", ".$value."],true);";
     }
     $value="";
     $i++;
