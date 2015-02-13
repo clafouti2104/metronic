@@ -172,6 +172,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
 </div>
     <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
 <script type="text/javascript">
+    var chart56;
 $( document ).ready(function() {
     $('#editMode').val('0');
     $('.btnEditPageItem').hide();
@@ -568,7 +569,7 @@ $( document ).ready(function() {
         }
         
         if($chart->type == "ligne_temps_reel"){
-            echo "var chart".$item->id.";";
+            
             echo "chart".$item->id." = new Highcharts.Chart({ ";
             echo " chart: {";
             echo " renderTo: 'container-".$item->id."', ";
