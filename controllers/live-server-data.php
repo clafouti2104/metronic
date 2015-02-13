@@ -70,14 +70,16 @@ while( $resultat = $resultats->fetch() ){
     if(strtolower($resultat->name) == "gce_teleinfo"){
         if($lastIpAddress != $resultat->ip_address){
             $url = "http://".$resultat->ip_address."/protect/settings/teleinfo1.xml";
+            $contentTeleinfo = simplexml_load_file($url);
             $lastIpAddress=$resultat->ip_address;
-            $contentTeleinfo = @file_get_contents($url, false, $context);
+            //$contentTeleinfo = @file_get_contents($url, false, $context);
         }elseif($lastType != "teleinfo"){
             $url = "http://".$resultat->ip_address."/protect/settings/teleinfo1.xml";
+            $contentTeleinfo = simplexml_load_file($url);
             $lastIpAddress=$resultat->ip_address;
-            $contentTeleinfo = @file_get_contents($url, false, $context);
+            //$contentTeleinfo = @file_get_contents($url, false, $context);
         }
-        $xml = simplexml_load_file($contentTeleinfo);
+        //$xml = simplexml_load_file($contentTeleinfo);
         $param=$resultat->param1;
         $value=$xml->$param;
         $lastType = "teleinfo";
