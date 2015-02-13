@@ -631,7 +631,7 @@ $( document ).ready(function() {
             success: function(point) {
                 eval(point);
                 //console.debug('ok');
-                setTimeout("requestDataDomokine(chartId, itemId)", 10000);
+                setTimeout(function(){ requestDataDomokine(chartId, itemId) }, 10000);
             },
             cache: false
         });
