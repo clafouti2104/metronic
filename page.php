@@ -637,7 +637,7 @@ $( document ).ready(function() {
                 // add the point
                 $('.container-'+itemId).series[0].addPoint(eval(point), true, shift);
                 // call it again after one second*/
-                setTimeout(requestData(chartId, itemId), 10000);
+                setTimeout(requestData(chartId, itemId), 80000);
             },
             cache: false
         });
