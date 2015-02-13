@@ -18,8 +18,7 @@ $timeout = array('http' => array('timeout' => 10));
 $context = stream_context_create($timeout);
 
 $contentCompteur=$contentTeleinfo=$lastIpAddress=$lastType=$output="";
-//$chartDevices=  ChartDevice::getChartDeviceForChart($_POST["chartId"]);
-$sql = "SELECT p.name, d.product_id, d.param1, d.ip_address ";
+$sql = "SELECT p.name, d.product_id, d.param1, d.ip_address, d.incremental, d.id as deviceId ";
 $sql .= " FROM chartdevice cd, device d, product p ";
 $sql .= " WHERE cd.deviceid=d.id AND d.product_id=p.id ";
 $sql .= " AND cd.chartid=".$_POST["chartId"];
@@ -38,18 +37,36 @@ while( $resultat = $resultats->fetch() ){
     
     if(strtolower($resultat->name) == "teleinfo"){
         if($lastIpAddress != $resultat->ip_address){
-            $url = "http://192.168.1.14/teleinfo.php";
-            $lastIpAddress="192.168.1.14";
+            $url = "http://".$resultat->ip_address."/teleinfo.php";
+            $lastIpAddress=$resultat->ip_address;
             $contentTeleinfo = @file_get_contents($url, false, $context);
         }elseif($lastType != "teleinfo"){
-            $url = "http://192.168.1.14/teleinfo.php";
-            $lastIpAddress="192.168.1.14";
+            $url = "http://".$resultat->ip_address."/teleinfo.php";
+            $lastIpAddress=$resultat->ip_address;
             $contentTeleinfo = @file_get_contents($url, false, $context);
         }
+        
         $contentTeleinfo = json_decode(str_replace("'",'"', $contentTeleinfo), TRUE);
-        //$xml = simplexml_load_file($contentTeleinfo);
         $value=$contentTeleinfo[$resultat->param1];
         $lastType = "teleinfo";
+        
+        if($resultat->incremental=="1"){
+            $systemid="8".$resultat->deviceId;
+            $mode="c";
+            $permission=0755;
+            $size=10;
+            $shmid = shmop_open($systemid, $mode, $permissions, $size);
+            $valSize = strlen($value);
+            $size = shmop_size($shmid);
+            $oldValue = shmop_read($shmid, 0, $valSize);
+            shmop_write($shmid, $value, 0);
+            shmop_close($shmid);
+            if($oldValue == ""){
+                $value="";
+            }else{
+                $value = ($value - $oldValue) * 60 * 6 ;                
+            }
+        }
     }
     
     //GCE
