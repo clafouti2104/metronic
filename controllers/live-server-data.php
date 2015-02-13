@@ -49,24 +49,6 @@ while( $resultat = $resultats->fetch() ){
         $contentTeleinfo = json_decode(str_replace("'",'"', $contentTeleinfo), TRUE);
         $value=$contentTeleinfo[$resultat->param1];
         $lastType = "teleinfo";
-        
-        if($resultat->incremental=="1"){
-            $systemid="8".$resultat->deviceId;
-            $mode="c";
-            $permission=0755;
-            $size=10;
-            $shmid = shmop_open($systemid, $mode, $permissions, $size);
-            $valSize = strlen($value);
-            $size = shmop_size($shmid);
-            $oldValue = shmop_read($shmid, 0, $valSize);
-            shmop_write($shmid, $value, 0);
-            shmop_close($shmid);
-            if($oldValue == ""){
-                $value="";
-            }else{
-                $value = ($value - $oldValue) * 60 * 6 ;                
-            }
-        }
     }
     
     //GCE
@@ -99,6 +81,24 @@ while( $resultat = $resultats->fetch() ){
         $param=$resultat->param1;
         $value=$xml->$param;
         $lastType = "teleinfo";
+    }
+    
+    if($resultat->incremental=="1"){
+        $systemid="8".$resultat->deviceId;
+        $mode="c";
+        $permission=0755;
+        $size=10;
+        $shmid = shmop_open($systemid, $mode, $permissions, $size);
+        $valSize = strlen($value);
+        $size = shmop_size($shmid);
+        $oldValue = shmop_read($shmid, 0, $valSize);
+        shmop_write($shmid, $value, 0);
+        shmop_close($shmid);
+        if($oldValue == ""){
+            $value="";
+        }else{
+            $value = ($value - $oldValue) * 60 * 6 ;                
+        }
     }
     
     if($value != ""){
