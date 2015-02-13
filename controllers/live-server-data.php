@@ -40,7 +40,7 @@ foreach($chartDevices as $chartDevice){
             $lastIpAddress="192.168.1.14";
             $contentTeleinfo = @file_get_contents($url, false, $context);
         }
-        
+        $contentTeleinfo = json_decode(str_replace("'",'"', $contentTeleinfo), TRUE);
         //$xml = simplexml_load_file($contentTeleinfo);
         $value=$contentTeleinfo[$device->param1];
         $lastType = "teleinfo";
@@ -80,11 +80,12 @@ foreach($chartDevices as $chartDevice){
     
     if($value != ""){
         //$output .= "";
-        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([".date('U').", ".$value."],true);";
+        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([".date('U').", ".intval($value)."],true);";
     }
     $value="";
     $i++;
 }
+echo $output;
 /*
 var series = chart56.series[0];
 shift = series.data.length > 20; // shift if the series is longer than 20

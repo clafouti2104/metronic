@@ -618,6 +618,8 @@ $( document ).ready(function() {
             data: {chartId: chartId, itemId: itemId},
             success: function(point) {
                 eval(point);
+                eval(point.responseText));
+                
                 /*var series = $('.container-'+itemId).series[0],
                 shift = series.data.length > 20; // shift if the series is longer than 20
                 // add the point
