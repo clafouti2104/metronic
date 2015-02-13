@@ -640,7 +640,6 @@ $( document ).ready(function() {
             },
             cache: false
         });
-        function(){ alert("Hello"); }
         setInterval(requestData(chartId, itemId), 8000);
         //setTimeout(requestData(chartId, itemId), 8000000);
     }
