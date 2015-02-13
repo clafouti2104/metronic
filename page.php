@@ -624,22 +624,16 @@ $( document ).ready(function() {
     ?>
     
     function requestData(chartId, itemId) {
-        $.ajax({
+        /*$.ajax({
             url: 'controllers/live-server-data.php',
             type:'POST',
             data: {chartId: chartId, itemId: itemId},
             success: function(point) {
                 eval(point);
-                //eval(point.responseText);
-                
-                /*var series = $('.container-'+itemId).series[0],
-                shift = series.data.length > 20; // shift if the series is longer than 20
-                // add the point
-                $('.container-'+itemId).series[0].addPoint(eval(point), true, shift);
-                // call it again after one second*/
             },
             cache: false
-        });
+        });*/
+        console.debug('ok');
         setInterval(requestData(chartId, itemId), 8000);
         //setTimeout(requestData(chartId, itemId), 8000000);
     }
