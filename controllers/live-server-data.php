@@ -19,6 +19,11 @@ $context = stream_context_create($timeout);
 
 $contentCompteur=$contentTeleinfo=$lastIpAddress=$lastType=$output="";
 $chartDevices=  ChartDevice::getChartDeviceForChart($_POST["chartId"]);
+$sql = "SELECT p.name, d.param1, d.ip_address ";
+$sql .= " FROM chartdevice cd, device d, product p ";
+$sql .= " WHERE cd.deviceid=d.id AND d.product_id=p.id ";
+$sql .= " AND cd.chartid=".$_POST["chartId"];
+echo $sql;
 $i=0;
 foreach($chartDevices as $chartDevice){
     $device=Device::getDevice($chartDevice->deviceid);
