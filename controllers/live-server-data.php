@@ -81,7 +81,7 @@ while( $resultat = $resultats->fetch() ){
         }
         //$xml = simplexml_load_file($contentTeleinfo);
         $param=$resultat->param1;
-        $value=$xml->$param;
+        $value=$contentTeleinfo->$param;
         $lastType = "teleinfo";
     }
     
