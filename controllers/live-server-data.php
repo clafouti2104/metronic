@@ -18,25 +18,26 @@ $timeout = array('http' => array('timeout' => 10));
 $context = stream_context_create($timeout);
 
 $contentCompteur=$contentTeleinfo=$lastIpAddress=$lastType=$output="";
-$chartDevices=  ChartDevice::getChartDeviceForChart($_POST["chartId"]);
-$sql = "SELECT p.name, d.param1, d.ip_address ";
+//$chartDevices=  ChartDevice::getChartDeviceForChart($_POST["chartId"]);
+$sql = "SELECT p.name, d.product_id, d.param1, d.ip_address ";
 $sql .= " FROM chartdevice cd, device d, product p ";
 $sql .= " WHERE cd.deviceid=d.id AND d.product_id=p.id ";
 $sql .= " AND cd.chartid=".$_POST["chartId"];
-echo $sql;
+//$sql .= " ORDER BY ";
+
+$resultats=$GLOBALS["dbconnec"]->query($sql);
+$resultats->setFetchMode(PDO::FETCH_OBJ);
 $i=0;
-foreach($chartDevices as $chartDevice){
-    $device=Device::getDevice($chartDevice->deviceid);
-    if($device->product_id == ""){
+while( $resultat = $resultats->fetch() ){
+    if($resultat->product_id == ""){
         continue;
     }
-    $product=Product::getProduct($device->product_id);
-    if(strtolower(substr($product->name,0,4)) != "gce_" && strtolower($product->name) != "teleinfo"){
+    if(strtolower(substr($resultat->name,0,4)) != "gce_" && strtolower($resultat->name) != "teleinfo"){
         continue;
     }
     
-    if(strtolower($product->name) == "teleinfo"){
-        if($lastIpAddress != $device->ip_address){
+    if(strtolower($resultat->name) == "teleinfo"){
+        if($lastIpAddress != $resultat->ip_address){
             $url = "http://192.168.1.14/teleinfo.php";
             $lastIpAddress="192.168.1.14";
             $contentTeleinfo = @file_get_contents($url, false, $context);
@@ -47,38 +48,38 @@ foreach($chartDevices as $chartDevice){
         }
         $contentTeleinfo = json_decode(str_replace("'",'"', $contentTeleinfo), TRUE);
         //$xml = simplexml_load_file($contentTeleinfo);
-        $value=$contentTeleinfo[$device->param1];
+        $value=$contentTeleinfo[$resultat->param1];
         $lastType = "teleinfo";
     }
     
     //GCE
-    if(strtolower($product->name) == "gce_compteur"){
-        if($lastIpAddress != $device->ip_address){
-            $url = "http://".$device->ip_address."/status.xml";
-            $lastIpAddress=$device->ip_address;
+    if(strtolower($resultat->name) == "gce_compteur"){
+        if($lastIpAddress != $resultat->ip_address){
+            $url = "http://".$resultat->ip_address."/status.xml";
+            $lastIpAddress=$resultat->ip_address;
             $contentCompteur = @file_get_contents($url, false, $context);
         }elseif($lastType != "compteur"){
-            $url = "http://".$device->ip_address."/status.xml";
-            $lastIpAddress=$device->ip_address;
+            $url = "http://".$resultat->ip_address."/status.xml";
+            $lastIpAddress=$resultat->ip_address;
             $contentTeleinfo = @file_get_contents($url, false, $context);
         }
         $xml = simplexml_load_file($contentCompteur);
-        $param=$device->param1;
+        $param=$resultat->param1;
         $value=$xml->$param;
         $lastType = "compteur";
     }
-    if(strtolower($product->name) == "gce_teleinfo"){
-        if($lastIpAddress != $device->ip_address){
-            $url = "http://".$device->ip_address."/protect/settings/teleinfo1.xml";
-            $lastIpAddress=$device->ip_address;
+    if(strtolower($resultat->name) == "gce_teleinfo"){
+        if($lastIpAddress != $resultat->ip_address){
+            $url = "http://".$resultat->ip_address."/protect/settings/teleinfo1.xml";
+            $lastIpAddress=$resultat->ip_address;
             $contentTeleinfo = @file_get_contents($url, false, $context);
         }elseif($lastType != "teleinfo"){
-            $url = "http://".$device->ip_address."/protect/settings/teleinfo1.xml";
-            $lastIpAddress=$device->ip_address;
+            $url = "http://".$resultat->ip_address."/protect/settings/teleinfo1.xml";
+            $lastIpAddress=$resultat->ip_address;
             $contentTeleinfo = @file_get_contents($url, false, $context);
         }
         $xml = simplexml_load_file($contentTeleinfo);
-        $param=$device->param1;
+        $param=$resultat->param1;
         $value=$xml->$param;
         $lastType = "teleinfo";
     }
@@ -93,7 +94,7 @@ foreach($chartDevices as $chartDevice){
     }
     $value="";
     $i++;
-}
+}    
 echo $output;
 /*
 var series = chart56.series[0];
