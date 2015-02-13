@@ -80,7 +80,9 @@ foreach($chartDevices as $chartDevice){
     
     if($value != ""){
         //$output .= "";
-        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([".date('U').", ".intval($value)."],true);";
+        //$output .= "var series = chart".$_POST["itemId"].".series[0];";
+        $ooutput .= "var shift = chart".$_POST["itemId"].".series[".$i."].data.length > 20;";
+        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([".date('U').", ".intval($value)."],true,shift);";
     }
     $value="";
     $i++;
