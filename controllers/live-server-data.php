@@ -81,8 +81,9 @@ foreach($chartDevices as $chartDevice){
     if($value != ""){
         //$output .= "";
         //$output .= "var series = chart".$_POST["itemId"].".series[0];";
-        $output .= "var shift = chart".$_POST["itemId"].".series[".$i."].data.length > 20;";
-        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([Date.now() + 3600, ".intval($value)."],true,shift);";
+        $output .= "var shift = chart".$_POST["itemId"].".series[".$i."].data.length > 50;";
+        $output .= "var dateTmp=Date.now() + 3600;";
+        $output .= "chart".$_POST["itemId"].".series[".$i."].addPoint([dateTmp, ".intval($value)."],true,shift);";
     }
     $value="";
     $i++;
