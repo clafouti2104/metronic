@@ -586,7 +586,7 @@ $( document ).ready(function() {
             echo " renderTo: 'container-".$item->id."', ";
             echo " type: 'spline', ";
             echo " events: { ";
-            echo " load: requestData(".$chart->id.", ".$item->id.")";
+            echo " load: requestDataDomokine(".$chart->id.", ".$item->id.")";
             echo " }";
             echo " }, ";
             echo "title: {";
@@ -623,7 +623,7 @@ $( document ).ready(function() {
     }
     ?>
     
-    function requestData(chartId, itemId) {
+    function requestDataDomokine(chartId, itemId) {
         /*$.ajax({
             url: 'controllers/live-server-data.php',
             type:'POST',
@@ -634,7 +634,7 @@ $( document ).ready(function() {
             cache: false
         });*/
         console.debug('ok');
-        setInterval(requestData(chartId, itemId), 8000);
+        setInterval(requestDataDomokine(chartId, itemId), 8000);
         //setTimeout(requestData(chartId, itemId), 8000000);
     }
     
