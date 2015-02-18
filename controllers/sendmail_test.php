@@ -882,14 +882,14 @@ $body.='
 								<p>
 									 Il s\'agit d\'un mail de test
 								</p>
-								<!--<table class="btn green" align="right">
+								<table class="btn green" align="right">
 								<tr>
 									<td>
 										<a href="email_newsletter.html#">
 										Learn more... </a>
 									</td>
 								</tr>
-								</table>-->
+								</table>
 							</td>
 							<td class="expander">
 							</td>
