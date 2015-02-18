@@ -908,7 +908,6 @@ $body.='
     </tbody>
 </table>
         ';
-$body.="<p>DEMO MAIL <b>TEST</b></p>";
 $body.="</body>";
 $body.="</html>";
 

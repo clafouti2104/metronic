@@ -249,7 +249,7 @@ $( document ).ready(function() {
                 toastr.error("Une erreur est survenue");
             },
            complete: function(data){
-              $.bootstrapGrowl("Action exécutée","info");
+              toastr.info("Mail envoyé");
            }
         });
     });
