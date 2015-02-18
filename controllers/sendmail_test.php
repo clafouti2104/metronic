@@ -611,6 +611,22 @@ display: inherit !important;
 $body.="</style>";
 $body.="</head>";
 $body.="<body>";
+$body.='
+<table class="body">
+    <tbody>
+    <tr>
+        <td class="center" valign="top" align="center">
+        <table class="page-header" align="center">
+            <tbody>
+                <tr>
+                    <td class="center" align="center"><img width="86" height="14" border="0" alt="" src="'.$GLOBALS['path'].'/assets/img/logo.png"></td>
+                </tr>
+            </tbody>
+        </table>
+    </tr>
+    </tbody>
+</table>
+        ';
 $body.="<p>DEMO MAIL <b>TEST</b></p>";
 $body.="</body>";
 $body.="</html>";
