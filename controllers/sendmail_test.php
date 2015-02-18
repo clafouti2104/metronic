@@ -857,7 +857,7 @@ $body.='
 				<!-- BEGIN: Header Container -->
 				<table class="container" align="center">
 				<tr>
-					<td>
+					<td style="color:#FFF;">
 						DOMOKINE
 					</td>
 				</tr>
@@ -878,18 +878,18 @@ $body.='
 						<table class="twelve columns">
 						<tr>
 							<td>
-								<h4>Welcome To Responsive Email Template</h4>
+								<h4>Bienvenue sur Domokine</h4>
 								<p>
-									 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus adipiscing felis, sit amet blandit ipsum volutpat sed. Morbi porttitor, eget accumsan dictum, nisi libero ultricies ipsum, in posuere mauris neque at erat.
+									 Il s\'agit d\'un mail de test
 								</p>
-								<table class="btn green" align="right">
+								<!--<table class="btn green" align="right">
 								<tr>
 									<td>
 										<a href="email_newsletter.html#">
 										Learn more... </a>
 									</td>
 								</tr>
-								</table>
+								</table>-->
 							</td>
 							<td class="expander">
 							</td>
