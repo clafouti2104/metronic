@@ -44,9 +44,16 @@
         <group>
             <file>file:/Users/Pouchkine/Sites/metronic/page_chart.php</file>
             <file>file:/Users/Pouchkine/Sites/metronic/page.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/controllers/mail.php</file>
             <file>file:/Users/Pouchkine/Sites/metronic/models/Chart.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/controllers/meteo.php</file>
             <file>file:/Users/Pouchkine/Sites/metronic/admin_chart.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/models/ChartDevice.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/scripts/checkCommunication.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/controllers/sendmail_test.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/models/Device.php</file>
             <file>file:/Users/Pouchkine/Sites/metronic/assets/global/css/components.css</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/controllers/live-server-data.php</file>
         </group>
     </open-files>
 </project-private>

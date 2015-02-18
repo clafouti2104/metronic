@@ -86,11 +86,12 @@ while( $resultat = $resultats->fetch() ){
     }
     
     if($resultat->incremental=="1"){
-        $systemid="8".$resultat->deviceId;
+        //$systemid="8".$resultat->deviceId;
+        $systemid="655".$resultat->deviceId;
         $mode="c";
-        $permission=0755;
+        $permissions=0755;
         $size=10;
-        $shmid = shmop_open($systemid, $mode, $permissions, $size);
+        $shmid = shmop_open(intval($systemid), $mode, $permissions, $size);
         $valSize = strlen($value);
         $size = shmop_size($shmid);
         $oldValue = shmop_read($shmid, 0, $valSize);
@@ -99,7 +100,7 @@ while( $resultat = $resultats->fetch() ){
         if($oldValue == ""){
             $value="";
         }else{
-            $value = ($value - $oldValue) * 60 * 6 ;                
+            $value = (intval($value) - intval($oldValue));          
         }
     }
     
