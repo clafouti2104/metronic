@@ -609,6 +609,240 @@ display: inherit !important;
 }
 }";
 $body.="</style>";
+$body.="<style>";
+$body.="
+            /**************************************************************
+            * Custom Styles *
+            ***************************************************************/
+            /***
+            Reset & Typography
+            ***/
+            body {
+            direction: ltr;
+            background: #f6f8f1;
+            }   
+            a:hover {
+            text-decoration: underline;
+            }
+            h1 {font-size: 34px;}
+            h2 {font-size: 30px;}
+            h3 {font-size: 26px;}
+            h4 {font-size: 22px;}
+            h5 {font-size: 18px;}
+            h6 {font-size: 16px;}
+            h4, h3, h2, h1 {
+            display: block;
+            margin: 5px 0 15px 0;
+            }
+            h7, h6, h5 {
+            display: block;
+            margin: 5px 0 5px 0 !important;
+            }
+            /***
+            Buttons
+            ***/
+            .btn td {
+            background: #e5e5e5 !important;
+            border: 0;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-size: 14px;  
+            padding: 7px 14px !important;
+            color: #333333 !important;
+            text-align: center;
+            vertical-align: middle;
+            }
+            .btn td a {
+            display: block;
+            color: #fff;
+            }
+            .btn td a:hover,
+            .btn td a:focus,
+            .btn td a:active {
+            color: #fff !important;
+            text-decoration: none;
+            }
+            .btn td:hover, 
+            .btn td:focus, 
+            .btn td:active {  
+            background: #d8d8d8 !important;
+            }
+            /*  Yellow */
+            .btn.yellow td {
+            background: #ffb848 !important;
+            }
+            .btn.yellow td:hover, 
+            .btn.yellow td:focus, 
+            .btn.yellow td:active { 
+            background: #eca22e !important;
+            }
+            .btn.red td{
+            background: #d84a38 !important;
+            }
+            .btn.red td:hover, 
+            .btn.red td:focus, 
+            .btn.red td:active {    
+            background: #bb2413 !important;
+            }
+            .btn.green td {
+            background: #35aa47 !important;
+            }
+            .btn.green td:hover, 
+            .btn.green td:focus, 
+            .btn.green td:active { 
+            background: #1d943b !important;
+            }
+            /*  Blue */
+            .btn.blue td {
+            background: #4d90fe !important;
+            }
+            .btn.blue td:hover, 
+            .btn.blue td:focus, 
+            .btn.blue td:active {  
+            background: #0362fd !important;
+            }
+            .template-label {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 11px;
+            }
+            /***
+            Note Panels
+            ***/
+            .note .panel {
+            padding: 10px !important;
+            background: #ECF8FF;
+            border: 0;
+            }
+            /***
+            Header
+            ***/
+            .page-header { 
+            width: 100%;
+            background: #1f1f1f;
+            }
+            /***
+            Social Icons
+            ***/
+            .social-icons {
+            float: right;
+            }
+            .social-icons td {
+            padding: 0 2px !important;
+            width: auto !important;
+            }
+            .social-icons td:last-child {
+            padding-right: 0 !important;
+            }
+            .social-icons td img {
+            max-width: none !important; 
+            }
+            /***
+            Content
+            ***/
+            table.container.content > tbody > tr > td{
+            background: #fff;  
+            padding: 15px !important;
+            }
+            /***
+            Footer
+            ***/
+            .page-footer  {
+            width: 100%;
+            background: #2f2f2f;
+            }
+            .page-footer td {
+            vertical-align: middle;
+            color: #fff;
+            }
+            /***
+            Content devider
+            ***/
+            .devider {
+            border-bottom: 1px solid #eee;
+            margin: 15px -15px;
+            display: block;
+            }
+            /***
+            Media Item
+            ***/
+            .media-item img {
+            display: block !important;
+            float: none;
+            margin-bottom: 10px;
+            }
+            .vertical-middle {
+            padding-top: 0;
+            padding-bottom: 0;
+            vertical-align: middle;
+            }
+            /***
+            Utils
+            ***/
+            .align-reverse {
+            text-align: right;
+            }
+            .border {
+            border: 1px solid red;
+            }
+            .hidden-mobile {
+            display: block;
+            }
+            .visible-mobile {
+            display: none;
+            }
+            @media only screen and (max-width: 600px) {
+            /***
+            Reset & Typography
+            ***/
+            body {
+            background: #fff;  
+            }
+            h1 {font-size: 30px;}
+            h2 {font-size: 26px;}
+            h3 {font-size: 22px;}
+            h4 {font-size: 20px;}
+            h5 {font-size: 16px;}
+            h6 {font-size: 14px;}
+            /***
+            Content
+            ***/
+            table.container.content > tbody > tr > td{
+            padding: 0px !important;
+            }
+            table[class='body'] table.columns .social-icons td {
+            width: auto !important;
+            }
+            /***
+            Header
+            ***/
+            .page-header {
+            padding: 10px !important;
+            }
+            /***
+            Content devider
+            ***/
+            .devider {
+            margin: 15px 0;
+            }
+            /***
+            Media Item
+            ***/
+            .media-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0 !important;
+            }
+            /***
+            Media Item
+            ***/
+            .hidden-mobile {
+            display: none;
+            }
+            .visible-mobile {
+            display: block;
+            }
+            }
+        ";
+$body.="</style>";
 $body.="</head>";
 $body.="<body>";
 $body.='
@@ -616,13 +850,60 @@ $body.='
     <tbody>
     <tr>
         <td class="center" valign="top" align="center">
-        <table class="page-header" align="center">
-            <tbody>
-                <tr>
-                    <td class="center" align="center"><img width="86" height="14" border="0" alt="" src="'.$GLOBALS['path'].'/assets/img/logo.png"></td>
+            <!-- BEGIN: Header -->
+		<table class="page-header" align="center">
+		<tr>
+			<td class="center" align="center">
+				<!-- BEGIN: Header Container -->
+				<table class="container" align="center">
+				<tr>
+					<td>
+						DOMOKINE
+					</td>
+				</tr>
+				</table>
+				<!-- END: Header Container -->
+			</td>
+		</tr>
+		</table>
+                <!-- END: Header -->
+		<!-- BEGIN: Content -->
+                <table class="container content" align="center">
+		<tr>
+			<td>
+				<table class="row">
+				<tr>
+					<td class="wrapper last">
+						<!-- BEGIN: Heading Content -->
+						<table class="twelve columns">
+						<tr>
+							<td>
+								<h4>Welcome To Responsive Email Template</h4>
+								<p>
+									 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus adipiscing felis, sit amet blandit ipsum volutpat sed. Morbi porttitor, eget accumsan dictum, nisi libero ultricies ipsum, in posuere mauris neque at erat.
+								</p>
+								<table class="btn green" align="right">
+								<tr>
+									<td>
+										<a href="email_newsletter.html#">
+										Learn more... </a>
+									</td>
+								</tr>
+								</table>
+							</td>
+							<td class="expander">
+							</td>
+						</tr>
+						</table>
+						<!-- END: Heading Content -->
+					</td>
+				</tr>
+				</table>
+                        </td>
                 </tr>
-            </tbody>
-        </table>
+                </table>
+                <!-- END: Content -->
+        </td>
     </tr>
     </tbody>
 </table>
