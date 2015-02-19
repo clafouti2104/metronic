@@ -50,14 +50,15 @@ if($sqlUpdate != ""){
 }
 
 $subject="[DOMOKINE] Perte Communication";
-$body="";
+$title="Perte Communication";
+$content="";
 foreach($devices as $device){
     //Generation d'un log d'alerte
     Log::createLog("alert", "lost_communication", date('d-m-Y H:i:s'), $device->id, 90);
     
-    $body.="\n\nDevice ".$device->name;
+    $content.="\n\nDevice ".$device->name;
 }
-if($body != ""){
+if($content != ""){
     include("../controllers/mail.php");
 }
 
