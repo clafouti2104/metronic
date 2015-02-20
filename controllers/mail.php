@@ -3,14 +3,15 @@ require_once 'Mail.php';
 require_once 'Mail/mime.php';
 include_once "../tools/config.php";
 
-if(!isset($_POST["mail"])){
+/*if(!isset($_POST["mail"])){
     echo "ERROR: no mail send";
     exit;
-}
+}*/
+$general_mail="nico.gyss@gmail.com";
 
 $GLOBALS["dbconnec"]=connectDB();
 $login_gmail=$password_gmail="";
-$resultats=$GLOBALS["dbconnec"]->query("SELECT value,name FROM config WHERE name IN ('login_gmail','password_gmail')");
+$resultats=$GLOBALS["dbconnec"]->query("SELECT value,name FROM config WHERE name IN ('login_gmail','password_gmail','general_email')");
 $resultats->setFetchMode(PDO::FETCH_OBJ);
 while( $resultat = $resultats->fetch() )
 {
@@ -21,10 +22,14 @@ while( $resultat = $resultats->fetch() )
         case 'password_gmail':
             $password_gmail=$resultat->value;
             break;
+        case 'general_gmail':
+            $general_mail=$resultat->value;
+            break;
         default:
     }
 }
 
+$_POST["mail"] = (isset($_POST["mail"])) ? $_POST["mail"] : $general_mail;
 $title = (isset($title)) ? $title : "";
 $content = (isset($content)) ? $content : "";
 
