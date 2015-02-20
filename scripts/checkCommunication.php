@@ -56,7 +56,12 @@ foreach($devices as $device){
     //Generation d'un log d'alerte
     Log::createLog("alert", "lost_communication", date('d-m-Y H:i:s'), $device->id, 80);
     
-    $content.="\n\nDevice ".$device->name;
+    $lastUpdate = "";
+    if($device->last_update != "" && !is_null($device->last_update)){
+        $lastUpdate = new DateTime($device->last_update);
+        $lastUpdate = $lastUpdate->format('d-m-Y H:i');
+    }
+    $content.="\n\nL'objet ".$device->name." n'est plus accessible depuis ".$lastUpdate;
 }
 if($content != ""){
     include("../controllers/mail.php");
