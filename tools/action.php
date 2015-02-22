@@ -107,6 +107,11 @@ function executeMessage($messgeId, $valueToSend=NULL){
             zibase("actuator",$device,$message,$valueToSend);
             
             break;
+        case 'zwave_heat':
+            echo "zwave_heat";
+            zwave("heat",$device,$message,$valueToSend);
+            
+            break;
         default:
             if(strtolower($message->type) == "http"){
                 $prefixCommand=(substr($message->command, 0, 1) == "/") ? "" : "/";
@@ -211,6 +216,17 @@ function zibase($type,$device,$message,$valueToSend=NULL){
             $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=scenario&id=".$device->param1, false, $context);
             break;
     }
+}
+
+function zwave($heat,$device,$message,$valueToSend=NULL){
+    $login="maisonkling";
+    $password="lamaison";
+    $timeout = array('http' => array('timeout' => 10));
+    $context = stream_context_create($timeout);
+    
+    $urlAction=file_get_contents("http://".$device->ip_address.":8083", false, $context);
+    
+    return TRUE;
 }
 
 ?>

@@ -140,6 +140,9 @@ if($action == "disarmed"){
     file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=50", false, $context);
     //Extinction TV
     file_get_contents("http://192.168.1.67/tvdown.php", false, $context);
+    sleep(5);
+    //Extinction entrée
+    file_get_contents("https://api.myfox.me:443/v2/site/10562/device/204609/socket/off?access_token=".$token);
 }
 
 
