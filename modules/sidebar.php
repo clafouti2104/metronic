@@ -11,6 +11,7 @@ $pageAdmin=array(
     $GLOBALS['path']."/admin_logs.php",
     $GLOBALS['path']."/admin_chart.php",
     $GLOBALS['path']."/admin_plugins.php",
+    $GLOBALS['path']."/admin_schedule.php",
     $GLOBALS['path']."/edit_chart.php",
     $GLOBALS['path']."/edit_device.php",
     $GLOBALS['path']."/edit_scenario.php",
@@ -142,6 +143,9 @@ $pageAdmin=array(
                                             </li>
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_logs.php") echo "active"; ?>">
                                                 <a href="admin_logs.php">Logs</a>
+                                            </li>
+                                            <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_schedule.php") echo "active"; ?>">
+                                                <a href="admin_schedule.php">Tâches planifiées</a>
                                             </li>
                                         </ul>
 				</li>

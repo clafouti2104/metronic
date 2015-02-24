@@ -62,6 +62,12 @@ function getToken(){
     return $token;
 }
 
+function addLog($level, $message){
+    openlog("domokine", LOG_NDELAY, LOG_LOCAL2);
+    syslog($level, $message);
+    closelog();
+}
+
 $colors=array();
 $colors["bleu"]=array(
     "blue"=>"bleu",

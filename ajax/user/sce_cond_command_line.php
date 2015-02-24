@@ -2,16 +2,24 @@
 include '../../tools/config.php';
 include_once "../../models/Device.php";
 
-if(!isset($_GET["idCond"])){
+$idCond=$idCondAction=$idSchedule=NULL;
+if(!isset($_GET["idCond"]) && !isset($_GET["idSchedule"])){
     return "Veuillez saisir un id de scenario conditionnel";
 }
-$idCond=$_GET["idCond"];
-$idCondAction= (isset($_POST["idCondAction"])) ? $_POST["idCondAction"] : "";
+
+if(isset($_GET["idCond"])){
+    $idCond=$_GET["idCond"];
+    $idCondAction= (isset($_POST["idCondAction"])) ? $_POST["idCondAction"] : "";
+}
+if(isset($_GET["idSchedule"])){
+    $idSchedule=$_GET["idSchedule"];
+}
 
 $GLOBALS["dbconnec"] = connectDB();
 ?>
 <input type="hidden" id="condId" value="<?php echo $idCond; ?>" />
 <input type="hidden" id="condActionId" value="<?php echo $idCondAction; ?>" />
+<input type="hidden" id="scheduleId" value="<?php echo $idSchedule; ?>" />
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -50,6 +58,7 @@ $( document ).ready(function() {
             url: "ajax/sce_cond_action_submit.php",
             type: "POST",
             data: {
+                scheduleId:  $('#scheduleId').val(),
                 condId:  $('#condId').val(),
                 condActionId:  $('#condActionId').val(),
                 type:  'commandline',
