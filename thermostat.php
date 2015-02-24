@@ -49,7 +49,7 @@ $GLOBALS["dbconnec"] = connectDB();
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="circle" id="advanced"> <span class="degree" style="position: absolute; left: 180px; color: rgb(255, 255, 255); font-size: 100px; font-weight: 600; top: 120px;">22</span> </div>
+                <div class="circle" id="advanced"> <span class="degree" style="position: absolute; left: 100px; color: rgb(255, 255, 255); font-size: 100px; font-weight: 600; top: 65px;">22</span> </div>
                 <input id="temp_salon" type="text" name="temp_salon" value="24"/>
             </div>
             <div class="col-md-6">
