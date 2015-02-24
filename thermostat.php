@@ -18,7 +18,7 @@ $GLOBALS["dbconnec"] = connectDB();
 .circle {
     border-radius: 50% !important;
     display: inline-block;
-    margin-left: 30px;
+    margin-left: 0px;
 }
 #advanced {
     width: 300px;
