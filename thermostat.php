@@ -21,8 +21,8 @@ $GLOBALS["dbconnec"] = connectDB();
     margin-left: 0px;
 }
 #advanced {
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
 
     background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, #DC6812 0%, #DD491B 100%, red 95%);
     background-image: -webkit-radial-gradient(45px 45px, circle cover, #DC6812, #DD491B);
