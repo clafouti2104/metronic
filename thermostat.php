@@ -32,6 +32,14 @@ $GLOBALS["dbconnec"] = connectDB();
     animation-iteration-count: infinite; 
     animation-timing-function: linear;*/
 }
+.degree {
+    position: absolute; 
+    left: 100px; 
+    color: rgb(255, 255, 255); 
+    font-size: 100px; 
+    font-weight: 600; 
+    top: 65px;
+}
 </style>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
@@ -49,11 +57,13 @@ $GLOBALS["dbconnec"] = connectDB();
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="circle" id="advanced"> <span class="degree" style="position: absolute; left: 100px; color: rgb(255, 255, 255); font-size: 100px; font-weight: 600; top: 65px;">22</span> </div>
-                <input id="temp_salon" type="text" name="temp_salon" value="24"/>
+                <div class="circle" id="advanced"> <span class="degree">22</span> </div>
+                <div class="col-md-9">
+                    <input id="temp_salon" type="text" name="temp_salon" value="24" style="width: 70%;"/>
+                </div>
             </div>
             <div class="col-md-6">
-                <div class="circle" id="advanced"> </div>
+                <div class="circle" id="advanced"> <span class="degree">24</span> </div>
                 <input id="temp_sdb" type="text" name="temp_sdb" value="24"/>
             </div>
         </div>
@@ -65,7 +75,7 @@ $(document).ready(function() {
     $("#temp_salon").ionRangeSlider({
         min: 16,
         max: 26,
-        from: 0,
+        from: 24,
         type: 'single',
         step: 1,
         keyboard: true,
@@ -76,7 +86,7 @@ $(document).ready(function() {
     $("#temp_sdb").ionRangeSlider({
         min: 16,
         max: 26,
-        from: 0,
+        from: 18,
         type: 'single',
         step: 1,
         keyboard: true,
