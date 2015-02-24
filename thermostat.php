@@ -6,7 +6,6 @@ $includeJS[] = "/assets/global/plugins/ion.rangeslider/js/ion-rangeSlider/ion.ra
 include "modules/header.php";
 include "modules/sidebar.php";
 
-
 $GLOBALS["dbconnec"] = connectDB();
 ?>
 <style type="text/css" media="screen">
@@ -24,13 +23,17 @@ $GLOBALS["dbconnec"] = connectDB();
     width: 280px;
     height: 280px;
 
-    background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, #DC6812 0%, #DD491B 100%, red 95%);
-    background-image: -webkit-radial-gradient(45px 45px, circle cover, #DC6812, #DD491B);
-    background-image: radial-gradient(45px 45px 45deg, circle cover, #DC6812 0%, #DD491B 100%, red 95%);
-    /*animation-name: spin; 
-    animation-duration: 3s; 
-    animation-iteration-count: infinite; 
-    animation-timing-function: linear;*/
+    background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, #E89359 0%, #DD491B 100%, red 95%);
+    background-image: -webkit-radial-gradient(45px 45px, circle cover, #E89359, #DD491B);
+    background-image: radial-gradient(45px 45px 45deg, circle cover, #E89359 0%, #DD491B 100%, red 95%);
+}
+.title_thermostat {
+    position: absolute; 
+    left: 125px; 
+    color: rgb(255, 255, 255); 
+    font-size: 25px; 
+    top: 45px;
+    font-variant: small-caps;
 }
 .degree {
     position: absolute; 
@@ -39,6 +42,14 @@ $GLOBALS["dbconnec"] = connectDB();
     font-size: 100px; 
     font-weight: 600; 
     top: 65px;
+}
+.current_temperature {
+    position: absolute; 
+    left: 140px; 
+    color: rgb(255, 255, 255); 
+    font-size: 35px; 
+    opacity: 0.5;
+    top: 190px;
 }
 </style>
 <!-- BEGIN PAGE -->
@@ -57,13 +68,21 @@ $GLOBALS["dbconnec"] = connectDB();
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="circle" id="advanced"> <span class="degree">22</span> </div>
+                <div class="circle" id="advanced"> 
+                    <span class="title_thermostat">Salon</span> 
+                    <span class="degree">22</span> 
+                    <span class="current_temperature">21</span> 
+                </div>
                 <div class="col-md-9">
                     <input id="temp_salon" type="text" name="temp_salon" value="24" style="width: 70%;"/>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="circle" id="advanced"> <span class="degree">24</span> </div>
+                <div class="circle" id="advanced"> 
+                    <span class="title_thermostat">SdB</span> 
+                    <span class="degree">24</span> 
+                    <span class="current_temperature">20</span> 
+                </div>
                 <input id="temp_sdb" type="text" name="temp_sdb" value="24"/>
             </div>
         </div>
@@ -80,8 +99,9 @@ $(document).ready(function() {
         step: 1,
         keyboard: true,
         hasGrid: true,
-        grid: true,
-        grid_snap: true
+        onFinish: function (data) {
+            console.log("onFinish");
+        }
     });
     $("#temp_sdb").ionRangeSlider({
         min: 16,
@@ -92,7 +112,10 @@ $(document).ready(function() {
         keyboard: true,
         hasGrid: true,
         grid: true,
-        grid_snap: true
+        grid_snap: true,
+        onFinish: function (data) {
+            console.log("onFinish");
+        }
     });
 });
 </script>
