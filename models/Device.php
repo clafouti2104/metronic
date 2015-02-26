@@ -391,12 +391,12 @@ class Device{
                         $msgPlay=MessageDevice::createMessageDevice($id, "play", 0, NULL, NULL, "on", 1,NULL,"on");
                         break;
                     case 'zwave_thermostat':
-                        $msg18=MessageDevice::createMessageDevice($id, "set 16", 0, "instance[0].commandClasses[67].Set(1,16)", NULL, NULL, 1,NULL,NULL);
-                        $msg18=MessageDevice::createMessageDevice($id, "set 18", 0, "instance[0].commandClasses[67].Set(1,18)", NULL, NULL, 1,NULL,NULL);
-                        $msg18=MessageDevice::createMessageDevice($id, "set 20", 0, "instance[0].commandClasses[67].Set(1,20)", NULL, NULL, 1,NULL,NULL);
-                        $msg18=MessageDevice::createMessageDevice($id, "set 22", 0, "instance[0].commandClasses[67].Set(1,22)", NULL, NULL, 1,NULL,NULL);
-                        $msg18=MessageDevice::createMessageDevice($id, "set 24", 0, "instance[0].commandClasses[67].Set(1,24)", NULL, NULL, 1,NULL,NULL);
-                        $msg18=MessageDevice::createMessageDevice($id, "set 26", 0, "instance[0].commandClasses[67].Set(1,26)", NULL, NULL, 1,NULL,NULL);
+                        $msg18=MessageDevice::createMessageDevice($id, "set 16", 0, "", NULL, NULL, 1,NULL,"instance[0].commandClasses[67].Set(1,16)");
+                        $msg18=MessageDevice::createMessageDevice($id, "set 18", 0, "", NULL, NULL, 1,NULL,"instance[0].commandClasses[67].Set(1,18)");
+                        $msg18=MessageDevice::createMessageDevice($id, "set 20", 0, "", NULL, NULL, 1,NULL,"instance[0].commandClasses[67].Set(1,20)");
+                        $msg18=MessageDevice::createMessageDevice($id, "set 22", 0, "", NULL, NULL, 1,NULL,"instance[0].commandClasses[67].Set(1,22)");
+                        $msg18=MessageDevice::createMessageDevice($id, "set 24", 0, "", NULL, NULL, 1,NULL,"instance[0].commandClasses[67].Set(1,24)");
+                        $msg18=MessageDevice::createMessageDevice($id, "set 26", 0, "", NULL, NULL, 1,NULL,"instance[0].commandClasses[67].Set(1,26)");
                         break;
                     default:
                 }

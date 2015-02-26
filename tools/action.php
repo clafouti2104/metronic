@@ -244,8 +244,9 @@ function zwave($heat,$device,$message,$valueToSend=NULL){
         addLog(LOG_ERR, "ERR [ACTION]: Any Zwave Ip Address is set");
         return FALSE;
     }
-    file_get_contents("http://".$zwave_ip_address.":8083/ZWaveAPI/Run/devices[".$device->param1."].".$message->command);
-    addLog(LOG_INFO, "[ACTION]: ZWave thermostat ".$device->name." ".$message->name);
+    $url="http://".$zwave_ip_address.":8083/ZWaveAPI/Run/devices[".$device->param1."].".$message->command;
+    file_get_contents($url);
+    addLog(LOG_INFO, "[ACTION]: ZWave calling ".$url);
     
     return TRUE;
 }
