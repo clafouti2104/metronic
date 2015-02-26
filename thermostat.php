@@ -70,8 +70,8 @@ $GLOBALS["dbconnec"] = connectDB();
             <div class="col-md-6">
                 <div class="circle" id="advanced"> 
                     <span class="title_thermostat">Salon</span> 
-                    <span class="degree stateDeviceId" stateDeviceId="127"></span> 
-                    <span class="current_temperature stateDeviceId" stateDeviceId="123"></span> 
+                    <span class="degree stateDeviceId stateDeviceId-127" stateDeviceId="127"></span> 
+                    <span class="current_temperature stateDeviceId stateDeviceId-123" stateDeviceId="123"></span> 
                 </div>
                 <div class="col-md-9">
                     <input id="temp_salon" type="text" name="temp_salon" value="24" style="width: 70%;"/>
