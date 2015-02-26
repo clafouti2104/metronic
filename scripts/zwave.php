@@ -48,24 +48,27 @@ $date->add($dateInterval);
 $contentData=file_get_contents("http://".$zwaveIpAddress.":8083/ZWaveAPI/Data/".$date->format('U'), false, $context);
 $content=json_decode($contentData,TRUE);
 
-foreach($zwaves as $zwaveId=>$infos){
-    if($infos["path"] == ""){
-        continue;
+foreach($zwaves as $zwaveId=>$zwaveObjects){
+    foreach($zwaveObjects as $infos){
+        if($infos["path"] == ""){
+            continue;
+        }
+        if($infos["deviceId"] == ""){
+            continue;
+        }
+        $explPath = explode("/", $infos["path"]);
+        $buildResult = '$content';
+        foreach($explPath as $item){
+            $buildResult .= "['".$item."']";
+        }
+        $dataToStore="";
+        eval('if(isset('.$buildResult.')){$dataToStore = '.$buildResult.';}');
+        if($dataToStore == ""){
+            continue;
+        }
+        Device::updateState($infos["deviceId"], $dataToStore);
+        
     }
-    if($infos["deviceId"] == ""){
-        continue;
-    }
-    $explPath = explode("/", $infos["path"]);
-    $buildResult = '$content';
-    foreach($explPath as $item){
-        $buildResult .= "['".$item."']";
-    }
-    $dataToStore="";
-    eval('if(isset('.$buildResult.')){$dataToStore = '.$buildResult.';}');
-    if($dataToStore == ""){
-        continue;
-    }
-    Device::updateState($infos["deviceId"], $dataToStore);
 }
 //print_r($content["devices.2.instances.0.commandClasses.67.data.1"]["val"]["value"]);
 ?>
