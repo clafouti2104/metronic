@@ -90,35 +90,6 @@ $GLOBALS["dbconnec"] = connectDB();
 </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function() {
-    $("#temp_salon").ionRangeSlider({
-        min: 16,
-        max: 26,
-        from: 24,
-        type: 'single',
-        step: 1,
-        keyboard: true,
-        hasGrid: true,
-        onFinish: function (data) {
-            console.log("onFinish");
-        }
-    });
-    /*$("#temp_sdb").ionRangeSlider({
-        min: 16,
-        max: 26,
-        from: 18,
-        type: 'single',
-        step: 1,
-        keyboard: true,
-        hasGrid: true,
-        grid: true,
-        grid_snap: true,
-        onFinish: function (data) {
-            console.log("onFinish");
-        }
-    });*/
-        
-setTimeout("refreshStatus()", 3000);
 function refreshStatus(){
     var device_ids = new Array();
     //Status
@@ -153,7 +124,38 @@ function refreshStatus(){
 
     if(device_ids.length > 0) setTimeout("refreshStatus()", 5000);
 }
+
+$(document).ready(function() {
+    $("#temp_salon").ionRangeSlider({
+        min: 16,
+        max: 26,
+        from: 24,
+        type: 'single',
+        step: 1,
+        keyboard: true,
+        hasGrid: true,
+        onFinish: function (data) {
+            console.log("onFinish");
+        }
+    });
+    /*$("#temp_sdb").ionRangeSlider({
+        min: 16,
+        max: 26,
+        from: 18,
+        type: 'single',
+        step: 1,
+        keyboard: true,
+        hasGrid: true,
+        grid: true,
+        grid_snap: true,
+        onFinish: function (data) {
+            console.log("onFinish");
+        }
+    });*/
+        
+setTimeout("refreshStatus()", 3000);
 });
+
 </script>
 <?php
 include "modules/footer.php";
