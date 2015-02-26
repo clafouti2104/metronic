@@ -126,14 +126,14 @@ function executeMessage($messgeId){
                 $token=getToken();
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
-            addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->name);
+            addLog(LOG_INFO, "[ACTION]: MyFOX alarm ".$device->name." to ".$message->name);
             $json=json_decode($response);
             print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
-                addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->name);
+                addLog(LOG_INFO, "[ACTION]: MyFOX alarm ".$device->name." to ".$message->name);
             }
             break;
         case 'myfox_group':

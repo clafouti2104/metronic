@@ -29,6 +29,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
         case 'freebox':
             echo "http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command;
             file_get_contents("http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command, false, $context);
+            addLog(LOG_INFO, "[ACTION]: Freebox to ".$message->command);
             break;
         case 'myfox_alarm':
             echo "myfox_alarm";
@@ -45,11 +46,14 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 $token=getToken();
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
+            addLog(LOG_INFO, "[ACTION]: MyFOX alarm set to ".$message->command);
             $json=json_decode($response);
             //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
+                addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
+                addLog(LOG_INFO, "[ACTION]: MyFOX alarm set to ".$message->command);
             }
             break;
         case 'myfox_group':
@@ -67,11 +71,14 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 $token=getToken();
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
+            addLog(LOG_INFO, "[ACTION]: MyFOX group ".$device->name." to ".$message->command);
             $json=json_decode($response);
             //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
+                addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
+                addLog(LOG_INFO, "[ACTION]: MyFOX group ".$device->name." to ".$message->command);
             }
             break;
         case 'myfox_light':
@@ -89,11 +96,14 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 $token=getToken();
             }
             $response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
+            addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->command);
             $json=json_decode($response);
             //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
+                addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 $response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
+                addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->command);
             }
             break;
         case 'popcorn':
@@ -178,7 +188,7 @@ function calaos($type,$device,$message,$valueToSend=NULL){
 
     //RECUPERATION INFO CALAOS
     exec('wget --no-check-certificate --post-file /var/www/metronic/scripts/calaos/action.json --output-document /var/www/metronic/scripts/calaos/result_action.json https://'.$ipAddress.'/api.php',$response);
-
+    addLog(LOG_INFO, "[ACTION]: Calaos ".  strtoupper($type)." ".$device->name." to ".$message->command);
     $results = file_get_contents('/var/www/metronic/scripts/calaos/result_action.json');
     $results = json_decode($results,TRUE);
 }
