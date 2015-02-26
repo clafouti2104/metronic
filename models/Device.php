@@ -389,6 +389,14 @@ class Device{
                     case 'zibase_scenario':
                         $msgPlay=MessageDevice::createMessageDevice($id, "play", 0, NULL, NULL, "on", 1,NULL,"on");
                         break;
+                    case 'zwave_thermostat':
+                        $msg18=MessageDevice::createMessageDevice($id, "set 16", 0, "instance[0].commandClasses[67].Set(1,16)", NULL, NULL, NULL,NULL,NULL);
+                        $msg18=MessageDevice::createMessageDevice($id, "set 18", 0, "instance[0].commandClasses[67].Set(1,18)", NULL, NULL, NULL,NULL,NULL);
+                        $msg18=MessageDevice::createMessageDevice($id, "set 20", 0, "instance[0].commandClasses[67].Set(1,20)", NULL, NULL, NULL,NULL,NULL);
+                        $msg18=MessageDevice::createMessageDevice($id, "set 22", 0, "instance[0].commandClasses[67].Set(1,22)", NULL, NULL, NULL,NULL,NULL);
+                        $msg18=MessageDevice::createMessageDevice($id, "set 24", 0, "instance[0].commandClasses[67].Set(1,24)", NULL, NULL, NULL,NULL,NULL);
+                        $msg18=MessageDevice::createMessageDevice($id, "set 26", 0, "instance[0].commandClasses[67].Set(1,26)", NULL, NULL, NULL,NULL,NULL);
+                        break;
                     default:
                 }
             }

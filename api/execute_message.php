@@ -9,8 +9,7 @@ if(!isset($_GET["idMessage"])){
     return false;
 }
 
-include("../tools/config.php");
-include("../ajax/action/execute_function.php");
+include_once("../tools/config.php");
 $GLOBALS["dbconnec"]=connectDB();
 include_once "../models/Device.php";
 include_once "../models/MessageDevice.php";
