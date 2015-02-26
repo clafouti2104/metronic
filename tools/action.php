@@ -1,7 +1,7 @@
 <?php
-include_once "../models/Device.php";
-include_once "../models/MessageDevice.php";
-include_once "../models/ScenarioMessage.php";
+include_once "/var/www/metronic/models/Device.php";
+include_once "/var/www/metronic/models/MessageDevice.php";
+include_once "/var/www/metronic/models/ScenarioMessage.php";
 
 
 function executeMessage($messgeId, $valueToSend=NULL){
