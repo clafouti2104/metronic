@@ -70,21 +70,21 @@ $GLOBALS["dbconnec"] = connectDB();
             <div class="col-md-6">
                 <div class="circle" id="advanced"> 
                     <span class="title_thermostat">Salon</span> 
-                    <span class="degree">22</span> 
-                    <span class="current_temperature">21</span> 
+                    <span class="degree stateDeviceId" stateDeviceId="127"></span> 
+                    <span class="current_temperature stateDeviceId" stateDeviceId="123"></span> 
                 </div>
                 <div class="col-md-9">
                     <input id="temp_salon" type="text" name="temp_salon" value="24" style="width: 70%;"/>
                 </div>
             </div>
-            <div class="col-md-6">
+            <!--<div class="col-md-6">
                 <div class="circle" id="advanced"> 
                     <span class="title_thermostat">SdB</span> 
                     <span class="degree">24</span> 
                     <span class="current_temperature">20</span> 
                 </div>
                 <input id="temp_sdb" type="text" name="temp_sdb" value="24"/>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
@@ -103,7 +103,7 @@ $(document).ready(function() {
             console.log("onFinish");
         }
     });
-    $("#temp_sdb").ionRangeSlider({
+    /*$("#temp_sdb").ionRangeSlider({
         min: 16,
         max: 26,
         from: 18,
@@ -116,7 +116,43 @@ $(document).ready(function() {
         onFinish: function (data) {
             console.log("onFinish");
         }
+    });*/
+        
+setTimeout("refreshStatus()", 3000);
+function refreshStatus(){
+    var device_ids = new Array();
+    //Status
+    //$('.stateDeviceId:visible').each(function() {
+    $('.stateDeviceId').each(function() {
+        if ($(this).attr('stateDeviceId') != 0) {
+            if ($.inArray($(this).attr('stateDeviceId'),device_ids) == -1) {
+                device_ids.push($(this).attr('stateDeviceId'));
+            }
+        }
     });
+
+    $.ajax({
+        type: "POST",
+        url: "scripts/status.php",
+        dataType:"json",
+        data: {ids: device_ids.join(',')},
+        timeout: 2000,
+        success: function(data){
+            $.each(data, function(index, value) {
+                value = utf8_decode(value);
+                if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
+                    if($('.slider-basic-'+index).size() == 1){
+                        $('.slider-basic-'+index).slider({'value':value});
+                    } else {
+                        $('.stateDeviceId-'+index).text(value);
+                    }
+                }
+            });
+        }
+    });
+
+    if(device_ids.length > 0) setTimeout("refreshStatus()", 5000);
+}
 });
 </script>
 <?php
