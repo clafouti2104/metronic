@@ -64,9 +64,10 @@ class Device{
     
     private static $types = array(
             'door',
-            'light',
             'eau',
             'electricy',
+            'light',
+            'heating',
             'music',
             'presence',
             'raspberry',
