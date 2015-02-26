@@ -10,7 +10,7 @@ if(!isset($_GET["idScenario"])){
 }
 
 include("../tools/config.php");
-include("../ajax/action/execute_function.php");
+include("../tools/action/action.php");
 $GLOBALS["dbconnec"]=connectDB();
 include_once "../models/Device.php";
 include_once "../models/MessageDevice.php";

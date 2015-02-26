@@ -1,4 +1,5 @@
 <?php
+include_once "/var/www/metronic/tools/config.php";
 include_once "/var/www/metronic/models/Device.php";
 include_once "/var/www/metronic/models/MessageDevice.php";
 include_once "/var/www/metronic/models/ScenarioMessage.php";
@@ -97,26 +98,29 @@ function executeMessage($messgeId, $valueToSend=NULL){
             break;
         case 'popcorn':
             file_get_contents("http://".$device->ip_address.":9999/c200remote_web/webrc200.php?fcmd=".$message->command);
+            addLog(LOG_INFO, "[ACTION]: Popcorn ".$message->name);
             break;
         case 'runeaudio':
             echo "http://".$device->ip_address."/command/?cmd=".$message->command;
             file_get_contents("http://".$device->ip_address."/command/?cmd=".$message->command, false, $context);
+            addLog(LOG_INFO, "[ACTION]: RuneAudio set to ".$message->command);
             break;
         case 'zibase_actuator':
             echo "zibase_actuator";
             zibase("actuator",$device,$message,$valueToSend);
             
             break;
-        case 'zwave_heat':
-            echo "zwave_heat";
-            zwave("heat",$device,$message,$valueToSend);
+        case 'zwave_thermostat':
+            echo "thermostat";
+            zwave("thermostat",$device,$message,$valueToSend);
             
             break;
         default:
             if(strtolower($message->type) == "http"){
                 $prefixCommand=(substr($message->command, 0, 1) == "/") ? "" : "/";
-                echo "call "."http://".$device->ip_address.$prefixCommand.$message->command;
+                //echo "call "."http://".$device->ip_address.$prefixCommand.$message->command;
                 file_get_contents("http://".$device->ip_address.$prefixCommand.$message->command, false, $context);
+                addLog(LOG_INFO, "[ACTION]: HTTP call "."http://".$device->ip_address.$prefixCommand.$message->command);
             }
     }
 }
@@ -219,12 +223,19 @@ function zibase($type,$device,$message,$valueToSend=NULL){
 }
 
 function zwave($heat,$device,$message,$valueToSend=NULL){
-    $login="maisonkling";
-    $password="lamaison";
-    $timeout = array('http' => array('timeout' => 10));
-    $context = stream_context_create($timeout);
-    
-    $urlAction=file_get_contents("http://".$device->ip_address.":8083", false, $context);
+    $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+    foreach($ini as $title => $value){
+        if($title == "zwave_ip_address"){
+            $zwave_ip_address=$value;
+            break;
+        }
+    }
+    if(!isset($zwave_ip_address)){
+        addLog(LOG_ERR, "ERR [ACTION]: Any Zwave Ip Address is set");
+        return FALSE;
+    }
+    file_get_contents("http://".$zwave_ip_address.":8083/ZWaveAPI/Run/devices[".$device->param1."].".$message->command);
+    addLog(LOG_INFO, "[ACTION]: ZWave thermostat ".$device->name." ".$message->name);
     
     return TRUE;
 }
