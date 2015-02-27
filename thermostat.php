@@ -197,6 +197,8 @@ $(document).ready(function() {
         }
     });
     
+    var slider_temp_salon=$('.slider-temp-'+index).data("ionRangeSlider");
+
     /*$("#temp_sdb").ionRangeSlider({
         min: 16,
         max: 26,
