@@ -74,7 +74,7 @@ $GLOBALS["dbconnec"] = connectDB();
                     <span class="current_temperature stateDeviceId stateDeviceId-123" stateDeviceId="123"></span> 
                 </div>
                 <div class="col-md-9">
-                    <input id="temp_salon" type="text" name="temp_salon" value="24" style="width: 70%;"/>
+                    <input id="temp_salon" type="text" name="temp_salon" value="" elementId="101" style="width: 70%;"/>
                 </div>
             </div>
             <!--<div class="col-md-6">
@@ -176,7 +176,22 @@ $(document).ready(function() {
         keyboard: true,
         hasGrid: true,
         onFinish: function (data) {
-            console.log("onFinish");
+            console.log(data.fromNumber);
+            $.ajax({
+                url: "ajax/action/execute.php",
+                type: "POST",
+                data: {
+                   type:  encodeURIComponent('message'),
+                   value:  data.fromNumber,
+                   elementId: $(this).attr('elementId')
+                },
+                error: function(datas){
+                    toastr.error("Une erreur est survenue");
+                },
+                complete: function(datas){
+                    toastr.success("Action exécutée");
+                }
+            });
         }
     });
     /*$("#temp_sdb").ionRangeSlider({

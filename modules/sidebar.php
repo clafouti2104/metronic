@@ -88,6 +88,12 @@ $pageAdmin=array(
 					<span class="title">Alarme</span>
 					</a>
 				</li>
+                <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/thermostat.php") echo "active"; ?>">
+					<a href="<?php echo $GLOBALS['path']; ?>/thermostat.php">
+                                            <i class="fa fa-fire"></i> 
+                                            <span class="title">Chauffage</span>
+					</a>
+				</li>
                 <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/conso.php") echo "active"; ?>">
 					<a href="<?php echo $GLOBALS['path']; ?>/conso.php">
                                             <i class="fa fa-tachometer"></i> 

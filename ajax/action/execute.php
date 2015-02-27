@@ -41,7 +41,7 @@ switch (strtolower($_POST["type"])){
     default:
 }
 
-switch ($_POST["type"]){
+/*switch ($_POST["type"]){
     case "free-power":
         file_get_contents($urlFreebox."&key=power");
         break;
@@ -146,6 +146,6 @@ switch ($_POST["type"]){
         break;
     default:
         return false;
-}
+}*/
 return true;
 ?>
