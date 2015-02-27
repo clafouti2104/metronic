@@ -74,7 +74,7 @@ $GLOBALS["dbconnec"] = connectDB();
                     <span class="current_temperature stateDeviceId stateDeviceId-123" stateDeviceId="123"></span> 
                 </div>
                 <div class="col-md-9">
-                    <input id="temp_salon" type="text" name="temp_salon" value="" elementId="101" style="width: 70%;"/>
+                    <input id="temp_salon" type="text" name="temp_salon" value="" elementid="101" style="width: 70%;"/>
                 </div>
             </div>
             <!--<div class="col-md-6">
@@ -183,7 +183,7 @@ $(document).ready(function() {
                 data: {
                    type:  encodeURIComponent('message'),
                    value:  data.fromNumber,
-                   elementId: $(this).attr('elementId')
+                   elementId: $(this).attr('elementid')
                 },
                 error: function(datas){
                     toastr.error("Une erreur est survenue");
