@@ -74,7 +74,7 @@ $GLOBALS["dbconnec"] = connectDB();
                     <span class="current_temperature stateDeviceId stateDeviceId-123" stateDeviceId="123"></span> 
                 </div>
                 <div class="col-md-9">
-                    <input id="temp_salon" type="text" name="temp_salon" value="" elementid="101" style="width: 70%;"/>
+                    <input id="temp_salon" class="slider_temp slider-temp-127" type="text" name="temp_salon" value="" elementid="101" style="width: 70%;"/>
                 </div>
             </div>
             <!--<div class="col-md-6">
@@ -112,9 +112,11 @@ function refreshStatus(){
             $.each(data, function(index, value) {
                 value = utf8_decode(value);
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
-                    if($('.slider-basic-'+index).size() == 1){
-                        $('.slider-basic-'+index).slider({'value':value});
-                    } else {
+                    if($('.slider-temp-'+index).size() >= 1){
+                        var slider=$(".slider-temp-127").data("ionRangeSlider");
+                        slider.update({from:value});
+                    } 
+                    if($('.stateDeviceId-'+index).size() >= 1) {
                         $('.stateDeviceId-'+index).text(value);
                     }
                 }
@@ -167,7 +169,7 @@ function utf8_decode(str_data) {
 }
 
 $(document).ready(function() {
-    $("#temp_salon").ionRangeSlider({
+    $(".slider-temp-127").ionRangeSlider({
         min: 16,
         max: 26,
         from: 24,
@@ -194,6 +196,7 @@ $(document).ready(function() {
             });
         }
     });
+    
     /*$("#temp_sdb").ionRangeSlider({
         min: 16,
         max: 26,
