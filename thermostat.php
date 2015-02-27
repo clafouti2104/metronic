@@ -90,6 +90,7 @@ $GLOBALS["dbconnec"] = connectDB();
 </div>
 </div>
 <script type="text/javascript">
+var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
 function refreshStatus(){
     var device_ids = new Array();
     //Status
