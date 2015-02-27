@@ -181,9 +181,9 @@ $(document).ready(function() {
                 url: "ajax/action/execute.php",
                 type: "POST",
                 data: {
+                   elementId: '101',
                    type:  encodeURIComponent('message'),
-                   value:  data.fromNumber,
-                   elementId: $(this).attr('elementid')
+                   value:  data.fromNumber
                 },
                 error: function(datas){
                     toastr.error("Une erreur est survenue");
