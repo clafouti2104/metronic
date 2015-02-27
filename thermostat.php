@@ -90,7 +90,7 @@ $GLOBALS["dbconnec"] = connectDB();
 </div>
 </div>
 <script type="text/javascript">
-var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
+//var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
 function refreshStatus(){
     var device_ids = new Array();
     //Status
@@ -115,7 +115,7 @@ function refreshStatus(){
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
                     if($('.slider-temp-'+index).size() >= 1){
                         //var slider=$('.slider-temp-'+index).data("ionRangeSlider");
-                        slider_temp_salon.update({from:value});
+                        //slider_temp_salon.update({from:value});
                     } 
                     if($('.stateDeviceId-'+index).size() >= 1) {
                         $('.stateDeviceId-'+index).text(value);
