@@ -197,7 +197,7 @@ $(document).ready(function() {
         }
     });
     
-    var slider_temp_salon=$('.slider-temp-'+index).data("ionRangeSlider");
+    var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
 
     /*$("#temp_sdb").ionRangeSlider({
         min: 16,
