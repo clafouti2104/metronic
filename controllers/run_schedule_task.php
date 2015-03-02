@@ -4,9 +4,12 @@
  */
 
 include("../tools/config.php");
+include("../tools/action.php");
 include("../models/Schedule.php");
 include("../models/ScheduleAction.php");
+$GLOBALS["dbconnec"] = connectDB();
 
+parse_str(implode('&', array_slice($argv, 1)), $_GET);
 if(!isset($_GET["scheduleid"])){
     addLog(LOG_ERR, "SCH_TASK: no scheduleid given");
     exit;
@@ -16,7 +19,7 @@ $schedule = Schedule::getSchedule($_GET["scheduleid"]);
 $scheduleActions = ScheduleAction::getScheduleActionForSchedule($_GET["scheduleid"]);
 
 if(count($scheduleActions) == 0){
-    addLog(LOG_INFO, "SCH_TASK".$_GET["scheduleid"].": no action to execute");
+    addLog(LOG_INFO, "[SCH_TASK] ".$schedule->name.": no action to execute");
     exit;
 }
 foreach($scheduleActions as $scheduleAction){

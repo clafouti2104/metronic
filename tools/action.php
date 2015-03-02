@@ -241,11 +241,11 @@ function zwave($heat,$device,$message,$valueToSend=NULL){
         }
     }
     if(!isset($zwave_ip_address)){
-        addLog(LOG_ERR, "ERR [ACTION]: Any Zwave Ip Address is set");
+        addLog(LOG_ERR, "[ACTION]: Any Zwave Ip Address is set");
         return FALSE;
     }
     $url= "http://".$zwave_ip_address.":8083/ZWaveAPI/Run/devices[".$device->param1."].".$message->command;
-    $url .= (is_null($url)) ? "" : $valueToSend.")";
+    $url .= (is_null($valueToSend)) ? "" : $valueToSend.")";
     file_get_contents($url);
     addLog(LOG_INFO, "[ACTION]: ZWave calling ".$url);
     

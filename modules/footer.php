@@ -4,6 +4,9 @@
 	<div class="page-footer-inner">
 		 <?php echo date('Y'); ?> &copy; Pouchkine.
 	</div>
+        <div style="float: left;display: inline-block;width: 70%;">
+            <marquee behaviour="scroll" style="color:#d9d9d9;">This is basic example of marquee</marquee>
+        </div>
 	<div class="page-footer-tools">
 		<span class="go-top">
 		<i class="fa fa-angle-up"></i>

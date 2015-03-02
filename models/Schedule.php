@@ -185,7 +185,7 @@ class Schedule{
         
         $lines="#\n";
         foreach($schedules as $schedule){
-            $cmd="cd /var/www/controllers;php run_schedule_task.php --scheduleid=".$schedule->id." >/dev/null 2>&1";
+            $cmd="cd /var/www/metronic/controllers;php run_schedule_task.php scheduleid=".$schedule->id." >/dev/null 2>&1";
             $lines.=$schedule->minute." ".$schedule->hour." * * ".$schedule->weekdays." ".$cmd."\n";
         }
         
