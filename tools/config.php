@@ -63,8 +63,21 @@ function getToken(){
 }
 
 function addLog($level, $message){
+    if($level == LOG_INFO){
+        $prefix;
+    }
+    switch($level){
+        case LOG_INFO:
+            $prefix=" INFO ";
+            break;
+        case LOG_ERR:
+            $prefix=" ERROR ";
+            break;
+        default:
+            $prefix=" NONE ";
+    }
     openlog("domokine", LOG_NDELAY, LOG_LOCAL2);
-    syslog($level, $message);
+    syslog($level, $prefix.$message);
     closelog();
 }
 

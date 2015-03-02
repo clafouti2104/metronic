@@ -280,7 +280,7 @@ class Chart{
         for($i=1;$i<=30;$i++){
             $interval=new DateInterval("P1D");
             $dateFrom->add($interval);
-            $days .= ",'".$dateFrom->format('d')."a'";
+            $days .= ",'".$dateFrom->format('d')."'";
         }
         return $days;
     }
