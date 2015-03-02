@@ -97,7 +97,8 @@ class Page{
     * @desc Renvoie tous les Pages parents
     */
     public static function getPageParents() {
-        $query = "SELECT DISTINCT(parent) FROM page";
+        $query = "SELECT DISTINCT(parent) FROM page WHERE parent IN (SELECT id FROM page WHERE active=1)";
+        
         $query .= " ORDER BY name";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);

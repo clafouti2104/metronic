@@ -47,6 +47,7 @@ class Chart{
             '2' => "semaine",
             '3' => "mois",
             '4' => "annee"
+            //'5' => "semaine_heure"
     );
     
     public static function getPeriods() {
@@ -265,6 +266,36 @@ class Chart{
             $interval=new DateInterval("P1D");
             $dateFrom->add($interval);
             $days .= ",'".$dateFrom->format('d')."'";
+        }
+        return $days;
+    }
+    
+    public function getDaysForMonth(){
+        $days="";
+        $dateFrom=new DateTime('now');
+        $interval=new DateInterval("P30D");
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        $days .= "'".$dateFrom->format('d')."'";
+        for($i=1;$i<=30;$i++){
+            $interval=new DateInterval("P1D");
+            $dateFrom->add($interval);
+            $days .= ",'".$dateFrom->format('d')."'";
+        }
+        return $days;
+    }
+    
+    public function getMonthForYear(){
+        $days="";
+        $dateFrom=new DateTime('now');
+        $interval=new DateInterval("P1Y");
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        $days .= "'".$dateFrom->format('d')."'";
+        for($i=1;$i<=30;$i++){
+            $interval=new DateInterval("P1M");
+            $dateFrom->add($interval);
+            $days .= ",'".$dateFrom->format('m')."'";
         }
         return $days;
     }

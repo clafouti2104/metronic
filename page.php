@@ -442,12 +442,12 @@ $( document ).ready(function() {
                     break;
                 case '2':
                     echo $chart->getDaysForWeek();
-                    /*for($i=0;$i<=23;$i++){
-                        $j=($j > 23) ? 0 : $j;
-                        if($i>0){echo ",";}
-                        echo "'".$j."'";
-                        $j++;
-                    }*/
+                    break;
+                case '3':
+                    echo $chart->getDaysForMonth();
+                    break;
+                case '4':
+                    echo $chart->getMonthForYear();
                     break;
             }
             echo "]";
