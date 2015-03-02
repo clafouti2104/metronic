@@ -554,7 +554,41 @@ class History{
                 }
                 break;
             case '4': //Annee
-                $duration='365';
+                $duration='12';
+                for($i=0;$i<=11;$i++){
+                    //$dateEnd=clone $dateFrom;
+                    //$dateEnd->add(new DateInterval("P1M"));
+
+                    $query = "SELECT ";
+                    $query .= " SUM(value) as somme";
+                    $query .= " FROM releve_$deviceid";
+                    $query .= " WHERE ";
+                    //$query .= " date > '".$dateEnd->format('Y-m-d')." 00:00:00' AND date < '".$dateEnd->format('Y-m-d')." 23:59:59'";
+                    $query .= " date > '".$dateFrom->format('Y-m')."-01 00:00:00"."' AND date < '".$dateFrom->format('Y-m-t')." 23:59:59'";
+                    //echo $query;
+                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt->execute(array());
+                    $value=0;
+                    if($stmt->rowCount() > 0){
+                        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            if($row["somme"]!=""){
+                                $value = $row["somme"];
+                            }
+                        }
+                    }
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = $stateTemp."";
+                        }
+                    }
+                    $jsSerie .= ($jsSerie == "") ? "" : ",";
+                    $jsSerie .= $value;
+                    $stmt=NULL;
+                    //echo $query." - ";
+                    $dateFrom->add(new DateInterval("P1M"));
+                }
                 break;
             default:
                 $duration='1';

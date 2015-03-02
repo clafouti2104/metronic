@@ -262,7 +262,7 @@ class Chart{
         $interval->invert=1;
         $dateFrom->add($interval);
         $days .= "'".$dateFrom->format('d')."'";
-        for($i=1;$i<=6;$i++){
+        for($i=1;$i<=7;$i++){
             $interval=new DateInterval("P1D");
             $dateFrom->add($interval);
             $days .= ",'".$dateFrom->format('d')."'";
@@ -280,7 +280,7 @@ class Chart{
         for($i=1;$i<=30;$i++){
             $interval=new DateInterval("P1D");
             $dateFrom->add($interval);
-            $days .= ",'".$dateFrom->format('d')."'";
+            $days .= ",'".$dateFrom->format('d')."a'";
         }
         return $days;
     }
@@ -292,7 +292,7 @@ class Chart{
         $interval->invert=1;
         $dateFrom->add($interval);
         $days .= "'".$dateFrom->format('d')."'";
-        for($i=1;$i<=30;$i++){
+        for($i=1;$i<=11;$i++){
             $interval=new DateInterval("P1M");
             $dateFrom->add($interval);
             $days .= ",'".$dateFrom->format('m')."'";
