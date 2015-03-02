@@ -112,6 +112,7 @@ class Page{
     public static function getPageNonFilles() {
         $query = "SELECT id FROM page";
         $query .= " WHERE parent IS NULL";
+        $query .= " AND active=1";
         $query .= " ORDER BY name";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
@@ -125,6 +126,7 @@ class Page{
     public static function getPageFilles($idParent) {
         $query = "SELECT id FROM page";
         $query .= " WHERE parent=".$idParent." ";
+        $query .= " AND active=1";
         $query .= " ORDER BY name";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
