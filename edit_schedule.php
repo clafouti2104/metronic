@@ -800,7 +800,8 @@ function deleteCondAction(condActionId){
             url: "ajax/condaction_delete.php",
             type: "POST",
             data: {
-                condActionId: condActionId
+                condActionId: condActionId,
+                type: "schedule_task"
             },
             error: function(data){
                 toastr.error("Une erreur est survenue");
