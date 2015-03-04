@@ -46,8 +46,8 @@ class Chart{
             '1' => "jour",
             '2' => "semaine",
             '3' => "mois",
-            '4' => "annee"
-            //'5' => "semaine_heure"
+            '4' => "annee",
+            '5' => "semaine_heure"
     );
     
     public static function getPeriods() {

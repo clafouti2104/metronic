@@ -52,6 +52,9 @@ class History{
             case '4':
                 $duration='365';
                 break;
+            case '5':
+                $duration='7';
+                break;
             default:
                 $duration='1';
         }
@@ -229,6 +232,48 @@ class History{
                 break;
             case '4': //Annee
                 $duration='365';
+                break;
+            case '5': //Semaine_heure
+                $duration='7';
+                for($i=1;$i<=336;$i++){
+                    $dateEnd=clone $dateFrom;
+                    $dateEnd->add(new DateInterval("PT30I"));
+
+                    $query = "SELECT ";
+                    $query .= " SUM(value) as somme";
+                    $query .= " FROM releve_$deviceid";
+                    $query .= " WHERE ";
+                    $query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
+                    //echo "\n".$query."\n  ";
+                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt->execute(array());
+                    $value=0;
+                    if($stmt->rowCount() > 0){
+                        if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            if($row["somme"]!=""){
+                                $value = $row["somme"];
+                            }
+                        }
+                    }
+                    
+                    if(!is_null($formula)){
+                        $fonction = str_replace("x", $value, $formula);
+                        @eval('$stateTemp='.$fonction.';');
+                        if(isset($stateTemp)){
+                            $value = $stateTemp."";
+                        }
+                    }
+                    $month = (substr($dateFrom->format('m'), 0, 1) == '0') ? substr($dateFrom->format('m'),1,1) : $dateFrom->format('m');
+                    $month--;
+                    $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
+                    $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
+                    $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
+                    $jsSerie .= ($jsSerie == "") ? "" : ",";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $stmt=NULL;
+                    //echo $query." - ";
+                    $dateFrom->add(new DateInterval("PT30I"));
+                }
                 break;
             default:
                 $duration='1';
