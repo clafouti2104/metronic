@@ -143,8 +143,14 @@ if($action == "disarmed"){
     sleep(5);
     //Extinction entrée
     file_get_contents("https://api.myfox.me:443/v2/site/10562/device/204609/socket/off?access_token=".$token);
+    //Chauffage à 10°C
+    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=102", false, $context);
+    //Arret RuneAudio
+    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=80", false, $context);
 }
 
+//LED Control
+file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
 
 Log::createLog("badge", "Badge ".$_GET["uid"]." accepté", $date, NULL, 80);
 ?>
