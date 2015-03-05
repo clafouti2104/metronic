@@ -279,7 +279,7 @@ $( document ).ready(function() {
     });*/
     
     $(".slider-basic").each(function() {
-        $(".slider-basic-"+$(this).attr('deviceid'))..ionRangeSlider({
+        $(".slider-basic-"+$(this).attr('deviceid')).ionRangeSlider({
             min: 0,
             max: 100,
             type: 'single',
