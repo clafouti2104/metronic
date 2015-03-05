@@ -285,12 +285,12 @@ $( document ).ready(function() {
         step: 1,
         grid: true,
         hasGrid: true,
-        onFinish: function (data) {
+        onFinish: function (dataa) {
             $.ajax({
-                url: "ajax/action/executee.php",
+                url: "ajax/action/execute.php",
                 type: "POST",
                 data: {
-                   value:  data.fromNumber,
+                   value:  dataa.fromNumber,
                    type:  encodeURIComponent('message'),
                    elementId: $(this).attr('elementId')
                 },
