@@ -308,34 +308,8 @@ $( document ).ready(function() {
             }
         });
     });
-    /*$(".slider-basic").ionRangeSlider({
-        min: 0,
-        max: 100,
-        type: 'single',
-        step: 1,
-        grid: true,
-        hasGrid: true,
-        onFinish: function (ddataa) {
-            $.ajax({
-                url: "ajax/action/execute.php",
-                type: "POST",
-                data: {
-                   type:  encodeURIComponent('message'),
-                   elementId: $(this).attr('elementId'),
-                   value:  ddataa.fromNumber
-                },
-                error: function(datas){
-                    toastr.error("Une erreur est survenue");
-                },
-                complete: function(datas){
-                    toastr.success("Action exécutée");
-                }
-            });
-        }
-    });*/
     
     $('.box-action:visible').bind('click',function(e){
-        //console.debug($(this).attr('class'));
         executeAction($(this).attr('type'), $(this).attr('elementId'));
     });
     
@@ -801,16 +775,16 @@ function refreshStatus(){
                     }
                 }
                 if(value.toLowerCase() == "on"){
-                    if($('.icon-status-'+index).length >= 1){
-                        if($('.icon-status-'+index).attr('type') == 'door'){
-                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-unlocked');
+                    if($('.status-icon-'+index).length >= 1){
+                        if($('.status-icon-'+index).attr('type') == 'door'){
+                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-unlocked');
                         }
-                        if($('.icon-status-'+index).attr('type') == 'light'){
-                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
+                        if($('.status-icon-'+index).attr('type') == 'light'){
+                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
                         }
                     }
                     
-                    $('.make-switch-'+index).bootstrapSwitch('state', true, false);
+                    $('.make-switch-'+index).bootstrapSwitch('state', true, true);
                     
                     $('.stateDeviceId-badge-'+index).removeClass("badge-danger");
                     $('.stateDeviceId-badge-'+index).addClass("badge-success");
@@ -828,7 +802,7 @@ function refreshStatus(){
                             $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
                         }
                     }
-                    $('.make-switch-'+index).bootstrapSwitch('state', false, false);
+                    $('.make-switch-'+index).bootstrapSwitch('state', false, true);
 
                     $('.stateDeviceId-badge-'+index).removeClass("badge-success");
                     $('.stateDeviceId-badge-'+index).addClass("badge-danger");
