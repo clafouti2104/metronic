@@ -764,7 +764,7 @@ function refreshStatus(){
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
                     if($('.slider-basic-'+index).size() == 1){
                         //$('.slider-basic-'+index).slider({'value':value});
-                        var slider=$('.slider-basic-'+index).data("ionRangeSlider");
+                        var slider=$('.slider-basic').data("ionRangeSlider");
                         slider.update({from: value});
                     } else {
                         $('.stateDeviceId-'+index).text(value);
