@@ -41,6 +41,20 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/Pouchkine/Sites/metronic/models/Chart.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/models/History.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/thermostat.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/modules/footer.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/charts.html</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/modules/header.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/page_device.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/page.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/page_device_slider.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/scripts/badge_check.php</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/scripts/reboot.py</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/assets/global/plugins/ion.rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js</file>
+            <file>file:/Users/Pouchkine/Sites/metronic/scripts/reboot.php</file>
+        </group>
     </open-files>
 </project-private>

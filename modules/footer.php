@@ -4,9 +4,9 @@
 	<div class="page-footer-inner">
 		 <?php echo date('Y'); ?> &copy; Pouchkine.
 	</div>
-        <div style="float: left;display: inline-block;width: 70%;">
+        <!--<div style="float: left;display: inline-block;width: 70%;">
             <marquee behaviour="scroll" style="color:#d9d9d9;">This is basic example of marquee</marquee>
-        </div>
+        </div>-->
 	<div class="page-footer-tools">
 		<span class="go-top">
 		<i class="fa fa-angle-up"></i>
@@ -52,6 +52,7 @@ if(isset($includeJS)){
     }
 }
 ?>
+
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
@@ -67,6 +68,26 @@ if(isset($includeJS)){
 <!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
 jQuery(document).ready(function() {     
+    $('.btnReboot').bind('click', function(){
+        $.ajax({
+            url: "script/reboot.php",
+            type: "POST",
+            data: {
+               type:  'device'
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            complete: function(data){
+                if(data == "rebooting"){
+                    toastr.info("Redémarrage en cours");
+                } else {
+                    toastr.error("Une erreur est survenue");
+                }
+            }
+        });
+    });
+    
    // initiate layout and plugins
    Metronic.init(); // init metronic core components
    Layout.init(); // init current layout
@@ -87,12 +108,12 @@ jQuery(document).ready(function() {
    if(typeof ui2 !== 'undefined' && ui2=="datatable"){
        //TableManaged.init();
    }
-   ComponentsPickers.init();
+   //ComponentsPickers.init();
    
-   if ($(this).attr('target') !== '_blank') {
+   /*if ($(this).attr('target') !== '_blank') {
         e.preventDefault();
         window.location = $(this).attr('href');
-    }
+    }*/
 
 });   
 

@@ -4,13 +4,16 @@ $includeJS[] = "/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.
 $includeJS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js";   
 $includeJS[] = "/assets/js/raphael.2.1.0.min.js";   
 $includeJS[] = "/assets/js/justgage.1.0.1.min.js";   
+$includeJS[] = "/assets/js/wurfl.js";   
+$includeJS[] = "/assets/global/plugins/ion.rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js";
 //$includeJS[] = "/assets/admin/pages/scripts/components-jqueryui-sliders.js";   
 
-$includeJS[] = "/assets/js/wurfl.js";   
 $includeCSS[] = "/assets/svg/fontcustom.css"; 
 $includeCSS[] = "/assets/meteo/css/weather-icons.css"; 
 $includeCSS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.css"; 
 $includeCSS[] = "/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"; 
+$includeCSS[] = "/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.css";
+$includeCSS[] = "/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.Metronic.css";
 include "modules/header.php";
 include "modules/sidebar.php";
 
@@ -253,7 +256,7 @@ $( document ).ready(function() {
     });
     
     
-    $(".slider-basic").slider({
+    /*$(".slider-basic").slider({
         change: function(e,ui){
             if( typeof e.clientX != 'undefined'){
                 $.ajax({
@@ -272,6 +275,32 @@ $( document ).ready(function() {
                     }
                 });
             }
+        }
+    });*/
+    
+    $(".slider-basic").ionRangeSlider({
+        min: 0,
+        max: 100,
+        type: 'single',
+        step: 1,
+        grid: true,
+        hasGrid: true,
+        onFinish: function (data) {
+            $.ajax({
+                url: "ajax/action/execute.php",
+                type: "POST",
+                data: {
+                   type:  encodeURIComponent('message'),
+                   value:  ui.value,
+                   elementId: $(this).attr('elementId')
+                },
+                error: function(datas){
+                    toastr.error("Une erreur est survenue");
+                },
+                complete: function(datas){
+                    toastr.success("Action exécutée");
+                }
+            });
         }
     });
     
@@ -734,7 +763,9 @@ function refreshStatus(){
                 value = utf8_decode(value);
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
                     if($('.slider-basic-'+index).size() == 1){
-                        $('.slider-basic-'+index).slider({'value':value});
+                        //$('.slider-basic-'+index).slider({'value':value});
+                        var slider=$('.slider-basic-'+index).data("ionRangeSlider");
+                        slider.update({from: value});
                     } else {
                         $('.stateDeviceId-'+index).text(value);
                     }

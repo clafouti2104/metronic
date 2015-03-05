@@ -17,11 +17,10 @@ $color="#FFF";
             <div class="number">
                     <?php echo $device->name; ?>
             </div>
-            <div class="desc">									
+            <div class="desc">
                 <div class="slider slider-basic slider-basic-<?php echo $item->deviceId; ?> bg-<?php echo $sliderColor; ?> stateDeviceId" elementId="<?php echo $msg->id; ?>" stateDeviceId="<?php echo $device->id; ?>" deviceId="<?php echo $device->id; ?>"></div>
             </div>
-            
-        </div>				
+        </div>
         <div class="more ">
             &nbsp;
             <a class="btnEditPageItem" iditempage="<?php echo $item->id; ?>" href="ajax/user/itempage_edit.php?itemPageId=<?php echo $item->id; ?>" data-target="#ajaxEditPageItem" data-toggle="modal">

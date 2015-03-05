@@ -74,23 +74,43 @@ $GLOBALS["dbconnec"] = connectDB();
                     <span class="current_temperature stateDeviceId stateDeviceId-123" stateDeviceId="123"></span> 
                 </div>
                 <div class="col-md-9">
-                    <input id="temp_salon" class="slider_temp slider-temp-127" type="text" name="temp_salon" value="" elementid="101" style="width: 70%;"/>
+                    <input id="slider-temp-127" class="slider_temp slider-temp-127" type="text" name="temp_salon" value="" elementid="101" style="width: 70%;display:none;"/>
                 </div>
             </div>
-            <!--<div class="col-md-6">
-                <div class="circle" id="advanced"> 
-                    <span class="title_thermostat">SdB</span> 
-                    <span class="degree">24</span> 
-                    <span class="current_temperature">20</span> 
-                </div>
-                <input id="temp_sdb" type="text" name="temp_sdb" value="24"/>
-            </div>-->
         </div>
     </div>
 </div>
 </div>
 <script type="text/javascript">
-//var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
+$(document).ready(function() {
+    $("#slider-temp-127").ionRangeSlider({
+        min: 16,
+        max: 26,
+        from: 24,
+        type: 'single',
+        step: 1,
+        grid: true,
+        hasGrid: true,
+        onFinish: function (data) {
+            console.log(data.fromNumber);
+            $.ajax({
+                url: "ajax/action/execute.php",
+                type: "POST",
+                data: {
+                   elementId: '101',
+                   type:  encodeURIComponent('message'),
+                   value:  data.fromNumber
+                },
+                error: function(datas){
+                    toastr.error("Une erreur est survenue");
+                },
+                complete: function(datas){
+                    toastr.success("Action exécutée");
+                }
+            });
+        }
+    });
+});
 function refreshStatus(){
     var device_ids = new Array();
     //Status
@@ -114,8 +134,8 @@ function refreshStatus(){
                 value = utf8_decode(value);
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
                     if($('.slider-temp-'+index).size() >= 1){
-                        //var slider=$('.slider-temp-'+index).data("ionRangeSlider");
-                        //slider_temp_salon.update({from:value});
+                        var slider=$('#slider-temp-'+index).data("ionRangeSlider");
+                        slider.update({from: value});
                     } 
                     if($('.stateDeviceId-'+index).size() >= 1) {
                         $('.stateDeviceId-'+index).text(value);
@@ -170,34 +190,6 @@ function utf8_decode(str_data) {
 }
 
 $(document).ready(function() {
-    $(".slider-temp-127").ionRangeSlider({
-        min: 16,
-        max: 26,
-        from: 24,
-        type: 'single',
-        step: 1,
-        keyboard: true,
-        hasGrid: true,
-        onFinish: function (data) {
-            console.log(data.fromNumber);
-            $.ajax({
-                url: "ajax/action/execute.php",
-                type: "POST",
-                data: {
-                   elementId: '101',
-                   type:  encodeURIComponent('message'),
-                   value:  data.fromNumber
-                },
-                error: function(datas){
-                    toastr.error("Une erreur est survenue");
-                },
-                complete: function(datas){
-                    toastr.success("Action exécutée");
-                }
-            });
-        }
-    });
-    
     var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
 
     /*$("#temp_sdb").ionRangeSlider({

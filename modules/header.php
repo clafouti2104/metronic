@@ -42,7 +42,7 @@ while( $resultat = $resultats->fetch() )
 $unknownNotif=0;
 $notifications=array();
 //$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND date > '".$lastDate->format('Y-m-d H:i:s')."' AND level >= ".$logLevel." ORDER BY date DESC");
-$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND level >= ".$logLevel." ORDER BY date DESC LIMIT 0,15");
+$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND level >= ".$logLevel." ORDER BY date DESC LIMIT 0,10");
 $resultatLogs->setFetchMode(PDO::FETCH_OBJ);
 while( $resultatLog = $resultatLogs->fetch() )
 {
@@ -137,7 +137,7 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
 					<!-- BEGIN NOTIFICATION DROPDOWN -->	
 					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-					<i class="fa fa-warning"></i>
+                                                <i class="fa fa-warning"></i>
 						<i class="icon-warning-sign"></i>
                                                 <?php 
                                                 if( $unknownNotif > 0){
@@ -206,8 +206,29 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
                                                             echo "</li>";
                                                         } 
                                                         ?>
+                                                        <li class="external">
+                                                            <a href="system.php">
+                                                                Toutes les notifications <i class="m-icon-swapright"></i>
+                                                            </a>
+                                                        </li>
 						</ul>
 					</li>
+                                        <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                                <i class="fa fa-tasks"></i>
+                                            </a>
+                                            <ul class="dropdown-menu extended tasks">
+                                                <li>
+                                                    <p>Opérations</p>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="btnReboot">
+                                                        <i class="fa fa-repeat "></i>
+                                                        Redémarrer
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
                                     </ul>
 				<!-- END TOP NAVIGATION MENU -->	
 			</div>
