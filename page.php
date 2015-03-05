@@ -290,8 +290,8 @@ $( document ).ready(function() {
                 url: "ajax/action/execute.php",
                 type: "POST",
                 data: {
-                   type:  encodeURIComponent('message'),
                    value:  data.fromNumber,
+                   type:  encodeURIComponent('message'),
                    elementId: $(this).attr('elementId')
                 },
                 error: function(datas){
