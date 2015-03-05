@@ -278,21 +278,48 @@ $( document ).ready(function() {
         }
     });*/
     
-    $(".slider-basic").ionRangeSlider({
+    $(".slider-basic").each(function() {
+        $(".slider-basic-"+$(this).attr('deviceid'))..ionRangeSlider({
+            min: 0,
+            max: 100,
+            type: 'single',
+            step: 1,
+            grid: true,
+            hasGrid: true,
+            onFinish: function (ddataa) {
+                $.ajax({
+                    url: "ajax/action/execute.php",
+                    type: "POST",
+                    data: {
+                       type:  encodeURIComponent('message'),
+                       elementId: $(this).attr('elementId'),
+                       value:  ddataa.fromNumber
+                    },
+                    error: function(datas){
+                        toastr.error("Une erreur est survenue");
+                    },
+                    complete: function(datas){
+                        toastr.success("Action exécutée");
+                    }
+                });
+            }
+        });
+    });
+    /*$(".slider-basic").ionRangeSlider({
         min: 0,
         max: 100,
         type: 'single',
         step: 1,
         grid: true,
         hasGrid: true,
-        onFinish: function (dataa) {
+        onFinish: function (ddataa) {
             $.ajax({
                 url: "ajax/action/execute.php",
                 type: "POST",
                 data: {
-                   value:  dataa.fromNumber,
                    type:  encodeURIComponent('message'),
-                   elementId: $(this).attr('elementId')
+                   elementId: $(this).attr('elementId'),
+                   value:  ddataa.fromNumber
                 },
                 error: function(datas){
                     toastr.error("Une erreur est survenue");
@@ -302,7 +329,7 @@ $( document ).ready(function() {
                 }
             });
         }
-    });
+    });*/
     
     $('.box-action:visible').bind('click',function(e){
         //console.debug($(this).attr('class'));
