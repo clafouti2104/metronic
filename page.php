@@ -291,7 +291,7 @@ $( document ).ready(function() {
                 type: "POST",
                 data: {
                    type:  encodeURIComponent('message'),
-                   value:  ui.value,
+                   value:  data.fromNumber,
                    elementId: $(this).attr('elementId')
                 },
                 error: function(datas){
