@@ -278,7 +278,9 @@ $( document ).ready(function() {
         }
     });*/
     
-    $(".slider-basic").each(function() {
+     $(".slider-basic").each(function() {
+        var deviceid=$(this).attr('deviceid');
+        var elementid=$(this).attr('elementid')
         $(".slider-basic-"+$(this).attr('deviceid')).ionRangeSlider({
             min: 0,
             max: 100,
@@ -286,14 +288,15 @@ $( document ).ready(function() {
             step: 1,
             grid: true,
             hasGrid: true,
-            onFinish: function (ddataa) {
+            onFinish: function (ddata) {
+                var value=ddata.from;
                 $.ajax({
                     url: "ajax/action/execute.php",
                     type: "POST",
                     data: {
                        type:  encodeURIComponent('message'),
-                       elementId: $(this).attr('elementId'),
-                       value:  ddataa.fromNumber
+                       value:  value,
+                       elementId: elementid
                     },
                     error: function(datas){
                         toastr.error("Une erreur est survenue");
