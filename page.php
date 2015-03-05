@@ -287,7 +287,7 @@ $( document ).ready(function() {
         hasGrid: true,
         onFinish: function (data) {
             $.ajax({
-                url: "ajax/action/execute.php",
+                url: "ajax/action/executee.php",
                 type: "POST",
                 data: {
                    value:  data.fromNumber,
