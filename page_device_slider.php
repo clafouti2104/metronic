@@ -18,7 +18,7 @@ $color="#FFF";
                     <?php echo $device->name; ?>
             </div>
             <div class="desc">
-                <div class="slider slider-basic slider-basic-<?php echo $item->deviceId; ?> bg-<?php echo $sliderColor; ?> stateDeviceId" elementId="<?php echo $msg->id; ?>" stateDeviceId="<?php echo $device->id; ?>" deviceId="<?php echo $device->id; ?>"></div>
+                <div class="slider-basic slider-basic-<?php echo $item->deviceId; ?> stateDeviceId" elementId="<?php echo $msg->id; ?>" stateDeviceId="<?php echo $device->id; ?>" deviceId="<?php echo $device->id; ?>"></div>
             </div>
         </div>
         <div class="more ">

@@ -110,6 +110,8 @@ $(document).ready(function() {
             });
         }
     });
+    
+    setTimeout("refreshStatus()", 2000);
 });
 function refreshStatus(){
     var device_ids = new Array();
@@ -134,7 +136,7 @@ function refreshStatus(){
                 value = utf8_decode(value);
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
                     if($('.slider-temp-'+index).size() >= 1){
-                        var slider=$('#slider-temp-'+index).data("ionRangeSlider");
+                        var slider=$('.slider-temp-'+index).data("ionRangeSlider");
                         slider.update({from: value});
                     } 
                     if($('.stateDeviceId-'+index).size() >= 1) {
@@ -189,26 +191,6 @@ function utf8_decode(str_data) {
   return tmp_arr.join('');
 }
 
-$(document).ready(function() {
-    var slider_temp_salon=$('.slider-temp-127').data("ionRangeSlider");
-
-    /*$("#temp_sdb").ionRangeSlider({
-        min: 16,
-        max: 26,
-        from: 18,
-        type: 'single',
-        step: 1,
-        keyboard: true,
-        hasGrid: true,
-        grid: true,
-        grid_snap: true,
-        onFinish: function (data) {
-            console.log("onFinish");
-        }
-    });*/
-        
-setTimeout("refreshStatus()", 2000);
-});
 
 </script>
 <?php
