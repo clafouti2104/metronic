@@ -35,6 +35,13 @@ if($isPost){
     $sql="UPDATE config SET value='".$logLevel."' WHERE name='log_level'";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
 }
+
+$logfile = '/var/log/domokine.log';
+$numlines = "20";
+$cmd = "tail -$numlines '$logfile'";
+$showLogs = shell_exec($cmd);
+$showLogs = explode("\n", $showLogs);
+//print_r(explode("\n", $showLogs));
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content-wrapper">
@@ -57,6 +64,17 @@ if($isPost){
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+<?php 
+foreach($showLogs as $showLog){
+    //$showLog = explode(" ", $showLog);
+    //print_r($showLog);
+    echo $showLog."<br/>";
+} 
+?>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">

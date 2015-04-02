@@ -6,38 +6,55 @@ include_once "/var/www/metronic/models/ScenarioMessage.php";
 
 
 function executeMessage($messgeId, $valueToSend=NULL){
-    echo "execute message";
+    if($GLOBALS["debug"]){
+        echo "execute message";
+    }
     $message=MessageDevice::getMessageDevice($messgeId);
     $device=Device::getDevice($message->deviceId);
     $productName="";
-    echo "\nDev=".$device->name;
+    if($GLOBALS["debug"]){
+        echo "\nDev=".$device->name;
+    }
     if($device->product_id != ""){
         echo "\nProd not null";
         $product = Product::getProduct($device->product_id);
+        if(is_object($product)){
         $productName=$product->name;
+        }
     }
-    echo "\nProdcut=".$productName;
+    
+    if($GLOBALS["debug"]){
+        echo "\nProduct=".$productName;
+    }
     switch(strtolower($productName)){
         case 'calaos_output':
-            echo "calaos output";
+            if($GLOBALS["debug"]){
+                echo "calaos output";
+            }
             calaos("output",$device,$message,$valueToSend);
             break;
         case 'calaos_input':
-            echo "calaos input";
+            if($GLOBALS["debug"]){
+                echo "calaos input";
+            }
             calaos("input",$device,$message,$valueToSend);
             break;
         case 'freebox':
-            echo "http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command;
+            if($GLOBALS["debug"]){
+                echo "http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command;
+            }
             file_get_contents("http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command, false, $context);
             addLog(LOG_INFO, "[ACTION]: Freebox to ".$message->command);
             break;
         case 'myfox_alarm':
-            echo "myfox_alarm";
+            if($GLOBALS["debug"]){
+                echo "myfox_alarm";
+            }
             //Récupération token
             $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
             $content = "[parameters]";
             foreach($ini as $title => $value){
-                if($title == "myfox_token"){
+                                if($title == "myfox_token"){
                     $token=$value;
                     break;
                 }
@@ -45,19 +62,27 @@ function executeMessage($messgeId, $valueToSend=NULL){
             if($token == ""){
                 $token=getToken();
             }
-            $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
+            //$response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
+            $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token );
+            curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+            $response = curl_exec( $curl );
             addLog(LOG_INFO, "[ACTION]: MyFOX alarm set to ".$message->command);
             $json=json_decode($response);
             //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
-                $response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
+                //$response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
+                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token );
+                curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+                $response = curl_exec( $curl );
                 addLog(LOG_INFO, "[ACTION]: MyFOX alarm set to ".$message->command);
             }
             break;
         case 'myfox_group':
-            echo "myfox_group";
+            if($GLOBALS["debug"]){
+                echo "myfox_group";
+            }
             //Récupération token
             $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
             $content = "[parameters]";
@@ -70,19 +95,27 @@ function executeMessage($messgeId, $valueToSend=NULL){
             if($token == ""){
                 $token=getToken();
             }
-            $response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
+            //$response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
+            $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token );
+            curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+            $response = curl_exec( $curl );
             addLog(LOG_INFO, "[ACTION]: MyFOX group ".$device->name." to ".$message->command);
             $json=json_decode($response);
             //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
-                $response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
+                //$response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
+                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token );
+                curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+                $response = curl_exec( $curl );
                 addLog(LOG_INFO, "[ACTION]: MyFOX group ".$device->name." to ".$message->command);
             }
             break;
         case 'myfox_light':
-            echo "myfox_light";
+            if($GLOBALS["debug"]){
+                echo "myfox_light";
+            }
             //Récupération token
             $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
             $content = "[parameters]";
@@ -95,14 +128,20 @@ function executeMessage($messgeId, $valueToSend=NULL){
             if($token == ""){
                 $token=getToken();
             }
-            $response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
+            //$response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
+            $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token );
+            curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+            $response = curl_exec( $curl );
             addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->command);
             $json=json_decode($response);
             //print_r($json);
             if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_token"){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
-                $response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
+                //$response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
+                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token );
+                curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+                $response = curl_exec( $curl );
                 addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->command);
             }
             break;
@@ -111,24 +150,34 @@ function executeMessage($messgeId, $valueToSend=NULL){
             addLog(LOG_INFO, "[ACTION]: Popcorn ".$message->name);
             break;
         case 'runeaudio':
-            echo "http://".$device->ip_address."/command/?cmd=".$message->command;
+            if($GLOBALS["debug"]){
+                echo "http://".$device->ip_address."/command/?cmd=".$message->command;
+            }
+            $timeout = array('http' => array('timeout' => 10));
+            $context = stream_context_create($timeout);
             file_get_contents("http://".$device->ip_address."/command/?cmd=".$message->command, false, $context);
             addLog(LOG_INFO, "[ACTION]: RuneAudio set to ".$message->command);
             break;
         case 'zibase_actuator':
-            echo "zibase_actuator";
+            if($GLOBALS["debug"]){
+                echo "zibase_actuator";
+            }
             zibase("actuator",$device,$message,$valueToSend);
-            
+
             break;
         case 'zwave_thermostat':
-            echo "thermostat";
+            if($GLOBALS["debug"]){
+                echo "thermostat";
+            }
             zwave("thermostat",$device,$message,$valueToSend);
-            
+
             break;
         default:
             if(strtolower($message->type) == "http"){
                 $prefixCommand=(substr($message->command, 0, 1) == "/") ? "" : "/";
                 //echo "call "."http://".$device->ip_address.$prefixCommand.$message->command;
+                $timeout = array('http' => array('timeout' => 10));
+                $context = stream_context_create($timeout);
                 file_get_contents("http://".$device->ip_address.$prefixCommand.$message->command, false, $context);
                 addLog(LOG_INFO, "[ACTION]: HTTP call "."http://".$device->ip_address.$prefixCommand.$message->command);
             }
@@ -145,7 +194,7 @@ function executeScenario($idScenario){
             sleep($message->pause);
         }
     }
-    
+
 }
 
 function calaos($type,$device,$message,$valueToSend=NULL){
@@ -171,7 +220,6 @@ function calaos($type,$device,$message,$valueToSend=NULL){
     }
     if(strtolower($message->command) == "off"){
         $value = 'false';
-    }
     $value=($valueToSend != "") ? "set ".$valueToSend : $value;
 
     //Construction query JSON
@@ -201,7 +249,7 @@ function zibase($type,$device,$message,$valueToSend=NULL){
     $password="lamaison";
     $timeout = array('http' => array('timeout' => 10));
     $context = stream_context_create($timeout);
-    
+
     $contentToken=file_get_contents("https://zibase.net/api/get/ZAPI.php?login=".$login."&password=".$password."&service=get&target=token", false, $context);
     if(is_null($contentToken)){
         die('Error getting token');
@@ -209,7 +257,6 @@ function zibase($type,$device,$message,$valueToSend=NULL){
     if($contentToken == ""){
         die('Error getting token');
     }
-
     $jsonToken = json_decode($contentToken);
     if(!isset($jsonToken->body->token)){
         die('Error getting token');
@@ -220,7 +267,7 @@ function zibase($type,$device,$message,$valueToSend=NULL){
 
     $zibase=$jsonToken->body->zibase;
     $token=$jsonToken->body->token;
-    
+
     switch(strtolower($type)){
         case 'actuator':
             $valueToExec=(strtolower($message->command) == "on") ? "1" : "0";
@@ -248,7 +295,7 @@ function zwave($heat,$device,$message,$valueToSend=NULL){
     $url .= (is_null($valueToSend)) ? "" : $valueToSend.")";
     file_get_contents($url);
     addLog(LOG_INFO, "[ACTION]: ZWave calling ".$url);
-    
+
     return TRUE;
 }
 

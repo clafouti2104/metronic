@@ -454,7 +454,7 @@ class Device{
     /**
      *  Vérification des scénario conditionnel
      */
-    function checkScenarioConditionnel($id){
+    static function checkScenarioConditionnel($id){
         $now = new DateTime('now');
         //Récupère les alertes associés au device
         $conds = Cond::getCondsByDevice($id);
@@ -614,8 +614,9 @@ class Device{
     /**
      *  Vérification des alertes
      */
-    function checkAlert($id){
+    static function checkAlert($id){
         $now = new DateTime('now');
+        $device=  Device::getDevice($id);
         //Récupère les alertes associés au device
         $alerts = Alert::getAlertsByDevice($id);
         if(count($alerts) == 0){
@@ -625,17 +626,17 @@ class Device{
             $check=false;
             switch(strtolower($alert->operator)){
                 case "<":
-                    if($state < $alert->value){
+                    if($device->state < $alert->value){
                         $check = true;
                     }
                     break;
                 case ">":
-                    if($state > $alert->value){
+                    if($device->state > $alert->value){
                         $check = true;
                     }
                     break;
                 case "=":
-                    if(strtolower($state) == strtolower($alert->value)){
+                    if(strtolower($device->state) == strtolower($alert->value)){
                         $check = true;
                     }
                     break;

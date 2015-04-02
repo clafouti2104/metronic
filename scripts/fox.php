@@ -7,6 +7,7 @@ require("../models/Device.php");
 
 $db = connectDB();
 $GLOBALS["dbconnec"] = connectDB();
+$debug=TRUE;
 //Récupération état alarme
 $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
 $content = "[parameters]";
@@ -33,15 +34,19 @@ while($row = $stmt->fetch()){
         $dateDebut=new DateTime(date('Y-m')."-01 00:00:00");
     }
 
-    echo "https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token;
-    $response=file_get_contents("https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token);
+    if($debug){
+        echo "https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token;
+    }
+    
+    $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token );
+    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec( $curl );
+    //$response=file_get_contents("https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token);
     $json=json_decode($response,true);
-    print_r($json);
     if(!isset($json["payload"])){
         $token=getToken();
         $response=file_get_contents("https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token);
         $json=json_decode($response,true);
-        print_r($json);
     }
     $temp="";
     foreach($json["payload"] as $elem){
@@ -49,10 +54,14 @@ while($row = $stmt->fetch()){
         $date=str_replace("Z", "", $date);
 
         $currentDate=new DateTime($date);
-        echo "BDD=".$dateDebut->format('U')."  |  ".$currentDate->format('U');
+        if($debug){
+            echo "BDD=".$dateDebut->format('U')."  |  ".$currentDate->format('U');
+        }
         if($currentDate->format('U') > $dateDebut->format('U')){
             $sql = 'INSERT INTO temperature VALUES (NULL,"'.$row["name"].'","'.$date.'",'.$elem["celsius"].','.$row["id"].')';
-            echo $sql;
+            if($debug){
+                echo $sql;
+            }
             $stmt = $db->query($sql);
         }
         $temp=$elem["celsius"];
