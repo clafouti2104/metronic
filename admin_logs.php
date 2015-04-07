@@ -51,22 +51,26 @@ $showLogs = explode("\n", $showLogs);
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                 <h3 class="page-title">
-                    Paramètres				
-                    <small>Personnaliser le fonctionnement</small>
+                    Logs				
+                    <small>Gestion des logs</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
+                    <li class="btn-group">
+                        <button class="btn btn-info btnRefresh" type="button"> <i class="fa fa-refresh "></i>Raffraîchir</button>
+                    </li>
                     <li>
                         <i class="fa fa-home"></i>
                         <a href="index.php">Admin</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
-                    <li><a href="#">Paramètres</a></li>
+                    <li><a href="   #">Paramètres</a></li>
                 </ul>
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
     </div>
     <div class="row">
         <div class="col-md-12">
+            <pre class="tailLogs">
 <?php 
 foreach($showLogs as $showLog){
     //$showLog = explode(" ", $showLog);
@@ -74,6 +78,7 @@ foreach($showLogs as $showLog){
     echo $showLog."<br/>";
 } 
 ?>
+            </pre>
         </div>
     </div>
     <div class="row">
@@ -108,6 +113,26 @@ foreach($levels as $tmpLevel=>$labelLevel){
     </div>
     </div>
 </div>
+    
+<script>
+    jQuery(document).ready(function() {			
+        $('.btnRefresh').bind('click',function(e){
+            $.ajax({
+                url: "ajax/refresh_logs.php",
+                type: "POST",
+                data: {
+                    deviceId: 'none'
+                },
+                error: function(data){
+                    toastr.error("Une erreur est survenue");
+                },
+                success: function(data){
+                    eval(data);
+                }
+            });
+        });
+    });
+</script>
 <?php
 include "modules/footer.php";
 ?>
