@@ -684,7 +684,7 @@ class Device{
                     $alert->last_sent = $now->format('Y-m-d H:i:s');
                     $alert->update();
 
-                    $log = Log::createLog("Alerte déclenchée", $state, $now->format('Y-m-d H:i:s'), $id, 40);
+                    $log = Log::createLog("Alerte déclenchée", $device->state, $now->format('Y-m-d H:i:s'), $id, 40);
                 }
             }
         }
