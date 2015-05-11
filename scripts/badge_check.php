@@ -115,7 +115,7 @@ if(isset($json->status) && $json->status == "KO" && $json->error == "invalid_tok
 }
 
 //LED Control
-file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
+file_get_contents("http://192.168.23.14/led.php?control=".$ledAction, false, $context);
 
 //Tablet notification
 $urlCurl="https://autoremotejoaomgcd.appspot.com/sendmessage?key=APA91bFrXnU6Mnp6RONLR42CqJgLcPkCTRGPGH_ZpCKuJA7MbakduKmEKBOfMLlieBnjQOwSH1EtvEVW1u7tB5ivtsJg5s5RBah1LeEjeYj9puYzsPFYbzAz8tDrPsoC32DaVVUM3jiXf9Ujml94lZ4OhBOQJgtbykqqIPNq-vAJX7Xu04HCCFA&message=";
@@ -127,30 +127,32 @@ if($_GET["uid"] == "10E98225"){
 if($_GET["uid"] == "439294F4"){
     exec("curl \"".$urlCurl."badge_pouch_".$action."_1\"");
 }
+//LED Control
+file_get_contents("http://192.168.23.14/led.php?control=".$ledAction, false, $context);
 
 //Allumage du groupe lumière salon si MHS
 if($action == "disarmed"){
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42428/play?access_token=".$token);
     //Allumage Ampli
-    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=49", false, $context);
+    file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=49", false, $context);
 } elseif($action == "armed"){
     //Extinction de ttes les lumières si MES
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42429/play?access_token=".$token);
     //Extinction Ampli
-    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=50", false, $context);
+    file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=50", false, $context);
     //Extinction TV
-    file_get_contents("http://192.168.1.67/tvdown.php", false, $context);
+    file_get_contents("http://192.168.23.67/tvdown.php", false, $context);
     sleep(5);
     //Extinction entrée
     file_get_contents("https://api.myfox.me:443/v2/site/10562/device/204609/socket/off?access_token=".$token);
     //Chauffage à 10°C
-    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=102", false, $context);
+    file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=102", false, $context);
     //Arret RuneAudio
-    file_get_contents("http://192.168.1.23/metronic/api/execute_message.php?idMessage=80", false, $context);
+    file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=80", false, $context);
 }
 
 //LED Control
-file_get_contents("http://192.168.1.14/led.php?action=".$ledAction, false, $context);
+file_get_contents("http://192.168.23.14/led.php?control=".$ledAction, false, $context);
 
 Log::createLog("badge", "Badge ".$_GET["uid"]." accepté", $date, NULL, 80);
 ?>

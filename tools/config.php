@@ -1,12 +1,10 @@
 <?php
-$ipRpi="192.168.1.67";
-$ipPopcorn="192.168.1.15";
-$server="192.168.1.23/domo";
-$urlFreebox="http://hd1.freebox.fr/pub/remote_control?code=79232598";
 define("dbHost","l-pma");
 define("dbName","domo");
 define("dbUser","root");
 define("dbPassword","pAss4dom");
+
+$GLOBALS["DEBUG"]=TRUE;
 
 $GLOBALS['path']="..";
 
@@ -36,8 +34,20 @@ function getToken(){
         return false;
     }
     
-    $response=exec("curl -u a5633ca0f6c65183c1a5f7bd755de7e6:CCFnhIpX0TIPaMDEcOfVF7u52UW2BxUG https://api.myfox.me/oauth2/token -d 'grant_type=password&username=".$login."&password=".$password."'");
-    $json=json_decode($response);
+    //$response=exec("curl -u a5633ca0f6c65183c1a5f7bd755de7e6:CCFnhIpX0TIPaMDEcOfVF7u52UW2BxUG https://api.myfox.me/oauth2/token -d 'grant_type=password&username=".$login."&password=".$password."'");
+    //$json=json_decode($response);
+    $curl = curl_init( 'https://api.myfox.me/oauth2/token' );
+    curl_setopt( $curl, CURLOPT_POST, true );
+    curl_setopt( $curl, CURLOPT_POSTFIELDS, array(
+                'grant_type' => 'password',
+                'client_id' => 'a5633ca0f6c65183c1a5f7bd755de7e6',
+                'client_secret' => 'CCFnhIpX0TIPaMDEcOfVF7u52UW2BxUG',
+                'username' => $login,
+                'password' => $password
+    ) );
+    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+    $auth = curl_exec( $curl );
+    $json = json_decode($auth);
     
     if(!isset($json->access_token)){
         return false;
@@ -58,7 +68,7 @@ function getToken(){
     }
     file_put_contents("/var/www/metronic/tools/parameters.ini", $content);
     $token = $json->access_token;
-    print_r($json);
+    
     return $token;
 }
 
