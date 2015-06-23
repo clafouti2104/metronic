@@ -142,13 +142,15 @@ if($action == "disarmed"){
     file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=50", false, $context);
     //Extinction TV
     file_get_contents("http://192.168.23.67/tvdown.php", false, $context);
+    //Arret RuneAudio
+    file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=80", false, $context);
+    //Extinction de ttes les lumières si MES
+    $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42429/play?access_token=".$token);
     sleep(5);
     //Extinction entrée
     file_get_contents("https://api.myfox.me:443/v2/site/10562/device/204609/socket/off?access_token=".$token);
     //Chauffage à 10°C
     file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=102", false, $context);
-    //Arret RuneAudio
-    file_get_contents("http://192.168.23.23/metronic/api/execute_message.php?idMessage=80", false, $context);
 }
 
 //LED Control
