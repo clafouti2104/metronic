@@ -153,10 +153,10 @@ class History{
                     $dateEnd->add(new DateInterval("P1D"));
 
                     $query = "SELECT ";
-                    $query .= " SUM(value) as somme";
-                    $query .= " FROM releve_$deviceid";
+                    $query .= " value as somme";
+                    $query .= " FROM releve_consolidation_d$deviceid";
                     $query .= " WHERE ";
-                    $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateEnd->format('Y-m-d')." 23:59:59'";
+                    $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                     //echo "\n".$query."\n  ";
                     $stmt = $GLOBALS["dbconnec"]->prepare($query);
                     $stmt->execute(array());
@@ -195,10 +195,10 @@ class History{
                     $dateEnd->add(new DateInterval("P1D"));
 
                     $query = "SELECT ";
-                    $query .= " SUM(value) as somme";
-                    $query .= " FROM releve_$deviceid";
+                    $query .= " value as somme";
+                    $query .= " FROM releve_consolidation_d$deviceid";
                     $query .= " WHERE ";
-                    $query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
+                    $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                     //echo $query;
                     $stmt = $GLOBALS["dbconnec"]->prepare($query);
                     $stmt->execute(array());
@@ -422,11 +422,17 @@ class History{
                         $dateEnd=clone $dateFrom;
                         $dateEnd->add(new DateInterval("P1D"));
 
-                        $query = "SELECT ";
+                        /*$query = "SELECT ";
                         $query .= " SUM(value) as somme";
                         $query .= " FROM releve_$deviceid";
                         $query .= " WHERE ";
-                        $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";
+                        $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";*/
+                        
+                        $query = "SELECT ";
+                        $query .= " value as somme";
+                        $query .= " FROM releve_consolidation_d$deviceid";
+                        $query .= " WHERE ";
+                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                         //echo "\n".$query."\n  ";
                         $stmt = $GLOBALS["dbconnec"]->prepare($query);
                         $stmt->execute(array());
@@ -473,11 +479,18 @@ class History{
                         $dateEnd=clone $dateFrom;
                         $dateEnd->add(new DateInterval("P1D"));
 
-                        $query = "SELECT ";
+                        /*$query = "SELECT ";
                         $query .= " SUM(value) as somme";
                         $query .= " FROM releve_$deviceid";
                         $query .= " WHERE ";
-                        $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";
+                        $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";*/
+                        
+                        $query = "SELECT ";
+                        $query .= " value as somme";
+                        $query .= " FROM releve_consolidation_d$deviceid";
+                        $query .= " WHERE ";
+                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";
+                        
                         //echo "\n".$query."\n  ";
                         $stmt = $GLOBALS["dbconnec"]->prepare($query);
                         $stmt->execute(array());
@@ -529,11 +542,17 @@ class History{
                         $dateEnd=clone $dateFrom;
                         $dateEnd->add(new DateInterval("P1D"));
 
-                        $query = "SELECT ";
+                        /*$query = "SELECT ";
                         $query .= " SUM(value) as somme";
                         $query .= " FROM releve_$deviceid";
                         $query .= " WHERE ";
-                        $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";
+                        $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";*/
+                        
+                        $query = "SELECT ";
+                        $query .= " value as somme";
+                        $query .= " FROM releve_consolidation_d$deviceid";
+                        $query .= " WHERE ";
+                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                         //$query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
                         //echo $query;
                         $stmt = $GLOBALS["dbconnec"]->prepare($query);
@@ -565,12 +584,19 @@ class History{
                         $dateEnd=clone $dateFrom;
                         $dateEnd->add(new DateInterval("P1D"));
 
-                        $query = "SELECT ";
+                        /*$query = "SELECT ";
                         $query .= " SUM(value) as somme";
                         $query .= " FROM releve_$deviceid";
                         $query .= " WHERE ";
                         //$query .= " date > '".$dateEnd->format('Y-m-d')." 00:00:00' AND date < '".$dateEnd->format('Y-m-d')." 23:59:59'";
-                        $query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
+                        $query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";*/
+                        
+                        $query = "SELECT ";
+                        $query .= " value as somme";
+                        $query .= " FROM releve_consolidation_d$deviceid";
+                        $query .= " WHERE ";
+                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";
+                        
                         //echo $query;
                         $stmt = $GLOBALS["dbconnec"]->prepare($query);
                         $stmt->execute(array());
@@ -604,13 +630,19 @@ class History{
                     //$dateEnd=clone $dateFrom;
                     //$dateEnd->add(new DateInterval("P1M"));
 
-                    $query = "SELECT ";
+                    /*$query = "SELECT ";
                     $query .= " SUM(value) as somme";
                     $query .= " FROM releve_$deviceid";
                     $query .= " WHERE ";
                     //$query .= " date > '".$dateEnd->format('Y-m-d')." 00:00:00' AND date < '".$dateEnd->format('Y-m-d')." 23:59:59'";
                     $query .= " date > '".$dateFrom->format('Y-m')."-01 00:00:00"."' AND date < '".$dateFrom->format('Y-m-t')." 23:59:59'";
-                    //echo $query;
+                    //echo $query;*/
+                    $query = "SELECT ";
+                    $query .= " SUM(value) as somme";
+                    $query .= " FROM releve_consolidation_d$deviceid";
+                    $query .= " WHERE ";
+                    $query .= " date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateFrom->format('Y-m-t')." 23:59:59' ";
+                    
                     $stmt = $GLOBALS["dbconnec"]->prepare($query);
                     $stmt->execute(array());
                     $value=0;
