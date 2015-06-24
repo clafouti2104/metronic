@@ -64,9 +64,13 @@ class History{
         $query = "SELECT ";
         $query .= "date";
         $query .= ",value";
-        $query .= " FROM temperature ";
+        $query .= " FROM temperature_consolidation ";
         $query .= " WHERE deviceid=:deviceid";
-        $query .= " AND date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
+        if($period == '1'){
+            $query .= " AND date='".$dateFrom->format('Y-m-d')."'";
+        } else {
+            $query .= " AND date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
+        }
         //echo $query;
         $stmt = $GLOBALS["dbconnec"]->prepare($query);
         
@@ -75,15 +79,19 @@ class History{
         $jsSerie="";
         $stmt->execute($params);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $date = new DateTime($row["date"]);
             $jsSerie .= ($jsSerie == "") ? ""  : ",";
-            $value = $row['value'];
-            $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
-            $month--;
-            $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
-            $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
-            $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
-            $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+            $values = json_decode($row['value'], TRUE);
+            foreach($values as $tmpDate=>$tmpValue){
+                $date = new DateTime($row["date"]." ".$tmpDate.":00");
+                $value = $tmpValue;
+                $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
+                $month--;
+                $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
+                $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
+                $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
+                $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                
+            }
         }
         $stmt = NULL;
         return $jsSerie;
