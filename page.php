@@ -400,10 +400,10 @@ $( document ).ready(function() {
                 }
             }
             if(!$incremental){
-                if($chart->scaleMin != ""){
+                if($chart->scaleMin != "" &&  $chart->scaleMax != $chart->scaleMin){
                     echo " min: ".$chart->scaleMin.",";
                 }
-                if($chart->scaleMax != ""){
+                if($chart->scaleMax != "" &&  $chart->scaleMax != $chart->scaleMin){
                     echo " max: ".$chart->scaleMax.",";
                 }
                 

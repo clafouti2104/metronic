@@ -67,21 +67,47 @@ class History{
         $query .= " FROM temperature_consolidation ";
         $query .= " WHERE deviceid=:deviceid";
         if($period == '1'){
-            $query .= " AND date='".$dateFrom->format('Y-m-d')."'";
+            $query .= " AND date='".$dateFrom->format('Y-m-d')."' OR date = '".$dateEnd->format('Y-m-d')."'";
         } else {
             $query .= " AND date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
         }
+        $query .= " ORDER BY date ";
         //echo $query;
         $stmt = $GLOBALS["dbconnec"]->prepare($query);
         
         // On récupère les élèments
         $params = array(":deviceid"	=> $deviceid);
         $jsSerie="";
+        $i=1;
         $stmt->execute($params);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $jsSerie .= ($jsSerie == "") ? ""  : ",";
             $values = json_decode($row['value'], TRUE);
             foreach($values as $tmpDate=>$tmpValue){
+                //1er jour, ne prend qu'à partir de l'heure souhaitée
+                if($row["date"] == $dateFrom->format('Y-m-d')){
+                    $heureDepart = $dateFrom->format('H:i');
+                    $heureDpart = str_replace(":", "", $heureDepart);
+                    $tmpHeure = str_replace(":", "", $tmpDate);
+                    
+                    if(intval($heureDepart) < intval($tmpHeure)){
+                        continue;
+                    }
+                }
+                
+                //Dernier Jour
+                if($row["date"] == $dateEnd->format('Y-m-d')){
+                    $heureFin = $dateEnd->format('H:i');
+                    $heureFin = str_replace(":", "", $heureFin);
+                    $tmpHeure = str_replace(":", "", $tmpDate);
+                    
+                    if(intval($heureFin) > intval($tmpHeure)){
+                        continue;
+                    }
+                    
+                }
+                
+                $jsSerie .= ($jsSerie == "") ? ""  : ",";
                 $date = new DateTime($row["date"]." ".$tmpDate.":00");
                 $value = $tmpValue;
                 $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
@@ -92,6 +118,7 @@ class History{
                 $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
                 
             }
+            $i++;
         }
         $stmt = NULL;
         return $jsSerie;
@@ -147,7 +174,7 @@ class History{
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateEnd->add(new DateInterval("PT1H"));
@@ -190,7 +217,7 @@ class History{
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateFrom->add(new DateInterval("P1D"));
@@ -232,7 +259,7 @@ class History{
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateFrom->add(new DateInterval("P1D"));
@@ -245,7 +272,7 @@ class History{
                 $duration='7';
                 for($i=1;$i<=336;$i++){
                     $dateEnd=clone $dateFrom;
-                    $dateEnd->add(new DateInterval("PT30I"));
+                    $dateEnd->add(new DateInterval("PT30M"));
 
                     $query = "SELECT ";
                     $query .= " SUM(value) as somme";
@@ -277,10 +304,10 @@ class History{
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
                     $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
                     $stmt=NULL;
                     //echo $query." - ";
-                    $dateFrom->add(new DateInterval("PT30I"));
+                    $dateFrom->add(new DateInterval("PT30M"));
                 }
                 break;
             default:

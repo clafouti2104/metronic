@@ -76,6 +76,9 @@ foreach($scenarios as $scenarioTmp){
                     <option></option>
 <?php
 foreach($tuiles as $tuileTmp){
+    if(!isset($devicesTab[$tuileTmp->deviceid])){
+        continue;
+    }
     $deviceTuile = $devicesTab[$tuileTmp->deviceid];
     $mode = ($deviceTuile["incremental"]=='1') ? "incremental" : "normal";
     echo "<option value=\"".$tuileTmp->id."\" mode=\"$mode\">".$tuileTmp->name."</option>";
