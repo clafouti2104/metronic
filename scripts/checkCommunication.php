@@ -81,7 +81,10 @@ $sqlUpdate=$content="";
 $devicesLost = $devicesRenew = array();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $sqlUpdate.="UPDATE device SET last_alert=NULL WHERE id=".$row["id"].";";
-    $devicesRenew[]=Device::getDevice($row["id"]);
+    $device=Device::getDevice($row["id"]);
+    $devicesRenew[]=$device;
+    //Generation d'un log d'alerte
+    Log::createLog("alert", "get_communication", date('d-m-Y H:i:s'), $device->id, 80);
     $content.="\n\nL'objet ".$device->name." est à nouveau accessible ";
 }
 if($content != ""){
