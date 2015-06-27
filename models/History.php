@@ -73,7 +73,7 @@ class History{
         }
         $query .= " ORDER BY date ";
         //echo $query;
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
         
         // On récupère les élèments
         $params = array(":deviceid"	=> $deviceid);
@@ -148,7 +148,7 @@ class History{
                     $query .= " WHERE ";
                     $query .= " date > '".$dateFrom->format('Y-m-d H').":00:00' AND date < '".$dateEnd->format('Y-m-d H').":59:59'";
                      // echo "\n  ".$query;
-                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt = $GLOBALS["histoconnec"]->prepare($query);
                     $stmt->execute(array());
                     $value=0;
                     if($stmt->rowCount() > 0){
@@ -193,7 +193,7 @@ class History{
                     $query .= " WHERE ";
                     $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                     //echo "\n".$query."\n  ";
-                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt = $GLOBALS["histoconnec"]->prepare($query);
                     $stmt->execute(array());
                     $value=0;
                     if($stmt->rowCount() > 0){
@@ -235,7 +235,7 @@ class History{
                     $query .= " WHERE ";
                     $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                     //echo $query;
-                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt = $GLOBALS["histoconnec"]->prepare($query);
                     $stmt->execute(array());
                     $value=0;
                     if($stmt->rowCount() > 0){
@@ -280,7 +280,7 @@ class History{
                     $query .= " WHERE ";
                     $query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
                     //echo "\n".$query."\n  ";
-                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt = $GLOBALS["histoconnec"]->prepare($query);
                     $stmt->execute(array());
                     $value=0;
                     if($stmt->rowCount() > 0){
@@ -357,7 +357,7 @@ class History{
                         $query .= " WHERE ";
                         $query .= " date > '".$dateFrom->format('Y-m-d ').str_pad($i, 2, '0', STR_PAD_LEFT).":00:00' AND date < '".$dateEnd->format('Y-m-d ').str_pad($i, 2, '0', STR_PAD_LEFT).":59:59'";
                         //echo "\n  ".$query;
-                        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                        $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
                         if($stmt->rowCount() > 0){
@@ -408,7 +408,7 @@ class History{
                         $query .= " WHERE ";
                         $query .= " date > '".$dateFrom->format('Y-m-d H').":00:00' AND date < '".$dateEnd->format('Y-m-d H').":59:59'";
                          // echo "\n  ".$query;
-                        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                        $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
                         if($stmt->rowCount() > 0){
@@ -469,7 +469,7 @@ class History{
                         $query .= " WHERE ";
                         $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                         //echo "\n".$query."\n  ";
-                        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                        $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
                         if($stmt->rowCount() > 0){
@@ -527,7 +527,7 @@ class History{
                         $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                         
                         //echo "\n".$query."\n  ";
-                        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                        $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
                         if($stmt->rowCount() > 0){
@@ -590,7 +590,7 @@ class History{
                         $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                         //$query .= " date > '".$dateFrom->format('Y-m-d H:i:s')."' AND date < '".$dateEnd->format('Y-m-d H:i:s')."'";
                         //echo $query;
-                        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                        $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
                         if($stmt->rowCount() > 0){
@@ -633,7 +633,7 @@ class History{
                         $query .= " date = '".$dateFrom->format('Y-m-d')."'";
                         
                         //echo $query;
-                        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                        $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
                         if($stmt->rowCount() > 0){
@@ -678,7 +678,7 @@ class History{
                     $query .= " WHERE ";
                     $query .= " date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateFrom->format('Y-m-t')." 23:59:59' ";
                     
-                    $stmt = $GLOBALS["dbconnec"]->prepare($query);
+                    $stmt = $GLOBALS["histoconnec"]->prepare($query);
                     $stmt->execute(array());
                     $value=0;
                     if($stmt->rowCount() > 0){
@@ -729,7 +729,7 @@ class History{
             $query .= " WHERE ";
             $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";
             
-            $stmt = $GLOBALS["dbconnec"]->prepare($query);
+            $stmt = $GLOBALS["histoconnec"]->prepare($query);
             $stmt->execute(array());
             
             $value=0;
@@ -786,7 +786,7 @@ class History{
                 return '$ERRPeriode incorrecte';
         }
         
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         $value=0;
         if($stmt->rowCount() > 0){
@@ -843,7 +843,7 @@ class History{
                 return '$ERRPeriode incorrecte';
         }
         
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         $value=0;
         if($stmt->rowCount() > 0){
@@ -885,7 +885,7 @@ class History{
                 return '$ERRPeriode incorrecte';
         }
         
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         $value=0;
         if($stmt->rowCount() > 0){
@@ -938,7 +938,7 @@ class History{
                 return '$ERRPeriode incorrecte';
         }
         //echo $query;
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         $value=0;
         if($stmt->rowCount() > 0){
@@ -993,7 +993,7 @@ class History{
                 return '$ERRPeriode incorrecte';
         }
         //echo $query;
-        $stmt = $GLOBALS["dbconnec"]->prepare($query);
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         $value=0;
         if($stmt->rowCount() > 0){
