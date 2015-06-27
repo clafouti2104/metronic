@@ -17,7 +17,7 @@ $sqlInsert="";
 $devices = array();
 $date=date('H')*60+date('i');
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $sql =  "SELECT * FROM `domo`.`temperature_".$row['id']."` ";
+    $sql =  "SELECT * FROM `histo`.`temperature_".$row['id']."` ";
     $sql .= " WHERE deviceid=:deviceid AND date > NOW() - INTERVAL ".$row['collect']." MINUTE ";
     $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
     $stmt2->execute(array(":deviceid"=>$row["id"]));
