@@ -87,6 +87,12 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     Log::createLog("alert", "get_communication", date('d-m-Y H:i:s'), $device->id, 80);
     $content.="\n\nL'objet ".$device->name." est à nouveau accessible ";
 }
+
+if($sqlUpdate != ""){
+    $stmt = $GLOBALS["dbconnec"]->prepare($sqlUpdate);
+    $stmt->execute(array());
+}
+
 if($content != ""){
     include("../controllers/mail.php");
 }
