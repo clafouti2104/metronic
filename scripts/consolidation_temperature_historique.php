@@ -23,11 +23,11 @@ for($i=1;$i<=5;$i++){
     $sqlInsert=$sqlUpdate=$sqlDelete="";
     $devices = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $sql="SELECT * FROM `histo`.`temperature` ";
+        $sql="SELECT * FROM `domo`.`temperature` ";
         $sql.=" WHERE date > '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')." 00:00:00'";
         $sql.=" AND date < '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')." 23:59:59'";
         $sql.=" AND deviceid=".$row["id"];
-        $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
+        $stmt2 = $GLOBALS["dbconnec"]->prepare($sql);
         $stmt2->execute( array() );
 
         $values=array();
