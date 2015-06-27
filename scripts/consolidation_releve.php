@@ -25,7 +25,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     //Ligne Existante --> Update
     if($stmt2->rowCount() > 0){
         $sqlUpdate .= "UPDATE `histo`.`releve_consolidation_d".$row["id"]."` ";
-        $sqlUpdate .= " SET value=( SELECT SUM(value) FROM releve_".date('Y_m')."_d".$row["id"]." WHERE date > '".date('Y-m-d')." 00:00:00' ) ";
+        $sqlUpdate .= " SET value=( SELECT SUM(value) FROM releve_".$row["id"]." WHERE date > '".date('Y-m-d')." 00:00:00' ) ";
         $sqlUpdate .= " WHERE date = '".date('Y-m-d')."';";
     } else { //Ligne n'existe pas --> Insert
         $sqlInsert .= "INSERT INTO `histo`.`releve_consolidation_d".$row["id"]."` ";
