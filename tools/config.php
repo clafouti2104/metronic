@@ -1,6 +1,7 @@
 <?php
 define("dbHost","l-pma");
 define("dbName","domo");
+define("dbHistoName","histo");
 define("dbUser","root");
 define("dbPassword","pAss4dom");
 
@@ -10,6 +11,12 @@ $GLOBALS['path']="..";
 
 function connectDB(){
     $db = new PDO('mysql:host='.dbHost.';dbname='.dbName, dbUser, dbPassword);
+    //$db = new PDO('mysql:host=192.168.1.23;dbname=domo', 'root', 'triplm');
+    return $db;
+}
+
+function connectHistoDB(){
+    $db = new PDO('mysql:host='.dbHost.';dbname='.dbHistoName, dbUser, dbPassword);
     //$db = new PDO('mysql:host=192.168.1.23;dbname=domo', 'root', 'triplm');
     return $db;
 }

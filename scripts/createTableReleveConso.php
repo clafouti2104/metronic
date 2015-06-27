@@ -1,7 +1,11 @@
 <?php
+/*
+ * Création des tables releve_consolidation_<DEVICE_ID>
+ */
 include("../tools/config.php");
 
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 include "../models/Device.php";
 
 //Récupération des devices incrementaux
@@ -20,7 +24,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 if($sqlTable!=""){
-    $stmt = $GLOBALS["dbconnec"]->exec($sqlTable);
+    $stmt = $GLOBALS["histoconnec"]->exec($sqlTable);
 }
 
 ?>

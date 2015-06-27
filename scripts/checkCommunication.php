@@ -21,7 +21,7 @@ $stmt = $GLOBALS["dbconnec"]->prepare($sqlDevices);
 $stmt->execute(array());
 
 $sqlUpdate="";
-$devices = array();
+$devicesLost = $devicesRenew = array();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $lastUpdate = new DateTime($row["last_update"]);
     $lastAlert = new DateTime($row["last_alert"]);
@@ -30,18 +30,19 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     //On vérifie que la date de dernière récupération est antérieure
     if($lastUpdate->format('U') + $interval >= $now->format('U')){
         continue;
-    }
-    
-    if($row["last_alert"]!=""){
-        if(($lastAlert->format('U') + $alertRecall*3600) < $lastUpdate->format('U')){
-            $devices[]=Device::getDevice($row["id"]);
+    } else {
+        if($row["last_alert"]!=""){
+            if(($lastAlert->format('U') + $alertRecall*3600) < $lastUpdate->format('U')){
+                $devicesLost[]=Device::getDevice($row["id"]);
+                $sqlUpdate.="UPDATE device SET last_alert=NOW() WHERE id=".$row["id"].";";
+            }
+        } else {
+            //Il n'y a pas eu d'alerte envoyée
+            $devicesLost[]=Device::getDevice($row["id"]);
             $sqlUpdate.="UPDATE device SET last_alert=NOW() WHERE id=".$row["id"].";";
         }
-    } else {
-        //Il n'y a pas eu d'alerte envoyée
-        $devices[]=Device::getDevice($row["id"]);
-        $sqlUpdate.="UPDATE device SET last_alert=NOW() WHERE id=".$row["id"].";";
-    }
+    } 
+    
 }
 
 if($sqlUpdate != ""){
@@ -52,7 +53,7 @@ if($sqlUpdate != ""){
 $subject="[DOMOKINE] Perte Communication";
 $title="Perte Communication";
 $content="";
-foreach($devices as $device){
+foreach($devicesLost as $device){
     //Generation d'un log d'alerte
     Log::createLog("alert", "lost_communication", date('d-m-Y H:i:s'), $device->id, 80);
     
@@ -67,4 +68,23 @@ if($content != ""){
     include("../controllers/mail.php");
 }
 
+//Récupère les devices pour lesquels une alerte de perte de communication a été renseigné
+$sqlDevices="SELECT id FROM device WHERE ";
+$sqlDevices.=" last_update > last_alert";
+$stmt = $GLOBALS["dbconnec"]->prepare($sqlDevices);
+$stmt->execute(array());
+
+
+$subject="[DOMOKINE] Communication";
+$title="Réapparition Objet";
+$sqlUpdate=$content="";
+$devicesLost = $devicesRenew = array();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $sqlUpdate.="UPDATE device SET last_alert=NULL WHERE id=".$row["id"].";";
+    $devicesRenew[]=Device::getDevice($row["id"]);
+    $content.="\n\nL'objet ".$device->name." est à nouveau accessible ";
+}
+if($content != ""){
+    include("../controllers/mail.php");
+}
 ?>

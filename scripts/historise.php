@@ -5,6 +5,7 @@
 include("../tools/config.php");
 
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 
 //Recherche device à historiser
 $sql="SELECT * FROM device WHERE ";
@@ -18,7 +19,7 @@ $date=date('H')*60+date('i');
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $sql =  "SELECT * FROM `domo`.`temperature_".$row['id']."` ";
     $sql .= " WHERE deviceid=:deviceid AND date > NOW() - INTERVAL ".$row['collect']." MINUTE ";
-    $stmt2 = $GLOBALS["dbconnec"]->prepare($sql);
+    $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
     $stmt2->execute(array(":deviceid"=>$row["id"]));
     
     //Pas de données historisé dans la période
@@ -33,7 +34,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             //Récupération de la dernière valeur de la table température
             $sqlGetLastValue = "SELECT value FROM temperature_".$row['id']." ";
             $sqlGetLastValue .= " WHERE deviceid=:deviceid AND value != 0 AND value IS NOT NULL ORDER BY date DESC LIMIT 1";
-            $stmt3 = $GLOBALS["dbconnec"]->prepare($sqlGetLastValue);
+            $stmt3 = $GLOBALS["histoconnec"]->prepare($sqlGetLastValue);
             $stmt3->execute(array(":deviceid"=>$row["id"]));
             $value=0;
             if($stmt3->rowCount() > 0){
@@ -58,7 +59,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 echo $sqlInsert;
 if($sqlInsert != ""){
-    $stmt = $GLOBALS["dbconnec"]->prepare($sqlInsert);
+    $stmt = $GLOBALS["histoconnec"]->prepare($sqlInsert);
     $stmt->execute(array());
 }
 

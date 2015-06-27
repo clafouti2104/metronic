@@ -11,6 +11,7 @@ $day='01';
 $datetime=new DateTime($year."-".$month."-".$day);
 
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 
 for($i=1;$i<=5;$i++){
     //Recherche device à historiser
@@ -22,11 +23,11 @@ for($i=1;$i<=5;$i++){
     $sqlInsert=$sqlUpdate=$sqlDelete="";
     $devices = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $sql="SELECT * FROM `domo`.`temperature` ";
+        $sql="SELECT * FROM `histo`.`temperature` ";
         $sql.=" WHERE date > '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')." 00:00:00'";
         $sql.=" AND date < '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')." 23:59:59'";
         $sql.=" AND deviceid=".$row["id"];
-        $stmt2 = $GLOBALS["dbconnec"]->prepare($sql);
+        $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
         $stmt2->execute( array() );
 
         $values=array();
@@ -34,17 +35,17 @@ for($i=1;$i<=5;$i++){
             $date = new DateTime($row2["date"]);
             $values[$date->format('H:i')]=$row2["value"];
         }
-        $sql="SELECT * FROM `domo`.`temperature_consolidation` ";
+        $sql="SELECT * FROM `histo`.`temperature_consolidation` ";
         $sql.=" WHERE date = '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')."' AND deviceid=".$row["id"];
-        $stmt3 = $GLOBALS["dbconnec"]->prepare($sql);
+        $stmt3 = $GLOBALS["histoconnec"]->prepare($sql);
         $stmt3->execute( array() );
         //Ligne Existante --> Update
         if($stmt3->rowCount() > 0){
-            $sqlUpdate .= "UPDATE `domo`.`temperature_consolidation` ";
+            $sqlUpdate .= "UPDATE `histo`.`temperature_consolidation` ";
             $sqlUpdate .= " SET value='".  json_encode($values)."' ";
             $sqlUpdate .= " WHERE date = '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')."' AND deviceid=".$row["id"].";";
         } else { //Ligne n'existe pas --> Insert
-            $sqlInsert .= "INSERT INTO `domo`.`temperature_consolidation` ";
+            $sqlInsert .= "INSERT INTO `histo`.`temperature_consolidation` ";
             $sqlInsert .= " (deviceid, value, date) VALUES (";
             $sqlInsert .= " ".$row["id"].",'".json_encode($values)."', '".$datetime->format('Y')."-".$datetime->format('m')."-".$datetime->format('d')."'";
             $sqlInsert .= " );";
@@ -57,7 +58,7 @@ for($i=1;$i<=5;$i++){
 
     $sqlGlobal=$sqlInsert.$sqlUpdate.$sqlDelete;
     if($sqlGlobal != ""){
-        $stmt = $GLOBALS["dbconnec"]->prepare($sqlGlobal);
+        $stmt = $GLOBALS["histoconnec"]->prepare($sqlGlobal);
         $stmt->execute(array());
     }
     $datetime->add(new DateInterval('P1D'));

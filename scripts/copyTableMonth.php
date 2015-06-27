@@ -1,7 +1,11 @@
 <?php
+/*
+ * 
+ */
 include("../tools/config.php");
 
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 include "../models/Device.php";
 
 $year='2015';

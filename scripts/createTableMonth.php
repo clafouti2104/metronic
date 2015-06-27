@@ -1,7 +1,11 @@
 <?php
+/*
+ * Création des tables temperature_<DEVICE_ID> et releve_<DEVICE_ID>
+ */
 include("../tools/config.php");
 
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 include "../models/Device.php";
 
 //Récupération de la durée de rappel d'alerte en jours
@@ -29,7 +33,7 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 if($sqlTable!=""){
-    $stmt = $GLOBALS["dbconnec"]->exec($sqlTable);
+    $stmt = $GLOBALS["histoconnec"]->exec($sqlTable);
 }
 
 ?>
