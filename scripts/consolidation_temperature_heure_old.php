@@ -13,13 +13,14 @@ $datetime=new DateTime($year."-".$month."-".$day);
 $GLOBALS["dbconnec"] = connectDB();
 $GLOBALS["histoconnec"] = connectHistoDB();
 
-//Recherche device à historiser
-$sql="SELECT * FROM device WHERE ";
-$sql.=" active=1 AND collect IS NOT NULL AND collect > 0";
-$stmt = $GLOBALS["dbconnec"]->prepare($sql);
-$stmt->execute(array());
 
 for($i=1;$i<=10;$i++){
+    //Recherche device à historiser
+    $sql="SELECT * FROM device WHERE ";
+    $sql.=" active=1 AND collect IS NOT NULL AND collect > 0";
+    $stmt = $GLOBALS["dbconnec"]->prepare($sql);
+    $stmt->execute(array());
+    
     $heureCourante = date('H');
     $loop = intval($heureCourante / 4);
     $sqlInsert=$sqlUpdate="";
@@ -35,7 +36,7 @@ for($i=1;$i<=10;$i++){
 
                 $query="SELECT AVG(value) as avgValue FROM temperature_".$row["id"];
                 $query.=" WHERE date > '".$datetime->format('Y-m-d')." ".$tmpHeureStart.":00:00' ";
-                $query.=" AND date < '".$datetime->format." ".$tmpHeureEnd.":59:59' ";
+                $query.=" AND date < '".$datetime->format('Y-m-d')." ".$tmpHeureEnd.":59:59' ";
                 $stmt2 = $GLOBALS["histoconnec"]->prepare($query);
                 $stmt2->execute( array() );
                 if($row2=$stmt2->fetch(PDO::FETCH_ASSOC)) {
@@ -72,6 +73,7 @@ for($i=1;$i<=10;$i++){
 
     $sqlGlobal=$sqlInsert.$sqlUpdate;
     if($sqlGlobal != ""){
+        echo $sqlGlobal;
         $stmt = $GLOBALS["histoconnec"]->prepare($sqlGlobal);
         $stmt->execute(array());
     }
