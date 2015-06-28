@@ -30,10 +30,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $query="SELECT AVG(value) as avgValue FROM temperature_".$row["id"];
             $query.=" WHERE date > '".date('Y-m-d')." ".$tmpHeureStart.":00:00' ";
             $query.=" AND date < '".date('Y-m-d')." ".$tmpHeureEnd.":59:59' ";
-            $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
+            $stmt2 = $GLOBALS["histoconnec"]->prepare($query);
             $stmt2->execute( array() );
             if($row2=$stmt2->fetch(PDO::FETCH_ASSOC)) {
-                $result[$tmpHeureStart] = $row2["avgValue"];
+                $result[$tmpHeureStart] = number_format($row2["avgValue"], 2);
             }
         }
     }
@@ -49,11 +49,11 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $query="SELECT SUM(value) as sumValue FROM releve_".$row["id"];
             $query.=" WHERE date > '".date('Y-m-d')." ".$tmpHeureStart.":00:00' ";
             $query.=" AND date < '".date('Y-m-d')." ".$tmpHeureEnd.":59:59' ";
-            $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
+            $stmt2 = $GLOBALS["histoconnec"]->prepare($query);
             $stmt2->execute( array() );
             if($row2=$stmt2->fetch(PDO::FETCH_ASSOC)) {
                 $result[$tmpHeureStart] = $row2["sumValue"];
-            }   
+            }
         }
     }
 
