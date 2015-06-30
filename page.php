@@ -29,6 +29,7 @@ include_once "models/ListeMessage.php";
 include_once "models/MessageDevice.php";
 
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 if(!isset($_GET["pageId"])){
     die('Aucune page définie');
 }
