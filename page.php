@@ -394,7 +394,7 @@ $( document ).ready(function() {
             echo "tooltip: {";
             echo " formatter: function() { ";
             echo " return  '<b>' + this.series.name +'</b><br/>' +";
-            echo " Highcharts.dateFormat('%e - %b - %Y',";
+            echo " Highcharts.dateFormat('%e - %b - %Y %H h %i' ,";
             echo " new Date(this.x)) ";
             echo " + ' , ' + this.y + ' °C.';";
             echo " } ";
