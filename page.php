@@ -448,8 +448,6 @@ $( document ).ready(function() {
                     echo "valuePrefix: '€',";
                     echo "valueSuffix: ' EUR'";
                     echo "}";
-                } else {
-                    
                 }
                 
                 
