@@ -64,6 +64,7 @@ class History{
         $query = "SELECT ";
         $query .= "date";
         $query .= ",value";
+        $query .= ",value4h";
         $query .= " FROM temperature_consolidation ";
         $query .= " WHERE deviceid=:deviceid";
         if($period == '1'){
@@ -82,42 +83,86 @@ class History{
         $stmt->execute($params);
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $jsSerie .= ($jsSerie == "") ? ""  : ",";
-            $values = json_decode($row['value'], TRUE);
-            foreach($values as $tmpDate=>$tmpValue){
-                //1er jour, ne prend qu'à partir de l'heure souhaitée
-                if($row["date"] == $dateFrom->format('Y-m-d')){
-                    $heureDepart = $dateFrom->format('H:i');
-                    $heureDpart = str_replace(":", "", $heureDepart);
-                    $tmpHeure = str_replace(":", "", $tmpDate);
-                    
-                    if(intval($heureDepart) < intval($tmpHeure)){
-                        continue;
+            
+            //Jour
+            if($period == '1'){
+                $values = json_decode($row['value'], TRUE);
+                foreach($values as $tmpDate=>$tmpValue){
+                    //1er jour, ne prend qu'à partir de l'heure souhaitée
+                    if($row["date"] == $dateFrom->format('Y-m-d')){
+                        $heureDepart = $dateFrom->format('H:i');
+                        $heureDpart = str_replace(":", "", $heureDepart);
+                        $tmpHeure = str_replace(":", "", $tmpDate);
+
+                        if(intval($heureDepart) < intval($tmpHeure)){
+                            continue;
+                        }
                     }
+
+                    //Dernier Jour
+                    if($row["date"] == $dateEnd->format('Y-m-d')){
+                        $heureFin = $dateEnd->format('H:i');
+                        $heureFin = str_replace(":", "", $heureFin);
+                        $tmpHeure = str_replace(":", "", $tmpDate);
+
+                        if(intval($heureFin) > intval($tmpHeure)){
+                            continue;
+                        }
+
+                    }
+
+                    $jsSerie .= ($jsSerie == "") ? ""  : ",";
+                    $date = new DateTime($row["date"]." ".$tmpDate.":00");
+                    $value = $tmpValue;
+                    $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
+                    $month--;
+                    $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
+                    $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
+                    $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
+                    $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+
                 }
                 
-                //Dernier Jour
-                if($row["date"] == $dateEnd->format('Y-m-d')){
-                    $heureFin = $dateEnd->format('H:i');
-                    $heureFin = str_replace(":", "", $heureFin);
-                    $tmpHeure = str_replace(":", "", $tmpDate);
-                    
-                    if(intval($heureFin) > intval($tmpHeure)){
-                        continue;
+            } else {
+                $values = json_decode($row['value4h'], TRUE);
+                foreach($values as $tmpDate=>$tmpValue){
+                    //1er jour, ne prend qu'à partir de l'heure souhaitée
+                    if($row["date"] == $dateFrom->format('Y-m-d')){
+                        $heureDepart = $dateFrom->format('H:i');
+                        $heureDpart = str_replace(":", "", $heureDepart);
+                        $tmpHeure = str_replace(":", "", $tmpDate);
+
+                        if(intval($heureDepart) < intval($tmpHeure)){
+                            continue;
+                        }
                     }
-                    
+
+                    //Dernier Jour
+                    if($row["date"] == $dateEnd->format('Y-m-d')){
+                        $heureFin = $dateEnd->format('H:i');
+                        $heureFin = str_replace(":", "", $heureFin);
+                        $tmpHeure = str_replace(":", "", $tmpDate);
+
+                        if(intval($heureFin) > intval($tmpHeure)){
+                            continue;
+                        }
+
+                    }
+
+                    $jsSerie .= ($jsSerie == "") ? ""  : ",";
+                    $date = new DateTime($row["date"]." ".$tmpDate.":00");
+                    $value = $tmpValue;
+                    $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
+                    $month--;
+                    $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
+                    $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
+                    $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
+                    $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+
                 }
-                
-                $jsSerie .= ($jsSerie == "") ? ""  : ",";
-                $date = new DateTime($row["date"]." ".$tmpDate.":00");
-                $value = $tmpValue;
-                $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
-                $month--;
-                $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
-                $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
-                $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
-                $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
                 
             }
+            
             $i++;
         }
         $stmt = NULL;
