@@ -390,6 +390,14 @@ $( document ).ready(function() {
             echo "text: '".$chart->abscisse."'";
             echo " }";
             echo "},";
+            echo "tooltip: {";
+            echo " formatter: function() { ";
+            echo " return  '<b>' + this.series.name +'</b><br/>' +";
+            echo " Highcharts.dateFormat('%e - %b - %Y',";
+            echo " new Date(this.x)) ";
+            echo " + ' date, ' + this.y + ' Kg.';";
+            echo " } ";
+            echo "},";
             echo "yAxis: {";
             $incremental=FALSE;
             foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
@@ -441,14 +449,7 @@ $( document ).ready(function() {
                     echo "valueSuffix: ' EUR'";
                     echo "}";
                 } else {
-                    echo ",tooltip: {";
-                    echo " formatter: function() { ";
-                    echo " return  '<b>' + this.series.name +'</b><br/>' +";
-                    echo " Highcharts.dateFormat('%e - %b - %Y',";
-                    echo " new Date(this.x)) ";
-                    echo " + ' date, ' + this.y + ' Kg.';";
-                    echo " } ";
-                    echo "}";
+                    
                 }
                 
                 
