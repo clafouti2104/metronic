@@ -440,6 +440,15 @@ $( document ).ready(function() {
                     echo "valuePrefix: '€',";
                     echo "valueSuffix: ' EUR'";
                     echo "}";
+                } else {
+                    echo ",tooltip: {";
+                    echo " formatter: function() { ";
+                    echo " return  '<b>' + this.series.name +'</b><br/>' +";
+                    echo " Highcharts.dateFormat('%e - %b - %Y',";
+                    echo " new Date(this.x)) ";
+                    echo " + ' date, ' + this.y + ' Kg.';";
+                    echo " } ";
+                    echo "}";
                 }
                 
                 
