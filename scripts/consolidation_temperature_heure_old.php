@@ -30,7 +30,7 @@ for($i=1;$i<=10;$i++){
         if($row["incremental"] == "" || $row["incremental"] == "0"){
             $result = array();
             //Parcours des tranches de 4h
-            for($i=1; $i<=$loop; $i++){
+            for($i=1; $i<=6; $i++){
                 $tmpHeureStart = ($i - 1) * 4;
                 $tmpHeureEnd = ($i * 4) - 1;
 
