@@ -111,7 +111,7 @@ class History{
                         $heureDepart = str_replace(":", "", $heureDepart);
                         $tmpHeure = str_replace(":", "", $tmpDate);
 
-                        if(intval($heureHeure) < intval($tmpDepart)){
+                        if(intval($heureDepart) < intval($tmpHeure)){
                             continue;
                         }
                     }
@@ -363,10 +363,15 @@ class History{
                 $query .= ", valuehalf as tmpvalues";
                 $query .= " FROM temperature_consolidation ";
                 $query .= " WHERE deviceid=:deviceid";
-                $query .= " AND date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
+                $query .= " AND date >= '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
                 $query .= " ORDER BY date ";
                 
                 $stmt = $GLOBALS["histoconnec"]->prepare($query);
+                // On récupère les élèments
+                $params = array(":deviceid"	=> $deviceid);
+                $jsSerie="";
+                $i=1;
+                $stmt->execute($params);
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $jsSerie .= ($jsSerie == "") ? ""  : ",";
                     

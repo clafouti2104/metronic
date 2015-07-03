@@ -61,6 +61,8 @@ while(true){
                 if($row2=$stmt2->fetch(PDO::FETCH_ASSOC)) {
                     $result[$datetimehourBegin->format('H:i')] = $row2["sumValue"];
                 }
+                $datetimehourBegin->add(new DateInterval('PT30M'));
+                $datetimehourEnd->add(new DateInterval('PT30M'));
             }
         }
 
