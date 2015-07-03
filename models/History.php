@@ -68,7 +68,7 @@ class History{
         $query .= " FROM temperature_consolidation ";
         $query .= " WHERE deviceid=:deviceid";
         if($period == '1'){
-            $query .= " AND date='".$dateFrom->format('Y-m-d')."' OR date = '".$dateEnd->format('Y-m-d')."'";
+            $query .= " AND (date='".$dateFrom->format('Y-m-d')."' OR date = '".$dateEnd->format('Y-m-d')."')";
         } else {
             $query .= " AND date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
         }
@@ -91,10 +91,10 @@ class History{
                     //1er jour, ne prend qu'à partir de l'heure souhaitée
                     if($row["date"] == $dateFrom->format('Y-m-d')){
                         $heureDepart = $dateFrom->format('H:i');
-                        $heureDpart = str_replace(":", "", $heureDepart);
+                        $heureDepart = str_replace(":", "", $heureDepart);
                         $tmpHeure = str_replace(":", "", $tmpDate);
 
-                        if(intval($heureDepart) < intval($tmpHeure)){
+                        if(intval($heureHeure) < intval($tmpDepart)){
                             continue;
                         }
                     }
@@ -111,19 +111,29 @@ class History{
 
                     }
 
-                    $jsSerie .= ($jsSerie == "") ? ""  : ",";
-                    $date = new DateTime($row["date"]." ".$tmpDate.":00");
-                    $value = $tmpValue;
-                    $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
-                    $month--;
-                    $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
-                    $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
-                    $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
-                    $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    if($value != ""){
+                        $jsSerie .= ($jsSerie == "") ? ""  : ",";
+                        $date = new DateTime($row["date"]." ".$tmpDate.":00");
+                        $value = $tmpValue;
+                        $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
+                        $month--;
+                        $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
+                        $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
+                        $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
+                        $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    }
 
                 }
                 
             } else {
+                if($period == '5'){
+                    
+                }else{
+                    
+                }
+                echo "\nDate Depart ".$dateFrom->format('Y-m-d H:i');
+                echo "\nDate Fin ".$dateEnd->format('Y-m-d H:i');
+                exit;
                 $values = json_decode($row['value4h'], TRUE);
                 foreach($values as $tmpDate=>$tmpValue){
                     //1er jour, ne prend qu'à partir de l'heure souhaitée
@@ -149,16 +159,17 @@ class History{
 
                     }
 
-                    $jsSerie .= ($jsSerie == "") ? ""  : ",";
-                    $date = new DateTime($row["date"]." ".$tmpDate.":00");
-                    $value = $tmpValue;
-                    $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
-                    $month--;
-                    $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
-                    $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
-                    $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
-                    $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
-
+                    if($tmpValue != ""){
+                        $jsSerie .= ($jsSerie == "") ? ""  : ",";
+                        $date = new DateTime($row["date"]." ".$tmpDate.":00");
+                        $value = $tmpValue;
+                        $month = (substr($date->format('m'), 0, 1) == '0') ? substr($date->format('m'),1,1) : $date->format('m');
+                        $month--;
+                        $day = (substr($date->format('d'), 0, 1) == '0') ? substr($date->format('d'),1,1) : $date->format('d');
+                        $hour = (substr($date->format('H'), 0, 1) == '0') ? substr($date->format('H'),1,1) : $date->format('H');
+                        $minute = (substr($date->format('i'), 0, 1) == '0') ? substr($date->format('i'),1,1) : $date->format('i');
+                        $jsSerie .= "[Date.UTC(".$date->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    }
                 }
                 
             }
@@ -166,6 +177,10 @@ class History{
             $i++;
         }
         $stmt = NULL;
+        $jsSerie=trim($jsSerie);
+        if(substr($jsSerie, -1)==','){
+            $jsSerie = substr($jsSerie, 0, strlen($jsSerie) -1);
+        }
         return $jsSerie;
     }
     
@@ -218,8 +233,12 @@ class History{
                     $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
-                    $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
+                    if($value != ""){
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    }
+                    //$jsSerie .= ($jsSerie == "") ? "" : ",";
+                    //$jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateEnd->add(new DateInterval("PT1H"));
@@ -261,8 +280,10 @@ class History{
                     $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
-                    $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
+                    if($value != ""){
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    }
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateFrom->add(new DateInterval("P1D"));
@@ -303,8 +324,10 @@ class History{
                     $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
-                    $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
+                    if($value != ""){
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    }
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateFrom->add(new DateInterval("P1D"));
@@ -348,8 +371,10 @@ class History{
                     $day = (substr($dateFrom->format('d'), 0, 1) == '0') ? substr($dateFrom->format('d'),1,1) : $dateFrom->format('d');
                     $hour = (substr($dateFrom->format('H'), 0, 1) == '0') ? substr($dateFrom->format('H'),1,1) : $dateFrom->format('H');
                     $minute = (substr($dateFrom->format('i'), 0, 1) == '0') ? substr($dateFrom->format('i'),1,1) : $dateFrom->format('i');
-                    $jsSerie .= ($jsSerie == "") ? "" : ",";
-                    $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),'".$value."']";
+                    if($value != ""){
+                        $jsSerie .= ($jsSerie == "") ? "" : ",";
+                        $jsSerie .= "[Date.UTC(".$dateFrom->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                    }
                     $stmt=NULL;
                     //echo $query." - ";
                     $dateFrom->add(new DateInterval("PT30M"));
@@ -368,6 +393,10 @@ class History{
             
         }*/
         //print_r($jsSerie);
+        $jsSerie=trim($jsSerie);
+        if(substr($jsSerie, -1)==','){
+            $jsSerie = substr($jsSerie, 0, strlen($jsSerie) -1);
+        }
         
         return $jsSerie;
     }
