@@ -396,7 +396,7 @@ $( document ).ready(function() {
             echo " return  '<b>' + this.series.name +'</b><br/>' +";
             echo " Highcharts.dateFormat('%e - %b - %Y %Hh%M' ,";
             echo " new Date(this.x)) ";
-            echo " + ' , ' + this.y + ' °C.';";
+            echo " + ' , ' + this.y + ' ';";
             echo " } ";
             echo "},";
             echo "yAxis: {";

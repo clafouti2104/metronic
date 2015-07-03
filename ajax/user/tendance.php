@@ -3,6 +3,7 @@ include '../../tools/config.php';
 include_once "../../models/History.php";
 include_once "../../models/Device.php";
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 
 //Récupération du device
 $device=  Device::getDevice($_GET["deviceId"]);
