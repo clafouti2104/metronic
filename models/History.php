@@ -87,7 +87,7 @@ class History{
         if($period == '1'){
             $query .= " AND (date='".$dateFrom->format('Y-m-d')."' OR date = '".$dateEnd->format('Y-m-d')."')";
         } else {
-            $query .= " AND date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
+            $query .= " AND date >= '".$dateFrom->format('Y-m-d')."' AND date < '".$dateEnd->format('Y-m-d')."'";
         }
         $query .= " ORDER BY date ";
         //echo $query;

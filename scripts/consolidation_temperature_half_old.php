@@ -25,9 +25,9 @@ while(true){
     $loop = intval($heureCourante / 4);
     $sqlInsert=$sqlUpdate="";
     $devices = array();
-    $datetimehourBegin=new DateTime($datetime->format('Y-m-d')." 00:00:00");
-    $datetimehourEnd=new DateTime($datetime->format('Y-m-d')." 00:30:00");
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $datetimehourBegin=new DateTime($datetime->format('Y-m-d')." 00:00:00");
+        $datetimehourEnd=new DateTime($datetime->format('Y-m-d')." 00:30:00");
         //Non incrémental
         if($row["incremental"] == "" || $row["incremental"] == "0"){
             $result = array();
@@ -45,10 +45,10 @@ while(true){
                 $datetimehourBegin->add(new DateInterval('PT30M'));
                 $datetimehourEnd->add(new DateInterval('PT30M'));
             }
-        }
+        } else {
 
         //Incremental
-        if($row["incremental"] != "" && $row["incremental"] > "0"){
+        //if($row["incremental"] != "" && $row["incremental"] > "0"){
             $result = array();
             //Parcours des tranches de 4h
             for($i=1; $i<=48; $i++){
@@ -64,6 +64,9 @@ while(true){
             }
         }
 
+        if($row["id"] == '44'){
+            echo $sqlUpdate;
+        }
         $sqlUpdate .= "UPDATE `histo`.`temperature_consolidation`";
         $sqlUpdate .= " SET valuehalf='".  json_encode($result)."'";
         $sqlUpdate .= " WHERE deviceid=".$row["id"]." ";
