@@ -36,7 +36,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
         $stmt2->execute( array() );
         if($row2 = $stmt2->fetch(PDO::FETCH_ASSOC) ){
-            $avg=$row3["moyenne"];
+            $avg=$row2["moyenne"];
         }
         
         //Récupération Minimum
@@ -44,9 +44,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $sql.=" WHERE date >= '".$yesterday->format('Y-m-d')." 00:00:00' AND date < '".$yesterday->format('Y-m-d')." 23:59:59'";
         $sql.=" AND value IS NOT NULL";
         $sql.="  ORDER BY value ASC LIMIT 1 ";
-        $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
-        $stmt2->execute( array() );
-        if($row2 = $stmt2->fetch(PDO::FETCH_ASSOC) ){
+        $stmt3 = $GLOBALS["histoconnec"]->prepare($sql);
+        $stmt3->execute( array() );
+        if($row3 = $stmt3->fetch(PDO::FETCH_ASSOC) ){
             $min=$row3["min"];
         }
         
@@ -55,10 +55,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $sql.=" WHERE date >= '".$yesterday->format('Y-m-d')." 00:00:00' AND date < '".$yesterday->format('Y-m-d')." 23:59:59'";
         $sql.=" AND value IS NOT NULL";
         $sql.="  ORDER BY value DESC LIMIT 1 ";
-        $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
-        $stmt2->execute( array() );
-        if($row2 = $stmt2->fetch(PDO::FETCH_ASSOC) ){
-            $max=$row3["max"];
+        $stmt4 = $GLOBALS["histoconnec"]->prepare($sql);
+        $stmt4->execute( array() );
+        if($row4 = $stmt4->fetch(PDO::FETCH_ASSOC) ){
+            $max=$row4["max"];
         }
     }else{
         //Incremental: ne recupere que le total sur la journée
