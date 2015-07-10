@@ -9,6 +9,8 @@ $pageAdmin=array(
     $GLOBALS['path']."/admin_sce_cond.php",
     $GLOBALS['path']."/admin_tuile.php",
     $GLOBALS['path']."/admin_logs.php",
+    $GLOBALS['path']."/admin_liste.php",
+    $GLOBALS['path']."/admin_report.php",
     $GLOBALS['path']."/admin_chart.php",
     $GLOBALS['path']."/admin_plugins.php",
     $GLOBALS['path']."/admin_schedule.php",
@@ -143,6 +145,9 @@ $pageAdmin=array(
                                             </li>
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_plugins.php") echo "active"; ?>">
                                                 <a href="admin_plugins.php">Plugins</a>
+                                            </li>
+                                            <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_report.php") echo "active"; ?>">
+                                                <a href="admin_report.php">Rapport</a>
                                             </li>
                                             <li class="<?php if($_SERVER["REQUEST_URI"] == $GLOBALS['path']."/admin_maintenance.php") echo "active"; ?>">
                                                 <a href="admin_maintenance.php">Maintenance</a>

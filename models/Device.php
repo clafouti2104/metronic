@@ -185,8 +185,23 @@ class Device{
     /**
     * @desc Renvoie tous les Devices
     */
-    public static function getDevices() {
-        $query = "SELECT id FROM device ORDER BY name";
+    public static function getDevices($active=TRUE) {
+        $query = "SELECT id FROM device ";
+        $query .= ($active) ? " WHERE active=1 " : "";
+        $query .= " ORDER BY name";
+        
+        $stmt = $GLOBALS["dbconnec"]->query($query);
+
+        return self::getDevice($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
+    }
+    
+    /**
+    * @desc Renvoie tous les Devices collect
+    */
+    public static function getDevicesCollect($active=TRUE) {
+        $query = "SELECT id FROM device WHERE collect IS NOT NULL AND collect > 0 ";
+        $query .= ($active) ? " AND active=1 " : "";
+        $query .= " ORDER BY name";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
 
@@ -197,7 +212,9 @@ class Device{
     * @desc Renvoie tous les Devices incremental
     */
     public static function getDevicesIncremental() {
-        $query = "SELECT id FROM device WHERE incremental=1 ORDER BY name";
+        $query = "SELECT id FROM device WHERE incremental=1";
+        $query .= ($active) ? " AND active=1 " : "";
+        $query .= " ORDER BY name";
         
         $stmt = $GLOBALS["dbconnec"]->query($query);
 
@@ -827,5 +844,7 @@ class Device{
         $type=($this->type != "") ? " - ".$this->type : "";
         return $this->name.$type;
     }
+    
+    
 }
 ?>
