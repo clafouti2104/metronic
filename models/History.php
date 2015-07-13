@@ -1151,8 +1151,7 @@ class History{
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $auj = $dateFrom->format('Y-m-d');
-                $weekdays =  self::generateWeekDays($auj);
-                $query .= " date BETWEEN '".$weekdays[0]."' AND '".$dateFrom->format('Y-m-d')."'";
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".date('Y-m-d')."'";
                 //echo $query;
                 break;
             case '3':
