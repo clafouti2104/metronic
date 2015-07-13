@@ -91,7 +91,7 @@ $(document).ready(function () {
 <?php
 foreach($charts as $chart){
     if($chart->type == "temps" || $chart->type == "ligne"){
-        echo "$('.container-".$chart->id."').highcharts({";
+        echo "\n$('.container-".$chart->id."').highcharts({";
         echo " chart: {";
         if($chart->type=='temps'){
             echo " zoomType: 'x'";
@@ -145,8 +145,8 @@ foreach($charts as $chart){
         $i=0;
         $data="";
         foreach($devices[$chart->id] as $device){
-            print_r($history[$device->id]);
-            //$data = History::getDataForChart($history[$device->id], $report->period);
+            //print_r($history[$device->id]);
+            $data = History::getDataForChart($history[$device->id], $report->period);
             if($i>0){
                 echo ",";
             }
