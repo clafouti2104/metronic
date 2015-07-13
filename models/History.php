@@ -1170,6 +1170,7 @@ class History{
             default:
                 return '$ERRPeriode incorrecte';
         }
+        echo $query;
         //echo $query;
         $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
