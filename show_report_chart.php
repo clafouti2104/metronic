@@ -12,7 +12,7 @@ foreach($reportCharts as $reportChart){
         <div class="portlet-body">
             <?php 
             foreach($devices[$chartTmp->id] as $deviceTmp){
-                echo "<br/>".$deviceTmp->name;
+                echo "<br/>#".$deviceTmp->id." --> ".$deviceTmp->name;
             }
             ?>
             <div class="cell col-lg-6 col-md-6 col-sm-6 col-xs-12" style="height:400px;">
