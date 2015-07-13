@@ -1135,7 +1135,7 @@ class History{
         $value=array();
         $query = "SELECT date, value, value4h, valuehalf, min, max, avg ";
         $query .= " FROM temperature_consolidation ";
-        $query .= " WHERE deviceid=".$deviceId." ";
+        $query .= " WHERE deviceid=".$deviceId." AND ";
         
         $dateFrom=new DateTime('now');
         
