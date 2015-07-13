@@ -14,6 +14,7 @@ class Report{
         $this->description = $description;
         $this->chart = $chart;
         $this->contacts = $contacts;
+        $this->period = $period;
     }
     
     public static function ReportExists($idReport) {

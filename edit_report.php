@@ -17,10 +17,10 @@ include "modules/sidebar.php";
 $GLOBALS["dbconnec"] = connectDB();
 include_once "models/Report.php";
 include_once "models/ReportDevice.php";
-include_once "models/Device.php";
+include_once "models/Chart.php";
 include_once "models/MessageDevice.php";
 
-$devices=  Device::getDevicesCollect();
+$charts= Chart::getCharts();
 $error="";
 $periods=array();
 $periods['1']="jour";
@@ -247,11 +247,11 @@ if(isset($idReport) && $idReport > 0){
                                 <ol class="dd-list">
                                 <?php 
                                 $i=0;
-                                foreach($devices as $deviceTmp){
+                                foreach($charts as $chartTmp){
                                     $i++;
                                     echo "<li class=\"dd-item\" style=\"\" data-id=\"d".$i."\">";
-                                    echo "<button type=\"button\" class=\"btnAddDevice\" deviceId=\"".$deviceTmp->id."\" deviceName=\"".  addslashes(ucwords($deviceTmp->name)." - ".ucwords($deviceTmp->type))."\" style=\"display: block;float:right;\"><i class=\"fa fa-plus\"></i></button>";
-                                    echo "<div class=\"dd-handle\" deviceId=\"".$deviceTmp->id."\">".ucwords($deviceTmp->name)." - ".ucwords($deviceTmp->type)."</div>";
+                                    echo "<button type=\"button\" class=\"btnAddDevice\" deviceId=\"".$chartTmp->id."\" deviceName=\"".  addslashes(ucwords($chartTmp->name)." - ".ucwords($chartTmp->type))."\" style=\"display: block;float:right;\"><i class=\"fa fa-plus\"></i></button>";
+                                    echo "<div class=\"dd-handle\" deviceId=\"".$chartTmp->id."\">".ucwords($chartTmp->name)." - ".ucwords($chartTmp->type)."</div>";
                                     echo "</li>";
                                     //echo "<i class=\"fa fa-plus btnAddDevice\" style=\"float: left; right:20px;margin-top:15px;\"></i>";
                                 }
@@ -269,10 +269,10 @@ if(isset($idReport) && $idReport > 0){
                                     }
                                     $i=1;
                                     foreach($reportDevices as $reportMessage){
-                                        $deviceTmp = Device::getDevice($reportMessage->deviceid);
+                                        $chartTmp = Chart::getChart($reportMessage->deviceid);
                                         
                                         echo "<li class=\"dd-item reportDeviceId-".$reportMessage->id."\" data-id=\"".$i."\">";
-                                        echo "<div class=\"dd-handle\" deviceId=\"".$deviceTmp->id."\">".ucwords($deviceTmp->name)." - ".ucwords($deviceTmp->type);
+                                        echo "<div class=\"dd-handle\" deviceId=\"".$chartTmp->id."\">".ucwords($chartTmp->name);
                                         echo "</div>";
                                         echo "<i class=\"fa fa-times btnRemoveDevice\" reportDeviceId=\"".$reportMessage->id."\" style=\"float: right; cursor: pointer; position: absolute; top: 8px; right: 10px;\"></i>";
                                         echo "</li>";

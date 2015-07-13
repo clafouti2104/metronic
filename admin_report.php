@@ -61,7 +61,7 @@ foreach($reports as $report){
     echo "<td>".count($reportMessages)."</td>";
     echo "<td>";
     echo "<a href=\"edit_report.php?idReport=".$report->id."\"><i class=\"fa fa-edit\"  style=\"color:black;\" ></i></a>";
-    echo "<a href=\"show_report.php?idReport=".$report->id."\"><i class=\"fa fa-edit\"  style=\"color:black;\" ></i></a>";
+    echo "<a href=\"show_report.php?idReport=".$report->id."\" style=\"margin-left:5px;\"><i class=\"fa fa-search\"  style=\"color:black;\" ></i></a>";
     echo "<a href=\"#\" style=\"margin-left:5px;\"><i class=\"fa fa-minus-circle btnDeleteReport\" reportId=\"".$report->id."\"  style=\"color:black;\"></i></a>";
     echo "</td>";
     echo "</tr>";

@@ -1131,6 +1131,63 @@ class History{
         return self::getHistory($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
+    public static function getConsolidation($deviceId, $period){
+        $value=array();
+        $query = "SELECT date, value, value4h, valuehalf, min, max, avg ";
+        $query .= " FROM temperature_consolidation ";
+        $query .= " WHERE deviceid=".$deviceId." ";
+        
+        $dateFrom=new DateTime('now');
+        
+        switch($period){
+            case '1':
+                $interval=new DateInterval("P1D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            case '2':
+                $interval=new DateInterval("P7D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $auj = $dateFrom->format('Y-m-d');
+                $weekdays =  self::generateWeekDays($auj);
+                $query .= " date BETWEEN '".$weekdays[0]."' AND '".$dateFrom->format('Y-m-d')."'";
+                //echo $query;
+                break;
+            case '3':
+                $interval=new DateInterval("P1M");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-')."01' AND '".$dateFrom->format('Y-m-').date('d')."'";
+                break;
+            case '4':
+                $interval=new DateInterval("P1Y");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            default:
+                return '$ERRPeriode incorrecte';
+        }
+        //echo $query;
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
+        $stmt->execute(array());
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $value[$row["date"]]=array(
+                "value" => $row["value"],
+                "value4h" => $row["value4h"],
+                "valuehalf" => $row["valuehalf"],
+                "max" => $row["max"],
+                "min" => $row["min"],
+                "avg" => $row["avg"]    
+            );
+        }
+        
+        
+        return $value;
+    }
+    
     public static function createHistory($name,$date,$value=1,$deviceid) {
         
         $query = "INSERT INTO temperature (";
@@ -1207,6 +1264,41 @@ class History{
             $deb += 86400;
         }
         return $weekdays;
+    }
+    
+    public static function getDataForChart($data, $period){
+        if(count($data) == 0){
+            return "Error with data";
+        }
+        $result="";
+        switch($period){
+            case '1':
+                break;
+            case '2':
+                //Boucle sur date
+                foreach($data as $date => $values){
+                    $datetime = new DateTime($date);
+                    $values = json_decode($values["value4h"]);
+                    foreach($values as $tmpHour => $tmpValue){
+                        if($tmpValue != ""){
+                            $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
+                            $month--;
+                            $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
+                            $hour = (substr($datetime->format('H'), 0, 1) == '0') ? substr($datetime->format('H'),1,1) : $datetime->format('H');
+                            $minute = (substr($datetime->format('i'), 0, 1) == '0') ? substr($datetime->format('i'),1,1) : $datetime->format('i');
+                            $result .= ($result == "") ? "" : ",";
+                            $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+
+                        }
+                    }
+                    //echo "<br/>";
+                    //print_r($values);
+                }
+                //exit;
+                break;
+        }
+        
+        return $result;
     }
 }
 ?>
