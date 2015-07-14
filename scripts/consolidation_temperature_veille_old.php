@@ -26,7 +26,7 @@ while(true){
     $stmt->execute(array());
     
     $yesterday=new DateTime($datetime->format('Y-m-d')." 00:00:00");
-
+    echo "\n".$yesterday->format('d-m-Y');
     $sqlInsert=$sqlUpdate="";
     $devices = array();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
