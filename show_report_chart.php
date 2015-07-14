@@ -15,7 +15,7 @@ foreach($reportCharts as $reportChart){
                 echo "<br/>#".$deviceTmp->id." --> ".$deviceTmp->name;
             }
             ?>
-            <div class="cell col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat"></div>
                 <div class="deleteItemPage" style="margin-bottom:10px;position: absolute;top:370px;right:10px;">
                     
