@@ -1284,8 +1284,9 @@ class History{
                             $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
                             $month--;
                             $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
-                            $hour = (substr($datetime->format('H'), 0, 1) == '0') ? substr($datetime->format('H'),1,1) : $datetime->format('H');
-                            $minute = (substr($datetime->format('i'), 0, 1) == '0') ? substr($datetime->format('i'),1,1) : $datetime->format('i');
+                            $hour = (substr($tmpHour, 0, 1) == '0') ? substr($tmpHour,1,1) : $tmpHour;
+                            $hour = ($hour == "") ? '0' : $hour;
+                            $minute = 0;
                             $result .= ($result == "") ? "" : ",";
                             $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
 
