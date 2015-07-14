@@ -76,7 +76,7 @@ foreach($devices as $chartName=>$types){
                             <?php include "show_report_chart.php"; ?>
                         <!--</div>
                         <div class="tab-pane" id="tab_data">
-                            <?php print_r($history); ?>
+                            <?php //print_r($history); ?>
                         </div>
                     </div>
                 </div>-->

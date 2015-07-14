@@ -11,9 +11,9 @@ foreach($reportCharts as $reportChart){
         </div>
         <div class="portlet-body">
             <?php 
-            foreach($devices[$chartTmp->id] as $deviceTmp){
+            /*foreach($devices[$chartTmp->id] as $deviceTmp){
                 echo "<br/>#".$deviceTmp->id." --> ".$deviceTmp->name;
-            }
+            }*/
             ?>
             <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat"></div>
