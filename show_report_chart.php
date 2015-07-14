@@ -1,7 +1,7 @@
 <?php
 foreach($reportCharts as $reportChart){
     $chartTmp = Chart::getChart($reportChart->deviceid);
-    echo "<br/>Chart #".$chartTmp->id;
+    //echo "<br/>Chart #".$chartTmp->id;
     //print_r($devices[$chartTmp->id]);
 ?>
 <div class="col-md-6">
