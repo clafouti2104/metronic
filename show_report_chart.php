@@ -4,7 +4,7 @@ foreach($reportCharts as $reportChart){
     echo "<br/>Chart #".$chartTmp->id;
     //print_r($devices[$chartTmp->id]);
 ?>
-<div class="row">
+<div class="col-md-6">
     <div class="portlet box blue-steel tabbable" style="background-color: #FFF;">
         <div class="portlet-title">
             <div class="caption"> <?php echo $chartTmp->name; ?> </div>
