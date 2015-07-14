@@ -2,12 +2,14 @@
 <?php
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
-    <div class="portlet box green-haze">
-        <div class="portlet-title">
-            <div class="caption"> <?php echo ucwords($type); ?> </div>
-        </div>
-        <div class="portlet-body">
-            
+    <div class="col-md-6">
+        <div class="portlet box green-haze">
+            <div class="portlet-title">
+                <div class="caption"> <?php echo ucwords($type); ?> </div>
+            </div>
+            <div class="portlet-body">
+
+            </div>
         </div>
     </div>
 <?php  
