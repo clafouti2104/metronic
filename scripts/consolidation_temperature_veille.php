@@ -74,7 +74,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $sqlUpdate .= "UPDATE `histo`.`temperature_consolidation` ";
     $sqlUpdate .= " SET avg='".  $avg."' ";
     $sqlUpdate .= (!is_null($min)) ? " ,min=".$min." " : "";
-    $sqlUpdate .= (!is_null($max)) ? " ,min=".$max." " : "";
+    $sqlUpdate .= (!is_null($max)) ? " ,max=".$max." " : "";
     $sqlUpdate .= " WHERE date = '".$yesterday->format('Y-m-d')."' AND deviceid=".$row["id"].";";
 }
 
