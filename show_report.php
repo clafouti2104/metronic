@@ -17,12 +17,13 @@ if(!isset($_GET["idReport"])){
 $idReport=$_GET["idReport"];
 $report=Report::getReport($idReport);
 $reportCharts=ReportDevice::getReportDevicesForReport($idReport);
-$devices=$charts=$history=array();
+$devices=$devicesByType=$charts=$history=array();
 foreach($reportCharts as $reportChart){
     $charts[$reportChart->deviceid]=Chart::getChart($reportChart->deviceid);
     foreach(ChartDevice::getChartDeviceForChart($reportChart->deviceid) as $tmpChartDevice){
         $tmpDevice=Device::getDevice($tmpChartDevice->deviceid);
         $devices[$reportChart->deviceid][]=$tmpDevice;
+        $devicesByType[strtolower($tmpDevice->type)][]=$tmpDevice;
     }
 }
 
@@ -61,6 +62,7 @@ foreach($devices as $chartName=>$types){
             </div>
         </div>
         <div class="row-fluid">
+            <?php include "show_report_chart.php"; ?>
             <div class="col-md-12">
                 <!--<div class="tabbable-custom ">
                     ><ul class="nav nav-tabs ">
@@ -73,7 +75,6 @@ foreach($devices as $chartName=>$types){
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_chart">-->
-                            <?php include "show_report_chart.php"; ?>
                         <!--</div>
                         <div class="tab-pane" id="tab_data">
                             <?php //print_r($history); ?>

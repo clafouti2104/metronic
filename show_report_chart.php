@@ -1,4 +1,17 @@
+<div class="col-md-12">
 <?php
+foreach($devicesByType as $type=>$tmpDevices){
+?>
+    <div class="portlet box green-haze">
+        <div class="portlet-title">
+            <div class="caption"> <?php echo ucwords($type); ?> </div>
+        </div>
+        <div class="portlet-body">
+            
+        </div>
+    </div>
+<?php  
+}
 foreach($reportCharts as $reportChart){
     $chartTmp = Chart::getChart($reportChart->deviceid);
     //echo "<br/>Chart #".$chartTmp->id;
@@ -10,11 +23,6 @@ foreach($reportCharts as $reportChart){
             <div class="caption"> <?php echo $chartTmp->name; ?> </div>
         </div>
         <div class="portlet-body">
-            <?php 
-            /*foreach($devices[$chartTmp->id] as $deviceTmp){
-                echo "<br/>#".$deviceTmp->id." --> ".$deviceTmp->name;
-            }*/
-            ?>
             <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat"></div>
                 <div class="deleteItemPage" style="margin-bottom:10px;position: absolute;top:370px;right:10px;">
@@ -27,6 +35,7 @@ foreach($reportCharts as $reportChart){
 <?php
 }
 ?>
+</div>
 
 <script type="text/javascript">
     
