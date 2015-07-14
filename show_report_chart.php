@@ -14,6 +14,8 @@ foreach($devicesByType as $type=>$tmpDevices){
     </div>
 <?php  
 }
+echo "</div>";
+echo "<div class=\"col-md-12\">";
 foreach($reportCharts as $reportChart){
     $chartTmp = Chart::getChart($reportChart->deviceid);
     //echo "<br/>Chart #".$chartTmp->id;
