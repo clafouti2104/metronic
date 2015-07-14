@@ -1169,7 +1169,6 @@ class History{
             default:
                 return '$ERRPeriode incorrecte';
         }
-        echo $query;
         //echo $query;
         $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
@@ -1278,17 +1277,20 @@ class History{
                 //Boucle sur date
                 foreach($data as $date => $values){
                     $datetime = new DateTime($date);
-                    $values = json_decode($values["value4h"]);
+                    $values = json_decode($values["value4h"], TRUE);
+		    //print_r($date);
+		    //print_r($values);
                     foreach($values as $tmpHour => $tmpValue){
+			//echo "<br/>".$tmpHour." - ".$tmpValue;
                         if($tmpValue != ""){
                             $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
                             $month--;
                             $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
-                            $hour = (substr($tmpHour, 0, 1) == '0') ? substr($tmpHour,1,1) : $tmpHour;
-                            $hour = ($hour == "") ? '0' : $hour;
+			    $hour = (substr($tmpHour, 0, 1) == '0') ? substr($tmpHour,1,1) : $tmpHour;
+			    $hour = ($hour == "") ? '0' : $hour;
                             $minute = 0;
                             $result .= ($result == "") ? "" : ",";
-                            $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$value."]";
+                            $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValue."]";
 
                         }
                     }
