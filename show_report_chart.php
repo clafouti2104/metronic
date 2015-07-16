@@ -24,11 +24,11 @@ foreach($tmpDevices as $tmpDevice){
                             <?php echo "<br/>".$tmpDevice->id; ?>
                             <i class="m-icon-swapright m-icon-white"></i>
                         </a>
+                    </div>
+                </div>
 <?php
 }
 ?>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
