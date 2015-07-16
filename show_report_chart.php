@@ -2,7 +2,7 @@
 <?php
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="portlet box green-haze">
             <div class="portlet-title">
                 <div class="caption"> <?php echo ucwords($type); ?> </div>
