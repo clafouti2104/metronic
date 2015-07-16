@@ -1379,9 +1379,12 @@ class History{
         return $result;
     }
     
-    public static function getTotalForDevices($deviceIds, $period){
+    public static function getMinMaxForDevices($deviceIds, $period){
         if(count($deviceIds) == 0){
             return "ERR - No array given";
+        }
+        if(!in_array(strtolower($mode),array("avg","sum"))){
+            return "ERR - Incorrect Mode";
         }
         $sqlId="";
         foreach($deviceIds as $deviceId){
@@ -1397,8 +1400,9 @@ class History{
         }
         
         $dateFrom=new DateTime('now');
+        $mode = (strtolower($mode) == "avg") ? "AVG" : "SUM";
         
-        $query = "SELECT SUM(avg) FROM temperature_consolidation ";
+        $query = "SELECT deviceid, ".$mode."(avg) as value FROM temperature_consolidation ";
         $query .= " WHERE ";
         $query .= " deviceid IN (".$sqlId.") AND ";
         switch($period){
@@ -1431,9 +1435,86 @@ class History{
             default:
                 return '$ERRPeriode incorrecte';
         }
+        $query .= " GROUP BY deviceid";
         
         echo $query;
-        exit;
+        $value=array();
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
+        $stmt->execute(array());
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $value[$row["deviceid"]]=$row["value"];
+        }
+        return $value;
     }
+    
+    public static function getTotalAvgForDevices($deviceIds, $period,$mode){
+        if(count($deviceIds) == 0){
+            return "ERR - No array given";
+        }
+        if(!in_array(strtolower($mode),array("avg","sum"))){
+            return "ERR - Incorrect Mode";
+        }
+        $sqlId="";
+        foreach($deviceIds as $deviceId){
+            if($deviceId == ""){
+                continue;
+            }
+            $sqlId .= ($sqlId=="") ? "" : ",";
+            $sqlId .= $deviceId;
+        }
+        
+        if($sqlId==""){
+            return "ERR - No deviceId returned";
+        }
+        
+        $dateFrom=new DateTime('now');
+        $mode = (strtolower($mode) == "avg") ? "AVG" : "SUM";
+        
+        $query = "SELECT deviceid, ".$mode."(avg) as value FROM temperature_consolidation ";
+        $query .= " WHERE ";
+        $query .= " deviceid IN (".$sqlId.") AND ";
+        switch($period){
+            case '1':
+                $interval=new DateInterval("P1D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            case '2':
+                $interval=new DateInterval("P7D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $auj = $dateFrom->format('Y-m-d');
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".date('Y-m-d')."'";
+                //echo $query;
+                break;
+            case '3':
+                $interval=new DateInterval("P1M");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-')."01' AND '".$dateFrom->format('Y-m-').date('d')."'";
+                break;
+            case '4':
+                $interval=new DateInterval("P1Y");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            default:
+                return '$ERRPeriode incorrecte';
+        }
+        $query .= " GROUP BY deviceid";
+        
+        echo $query;
+        $value=array();
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
+        $stmt->execute(array());
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $value[$row["deviceid"]]=$row["value"];
+        }
+        return $value;
+    }
+    
+    
 }
 ?>

@@ -10,9 +10,25 @@ foreach($devicesByType as $type=>$tmpDevices){
             <div class="portlet-body">
 <?php
 foreach($tmpDevices as $tmpDevice){
-    echo "<br/>".$tmpDevice->id;
+?>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat blue-madison">
+                        <div class="visual">
+                            <i class="fa fa-comments"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number"> 1,249 units </div>
+                            <div class="desc"> Stage 1: +22% </div>
+                        </div>
+                        <a class="more" href="#">
+                            <?php echo "<br/>".$tmpDevice->id; ?>
+                            <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
+<?php
 }
 ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
