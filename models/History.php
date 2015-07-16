@@ -1299,9 +1299,141 @@ class History{
                 }
                 //exit;
                 break;
+            case '3':
+                //Boucle sur date
+                foreach($data as $date => $values){
+                    $datetime = new DateTime($date);
+                    $values = json_decode($values["value4h"], TRUE);
+		    //print_r($date);
+		    //print_r($values);
+                    foreach($values as $tmpHour => $tmpValue){
+			//echo "<br/>".$tmpHour." - ".$tmpValue;
+                        if($tmpValue != ""){
+                            $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
+                            $month--;
+                            $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
+			    $hour = (substr($tmpHour, 0, 1) == '0') ? substr($tmpHour,1,1) : $tmpHour;
+			    $hour = ($hour == "") ? '0' : $hour;
+                            $minute = 0;
+                            $result .= ($result == "") ? "" : ",";
+                            $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValue."]";
+
+                        }
+                    }
+                    //echo "<br/>";
+                    //print_r($values);
+                }
+                break;
+            case '4':
+                //Boucle sur date
+                foreach($data as $date => $values){
+                    $datetime = new DateTime($date);
+                    $values = json_decode($values["value4h"], TRUE);
+		    //print_r($date);
+		    //print_r($values);
+                    foreach($values as $tmpHour => $tmpValue){
+			//echo "<br/>".$tmpHour." - ".$tmpValue;
+                        if($tmpValue != ""){
+                            $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
+                            $month--;
+                            $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
+			    $hour = (substr($tmpHour, 0, 1) == '0') ? substr($tmpHour,1,1) : $tmpHour;
+			    $hour = ($hour == "") ? '0' : $hour;
+                            $minute = 0;
+                            $result .= ($result == "") ? "" : ",";
+                            $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValue."]";
+
+                        }
+                    }
+                    //echo "<br/>";
+                    //print_r($values);
+                }
+                break;
+            case '5':
+                //Boucle sur date
+                foreach($data as $date => $values){
+                    $datetime = new DateTime($date);
+                    $values = json_decode($values["valuehalf"], TRUE);
+		    //print_r($date);
+		    //print_r($values);
+                    foreach($values as $tmpHour => $tmpValue){
+			//echo "<br/>".$tmpHour." - ".$tmpValue;
+                        if($tmpValue != ""){
+                            $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
+                            $month--;
+                            $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
+			    $hour = (substr($tmpHour, 0, 1) == '0') ? substr($tmpHour,1,1) : $tmpHour;
+			    $hour = ($hour == "") ? '0' : $hour;
+                            $minute = 0;
+                            $result .= ($result == "") ? "" : ",";
+                            $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValue."]";
+
+                        }
+                    }
+                    //echo "<br/>";
+                    //print_r($values);
+                }
+                break;
         }
         
         return $result;
+    }
+    
+    public static function getTotalForDevices($deviceIds, $period){
+        if(count($deviceIds) == 0){
+            return "ERR - No array given";
+        }
+        $sqlId="";
+        foreach($deviceIds as $deviceId){
+            if($deviceId == ""){
+                continue;
+            }
+            $sqlId .= ($sqlId=="") ? "" : ",";
+            $sqlId .= $deviceId;
+        }
+        
+        if($sqlId==""){
+            return "ERR - No deviceId returned";
+        }
+        
+        $dateFrom=new DateTime('now');
+        
+        $query = "SELECT SUM(avg) FROM temperature_consolidation ";
+        $query .= " WHERE ";
+        $query .= " deviceid IN (".$sqlId.") ";
+        switch($period){
+            case '1':
+                $interval=new DateInterval("P1D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            case '2':
+                $interval=new DateInterval("P7D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $auj = $dateFrom->format('Y-m-d');
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".date('Y-m-d')."'";
+                //echo $query;
+                break;
+            case '3':
+                $interval=new DateInterval("P1M");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-')."01' AND '".$dateFrom->format('Y-m-').date('d')."'";
+                break;
+            case '4':
+                $interval=new DateInterval("P1Y");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            default:
+                return '$ERRPeriode incorrecte';
+        }
+        
+        echo $query;
+        exit;
     }
 }
 ?>
