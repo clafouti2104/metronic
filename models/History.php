@@ -1400,7 +1400,7 @@ class History{
         
         $query = "SELECT SUM(avg) FROM temperature_consolidation ";
         $query .= " WHERE ";
-        $query .= " deviceid IN (".$sqlId.") ";
+        $query .= " deviceid IN (".$sqlId.") AND ";
         switch($period){
             case '1':
                 $interval=new DateInterval("P1D");

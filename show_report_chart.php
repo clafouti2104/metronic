@@ -8,7 +8,11 @@ foreach($devicesByType as $type=>$tmpDevices){
                 <div class="caption"> <?php echo ucwords($type); ?> </div>
             </div>
             <div class="portlet-body">
-                
+<?php
+foreach($tmpDevices as $tmpDevice){
+    echo "<br/>".$tmpDevice->id;
+}
+?>
             </div>
         </div>
     </div>
