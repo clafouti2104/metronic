@@ -11,7 +11,7 @@ foreach($devicesByType as $type=>$tmpDevices){
 <?php
 foreach($tmpDevices as $tmpDevice){
 ?>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                     <div class="dashboard-stat blue-madison">
                         <div class="visual">
                             <i class="fa fa-comments"></i>
@@ -21,7 +21,7 @@ foreach($tmpDevices as $tmpDevice){
                             <div class="desc"> Stage 1: +22% </div>
                         </div>
                         <a class="more" href="#">
-                            <?php echo "<br/>".$tmpDevice->id; ?>
+                            <?php echo "<br/>".$tmpDevice->name; ?>
                             <i class="m-icon-swapright m-icon-white"></i>
                         </a>
                     </div>
