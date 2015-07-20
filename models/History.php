@@ -1298,7 +1298,6 @@ class History{
                         
                     } else {
                         if($values["avg"] != ""){
-                            
                             $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
                             $month--;
                             $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
