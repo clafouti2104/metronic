@@ -25,7 +25,7 @@ foreach($tmpDevices as $tmpDevice){
     }
 ?>
                             <tr>
-                                <td><?php echo $tmpDevice->name; ?></td>
+                                <td><?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?></td>
                                 <td>
                                     <span class="label label-sm label-info">
                                         <?php echo "0"; ?>
