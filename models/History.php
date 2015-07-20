@@ -1379,7 +1379,7 @@ class History{
         return $result;
     }
     
-    public static function getMinMaxForDevices($deviceIds, $period){
+    public static function getMinMaxForDevices($deviceIds, $period, $mode="max"){
         if(count($deviceIds) == 0){
             return "ERR - No array given";
         }
