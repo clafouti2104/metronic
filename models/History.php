@@ -1383,9 +1383,6 @@ class History{
         if(count($deviceIds) == 0){
             return "ERR - No array given";
         }
-        if(!in_array(strtolower($mode),array("avg","sum"))){
-            return "ERR - Incorrect Mode";
-        }
         $sqlId="";
         foreach($deviceIds as $deviceId){
             if($deviceId == ""){

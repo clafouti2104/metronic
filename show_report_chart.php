@@ -17,12 +17,12 @@ foreach($tmpDevices as $tmpDevice){
                             <i class="fa fa-comments"></i>
                         </div>
                         <div class="details">
-                            <div class="number"> 1,249 units </div>
-                            <div class="desc"> Stage 1: +22% </div>
+                            <div class="number"> <?php echo $avg[$tmpDevice->id]; ?> </div>
+                            <div class="desc"> Min 1 | Max +22% </div>
                         </div>
                         <a class="more" href="#">
                             <?php echo "<br/>".$tmpDevice->name; ?>
-                            <i class="m-icon-swapright m-icon-white"></i>
+                            <!--<i class="m-icon-swapright m-icon-white"></i>-->
                         </a>
                     </div>
                 </div>

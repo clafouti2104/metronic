@@ -17,7 +17,7 @@ if(!isset($_GET["idReport"])){
 $idReport=$_GET["idReport"];
 $report=Report::getReport($idReport);
 $reportCharts=ReportDevice::getReportDevicesForReport($idReport);
-$devices=$devicesByType=$charts=$history=array();
+$devices=$devicesByType=$charts=$history=$deviceIds=array();
 foreach($reportCharts as $reportChart){
     $charts[$reportChart->deviceid]=Chart::getChart($reportChart->deviceid);
     foreach(ChartDevice::getChartDeviceForChart($reportChart->deviceid) as $tmpChartDevice){
@@ -29,9 +29,12 @@ foreach($reportCharts as $reportChart){
 
 foreach($devices as $chartName=>$types){
     foreach($types as $device){
+        $deviceIds[]=$device->id;
         $history[$device->id]=History::getConsolidation($device->id, $report->period);
     }
 }
+
+$avg=History::getTotalAvgForDevices($deviceIds, $report->period, "AVG");
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content">
