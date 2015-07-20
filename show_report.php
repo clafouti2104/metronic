@@ -128,6 +128,9 @@ foreach($charts as $chart){
         echo " + ' , ' + this.y + ' ';";
         echo " } ";*/
         echo "},";
+        echo "plotOptions: {";
+        echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+        echo "},";
         echo "yAxis: {";
         $incremental=FALSE;
         foreach($devices[$chart->id] as $device){
