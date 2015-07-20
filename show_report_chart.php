@@ -8,13 +8,40 @@ foreach($devicesByType as $type=>$tmpDevices){
                 <div class="caption"> <?php echo ucwords($type); ?> </div>
             </div>
             <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <th>Objet</th>
+                            <th><i class="fa fa-sort-desc"></i></th>
+                            <th><i class="fa fa-sort-asc"></i></th>
+                            <th><i class="fa fa-sliders"></i></th>
+                        </thead>
+                        <tbody>
 <?php
 foreach($tmpDevices as $tmpDevice){
     if($tmpDevice->incremental != "" && $tmpDevice != "0"){
         continue;
     }
 ?>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                            <tr>
+                                <td><?php echo $tmpDevice->name; ?></td>
+                                <td>
+                                    <span class="label label-sm label-info">
+                                        <?php echo "0"; ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-warning">
+                                        <?php echo "22"; ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-success">
+                                        <?php echo number_format($avg[$tmpDevice->id], 2, ",", " ")." ".$tmpDevice->unite; ?>
+                                    </span>
+                                </td>
+                            </tr>
+                <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                     <div class="dashboard-stat blue-madison">
                         <div class="visual">
                             <i class="fa fa-comments"></i>
@@ -24,15 +51,17 @@ foreach($tmpDevices as $tmpDevice){
                             <div class="desc"> <i class="fa fa-sort-desc"></i> 1 | <i class="fa fa-sort-asc"></i> +22% </div>
                         </div>
                         <a class="more" href="#">
-                            <?php echo "<br/>".$tmpDevice->name; ?>
-                            <!--<i class="m-icon-swapright m-icon-white"></i>-->
+                            
                         </a>
                     </div>
-                </div>
+                </div>-->
 <?php
-    
+
 }
 ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
