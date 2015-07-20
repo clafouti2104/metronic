@@ -152,7 +152,7 @@ foreach($charts as $chart){
         $data="";
         foreach($devices[$chart->id] as $device){
             //print_r($history[$device->id]);
-            $data = History::getDataForChart($history[$device->id], $report->period);
+            $data = History::getDataForChart($history[$device->id], $report->period, $device->incremental);
             if($i>0){
                 echo ",";
             }
