@@ -23,9 +23,12 @@ foreach($tmpDevices as $tmpDevice){
     //echo "<br/>";
     if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0"){
         $min=$max="";
+        $avg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        
     } else {
         $min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $max = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $avg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
     }
 ?>
                             <tr>
@@ -42,7 +45,7 @@ foreach($tmpDevices as $tmpDevice){
                                 </td>
                                 <td>
                                     <span class="label label-sm label-success">
-                                        <?php echo Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite); ?>
+                                        <?php echo $avg; ?>
                                     </span>
                                 </td>
                             </tr>
