@@ -10,6 +10,9 @@ foreach($devicesByType as $type=>$tmpDevices){
             <div class="portlet-body">
 <?php
 foreach($tmpDevices as $tmpDevice){
+    if($tmpDevice->incremental != "" && $tmpDevice != "0"){
+        continue;
+    }
 ?>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                     <div class="dashboard-stat blue-madison">
@@ -17,7 +20,7 @@ foreach($tmpDevices as $tmpDevice){
                             <i class="fa fa-comments"></i>
                         </div>
                         <div class="details">
-                            <div class="number"> <?php echo number_format($avg[$tmpDevice->id], 2, ",", " "); ?> </div>
+                            <div class="number"> <?php echo number_format($avg[$tmpDevice->id], 2, ",", " ")." ".$tmpDevice->unite; ?> </div>
                             <div class="desc"> <i class="fa fa-sort-desc"></i> 1 | <i class="fa fa-sort-asc"></i> +22% </div>
                         </div>
                         <a class="more" href="#">
@@ -27,6 +30,7 @@ foreach($tmpDevices as $tmpDevice){
                     </div>
                 </div>
 <?php
+    
 }
 ?>
             </div>
