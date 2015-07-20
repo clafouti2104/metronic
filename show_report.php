@@ -242,6 +242,7 @@ foreach($charts as $chart){
             foreach($devices[$chart->id] as $device){
                 //print_r($history[$device->id]);
                 $data = History::getDataForChart($history[$device->id], $report->period, $device->incremental);
+                print_r($data);
             }
             /*foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
                 $device=Device::getDevice($chartDevice->deviceid);

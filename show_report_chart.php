@@ -105,7 +105,4 @@ foreach($reportCharts as $reportChart){
         echo "var chart".$reportChart->deviceid.";";
     }
 ?>
-$( document ).ready(function() {
-    
-});
 </script>
