@@ -242,9 +242,9 @@ foreach($charts as $chart){
             foreach($devices[$chart->id] as $device){
                 //print_r($history[$device->id]);
                 $data = History::getDataForChart($history[$device->id], $report->period, $device->incremental);
-                if(substr($data,-1) == ","){
+                /*if(substr($data,-1) == ","){
                     $data = substr($data, 0, strlen($data) - 1);
-                }
+                }*/
                 //print_r($data);
             }
             /*foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
