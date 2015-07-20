@@ -1304,7 +1304,8 @@ class History{
                         $hour = 0;
                         $minute = 0;
                         $result .= ($result == "") ? "" : ",";
-                        $result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValueAvg."]";
+                        $result .= $tmpValueAvg;
+                        //$result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValueAvg."]";
                         
                     }
                     //echo "<br/>";
