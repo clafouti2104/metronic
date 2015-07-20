@@ -1,5 +1,6 @@
 <div class="col-md-12">
 <?php
+print_r($history);
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
     <div class="col-md-6">
