@@ -18,7 +18,7 @@ foreach($tmpDevices as $tmpDevice){
                         </div>
                         <div class="details">
                             <div class="number"> <?php echo number_format($avg[$tmpDevice->id], 2, ",", " "); ?> </div>
-                            <div class="desc"> Min 1 | Max +22% </div>
+                            <div class="desc"> <i class="fa fa-sort-desc"></i> 1 | <i class="fa fa-sort-asc"></i> +22% </div>
                         </div>
                         <a class="more" href="#">
                             <?php echo "<br/>".$tmpDevice->name; ?>
