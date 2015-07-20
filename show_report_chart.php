@@ -22,19 +22,22 @@ foreach($devicesByType as $type=>$tmpDevices){
 foreach($tmpDevices as $tmpDevice){
     //echo "<br/>";
     if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0"){
-        continue;
+        $min=$max="";
+    } else {
+        $min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $max = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
     }
 ?>
                             <tr>
                                 <td><?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?></td>
                                 <td>
                                     <span class="label label-sm label-info">
-                                        <?php echo Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite); ?>
+                                        <?php echo $min; ?>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="label label-sm label-warning">
-                                        <?php echo Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite); ?>
+                                        <?php echo $max; ?>
                                     </span>
                                 </td>
                                 <td>
