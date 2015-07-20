@@ -242,6 +242,22 @@ foreach($charts as $chart){
             foreach($devices[$chart->id] as $device){
                 //print_r($history[$device->id]);
                 $data = History::getDataForChart($history[$device->id], $report->period, $device->incremental);
+                if($k>0){
+                    echo ",";
+                }
+                echo "{";  
+                echo "name:'".$device->name."',";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";
+                if($chart->price && !is_null($device->chart_formula)){
+                    echo ",tooltip: {";
+                    echo " valueDecimals: 2,";
+                    echo "valuePrefix: '€',";
+                    echo "valueSuffix: ' EUR'";
+                    echo "}";
+                }
+                echo "}";
+                $k++;
                 /*if(substr($data,-1) == ","){
                     $data = substr($data, 0, strlen($data) - 1);
                 }*/
