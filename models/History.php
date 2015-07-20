@@ -1399,7 +1399,7 @@ class History{
         $dateFrom=new DateTime('now');
         $mode = (strtolower($mode) == "max") ? "MAX" : "MIN";
         
-        $query = "SELECT deviceid, ".$mode."(avg) as value FROM temperature_consolidation ";
+        $query = "SELECT deviceid, ".$mode."(".$mode.") as value FROM temperature_consolidation ";
         $query .= " WHERE ";
         $query .= " deviceid IN (".$sqlId.") AND ";
         switch($period){
