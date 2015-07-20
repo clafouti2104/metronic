@@ -179,6 +179,99 @@ foreach($charts as $chart){
         echo "]";
         echo "});";
     }
+    if($chart->type == "barre"){
+            echo "$('.container-".$chart->id."').highcharts({";
+            echo " chart: {";
+            echo " type: 'column'";
+            echo " },";
+            echo "title: {";
+            echo " text: '".$chart->name."'";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: '".$chart->description." - ".$chart->getBorneDates()."'";
+            echo "},";
+            echo "xAxis: {";
+            echo "categories: [";
+            switch($chart->period){
+                case '1':
+                    $j=$chart->getHeureFormatted();
+                    for($i=0;$i<=23;$i++){
+                        $j=($j > 23) ? 0 : $j;
+                        if($i>0){echo ",";}
+                        echo "'".$j."'";
+                        $j++;
+                    }
+                    break;
+                case '2':
+                    echo $chart->getDaysForWeek();
+                    break;
+                case '3':
+                    echo $chart->getDaysForMonth();
+                    break;
+                case '4':
+                    echo $chart->getMonthForYear();
+                    break;
+            }
+            echo "]";
+            echo "},";
+            echo "yAxis: {";
+            echo "min: 0,";
+            echo "title: {";
+            echo "text: '".$chart->ordonne."'";
+            echo "}";
+            echo ",stackLabels: {";
+            //echo "enabled: true,";
+            echo "style: {";
+            echo "fontWeight: 'bold',";
+            echo "color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'";
+            echo "}";
+            echo "}";
+            echo "},";
+            echo "plotOptions: {";
+            echo "column: {";
+            echo "stacking: 'normal',";
+            echo " dataLabels: {";
+            echo " color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',";
+            echo "style: {";
+            echo "textShadow: '0 0 3px black'";
+            echo "}";
+            echo "}";
+            echo "}";
+            echo "},";
+            echo "series: [";
+            $k=0;
+            foreach($devices[$chart->id] as $device){
+                //print_r($history[$device->id]);
+                $data = History::getDataForChart($history[$device->id], $report->period, $device->incremental);
+            }
+            /*foreach(ChartDevice::getChartDeviceForChart($item->chartId) as $chartDevice){
+                $device=Device::getDevice($chartDevice->deviceid);
+
+                $chartFormula=($chart->price && !is_null($device->chart_formula)) ? $device->chart_formula : NULL;
+                $data=History::getHistoryHighchartBarre($chartDevice->deviceid, $chart->period, $chart->from, $chartFormula);
+                //print_r($data);
+                //exit;
+                //$data=0;
+                if($k>0){
+                    echo ",";
+                }
+                echo "{";  
+                echo "name:'".$device->name."',";  
+                //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
+                echo "data:[ ".$data." ]";
+                if($chart->price && !is_null($device->chart_formula)){
+                    echo ",tooltip: {";
+                    echo " valueDecimals: 2,";
+                    echo "valuePrefix: '€',";
+                    echo "valueSuffix: ' EUR'";
+                    echo "}";
+                }
+                echo "}";
+                $k++;
+            }*/
+            echo "]";
+            echo "});";
+        }
 }
 ?>
 });
