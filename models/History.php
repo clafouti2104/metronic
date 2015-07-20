@@ -1147,7 +1147,7 @@ class History{
                 $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateFrom->format('Y-m-d')."'";
                 break;
             case '2':
-                $interval=new DateInterval("P6D");
+                $interval=new DateInterval("P7D");
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $auj = $dateFrom->format('Y-m-d');
