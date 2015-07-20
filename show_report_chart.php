@@ -28,12 +28,12 @@ foreach($tmpDevices as $tmpDevice){
                                 <td><?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?></td>
                                 <td>
                                     <span class="label label-sm label-info">
-                                        <?php echo "0"; ?>
+                                        <?php echo Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite); ?>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="label label-sm label-warning">
-                                        <?php echo "22"; ?>
+                                        <?php echo Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite); ?>
                                     </span>
                                 </td>
                                 <td>

@@ -1397,7 +1397,7 @@ class History{
         }
         
         $dateFrom=new DateTime('now');
-        $mode = (strtolower($mode) == "avg") ? "AVG" : "SUM";
+        $mode = (strtolower($mode) == "max") ? "MAX" : "MIN";
         
         $query = "SELECT deviceid, ".$mode."(avg) as value FROM temperature_consolidation ";
         $query .= " WHERE ";
@@ -1502,7 +1502,7 @@ class History{
         }
         $query .= " GROUP BY deviceid";
         
-        echo $query;
+        //echo $query;
         $value=array();
         $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
