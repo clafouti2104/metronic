@@ -178,8 +178,7 @@ foreach($charts as $chart){
         }
         echo "]";
         echo "});";
-    }
-    if($chart->type == "barre"){
+    }elseif($chart->type == "barre"){
             echo "$('.container-".$chart->id."').highcharts({";
             echo " chart: {";
             echo " type: 'column'";
