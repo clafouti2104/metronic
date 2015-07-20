@@ -12,9 +12,9 @@ foreach($devicesByType as $type=>$tmpDevices){
                     <table class="table table-hover">
                         <thead>
                             <th>Objet</th>
-                            <th><i class="fa fa-sort-desc"></i></th>
-                            <th><i class="fa fa-sort-asc"></i></th>
-                            <th><i class="fa fa-sliders"></i></th>
+                            <th><i class="fa fa-sort-desc" title="Min"></i></th>
+                            <th><i class="fa fa-sort-asc" title="Max"></i></th>
+                            <th><i class="fa fa-sliders"  title="Moyenne"></i></th>
                         </thead>
                         <tbody>
 <?php
@@ -38,7 +38,7 @@ foreach($tmpDevices as $tmpDevice){
                                 </td>
                                 <td>
                                     <span class="label label-sm label-success">
-                                        <?php echo number_format($avg[$tmpDevice->id], 2, ",", " ")." ".$tmpDevice->unite; ?>
+                                        <?php echo Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite); ?>
                                     </span>
                                 </td>
                             </tr>
