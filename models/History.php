@@ -1277,7 +1277,7 @@ class History{
                 //Boucle sur date
                 foreach($data as $date => $values){
                     $datetime = new DateTime($date);
-                    if($incremental == "" || $incremental == "0" || is_null($device->incremental)){
+                    if($incremental == "" || $incremental == "0" || is_null($incremental)){
                         $values = json_decode($values["value4h"], TRUE);
                         //print_r($date);
                         //print_r($values);
@@ -1446,7 +1446,7 @@ class History{
         }
         $query .= " GROUP BY deviceid";
         
-        echo $query;
+        //echo $query;
         $value=array();
         $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
