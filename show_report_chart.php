@@ -83,7 +83,7 @@ foreach($reportCharts as $reportChart){
         </div>
         <div class="portlet-body">
             <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat"></div>
+                <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat" style="overflow: auto;"></div>
                 <div class="deleteItemPage" style="margin-bottom:10px;position: absolute;top:370px;right:10px;">
                     
                 </div>
