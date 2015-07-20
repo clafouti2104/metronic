@@ -19,7 +19,8 @@ foreach($devicesByType as $type=>$tmpDevices){
                         <tbody>
 <?php
 foreach($tmpDevices as $tmpDevice){
-    if($tmpDevice->incremental != "" && $tmpDevice != "0"){
+    //echo "<br/>";
+    if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0"){
         continue;
     }
 ?>
