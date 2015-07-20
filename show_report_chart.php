@@ -21,7 +21,7 @@ foreach($devicesByType as $type=>$tmpDevices){
 <?php
 foreach($tmpDevices as $tmpDevice){
     //echo "<br/>";
-    if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0"){
+    if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
         $min=$max="";
         $avg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         
