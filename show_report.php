@@ -219,7 +219,6 @@ foreach($charts as $chart){
             echo "text: '".$chart->ordonne."'";
             echo "}";
             echo ",stackLabels: {";
-            //echo "enabled: true,";
             echo "style: {";
             echo "fontWeight: 'bold',";
             echo "color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'";
@@ -227,7 +226,8 @@ foreach($charts as $chart){
             echo "}";
             echo "},";
             echo "plotOptions: {";
-            echo "column: {";
+            echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+            echo ",column: {";
             echo "stacking: 'normal',";
             echo " dataLabels: {";
             echo " color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',";
