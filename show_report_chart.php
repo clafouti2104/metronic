@@ -23,7 +23,8 @@ foreach($tmpDevices as $tmpDevice){
     //echo "<br/>";
     if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
         $min=$max="";
-        $avg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        //$avg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $avg = $sum[$tmpDevice->id];
         
     } else {
         $min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
