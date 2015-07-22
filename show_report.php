@@ -50,7 +50,7 @@ $max=History::getMinMaxForDevices($deviceIds, $report->period, "MAX");
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                 <h3 class="page-title">
                     Rapport: <?php echo $report->name; ?>
-                    <small><?php echo $report->description." - ".$report->period; ?></small>
+                    <small><?php echo $report->description; ?></small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -123,6 +123,7 @@ foreach($charts as $chart){
         echo "text: '".$chart->abscisse."'";
         echo " }";
         echo "},";
+        echo "exporting: { enabled: false },";
         echo "tooltip: {";
         echo "animation:false";
         /*echo " formatter: function() { ";
@@ -234,6 +235,7 @@ foreach($charts as $chart){
             echo "}";
             echo "}";
             echo "},";
+            echo "exporting: { enabled: false },";
             echo "plotOptions: {";
             echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
             echo ",column: {";
