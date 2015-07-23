@@ -43,6 +43,7 @@ foreach($devices as $chartName=>$types){
 }
 
 $sum=History::getTotalAvgForDevices($deviceIdsInc, $report->period, "SUM");
+$sumLastPeriod=History::getTotalAvgLastPeriodForDevices($deviceIdsInc, $report->period, "SUM");
 $avg=History::getTotalAvgForDevices($deviceIds, $report->period, "AVG");
 $min=History::getMinMaxForDevices($deviceIds, $report->period, "MIN");
 $max=History::getMinMaxForDevices($deviceIds, $report->period, "MAX");

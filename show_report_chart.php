@@ -62,7 +62,8 @@ foreach($tmpDevices as $tmpDevice){
 }
 foreach($devicesIncByType as $type=>$tmpDevices){
     foreach($tmpDevices as $tmpDevice){
-        $txtAvg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $txtAvg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $txtAvgLast = Device::showStateGeneric(number_format($sumLastPeriod[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
 ?>
     <div class="col-md-3">
         <div class="dashboard-stat red-intense">
@@ -71,7 +72,7 @@ foreach($devicesIncByType as $type=>$tmpDevices){
             </div>
             <div class="details">
                 <div class="number"> <?php echo $txtAvg; ?> </div>
-                <div class="desc"> Stage 2: -7% </div>
+                <div class="desc"> Stage 2: -7% <?php echo $txtAvgLast; ?> </div>
             </div>
             <a class="more" href="#">
                 <?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?> 
