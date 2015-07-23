@@ -52,7 +52,7 @@ $isPDF = (isset($_GET["pdf"])) ? TRUE : FALSE;
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content">
-    <div class="container-fluid">
+    <div class="container-fluid" <?php if($isPDF){?> style="padding-top: 60px;" <?php } ?>>
 <?php if(!$isPDF){ ?>
         <div class="row" style="margin-top:60px;">
             <div class="col-md-12">
