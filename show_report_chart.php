@@ -20,19 +20,24 @@ foreach($devicesByType as $type=>$tmpDevices){
                         <tbody>
 <?php
 foreach($tmpDevices as $tmpDevice){
-    //echo "<br/>";
+    $min=$max="";
     if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
-        $min=$max="";
-        //$avg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $avg = $sum[$tmpDevice->id];
-        
+        if(isset($sum[intval($tmpDevice->id)])){
+            $avg = $sum[$tmpDevice->id];
+        }
     } else {
         /*$min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $max = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $avg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);*/
-        $avg = $avg[intval($tmpDevice->id)];
-        $max = $max[intval($tmpDevice->id)];
-        $min = $min[intval($tmpDevice->id)];
+        if(isset($avg[intval($tmpDevice->id)])){
+            $avg = $avg[intval($tmpDevice->id)];
+        }
+        if(isset($max[intval($tmpDevice->id)])){
+            $max = $max[intval($tmpDevice->id)];
+        }
+        if(isset($min[intval($tmpDevice->id)])){
+            $min = $min[intval($tmpDevice->id)];
+        }
     }
 ?>
                             <tr>
