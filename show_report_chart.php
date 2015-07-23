@@ -72,8 +72,8 @@ foreach($devicesIncByType as $type=>$tmpDevices){
                 <i class="fa fa-bar-chart-o"></i>
             </div>
             <div class="details">
-                <div class="number"> <?php echo $txtAvg; ?> </div>
-                <div class="desc"> <?php echo $percent."%"; ?> </div>
+                <div class="number"> <?php echo $percent."%"; ?> </div>
+                <div class="desc"> <?php echo $txtAvg; ?> </div>
             </div>
             <a class="more" href="#">
                 <?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?> 
