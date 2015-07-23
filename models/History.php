@@ -1617,6 +1617,7 @@ class History{
     
     public static function getPercent($current, $old){
         $percent="";
+        echo "((".$current."/".$old.") * 100) - 100". 
         $percent = (($current/$old) * 100) - 100;
         
         return intval($percent);
