@@ -30,9 +30,9 @@ foreach($tmpDevices as $tmpDevice){
         /*$min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $max = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $avg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);*/
-        $avg = $avg[$tmpDevice->id];
-        $max = $max[$tmpDevice->id];
-        $min = $min[$tmpDevice->id];
+        $avg = $avg[intval($tmpDevice->id)];
+        $max = $max[intval($tmpDevice->id)];
+        $min = $min[intval($tmpDevice->id)];
     }
 ?>
                             <tr>
