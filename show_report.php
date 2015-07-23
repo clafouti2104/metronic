@@ -47,10 +47,13 @@ $sumLastPeriod=History::getTotalAvgLastPeriodForDevices($deviceIdsInc, $report->
 $avg=History::getTotalAvgForDevices($deviceIds, $report->period, "AVG");
 $min=History::getMinMaxForDevices($deviceIds, $report->period, "MIN");
 $max=History::getMinMaxForDevices($deviceIds, $report->period, "MAX");
+
+$isPDF = (isset($_GET["pdf"])) ? TRUE : FALSE;
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content">
     <div class="container-fluid">
+<?php if(!$isPDF){ ?>
         <div class="row" style="margin-top:60px;">
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
@@ -76,6 +79,7 @@ $max=History::getMinMaxForDevices($deviceIds, $report->period, "MAX");
                 <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
         </div>
+<?php } ?>
         <div class="row-fluid">
             <?php include "show_report_chart.php"; ?>
             <div class="col-md-12">
@@ -115,7 +119,9 @@ foreach($charts as $chart){
             echo " type: 'spline'";
         }
         //echo ",height:'".$heightChart."px'";
-        //echo ",width:'375px'";
+        if($isPDF){ 
+            echo ",width:'500px'";
+        }
         echo " },";
         echo "title: {";
         echo " text: '".$chart->name."'";
@@ -129,18 +135,26 @@ foreach($charts as $chart){
         echo "text: '".$chart->abscisse."'";
         echo " }";
         echo "},";
-        echo "exporting: { enabled: false },";
+        if($isPDF){ 
+            echo "exporting: { enabled: false },";
+        }
         echo "tooltip: {";
-        echo "animation:false";
-        /*echo " formatter: function() { ";
-        echo " return  '<b>' + this.series.name +'</b><br/>' +";
-        echo " Highcharts.dateFormat('%e - %b - %Y %Hh%M' ,";
-        echo " new Date(this.x)) ";
-        echo " + ' , ' + this.y + ' ';";
-        echo " } ";*/
+        if($isPDF){ 
+            echo "animation:false";
+        }
+        if(!$isPDF){ 
+            echo " formatter: function() { ";
+            echo " return  '<b>' + this.series.name +'</b><br/>' +";
+            echo " Highcharts.dateFormat('%e - %b - %Y %Hh%M' ,";
+            echo " new Date(this.x)) ";
+            echo " + ' , ' + this.y + ' ';";
+            echo " } ";
+        }
         echo "},";
         echo "plotOptions: {";
-        echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+        if($isPDF){ 
+            echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+        }
         echo "},";
         echo "yAxis: {";
         $incremental=FALSE;
@@ -175,7 +189,9 @@ foreach($charts as $chart){
             if($chart->type=='temps'){
                 echo "type:'area',";  
             }
-            echo "animation:false,";  
+            if($isPDF){ 
+                echo "animation:false,"; 
+            }
             echo "name:'".$device->name."',";  
             //echo "data:[ [Date.UTC(2014,8,21,0,8),18],[Date.UTC(2014,8,21,1,14),17.8],[Date.UTC(2014,8,21,2,20),17.4],[Date.UTC(2014,8,21,3,26),17.4] ]";  
             echo "data:[ ".$data." ]";  
@@ -198,6 +214,9 @@ foreach($charts as $chart){
             echo "$('.container-".$chart->id."').highcharts({";
             echo " chart: {";
             echo " type: 'column'";
+            if($isPDF){ 
+                echo ",width:'500px'";
+            }
             echo " },";
             echo "title: {";
             echo " text: '".$chart->name."'";
@@ -241,9 +260,13 @@ foreach($charts as $chart){
             echo "}";
             echo "}";
             echo "},";
-            echo "exporting: { enabled: false },";
+            if($isPDF){ 
+                echo "exporting: { enabled: false },";
+            }
             echo "plotOptions: {";
-            echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+            if($isPDF){ 
+                echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+            }
             echo ",column: {";
             echo "stacking: 'normal',";
             echo " dataLabels: {";

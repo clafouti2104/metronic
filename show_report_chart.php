@@ -2,7 +2,7 @@
 <?php
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
-    <!--<div class="col-md-6">
+    <div class="col-md-6">
         <div class="portlet box green-haze">
             <div class="portlet-title">
                 <div class="caption"> <?php echo ucwords($type); ?> </div>
@@ -16,7 +16,7 @@ foreach($devicesByType as $type=>$tmpDevices){
                             <th><i class="fa fa-sort-asc" title="Max"></i></th>
                             <th><i class="fa fa-sliders"  title="Moyenne"></i></th>
                         </thead>
-                        <tbody>-->
+                        <tbody>
 <?php
 foreach($tmpDevices as $tmpDevice){
     $txtAvg=$txtMin=$txtMax="";
@@ -30,7 +30,7 @@ foreach($tmpDevices as $tmpDevice){
         $txtAvg = Device::showStateGeneric($avg[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
     //}
 ?>
-<!--                            <tr>
+                            <tr>
                                 <td><?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?></td>
                                 <td>
                                     <span class="label label-sm label-info">
@@ -48,18 +48,16 @@ foreach($tmpDevices as $tmpDevice){
                                     </span>
                                 </td>
                             </tr>
--->
 <?php
 
 }
 ?>
-<!--                        </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
--->
 <?php  
 }
 foreach($devicesIncByType as $type=>$tmpDevices){
@@ -68,7 +66,7 @@ foreach($devicesIncByType as $type=>$tmpDevices){
         $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
         $percent = History::getPercent($sum[$tmpDevice->id], $sumLastPeriod[$tmpDevice->id]);
 ?>
-<!--    <div class="col-md-3">
+    <div class="col-md-3">
         <div class="dashboard-stat red-intense">
             <div class="visual">
                 <i class="fa fa-bar-chart-o"></i>
@@ -83,19 +81,18 @@ foreach($devicesIncByType as $type=>$tmpDevices){
             </a>
         </div>
     </div>
-,-->
 <?php
     }
 }
 
-//echo "</div>";
+echo "</div>";
 echo "<div class=\"col-md-12\">";
 foreach($reportCharts as $reportChart){
     $chartTmp = Chart::getChart($reportChart->deviceid);
     //echo "<br/>Chart #".$chartTmp->id;
     //print_r($devices[$chartTmp->id]);
 ?>
-<div class="col-md-6">
+<div class="col-md-6" <?php if($isPDF){echo " style=\"width:700px;\"";}  ?>>
     <div class="portlet box blue-steel tabbable" style="background-color: #FFF;">
         <div class="portlet-title">
             <div class="caption"> <?php echo $chartTmp->name; ?> </div>
