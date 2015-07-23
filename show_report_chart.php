@@ -20,15 +20,15 @@ foreach($devicesByType as $type=>$tmpDevices){
 <?php
 foreach($tmpDevices as $tmpDevice){
     $txtAvg=$txtMin=$txtMax="";
-    if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
+    /*if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
         if(isset($sum[intval($tmpDevice->id)])){
             $txtAvg = $sum[$tmpDevice->id];
         }
-    } else {
+    } else {*/
         $txtMin = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $txtMax = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $txtAvg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-    }
+    //}
 ?>
                             <tr>
                                 <td><?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?></td>
@@ -62,6 +62,7 @@ foreach($tmpDevices as $tmpDevice){
 }
 foreach($devicesIncByType as $type=>$tmpDevices){
     foreach($tmpDevices as $tmpDevice){
+        $txtAvg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
 ?>
     <div class="col-md-3">
         <div class="dashboard-stat red-intense">
