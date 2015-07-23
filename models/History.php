@@ -1619,7 +1619,7 @@ class History{
         $percent="";
         //echo "((".$current."/".$old.") * 100) - 100". 
         $percent = (($current/$old) * 100) - 100;
-        $prefix=($percent < 0) ? "+" : "";
+        $prefix=($percent < 0) ? "" : "+";
         return $prefix.intval($percent);
     }
 }
