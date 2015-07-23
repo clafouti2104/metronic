@@ -35,7 +35,7 @@ foreach($reportCharts as $reportChart){
 foreach($devices as $chartName=>$types){
     foreach($types as $device){
         $deviceIds[]=$device->id;
-        if($device->incremental != "" && !is_null($device->incremental)){
+        if($device->incremental != "" && $device->incremental != "0" && !is_null($device->incremental)){
             $deviceIdsInc[]=$device->id;
         }
         $history[intval($device->id)]=History::getConsolidation($device->id, $report->period);
