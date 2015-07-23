@@ -1,6 +1,6 @@
 <div class="col-md-12">
 <?php
-//print_r($history);
+print_r($avg);
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
     <div class="col-md-6">
@@ -20,58 +20,44 @@ foreach($devicesByType as $type=>$tmpDevices){
                         <tbody>
 <?php
 foreach($tmpDevices as $tmpDevice){
-    $min=$max="";
+    $txtAvg=$txtMin=$txtMax="";
     if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
         if(isset($sum[intval($tmpDevice->id)])){
-            $avg = $sum[$tmpDevice->id];
+            $txtAvg = $sum[$tmpDevice->id];
         }
     } else {
-        /*$min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $max = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $avg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);*/
-        if(isset($avg[intval($tmpDevice->id)])){
-            $avg = $avg[intval($tmpDevice->id)];
+        $txtMin = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $txtMax = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $txtAvg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        /*if(isset($avg[intval($tmpDevice->id)])){
+            $txtAvg = $avg[intval($tmpDevice->id)];
         }
         if(isset($max[intval($tmpDevice->id)])){
             $max = $max[intval($tmpDevice->id)];
         }
         if(isset($min[intval($tmpDevice->id)])){
             $min = $min[intval($tmpDevice->id)];
-        }
+        }*/
     }
 ?>
                             <tr>
                                 <td><?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?></td>
                                 <td>
                                     <span class="label label-sm label-info">
-                                        <?php echo $min; ?>
+                                        <?php echo $txtMin; ?>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="label label-sm label-warning">
-                                        <?php echo $max; ?>
+                                        <?php echo $txtMax; ?>
                                     </span>
                                 </td>
                                 <td>
                                     <span class="label label-sm label-success">
-                                        <?php echo $avg; ?>
+                                        <?php echo $txtAvg; ?>
                                     </span>
                                 </td>
                             </tr>
-                <!--<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                    <div class="dashboard-stat blue-madison">
-                        <div class="visual">
-                            <i class="fa fa-comments"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number"> <?php //echo number_format($avg[$tmpDevice->id], 2, ",", " ")." ".$tmpDevice->unite; ?> </div>
-                            <div class="desc"> <i class="fa fa-sort-desc"></i> 1 | <i class="fa fa-sort-asc"></i> +22% </div>
-                        </div>
-                        <a class="more" href="#">
-                            
-                        </a>
-                    </div>
-                </div>-->
 <?php
 
 }
