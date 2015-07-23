@@ -17,13 +17,18 @@ if(!isset($_GET["idReport"])){
 $idReport=$_GET["idReport"];
 $report=Report::getReport($idReport);
 $reportCharts=ReportDevice::getReportDevicesForReport($idReport);
-$devices=$devicesByType=$charts=$history=$deviceIds=$deviceIdsInc=array();
+$devices=$devicesIncByType=$devicesByType=$charts=$history=$deviceIds=$deviceIdsInc=array();
 foreach($reportCharts as $reportChart){
     $charts[$reportChart->deviceid]=Chart::getChart($reportChart->deviceid);
     foreach(ChartDevice::getChartDeviceForChart($reportChart->deviceid) as $tmpChartDevice){
         $tmpDevice=Device::getDevice($tmpChartDevice->deviceid);
         $devices[$reportChart->deviceid][]=$tmpDevice;
-        $devicesByType[strtolower($tmpDevice->type)][]=$tmpDevice;
+        
+        if($tmpDevice->incremental != "" && $tmpDevice->incremental != "0" && !is_null($tmpDevice->incremental)){
+            $devicesIncByType[strtolower($tmpDevice->type)][]=$tmpDevice;
+        } else {
+            $devicesByType[strtolower($tmpDevice->type)][]=$tmpDevice;
+        }
     }
 }
 
