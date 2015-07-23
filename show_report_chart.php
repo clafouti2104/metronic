@@ -25,9 +25,9 @@ foreach($tmpDevices as $tmpDevice){
             $txtAvg = $sum[$tmpDevice->id];
         }
     } else {*/
-        $txtMin = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $txtMax = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $txtAvg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $txtMin = Device::showStateGeneric($min[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
+        $txtMax = Device::showStateGeneric($max[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
+        $txtAvg = Device::showStateGeneric($avg[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
     //}
 ?>
                             <tr>
@@ -62,8 +62,8 @@ foreach($tmpDevices as $tmpDevice){
 }
 foreach($devicesIncByType as $type=>$tmpDevices){
     foreach($tmpDevices as $tmpDevice){
-        $txtAvg = Device::showStateGeneric(number_format($sum[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $txtAvgLast = Device::showStateGeneric(number_format($sumLastPeriod[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $txtAvg = Device::showStateGeneric($sum[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
+        $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
 ?>
     <div class="col-md-3">
         <div class="dashboard-stat red-intense">
