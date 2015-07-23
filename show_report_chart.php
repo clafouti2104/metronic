@@ -71,7 +71,7 @@ foreach($devicesIncByType as $type=>$tmpDevices){
             <div class="details">
                 <div class="number"> <?php echo $txtAvg; ?> </div>
                 <div class="desc"> Stage 2: -7% </div>
-            <div>
+            </div>
             <a class="more" href="#">
                 <?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?> 
                 <i class="m-icon-swapright m-icon-white"></i>
