@@ -60,6 +60,28 @@ foreach($tmpDevices as $tmpDevice){
     </div>
 <?php  
 }
+foreach($devicesIncByType as $type=>$tmpDevices){
+    foreach($tmpDevices as $tmpDevice){
+?>
+    <div class="col-md-3">
+        <div class="dashboard-stat red-intense">
+            <div class="visual">
+                <i class="fa fa-bar-chart-o"></i>
+            </div>
+            <div class="details">
+                <div class="number"> <?php echo $txtAvg; ?> </div>
+                <div class="desc"> Stage 2: -7% </div>
+            <div>
+            <a class="more" href="#">
+                <?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?> 
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+<?php
+    }
+}
+
 echo "</div>";
 echo "<div class=\"col-md-12\">";
 foreach($reportCharts as $reportChart){
