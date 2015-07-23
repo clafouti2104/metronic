@@ -121,6 +121,7 @@ foreach($charts as $chart){
         //echo ",height:'".$heightChart."px'";
         if($isPDF){ 
             echo " ,width: '500px' ";
+            echo " ,height: '400px' ";
         }
         echo " },";
         echo "title: {";
@@ -216,6 +217,7 @@ foreach($charts as $chart){
             echo " type: 'column'";
             if($isPDF){ 
                 echo " ,width: '500px' ";
+                echo " ,height: '400px' ";
             }
             echo " },";
             echo "title: {";
