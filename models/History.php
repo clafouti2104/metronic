@@ -1138,6 +1138,10 @@ class History{
         $query .= " WHERE deviceid=".$deviceId." AND ";
         
         $dateFrom=new DateTime('now');
+        $dateYesterday=new DateTime('now');
+        $intervalYesterday=new DateInterval('P1D');
+        $intervalYesterday->invert=1;
+        $dateYesterday->add($intervalYesterday);
         
         switch($period){
             case '1':
@@ -1151,7 +1155,7 @@ class History{
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $auj = $dateFrom->format('Y-m-d');
-                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".date('Y-m-d')."'";
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateYesterday->format('Y-m-d')."'";
                 //echo $query;
                 break;
             case '3':
@@ -1411,6 +1415,10 @@ class History{
         }
         
         $dateFrom=new DateTime('now');
+        $dateYesterday=new DateTime('now');
+        $intervalYesterday=new DateInterval('P1D');
+        $intervalYesterday->invert=1;
+        $dateYesterday->add($intervalYesterday);
         $mode = (strtolower($mode) == "max") ? "MAX" : "MIN";
         
         $query = "SELECT deviceid, ".$mode."(".$mode.") as value FROM temperature_consolidation ";
@@ -1428,7 +1436,7 @@ class History{
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $auj = $dateFrom->format('Y-m-d');
-                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".date('Y-m-d')."'";
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateYesterday->format('Y-m-d')."'";
                 //echo $query;
                 break;
             case '3':
@@ -1479,6 +1487,11 @@ class History{
         }
         
         $dateFrom=new DateTime('now');
+        $dateYesterday=new DateTime('now');
+        $intervalYesterday=new DateInterval('P1D');
+        $intervalYesterday->invert=1;
+        $dateYesterday->add($intervalYesterday);
+        
         $mode = (strtolower($mode) == "avg") ? "AVG" : "SUM";
         
         $query = "SELECT deviceid, ".$mode."(avg) as value FROM temperature_consolidation ";
@@ -1496,7 +1509,7 @@ class History{
                 $interval->invert=1;
                 $dateFrom->add($interval);
                 $auj = $dateFrom->format('Y-m-d');
-                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".date('Y-m-d')."'";
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateYesterday->format('Y-m-d')."'";
                 //echo $query;
                 break;
             case '3':

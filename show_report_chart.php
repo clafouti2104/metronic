@@ -28,15 +28,6 @@ foreach($tmpDevices as $tmpDevice){
         $txtMin = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $txtMax = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
         $txtAvg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        /*if(isset($avg[intval($tmpDevice->id)])){
-            $txtAvg = $avg[intval($tmpDevice->id)];
-        }
-        if(isset($max[intval($tmpDevice->id)])){
-            $max = $max[intval($tmpDevice->id)];
-        }
-        if(isset($min[intval($tmpDevice->id)])){
-            $min = $min[intval($tmpDevice->id)];
-        }*/
     }
 ?>
                             <tr>
