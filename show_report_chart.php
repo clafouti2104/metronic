@@ -64,7 +64,7 @@ foreach($devicesIncByType as $type=>$tmpDevices){
     foreach($tmpDevices as $tmpDevice){
         $txtAvg = Device::showStateGeneric($sum[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
         $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
-        $percent = History::getPercent($txtAvg, $txtAvgLast);
+        $percent = History::getPercent($sum[$tmpDevice->id], $sumLastPeriod[$tmpDevice->id]);
 ?>
     <div class="col-md-3">
         <div class="dashboard-stat red-intense">
