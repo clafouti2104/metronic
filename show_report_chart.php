@@ -72,7 +72,7 @@ foreach($devicesIncByType as $type=>$tmpDevices){
             </div>
             <div class="details">
                 <div class="number"> <?php echo $txtAvg; ?> </div>
-                <div class="desc"> Stage 2: -7% <?php echo $txtAvgLast; ?> </div>
+                <div class="desc"> Stage 2: -7% <?php echo $txtAvgLast." - ".$sumLastPeriod[$tmpDevice->id]; ?> </div>
             </div>
             <a class="more" href="#">
                 <?php echo "#".$tmpDevice->id." ".$tmpDevice->name; ?> 
