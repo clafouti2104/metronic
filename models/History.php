@@ -1615,5 +1615,11 @@ class History{
         return $value;
     }
     
+    public static function getPercent($current, $old){
+        $percent="";
+        $percent = (($current/$old) * 100) - 100;
+        
+        return intval($percent);
+    }
 }
 ?>
