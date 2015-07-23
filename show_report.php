@@ -265,9 +265,9 @@ foreach($charts as $chart){
             }
             echo "plotOptions: {";
             if($isPDF){ 
-                echo "series: { enableMouseTracking: false, shadow: false, animation: false }";
+                echo "series: { enableMouseTracking: false, shadow: false, animation: false },";
             }
-            echo ",column: {";
+            echo "column: {";
             echo "stacking: 'normal',";
             echo " dataLabels: {";
             echo " color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',";
