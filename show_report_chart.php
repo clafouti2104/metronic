@@ -27,9 +27,9 @@ foreach($tmpDevices as $tmpDevice){
         $avg = $sum[$tmpDevice->id];
         
     } else {
-        $min = Device::showStateGeneric(number_format($min[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $max = Device::showStateGeneric(number_format($max[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
-        $avg = Device::showStateGeneric(number_format($avg[$tmpDevice->id], 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $min = Device::showStateGeneric(number_format(doubleval($min[$tmpDevice->id]), 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $max = Device::showStateGeneric(number_format(doubleval($max[$tmpDevice->id]), 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
+        $avg = Device::showStateGeneric(number_format(doubleval($avg[$tmpDevice->id]), 2, ",", " "),$tmpDevice->data_type,$tmpDevice->unite);
     }
 ?>
                             <tr>
@@ -56,7 +56,7 @@ foreach($tmpDevices as $tmpDevice){
                             <i class="fa fa-comments"></i>
                         </div>
                         <div class="details">
-                            <div class="number"> <?php echo number_format($avg[$tmpDevice->id], 2, ",", " ")." ".$tmpDevice->unite; ?> </div>
+                            <div class="number"> <?php //echo number_format($avg[$tmpDevice->id], 2, ",", " ")." ".$tmpDevice->unite; ?> </div>
                             <div class="desc"> <i class="fa fa-sort-desc"></i> 1 | <i class="fa fa-sort-asc"></i> +22% </div>
                         </div>
                         <a class="more" href="#">
