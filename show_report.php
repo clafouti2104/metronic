@@ -33,7 +33,7 @@ foreach($devices as $chartName=>$types){
         if($device->incremental != "" && !is_null($device->incremental)){
             $deviceIdsInc[]=$device->id;
         }
-        $history[$device->id]=History::getConsolidation($device->id, $report->period);
+        $history[intval($device->id)]=History::getConsolidation($device->id, $report->period);
     }
 }
 

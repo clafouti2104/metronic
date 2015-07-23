@@ -1453,7 +1453,7 @@ class History{
         $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $value[$row["deviceid"]]=$row["value"];
+            $value[intval($row["deviceid"])]=$row["value"];
         }
         return $value;
     }
@@ -1521,7 +1521,7 @@ class History{
         $stmt = $GLOBALS["histoconnec"]->prepare($query);
         $stmt->execute(array());
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $value[$row["deviceid"]]=$row["value"];
+            $value[intval($row["deviceid"])]=$row["value"];
         }
         return $value;
     }
