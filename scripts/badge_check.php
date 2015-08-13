@@ -130,6 +130,9 @@ if($_GET["uid"] == "439294F4"){
 //LED Control
 file_get_contents("http://192.168.23.14/led.php?control=".$ledAction, false, $context);
 
+//Update Alarm State
+file_get_contents("http://192.168.23.14/api/update_status.php?idDevice=21&state=".$action);
+
 //Allumage du groupe lumière salon si MHS
 if($action == "disarmed"){
     $response=exec("curl https://api.myfox.me:443/v2/site/10562/scenario/42428/play?access_token=".$token);
