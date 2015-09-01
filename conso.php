@@ -12,6 +12,8 @@ include "modules/sidebar.php";
 
 include_once "models/History.php";
 include_once "models/Device.php";
+
+$GLOBALS["histoconnec"] = connectHistoDB();
 $GLOBALS["dbconnec"] = connectDB();
 
 $months=array(
