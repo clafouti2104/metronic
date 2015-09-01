@@ -2,6 +2,7 @@
 include "modules/header.php";
 include "modules/sidebar.php";
 
+$GLOBALS["histoconnec"] = connectHistoDB();
 $GLOBALS["dbconnec"] = connectDB();
 ?>
 <!-- BEGIN PAGE -->

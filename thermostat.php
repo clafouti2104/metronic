@@ -6,6 +6,7 @@ $includeJS[] = "/assets/global/plugins/ion.rangeslider/js/ion-rangeSlider/ion.ra
 include "modules/header.php";
 include "modules/sidebar.php";
 
+$GLOBALS["histoconnec"] = connectHistoDB();
 $GLOBALS["dbconnec"] = connectDB();
 ?>
 <style type="text/css" media="screen">
