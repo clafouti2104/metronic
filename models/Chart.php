@@ -24,6 +24,7 @@ class Chart{
         $this->from = $from;
         $this->size = $size;
         $this->abscisse = $abscisse;
+        $this->ordonne = $ordonne;
         $this->scaleMin = $scaleMin;
         $this->scaleMax = $scaleMax;
         $this->price = $price;
