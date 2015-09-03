@@ -63,10 +63,10 @@ $charts = Chart::getCharts();
 <?php
 foreach($charts as $chart){
     $name="";
-    if($chart->deviceid != ""){
+    //if($chart->deviceid != ""){
         //$device=Device::getDevice($chart->deviceid);
         //$name=(is_object($device)) ? $device->name : "";
-    }
+    //}
     $money=($chart->price) ? "<i class=\"fa fa-eur\"></i>" : "";
     echo "<tr class=\"odd gradeX linechart-".$chart->id."\" >";
     echo "<td><a class=\"black\" href=\"edit_chart.php?idChart=".$chart->id."\">".$chart->name."</a></td>";

@@ -123,7 +123,7 @@ if($isPost){
             $sql.="abs='".$_POST["abs"]."', ord='".$_POST["ord"]."', ";
             $sql.="scaleMin='".$_POST["scaleMin"]."', scaleMax='".$_POST["scaleMax"]."', price=".$_POST["modePrix"].", deviceIdLine='".$deviceLine."'";
             $sql.=" WHERE id=".$_POST["idchart"];
-            echo $sql;
+            //echo $sql;
             $stmt = $GLOBALS["dbconnec"]->exec($sql);
 
             //Suppression des device associés au chart
