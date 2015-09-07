@@ -9,7 +9,7 @@ foreach($devicesByType as $type=>$tmpDevices){
             </div>
             <div class="portlet-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover"  <?php if($isPDF){ echo " style=\"border:none;\" "; } ?>>
                         <thead>
                             <th>Objet</th>
                             <th><i class="fa fa-sort-desc" title="Min"></i></th>
