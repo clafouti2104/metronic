@@ -2,7 +2,7 @@
 <?php
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
-    <div class="col-md-6">
+    <div class="col-md-6" <?php if($isPDF){ echo " style=\"500px;\" "; } ?> >
         <div class="portlet box green-haze">
             <div class="portlet-title">
                 <div class="caption"> <?php echo ucwords($type); ?> </div>

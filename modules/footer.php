@@ -1,5 +1,8 @@
 	<!-- END CONTAINER -->
 	<!-- BEGIN FOOTER -->
+<?php 
+if(!isset($isPDF) || !$isPDF){
+?>
 <div class="page-footer">
 	<div class="page-footer-inner">
 		 <?php echo date('Y'); ?> &copy; Pouchkine.
@@ -13,6 +16,9 @@
 		</span>
 	</div>
 </div>
+<?php
+}
+?>
 <!-- END FOOTER -->
 <!--[if lt IE 9]>
 <script src="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/respond.min.js"></script>
