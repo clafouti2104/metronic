@@ -113,11 +113,11 @@ foreach($charts as $chart){
     if($chart->type == "temps" || $chart->type == "ligne"){
         echo "\n$('.container-".$chart->id."').highcharts({";
         echo " chart: {";
-        if($chart->type=='temps'){
-            echo " zoomType: 'x'";
-        }elseif($chart->type=='ligne'){
+        //if($chart->type=='temps'){
+        //    echo " zoomType: 'x'";
+        //}elseif($chart->type=='ligne'){
             echo " type: 'spline'";
-        }
+        //}
         //echo ",height:'".$heightChart."px'";
         if($isPDF){ 
             echo " ,width: 500 ";
