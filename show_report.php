@@ -82,7 +82,7 @@ $isPDF = (isset($_GET["pdf"])) ? TRUE : FALSE;
 <?php } ?>
         <div class="row-fluid">
             <?php include "show_report_chart.php"; ?>
-            <div class="col-md-12">
+            <!--<div class="col-md-12">
                 <!--<div class="tabbable-custom ">
                     ><ul class="nav nav-tabs ">
                         <li class="active">
@@ -101,7 +101,7 @@ $isPDF = (isset($_GET["pdf"])) ? TRUE : FALSE;
                     </div>
                 </div>-->
                 
-            </div>
+            <!--</div>-->
         </div>
     </div>
 </div>
