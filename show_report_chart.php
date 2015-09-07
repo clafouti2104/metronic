@@ -92,7 +92,7 @@ foreach($reportCharts as $reportChart){
     //echo "<br/>Chart #".$chartTmp->id;
     //print_r($devices[$chartTmp->id]);
 ?>
-<div class="col-md-6" <?php if($isPDF){echo " style=\"width:650px;\"";}  ?>>
+<div class="col-md-6" <?php if($isPDF){echo " style=\"width:650px;page-break-after: always;\"";}  ?>>
     <div class="portlet box blue-steel tabbable" style="background-color: #FFF;">
         <div class="portlet-title">
             <div class="caption"> <?php echo $chartTmp->name; ?> </div>
