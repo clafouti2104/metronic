@@ -131,7 +131,7 @@ if($_GET["uid"] == "439294F4"){
 file_get_contents("http://192.168.23.14/led.php?control=".$ledAction, false, $context);
 
 //Update Alarm State
-file_get_contents("http://192.168.23.23/api/update_status.php?idDevice=21&state=".$action);
+file_get_contents("http://192.168.23.23/metronic/api/update_status.php?idDevice=21&state=".$action);
 
 //Allumage du groupe lumière salon si MHS
 if($action == "disarmed"){
