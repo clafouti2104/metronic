@@ -7,6 +7,7 @@ include("../tools/config.php");
 include("../tools/action.php");
 include("../models/Schedule.php");
 include("../models/ScheduleAction.php");
+include("../models/Report.php");
 $GLOBALS["dbconnec"] = connectDB();
 
 parse_str(implode('&', array_slice($argv, 1)), $_GET);
@@ -59,6 +60,24 @@ foreach($scheduleActions as $scheduleAction){
         case 'commandline':
             if(isset($scheduleAction->action)){
                 $ch = exec($scheduleAction->action);
+            }
+            break;
+        case 'report':
+            $report = Report::getReport($scheduleAction->action);
+            //Recuperation adresse IP
+            $ipAddress = exec("/sbin/ifconfig eth0 | grep 'inet adr:' | cut -d: -f2 | awk '{ print $1}'"); 
+
+            //Generation du rapport en PDF
+            exec('wkhtmltopdf --javascript-delay 1000 "http://'.$ipAddress.'/metronic/show_report.php?idReport='.$scheduleAction->action.'&pdf=1" /var/www/metronic/report'.$scheduleAction->action.'.pdf');
+            //Attente de la fin de la generation
+            sleep(10);
+
+            //Envoi du mail avec le PDF en PJ
+            $subject="[DOMOKINE] Rapport";
+            $title="Envoi du rapport ".$report->name;
+            $content="Vous trouverez le rapport en piece jointe";
+            if($content != ""){
+                include("../controllers/mail.php");
             }
             break;
         default:

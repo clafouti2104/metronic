@@ -951,6 +951,10 @@ $mail =& Mail::factory('smtp',
             'username' => $username,
             'password' => $password));
 $result = $mail->send($to, $message->headers($headers), $message->get());
+
+if(isset($filename)){
+      $message->addAttachment($filename, "application/pdf");
+}
 //$mail = $smtp->send($to, $headers, $body);
 
 if (PEAR::isError($mail)) die($mail->getMessage());

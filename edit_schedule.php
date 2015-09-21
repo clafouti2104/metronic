@@ -20,6 +20,7 @@ include_once "models/ScheduleAction.php";
 include_once "models/Device.php";
 include_once "models/MessageDevice.php";
 include_once "models/Scenario.php";
+include_once "models/Report.php";
 
 //$devices=  Device::getDevices();
 $variables=$notifications=array();
@@ -292,6 +293,12 @@ if(isset($idSchedule) && $idSchedule > 0){
                                                  Notifications
                                             </div>
                                         </a>
+                                        <a data-target="#ajaxRapport" data-toggle="modal" href="ajax/user/sce_cond_rapport.php?idSchedule=<?php echo $idSchedule; ?>" class="icon-btn">
+                                            <i class="fa fa-area-chart "></i>
+                                            <div>
+                                                 Rapports
+                                            </div>
+                                        </a>
                                         <a data-target="#ajaxCommandLine" data-toggle="modal" href="ajax/user/sce_cond_command_line.php?idSchedule=<?php echo $idSchedule; ?>" class="icon-btn">
                                             <i class="fa fa-code "></i>
                                             <div>
@@ -346,6 +353,11 @@ if(isset($idSchedule) && $idSchedule > 0){
                                                                 $object.=" envoie ".$notifications[$scheduleAction->action];
                                                             }
                                                             $type="notification";
+                                                            break;
+                                                        case 'report':
+                                                            $reportTmp=Report::getReport($scheduleAction->action);
+                                                            $type="Rapport";
+                                                            $object.="Envoi le rapport ".$reportTmp->name;
                                                             break;
                                                         default:
                                                     }
@@ -406,6 +418,17 @@ if(isset($idSchedule) && $idSchedule > 0){
 </div>
     
 <div class="modal fade" id="ajaxScenario" role="basic" aria-hidden="true">
+    <div class="page-loading page-loading-boxed">
+        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <span>&nbsp;&nbsp;Loading... </span>
+    </div>
+    <div class="modal-dialog" style="width:400px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ajaxRapport" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
         <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>

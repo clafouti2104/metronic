@@ -29,6 +29,9 @@ switch(strtolower($_POST["type"])){
     case 'commandline':
         $type="commandline";
         break;
+    case 'report':
+        $type="Rapport";
+        break;
     default:
         return true;
 }
