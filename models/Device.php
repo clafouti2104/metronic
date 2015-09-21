@@ -420,6 +420,26 @@ class Device{
                 }
             }
         }
+
+        //Création Table Histo
+        $sql="CREATE TABLE IF NOT EXISTS `temperature_".$id."` (";
+        $sql.="`id` int(11) NOT NULL AUTO_INCREMENT,";
+        $sql.=" `name` varchar(50) NOT NULL,";
+        $sql.=" `date` datetime NOT NULL,";
+        $sql.=" `value` double NOT NULL,";
+        $sql.=" `deviceid` int(11) DEFAULT NULL,";
+        $sql.=" `calaosid` int(11) DEFAULT NULL,";
+        $sql.=" PRIMARY KEY (`id`)";
+        $sql.=") ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+
+        $sql.="CREATE TABLE IF NOT EXISTS `releve_consolidation_d64` (";
+        $sql.=" `id` int(11) NOT NULL AUTO_INCREMENT,";
+        $sql.=" `value` float DEFAULT NULL,";
+        $sql.=" `date` datetime DEFAULT NULL,";
+        $sql.=" PRIMARY KEY (`id`)";
+        $sql.=") ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+        
+        $stmt = $GLOBALS["histoconnec"]->query($sql);
         
         return $tmpInstance;
     }
