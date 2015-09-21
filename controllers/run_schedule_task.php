@@ -62,7 +62,7 @@ foreach($scheduleActions as $scheduleAction){
                 $ch = exec($scheduleAction->action);
             }
             break;
-        case 'Rapport':
+        case 'rapport':
             $report = Report::getReport($scheduleAction->action);
             //Recuperation adresse IP
             $ipAddress = exec("/sbin/ifconfig eth0 | grep 'inet adr:' | cut -d: -f2 | awk '{ print $1}'"); 
@@ -76,6 +76,7 @@ foreach($scheduleActions as $scheduleAction){
             $subject="[DOMOKINE] Rapport";
             $title="Envoi du rapport ".$report->name;
             $content="Vous trouverez le rapport en piece jointe";
+            $filename="/var/www/metronic/report".$scheduleAction->action.".pdf";
             if($content != ""){
                 include("../controllers/mail.php");
             }
