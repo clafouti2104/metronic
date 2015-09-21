@@ -432,7 +432,7 @@ class Device{
         $sql.=" PRIMARY KEY (`id`)";
         $sql.=") ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
 
-        $sql.="CREATE TABLE IF NOT EXISTS `releve_consolidation_d64` (";
+        $sql.="CREATE TABLE IF NOT EXISTS `releve_consolidation_".$id."` (";
         $sql.=" `id` int(11) NOT NULL AUTO_INCREMENT,";
         $sql.=" `value` float DEFAULT NULL,";
         $sql.=" `date` datetime DEFAULT NULL,";
