@@ -5,6 +5,7 @@ $includeJS[] = "/assets/global/plugins/jquery.blockui.min.js";
 include "modules/header.php";
 include "modules/sidebar.php";
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 include_once "models/Device.php";
 include_once "models/MessageDevice.php";
 include_once "models/Product.php";
