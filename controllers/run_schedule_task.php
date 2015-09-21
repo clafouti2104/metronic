@@ -68,7 +68,7 @@ foreach($scheduleActions as $scheduleAction){
             $ipAddress = exec("/sbin/ifconfig eth0 | grep 'inet adr:' | cut -d: -f2 | awk '{ print $1}'"); 
 
             //Generation du rapport en PDF
-            exec('wkhtmltopdf --javascript-delay 1000 "http://'.$ipAddress.'/metronic/show_report.php?idReport='.$scheduleAction->action.'&pdf=1" /var/www/metronic/report'.$scheduleAction->action.'.pdf');
+            exec('wkhtmltopdf --javascript-delay 1000 "http://'.$ipAddress.'/metronic/show_report.php?idReport='.$scheduleAction->action.'&pdf=1" /tmp/report'.$scheduleAction->action.'.pdf');
             //Attente de la fin de la generation
             sleep(10);
 
@@ -76,7 +76,8 @@ foreach($scheduleActions as $scheduleAction){
             $subject="[DOMOKINE] Rapport";
             $title="Envoi du rapport ".$report->name;
             $content="Vous trouverez le rapport en piece jointe";
-            $filename="/var/www/metronic/report".$scheduleAction->action.".pdf";
+            $filename="/tmp/report".$scheduleAction->action.".pdf";
+            exec("chmod 0777 /tmp/report".$scheduleAction->action.".pdf");
             if($content != ""){
                 include("../controllers/mail.php");
             }
