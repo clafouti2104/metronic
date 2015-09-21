@@ -439,7 +439,8 @@ class Device{
         $sql.=" PRIMARY KEY (`id`)";
         $sql.=") ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
         
-        $stmt = $GLOBALS["histoconnec"]->query($sql);
+        $stmt2 = $GLOBALS["histoconnec"]->prepare($sql);
+        $stmt2->execute(array());
         
         return $tmpInstance;
     }
