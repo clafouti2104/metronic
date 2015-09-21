@@ -62,7 +62,7 @@ foreach($scheduleActions as $scheduleAction){
                 $ch = exec($scheduleAction->action);
             }
             break;
-        case 'report':
+        case 'Rapport':
             $report = Report::getReport($scheduleAction->action);
             //Recuperation adresse IP
             $ipAddress = exec("/sbin/ifconfig eth0 | grep 'inet adr:' | cut -d: -f2 | awk '{ print $1}'"); 
