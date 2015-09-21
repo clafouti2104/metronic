@@ -1,6 +1,7 @@
 <?php
 include '../../tools/config.php';
 include_once "../../models/Schedule.php";
+include_once "../../models/Report.php";
 
 $idCond=$idCondAction=$idSchedule=NULL;
 if(!isset($_GET["idCond"]) && !isset($_GET["idSchedule"])){
@@ -15,7 +16,7 @@ if(isset($_GET["idSchedule"])){
 }
 
 $GLOBALS["dbconnec"] = connectDB();
-$sqlDevices = "SELECT * FROM schedule ";
+$sqlDevices = "SELECT * FROM report ";
 $sqlDevices .= " ORDER BY name ASC ";
 $stmt = $GLOBALS["dbconnec"]->prepare($sqlDevices);
 $stmt->execute(array());
