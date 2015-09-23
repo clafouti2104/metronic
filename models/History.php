@@ -1310,7 +1310,7 @@ class History{
                         $result .= $tmpValueAvg;
                         //$result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValueAvg."]";
                         
-                    }//
+                    }*/
                     //echo "<br/>";
                     //print_r($values);
                 }
