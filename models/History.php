@@ -1280,7 +1280,7 @@ class History{
                 //Boucle sur date
                 foreach($data as $date => $values){
                     $datetime = new DateTime($date);
-                    if($incremental == "" || $incremental == "0" || is_null($incremental)){
+                    //if($incremental == "" || $incremental == "0" || is_null($incremental)){
                         $values = json_decode($values["value4h"], TRUE);
                         //print_r($date);
                         //print_r($values);
@@ -1299,7 +1299,7 @@ class History{
                             }
                         }
                         
-                    } else {
+                    /*} else {
                         $tmpValueAvg = ($values["avg"] == "") ? "0" : $values["avg"];
                         $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
                         $month--;
@@ -1310,7 +1310,7 @@ class History{
                         $result .= $tmpValueAvg;
                         //$result .= "[Date.UTC(".$datetime->format('Y').",".$month.",".$day.",".$hour.",".$minute."),".$tmpValueAvg."]";
                         
-                    }
+                    }//
                     //echo "<br/>";
                     //print_r($values);
                 }
