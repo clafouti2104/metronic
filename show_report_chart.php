@@ -111,7 +111,7 @@ foreach($devicesIncByType as $type=>$tmpDevices){
                         </thead>
                         <tbody>
 <?php
-    foreach($tmpDevices as $tmpDevice){
+    foreach($tmpDevices as $tmpDeviceInc){
         //$txtAvg = Device::showStateGeneric($sum[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
         //$txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
         //$percent = History::getPercent($sum[$tmpDevice->id], $sumLastPeriod[$tmpDevice->id]);
