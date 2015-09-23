@@ -1286,7 +1286,7 @@ class History{
                         //print_r($values);
                         foreach($values as $tmpHour => $tmpValue){
                             //echo "<br/>".$tmpHour." - ".$tmpValue;
-                            if($tmpValue != ""){
+                            if($tmpValue != "" && $tmpValue != "null" && !is_null($tmpValue)){
                                 $month = (substr($datetime->format('m'), 0, 1) == '0') ? substr($datetime->format('m'),1,1) : $datetime->format('m');
                                 $month--;
                                 $day = (substr($datetime->format('d'), 0, 1) == '0') ? substr($datetime->format('d'),1,1) : $datetime->format('d');
