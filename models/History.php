@@ -1154,7 +1154,6 @@ class History{
                 $interval=new DateInterval("P7D");
                 $interval->invert=1;
                 $dateFrom->add($interval);
-                $auj = $dateFrom->format('Y-m-d');
                 $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateYesterday->format('Y-m-d')."'";
                 //echo $query;
                 break;
@@ -1539,6 +1538,65 @@ class History{
         return $value;
     }
     
+    public static function getMinMaxForDevicesInc($deviceId, $period,$mode){
+        if(!in_array(strtolower($mode),array("min","max"))){
+            return "ERR - Incorrect Mode";
+        }
+
+        $dateFrom=new DateTime('now');
+        $dateYesterday=new DateTime('now');
+        $intervalYesterday=new DateInterval('P1D');
+        $intervalYesterday->invert=1;
+        $dateYesterday->add($intervalYesterday);
+
+        $order = (strtolower($mode) == "min") ? "ASC" : "DESC";
+        
+        $query = "SELECT date, avg as value FROM temperature_consolidation ";
+        $query .= " WHERE ";
+        $query .= " deviceid=".$deviceId." AND ";
+        switch($period){
+            case '1':
+                $interval=new DateInterval("P1D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            case '2':
+                $interval=new DateInterval("P7D");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $auj = $dateFrom->format('Y-m-d');
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-d')."' AND '".$dateYesterday->format('Y-m-d')."'";
+                //echo $query;
+                break;
+            case '3':
+                $interval=new DateInterval("P1M");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-m-')."01' AND '".$dateFrom->format('Y-m-').date('d')."'";
+                break;
+            case '4':
+                $interval=new DateInterval("P1Y");
+                $interval->invert=1;
+                $dateFrom->add($interval);
+                $query .= " date BETWEEN '".$dateFrom->format('Y-')."01-01' AND '".$dateFrom->format('Y-m-d')."'";
+                break;
+            default:
+                return '$ERRPeriode incorrecte';
+        }
+        $query .= " ORDER BY avg ".$order;
+        $query .= " LIMIT 1 ";
+        
+        //echo $query;exit;
+        $value=array();
+        $stmt = $GLOBALS["histoconnec"]->prepare($query);
+        $stmt->execute(array());
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $value['date']=$row["date"];
+            $value['value']=$row["value"];
+        }
+        return $value;
+    }
     
     public static function getTotalAvgLastPeriodForDevices($deviceIds, $period,$mode){
         if(count($deviceIds) == 0){

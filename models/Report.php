@@ -171,5 +171,47 @@ class Report{
 
         return TRUE;
     }
+
+    public function getBorneDatesReport(){
+        $period = $this->period;
+        switch($period){
+            case '1':
+                $from='P1D';
+                break;
+            case '2':
+                $from='P7D';
+                break;
+            case '3':
+                $from='P1M';
+                break;
+            case '4':
+                $from='P1Y';
+                break;
+        }
+        $dateFrom=new DateTime('now');
+        $interval=new DateInterval($from);
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        
+        switch($period){
+            case '1':
+                $duration='1';
+                break;
+            case '2':
+                $duration='6';
+                break;
+            case '3':
+                $duration='31';
+                break;
+            case '4':
+                $duration='365';
+                break;
+            default:
+                $duration='1';
+        }
+        $dateEnd=clone $dateFrom;
+        $dateEnd->add(new DateInterval("P".$duration."D"));
+        return "du ".$dateFrom->format('d/m H:i')." au ".$dateEnd->format('d/m H:i');
+    }
 }
 ?>

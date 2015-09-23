@@ -230,7 +230,39 @@ class Chart{
                 $duration='1';
                 break;
             case '2':
-                $duration='7';
+                $duration='6';
+                break;
+            case '3':
+                $duration='31';
+                break;
+            case '4':
+                $duration='365';
+                break;
+            default:
+                $duration='1';
+        }
+        $dateEnd=clone $dateFrom;
+        $dateEnd->add(new DateInterval("P".$duration."D"));
+        return "du ".$dateFrom->format('d/m H:i')." au ".$dateEnd->format('d/m H:i');
+    }
+
+    public function getBorneDatesReport(){
+        $from = $this->from;
+        $period = $this->period;
+        $dateFrom=new DateTime('now');
+        $interval=new DateInterval($from);
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        $interval=new DateInterval('P1D');
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        
+        switch($period){
+            case '1':
+                $duration='1';
+                break;
+            case '2':
+                $duration='6';
                 break;
             case '3':
                 $duration='31';
@@ -259,7 +291,7 @@ class Chart{
     public function getDaysForWeek(){
         $days="";
         $dateFrom=new DateTime('now');
-        $interval=new DateInterval("P6D");
+        $interval=new DateInterval("P7D");
         $interval->invert=1;
         $dateFrom->add($interval);
         $days .= "'".$dateFrom->format('d')."'";

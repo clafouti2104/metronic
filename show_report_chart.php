@@ -51,6 +51,38 @@ foreach($tmpDevices as $tmpDevice){
 <?php
 
 }
+
+if(isset($devicesIncByType[$type])){
+foreach($devicesIncByType[$type] as $tmpDeviceInc){
+    $txtAvg = Device::showStateGeneric($sum[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+    $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+    $percent = History::getPercent($sum[$tmpDeviceInc->id], $sumLastPeriod[$tmpDeviceInc->id]);
+    $minValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "min");
+    $maxValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "max");
+    $txtMin = Device::showStateGeneric($minValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+    $txtMax = Device::showStateGeneric($maxValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+?>
+                            <tr>
+                                <td><?php echo "#".$tmpDeviceInc->id." ".$tmpDeviceInc->name; ?></td>
+                                <td>
+                                    <span class="label label-sm label-info">
+                                        <?php echo $txtMin; ?>
+                                    </span><br/><span style="font-size:10px;"><?php echo $minValue['date']; ?></span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-warning">
+                                        <?php echo $txtMax; ?>
+                                    </span><br/><span style="font-size:10px;"><?php echo $maxValue['date']; ?></span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-success">
+                                        <?php echo $txtAvg." (".$percent."%)"; ?>
+                                    </span>
+                                </td>
+                            </tr>
+<?php
+}
+}
 ?>
                         </tbody>
                     </table>
@@ -60,6 +92,7 @@ foreach($tmpDevices as $tmpDevice){
     </div>
 <?php  
 }
+
 foreach($devicesIncByType as $type=>$tmpDevices){
     foreach($tmpDevices as $tmpDevice){
         $txtAvg = Device::showStateGeneric($sum[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
