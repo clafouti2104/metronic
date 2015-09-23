@@ -94,12 +94,65 @@ foreach($devicesIncByType[$type] as $tmpDeviceInc){
 }
 
 foreach($devicesIncByType as $type=>$tmpDevices){
-    foreach($tmpDevices as $tmpDevice){
-        $txtAvg = Device::showStateGeneric($sum[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
-        $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
-        $percent = History::getPercent($sum[$tmpDevice->id], $sumLastPeriod[$tmpDevice->id]);
 ?>
-    <div class="col-md-3">
+    <div class="col-md-6" <?php if($isPDF){ echo " style=\"500px;\" "; } ?> >
+        <div class="portlet box green-haze">
+            <div class="portlet-title">
+                <div class="caption"> <?php echo ucwords($type); ?> </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-hover"  <?php if($isPDF){ echo " style=\"border:none;\" "; } ?>>
+                        <thead>
+                            <th>Objet</th>
+                            <th><i class="fa fa-sort-desc" title="Min"></i></th>
+                            <th><i class="fa fa-sort-asc" title="Max"></i></th>
+                            <th><i class="fa fa-sliders"  title="Moyenne"></i></th>
+                        </thead>
+                        <tbody>
+<?php
+    foreach($tmpDevices as $tmpDevice){
+        //$txtAvg = Device::showStateGeneric($sum[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
+        //$txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDevice->id],$tmpDevice->data_type,$tmpDevice->unite);
+        //$percent = History::getPercent($sum[$tmpDevice->id], $sumLastPeriod[$tmpDevice->id]);
+
+        $txtAvg = Device::showStateGeneric($sum[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+        $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+        $percent = History::getPercent($sum[$tmpDeviceInc->id], $sumLastPeriod[$tmpDeviceInc->id]);
+        $minValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "min");
+        $maxValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "max");
+        $txtMin = Device::showStateGeneric($minValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+        $txtMax = Device::showStateGeneric($maxValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+?>
+                            <tr>
+                                <td><?php echo "#".$tmpDeviceInc->id." ".$tmpDeviceInc->name; ?></td>
+                                <td>
+                                    <span class="label label-sm label-info">
+                                        <?php echo $txtMin; ?>
+                                    </span><br/><span style="font-size:10px;"><?php echo $minValue['date']; ?></span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-warning">
+                                        <?php echo $txtMax; ?>
+                                    </span><br/><span style="font-size:10px;"><?php echo $maxValue['date']; ?></span>
+                                </td>
+                                <td>
+                                    <span class="label label-sm label-success">
+                                        <?php echo $txtAvg." (".$percent."%)"; ?>
+                                    </span>
+                                </td>
+                            </tr>
+<?php
+    }
+?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="col-md-3">
         <div class="dashboard-stat red-intense">
             <div class="visual">
                 <i class="fa fa-bar-chart-o"></i>
@@ -113,9 +166,9 @@ foreach($devicesIncByType as $type=>$tmpDevices){
                 <i class="m-icon-swapright m-icon-white"></i>
             </a>
         </div>
-    </div>
+    </div>-->
 <?php
-    }
+    
 }
 
 echo "</div>";
