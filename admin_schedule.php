@@ -94,30 +94,33 @@ foreach($schedules as $schedule){
             }
         });
         
-        // begin first table
-        $('#datatable').dataTable({
-            "aoColumns": [
-              { "bSortable": true },
-              { "bSortable": false},
-              { "bSortable": false}
-            ],
-            "aLengthMenu": [
-                [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per schedule values here
-            ],
-            // set the initial value
-            "iDisplayLength": 20,
-            "sPaginationType": "bootstrap",
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ entrées",
-                "oPaginate": {
-                    "sPrevious": "Préc.",
-                    "sNext": "Suiv."
-                }
-            },
-            "aoColumnDefs": [
-            ]
-        });
+        if($('.gradeX').length > 1){
+            // begin first table
+            $('#datatable').dataTable({
+                "aoColumns": [
+                  { "bSortable": true },
+                  { "bSortable": false},
+                  { "bSortable": false}
+                ],
+                "aLengthMenu": [
+                    [5, 15, 20, -1],
+                    [5, 15, 20, "All"] // change per schedule values here
+                ],
+                // set the initial value
+                "iDisplayLength": 20,
+                "sPaginationType": "bootstrap",
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ entrées",
+                    "oPaginate": {
+                        "sPrevious": "Préc.",
+                        "sNext": "Suiv."
+                    }
+                },
+                "aoColumnDefs": [
+                ]
+            });
+        }
+            
         
     });
 </script>

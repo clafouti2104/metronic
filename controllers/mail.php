@@ -22,7 +22,7 @@ while( $resultat = $resultats->fetch() )
         case 'password_gmail':
             $password_gmail=$resultat->value;
             break;
-        case 'general_gmail':
+        case 'general_email':
             $general_mail=$resultat->value;
             break;
         default:

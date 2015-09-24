@@ -63,7 +63,7 @@ if($isPost && isset($_POST["idschedule"])){
     } 
     $name= (isset($schedule) && is_object($schedule)) ? $schedule->name : NULL ;
     $description= (isset($schedule) && is_object($schedule)) ? $schedule->description : NULL ;
-    $hour= (isset($schedule) && is_object($schedule)) ? $schedule->hour.":".$schedule->minute : NULL;
+    $hour= (isset($schedule) && is_object($schedule)) ? str_pad($schedule->hour, 2, '0', STR_PAD_LEFT).":".str_pad($schedule->minute, 2, '0', STR_PAD_LEFT) : NULL;
     $weekDays = (isset($schedule) && is_object($schedule)) ? explode(",",$schedule->weekdays) : array();
 }
 
@@ -354,7 +354,7 @@ if(isset($idSchedule) && $idSchedule > 0){
                                                             }
                                                             $type="notification";
                                                             break;
-                                                        case 'report':
+                                                        case 'rapport':
                                                             $reportTmp=Report::getReport($scheduleAction->action);
                                                             $type="Rapport";
                                                             $object.="Envoi le rapport ".$reportTmp->name;
@@ -589,6 +589,13 @@ if(isset($idSchedule) && $idSchedule > 0){
 <script deviceid="text/javascript">
 $(document).ready(function () {
     $('#spinner1').spinner({min: 1, max: 12});
+
+    $('.timepicker-24').timepicker({
+        autoclose: true,
+        minuteStep: 5,
+        showSeconds: false,
+        showMeridian: false
+    });
     
     $('.cbxEveryDays').bind('click',function(e){
         if(this.checked) { 
