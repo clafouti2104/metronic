@@ -405,6 +405,7 @@ if($product != ""){
         ?>
                                 <table class="table table-striped table-hover">
                                     <tr>
+                                        <th>ID</th>
                                         <th>Nom</th>
                                         <th>Commande</th>
                                         <th>Type</th>
@@ -413,6 +414,7 @@ if($product != ""){
         <?php
         foreach($messages as $messageTmp){
             echo "<tr id=\"line-".$messageTmp->id."\">";
+            echo "<td>".$messageTmp->id."</td>";
             echo "<td>".ucwords($messageTmp->name)."</td>";
             echo "<td>".$messageTmp->command."</td>";
             echo "<td>".$messageTmp->type."</td>";
