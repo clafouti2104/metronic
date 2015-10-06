@@ -70,7 +70,7 @@ foreach($devices as $device){
     //State
     echo "<tr class=\"odd gradeX\">";
     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</td>";
-    echo "<td><input type=\"text\" class=\"form-control\" value=\"http://192.168.1.104/metronic/get_status.php?idDevice=".$device->id."\" /></td>";
+    echo "<td><input type=\"text\" class=\"form-control\" value=\"http://192.168.1.104/metronic/api/get_status.php?idDevice=".$device->id."\" /></td>";
     echo "</tr>";
 
     //Action
@@ -78,7 +78,7 @@ foreach($devices as $device){
     foreach($messages as $messageTmp){
         echo "<tr class=\"odd gradeX\">";
         echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$messageTmp->name."</td>";
-        echo "<td><input type=\"text\" class=\"form-control\" value=\"http://192.168.1.104/metronic/execute_message.php?idMessage=".$messageTmp->id."\" /></td>";
+        echo "<td><input type=\"text\" class=\"form-control\" value=\"http://192.168.1.104/metronic/api/execute_message.php?idMessage=".$messageTmp->id."\" /></td>";
         echo "</tr>";
     }
 }
@@ -100,7 +100,7 @@ foreach($devices as $device){
 foreach($scenarios as $scenario){
     echo "<tr class=\"odd gradeX linedevice-".$scenario->id."\" >";
     echo "<td><a class=\"black\" href=\"execute_scenario.php?idScenario=".$scenario->id."\">".$scenario->name."</a></td>";
-    echo "<td><input type=\"text\" class=\"form-control\" value=\"http://192.168.1.104/metronic/execute_scenario.php?idScenario=".$scenario->id."\" /></td>";
+    echo "<td><input type=\"text\" class=\"form-control\" value=\"http://192.168.1.104/metronic/api/execute_scenario.php?idScenario=".$scenario->id."\" /></td>";
     echo "</tr>";
 }
 ?>
