@@ -17,13 +17,13 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="adminadvanced"){
     $isPost=TRUE;
 }
 
-$myfoxLoginBDD=$myfoxPasswordBDD="";
+$myfoxLoginBDD=$myfoxPasswordBDD=$myfoxSiteidBDD="";
 $netatmoClientIdBDD=$netatmoClientSecretBDD=$netatmoLoginBDD=$netatmoPasswordBDD="";
 $calaosIpAddressBDD=$calaosLoginBDD=$calaosPasswordBDD="";
 $zibaseLoginBDD=$zibasePasswordBDD="";
 $zwaveIpAddress=
 
-$sql = "SELECT * FROM config WHERE name IN ('myfox_login','myfox_password', ";
+$sql = "SELECT * FROM config WHERE name IN ('myfox_login','myfox_password', 'myfox_siteid', ";
 $sql .= " 'netatmo_client_id', 'netatmo_client_secret', 'netatmo_login', 'netatmo_password', ";
 $sql .= " 'calaos_ip_address', 'calaos_login', 'calaos_password', 'zibase_login', 'zibase_password', 'zwave_ip_address')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
@@ -35,6 +35,9 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             break;
         case 'myfox_password':
             $myfoxPasswordBDD = $row["value"];
+            break;
+        case 'myfox_siteid':
+            $myfoxSiteidBDD = $row["value"];
             break;
         case 'netatmo_client_id':
             $netatmoClientIdBDD= $row["value"];
@@ -72,6 +75,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 $myfoxLogin= ($isPost) ? $_POST["myfox_login"] : $myfoxLoginBDD;
 $myfoxPassword= ($isPost) ? $_POST["myfox_password"] : $myfoxPasswordBDD;
+$myfoxSiteid= ($isPost) ? $_POST["myfox_siteid"] : $myfoxSiteidBDD;
 $netatmoClientId= ($isPost) ? $_POST["netatmo_client_id"] : $netatmoClientIdBDD;
 $netatmoClientSecret= ($isPost) ? $_POST["netatmo_client_secret"] : $netatmoClientSecretBDD;
 $netatmoLogin= ($isPost) ? $_POST["netatmo_login"] : $netatmoLoginBDD;
@@ -88,6 +92,7 @@ if($isPost){
     
     $sql="UPDATE config SET value='".$myfoxLogin."' WHERE name='myfox_login';";
     $sql.="UPDATE config SET value='".$myfoxPassword."' WHERE name='myfox_password';";
+    $sql.="UPDATE config SET value='".$myfoxSiteid."' WHERE name='myfox_siteid';";
     $sql.="UPDATE config SET value='".$netatmoClientId."' WHERE name='netatmo_client_id';";
     $sql.="UPDATE config SET value='".$netatmoClientSecret."' WHERE name='netatmo_client_secret';";
     $sql.="UPDATE config SET value='".$netatmoLogin."' WHERE name='netatmo_login';";
@@ -109,6 +114,9 @@ if($isPost){
                 break;
             case "myfox_password":
                 $value = $myfoxPassword;
+                break;
+            case "myfox_siteid":
+                $value = $myfoxSiteid;
                 break;
             case 'netatmo_client_id':
                 $value = $netatmoClientId;
@@ -194,6 +202,14 @@ if($isPost){
                             <label class="control-label col-md-3" for="myfox_password">Mot de passe</label>
                             <div class="col-md-9">
                                 <input class="form-control"name="myfox_password" id="myfox_password" type="password" value="<?php echo $myfoxPassword; ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" for="myfox_siteid">Code Site</label>
+                            <div class="col-md-9">
+                                <input class="form-control"name="myfox_siteid" id="myfox_siteid" type="password" value="<?php echo $myfoxSiteid; ?>">
                             </div>
                         </div>
                     </div>

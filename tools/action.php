@@ -68,16 +68,24 @@ function executeMessage($messgeId, $valueToSend=NULL){
             $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
             $content = "[parameters]";
             foreach($ini as $title => $value){
-                                if($title == "myfox_token"){
+                if($title == "myfox_token"){
                     $token=$value;
-                    break;
+                    //break;
+                }
+                if($title == "myfox_siteid"){
+                    $siteid=$value;
+                    //break;
                 }
             }
             if($token == ""){
                 $token=getToken();
             }
+            if(!isset($siteid)){
+                addLog(LOG_ERR, "[ACTION]: MyFOX : no siteid set");
+                return false;
+            }
             //$response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
-            $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token );
+            $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/security/set/".$message->command."?access_token=".$token );
             curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec( $curl );
             addLog(LOG_INFO, "[ACTION]: MyFOX alarm set to ".$message->command);
@@ -87,7 +95,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 //$response=exec("curl https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token);
-                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/security/set/".$message->command."?access_token=".$token );
+                $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/security/set/".$message->command."?access_token=".$token );
                 curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
                 $response = curl_exec( $curl );
                 addLog(LOG_INFO, "[ACTION]: MyFOX alarm set to ".$message->command);
@@ -103,14 +111,22 @@ function executeMessage($messgeId, $valueToSend=NULL){
             foreach($ini as $title => $value){
                 if($title == "myfox_token"){
                     $token=$value;
-                    break;
+                    //break;
+                }
+                if($title == "myfox_siteid"){
+                    $siteid=$value;
+                    //break;
                 }
             }
             if($token == ""){
                 $token=getToken();
             }
+            if(!isset($siteid)){
+                addLog(LOG_ERR, "[ACTION]: MyFOX : no siteid set");
+                return false;
+            }
             //$response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
-            $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token );
+            $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/group/".$device->param1."/electric/".$message->command."?access_token=".$token );
             curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec( $curl );
             addLog(LOG_INFO, "[ACTION]: MyFOX group ".$device->name." to ".$message->command);
@@ -120,7 +136,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 //$response=exec("curl https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token);
-                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/group/".$device->param1."/electric/".$message->command."?access_token=".$token );
+                $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/group/".$device->param1."/electric/".$message->command."?access_token=".$token );
                 curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
                 $response = curl_exec( $curl );
                 addLog(LOG_INFO, "[ACTION]: MyFOX group ".$device->name." to ".$message->command);
@@ -136,14 +152,22 @@ function executeMessage($messgeId, $valueToSend=NULL){
             foreach($ini as $title => $value){
                 if($title == "myfox_token"){
                     $token=$value;
-                    break;
+                    //break;
+                }
+                if($title == "myfox_siteid"){
+                    $siteid=$value;
+                    //break;
                 }
             }
             if($token == ""){
                 $token=getToken();
             }
+            if(!isset($siteid)){
+                addLog(LOG_ERR, "[ACTION]: MyFOX : no siteid set");
+                return false;
+            }
             //$response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
-            $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token );
+            $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/device/".$device->param1."/socket/".$message->command."?access_token=".$token );
             curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec( $curl );
             addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->command);
@@ -153,7 +177,7 @@ function executeMessage($messgeId, $valueToSend=NULL){
                 addLog(LOG_INFO, "[ACTION]: MyFOX Token expired");
                 $token=getToken();
                 //$response=exec("curl https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token);
-                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/device/".$device->param1."/socket/".$message->command."?access_token=".$token );
+                $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/".$siteid."/".$device->param1."/socket/".$message->command."?access_token=".$token );
                 curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
                 $response = curl_exec( $curl );
                 addLog(LOG_INFO, "[ACTION]: MyFOX light ".$device->name." to ".$message->command);
