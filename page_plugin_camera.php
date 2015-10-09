@@ -4,7 +4,7 @@ $streamUrl="";
 if(isset($details->cameraStream) && $details->cameraStream != ""){
 	$streamUrl = (substr($details->cameraStream, 0, 1) != "/") ? "/" : "";
 }
-$streamImg=(isset($details->ip) && isset($details->cameraStream)) ? "http://".$details->ip.$streamUrl.$cameraStream : "";
+$streamImg=(isset($details->ip) && isset($details->cameraStream)) ? "http://".$details->ip.$streamUrl.$details->cameraStream : "";
 
 ?>
 <div class="cell col-lg-<?php echo $size; ?> col-md-<?php echo $size; ?> col-sm-6 col-xs-12 boxPackery itempage itempage-<?php echo $item->id; ?>" deviceid="" iditempage="<?php echo $item->id; ?>">
