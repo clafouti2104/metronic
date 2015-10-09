@@ -765,12 +765,12 @@ $( document ).ready(function() {
     
     
     $('.btnDeleteCameraConfirm').bind('click',function(e){
-        var idCamera=$('#idcamera').val();
+        var cameraId=$('#idcamera').val();
         $.ajax({
             url: "ajax/delete_camera.php",
             type: "POST",
             data: {
-                cameraId:  idCamera
+                cameraId:  cameraId
             },
             error: function(data){
                 toastr.error("Une erreur est survenue");
