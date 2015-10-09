@@ -1,7 +1,7 @@
 <?php
 include("../tools/config.php");
 $GLOBALS["dbconnec"] = connectDB();
-include "../models/MessageDevice.php";
+include_once "../models/MessageDevice.php";
 
 if(!isset($_POST["deviceId"])){
     echo "error";

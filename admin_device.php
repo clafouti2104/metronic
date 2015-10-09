@@ -10,7 +10,7 @@ include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
 
-include "models/Device.php";
+include_once "models/Device.php";
 $devices = Device::getDevices();
 
 ?>

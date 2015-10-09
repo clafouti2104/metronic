@@ -10,9 +10,9 @@ include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
 
-include "models/Scenario.php";
-include "models/Device.php";
-include "models/MessageDevice.php";
+include_once "models/Scenario.php";
+include_once "models/Device.php";
+include_once "models/MessageDevice.php";
 $devices = Device::getDevices();
 $scenarios = Scenario::getScenarios();
 
