@@ -2,7 +2,7 @@
 include("../tools/config.php");
 $GLOBALS["dbconnec"] = connectDB();
 
-if(!isset($_POST["camearId"])){
+if(!isset($_POST["cameraId"])){
     echo "error";
     return "error";
 }
