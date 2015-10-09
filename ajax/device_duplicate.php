@@ -1,6 +1,7 @@
 <?php
 include("../tools/config.php");
 $GLOBALS["dbconnec"] = connectDB();
+$GLOBALS["histoconnec"] = connectHistoDB();
 include_once "../models/Device.php";
 include_once "../models/MessageDevice.php";
 
