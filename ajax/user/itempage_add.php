@@ -250,6 +250,10 @@ $( document ).ready(function() {
     });
     
     $('#selectPlugins').bind('change',function(e){
+        if($('#selectPlugins option:selected').attr('type') == "camera"){
+            $('.optionTuile').show();
+            $('.optionHeight').show();
+        } 
         if($('#selectPlugins option:selected').attr('type') == "website"){
             $('.optionTuile').show();
             $('.optionHeight').show();
