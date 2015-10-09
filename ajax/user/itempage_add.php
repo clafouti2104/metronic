@@ -257,14 +257,10 @@ $( document ).ready(function() {
         if($('#selectPlugins option:selected').attr('type') == "website"){
             $('.optionTuile').show();
             $('.optionHeight').show();
-        } else {
-            if($('#selectPlugins option:selected').attr('type') == "meteo"){
-                $('.optionTuile').show();
-                
-            } else {
-                $('.optionTuile').hide();
-                $('.optionHeight').hide();
-            }
+        } 
+        if($('#selectPlugins option:selected').attr('type') == "meteo"){
+            $('.optionTuile').show();
+            
         }
     });
     
