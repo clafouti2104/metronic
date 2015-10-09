@@ -25,7 +25,7 @@ $device=Device::getDevice($_POST["deviceId"]);
 for($i=1;$i<=$_POST["quantite"];$i++){
     $deviceTmp=Device::createDevice($device->name."_".$i,$device->type,NULL,$device->states,NULL,$device->ip_address,$device->model,$device->active,$device->parameters,$device->alert_lost_communication, $device->last_alert,$device->product_id,$device->param1,$device->param2,$device->param3,$device->param4,$device->param5, $device->collect, $device->incremental,$device->unite,$device->data_type);
     foreach(MessageDevice::getMessageDevicesForDevice($device->id) as $msg){
-        MessageDevice::createMessageDevice($deviceTmp->id, $msg->name, NULL, $msg->value, NULL, $msg->type, $msg->active,$msg->parameters, $msg->command);
+        MessageDevice::createMessageDevice($deviceTmp->id, $msg->name, $msg->status, $msg->value, NULL, $msg->type, $msg->active,$msg->parameters, $msg->command);
     }
 }
 
