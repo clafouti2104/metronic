@@ -7,8 +7,8 @@ if(!isset($_POST["cameraId"])){
     return "error";
 }
 
-$sql="DELETE FROM pageitem WHERE params LIKE '%\"id\":\"".$_POST["camearId"]."\"%';";
-$sql="DELETE FROM config WHERE id='".$_POST["camearId"]."';";
+$sql="DELETE FROM pageitem WHERE params LIKE '%\"id\":\"".$_POST["cameraId"]."\"%';";
+$sql="DELETE FROM config WHERE id='".$_POST["cameraId"]."';";
 $stmt = $GLOBALS["dbconnec"]->exec($sql);
 echo "success";
 
