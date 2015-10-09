@@ -345,7 +345,7 @@ $( document ).ready(function() {
     foreach($items as $item){
         if($item->chartId == "" && $item->tuileId == "" && $item->scenarioId == "" && $item->listeId == "" && $item->deviceId == "" && $item->params != ""){
             $itemParams=json_decode($item->params);
-            if(!isset($itemParams->plugin) || $itemParams->plugin != gauge){
+            if(!isset($itemParams->plugin) || $itemParams->plugin != "gauge"){
                 continue;
             }
             

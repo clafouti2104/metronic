@@ -20,6 +20,9 @@ switch($params->plugin){
     case 'meteo':
         include "page_plugin_meteo.php";
         break;
+    case 'camera':
+        include "page_plugin_camera.php";
+        break;
     case 'website':
         include "page_plugin_website.php";
         break;

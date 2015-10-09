@@ -21,6 +21,9 @@ foreach($ini as $title => $value){
         //break;
     }
 }
+if($token == ""){
+    $token=getToken();
+}
 if(!isset($siteid)){
     addLog(LOG_ERR, "[ACTION]: MyFOX : no siteid set");
     return false;
