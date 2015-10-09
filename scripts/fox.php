@@ -14,11 +14,16 @@ $content = "[parameters]";
 foreach($ini as $title => $value){
     if($title == "myfox_token"){
         $token=$value;
-        break;
+        //break;
+    }
+    if($title == "myfox_siteid"){
+        $siteid=$value;
+        //break;
     }
 }
-if($token == ""){
-    $token=getToken();
+if(!isset($siteid)){
+    addLog(LOG_ERR, "[ACTION]: MyFOX : no siteid set");
+    return false;
 }
 
 //Récupération des devices actifs de type sonde de températures
@@ -35,17 +40,17 @@ while($row = $stmt->fetch()){
     }
 
     if($debug){
-        echo "https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token;
+        echo "https://api.myfox.me:443/v2/site/".$siteid."/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token;
     }
     
-    $curl = curl_init( "https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token );
+    $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token );
     curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
     $response = curl_exec( $curl );
     //$response=file_get_contents("https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token);
     $json=json_decode($response,true);
     if(!isset($json["payload"])){
         $token=getToken();
-        $response=file_get_contents("https://api.myfox.me:443/v2/site/10562/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token);
+        $response=file_get_contents("https://api.myfox.me:443/v2/site/".$siteid."/device/".$row["param1"]."/data/temperature/get?dateFrom=".$dateDebut->format('Y-m-d')."T".$dateDebut->format('H:i:s')."Z&dateTo=".date('Y-m-d')."T".date('H:i:s')."Z&access_token=".$token);
         $json=json_decode($response,true);
     }
     $temp="";
