@@ -3,7 +3,7 @@ include_once "/var/www/metronic/tools/config.php";
 include_once "/var/www/metronic/models/Device.php";
 include_once "/var/www/metronic/models/MessageDevice.php";
 include_once "/var/www/metronic/models/ScenarioMessage.php";
-
+$GLOBALS["debug"]=FALSE;
 
 function executeMessage($messgeId, $valueToSend=NULL){
     if($GLOBALS["debug"]){
@@ -16,10 +16,9 @@ function executeMessage($messgeId, $valueToSend=NULL){
         echo "\nDev=".$device->name;
     }
     if($device->product_id != ""){
-        echo "\nProd not null";
         $product = Product::getProduct($device->product_id);
         if(is_object($product)){
-        $productName=$product->name;
+            $productName=$product->name;
         }
     }
     
@@ -46,6 +45,21 @@ function executeMessage($messgeId, $valueToSend=NULL){
             file_get_contents("http://".$device->ip_address."/pub/remote_control?code=".$device->param1."&key=".$message->command, false, $context);
             addLog(LOG_INFO, "[ACTION]: Freebox to ".$message->command);
             break;
+        case 'knx_group':
+            include_once('eibnetmux.php');
+            //Parameters
+            $address=$message->command;
+            $eisType=($message->type == "bit") ? '14' : '1';
+            $value=$message->value;
+
+            $c = new eibnetmux( "php_client", 'localhost', 4390 );
+            //printf( "Opening group $argv[$idx], eis type " . $argv[$idx +1] . "\n" );
+            $group = new KNXgroup( $address, $eisType );
+            //printf( "Going to write " . $argv[$idx +2] . " ... " );
+            $r = $group->write( $c, $value );
+
+            $c->close();
+
         case 'myfox_alarm':
             if($GLOBALS["debug"]){
                 echo "myfox_alarm";
@@ -165,6 +179,13 @@ function executeMessage($messgeId, $valueToSend=NULL){
             zibase("actuator",$device,$message,$valueToSend);
 
             break;
+        case 'zibase_scenario':
+            if($GLOBALS["debug"]){
+                echo "zibase_scenario";
+            }
+            zibase("scenario",$device,$message,$valueToSend);
+
+            break;
         case 'zwave_thermostat':
             if($GLOBALS["debug"]){
                 echo "thermostat";
@@ -271,7 +292,8 @@ function zibase($type,$device,$message,$valueToSend=NULL){
 
     switch(strtolower($type)){
         case 'actuator':
-            $valueToExec=(strtolower($message->command) == "on") ? "1" : "0";
+            //$valueToExec=(strtolower($message->command) == "on") ? "1" : "0";
+            $valueToExec=$message->command;
             $contentProbe=file_get_contents("https://zibase.net/api/get/ZAPI.php?zibase=".$zibase."&token=".$token."&service=execute&target=actuator&id=".$device->param1."&action=".$valueToExec, false, $context);
             break;
         case 'scenario':

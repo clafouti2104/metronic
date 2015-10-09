@@ -137,8 +137,8 @@ class Schedule{
     
     
     /**
-    * @desc Suppression d'une Schedule
-    */
+     * @desc Suppression d'une Schedule
+     **/
     public function delete() {		
         $query = "DELETE FROM schedule";
         $query .= " WHERE id=:id";
