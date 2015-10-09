@@ -209,7 +209,7 @@ if($isPost){
                         <div class="form-group">
                             <label class="control-label col-md-3" for="myfox_siteid">Code Site</label>
                             <div class="col-md-9">
-                                <input class="form-control"name="myfox_siteid" id="myfox_siteid" type="password" value="<?php echo $myfoxSiteid; ?>">
+                                <input class="form-control"name="myfox_siteid" id="myfox_siteid" type="text" value="<?php echo $myfoxSiteid; ?>">
                             </div>
                         </div>
                     </div>
