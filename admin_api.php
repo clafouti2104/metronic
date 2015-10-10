@@ -70,7 +70,7 @@ foreach($devices as $device){
     //State
     echo "<tr class=\"odd gradeX\">";
     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status</td>";
-    echo "<td><input type=\"text\" class=\"form-control\" value=\"http://"..$_SERVER['SERVER_ADDR']."/metronic/api/get_status.php?idDevice=".$device->id."\" /></td>";
+    echo "<td><input type=\"text\" class=\"form-control\" value=\"http://".$_SERVER['SERVER_ADDR']."/metronic/api/get_status.php?idDevice=".$device->id."\" /></td>";
     echo "</tr>";
 
     //Action
