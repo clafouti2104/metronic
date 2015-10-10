@@ -10,11 +10,9 @@ foreach($ini as $title => $value){
     if($title == "myfox_token" && $value != ""){
         $type="myfox";
         $token=$value;
-        //break;
     }
     if($title == "myfox_siteid"){
         $siteid=$value;
-        //break;
     }
     if($title == "calaos_login" && $value != ""){
         $type="calaos";
@@ -44,7 +42,6 @@ if($type=="myfox"){
     }
     $status = $securityState->payload->statusLabel;
     $result = array("state"=>strtolower($status));
-    //echo $status;
     
     //Récupération des devices actifs de type sonde de températures
     $sql = "SELECT d.id, d.name, last_update, param1 FROM device d, product p WHERE p.id=d.product_id AND p.name='myfox_alarm' AND d.active=1";
