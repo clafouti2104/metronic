@@ -89,7 +89,7 @@ if($isPost){
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                     <h3 class="page-title">
-                        KNX				
+                        MyFOX				
                         <small>Configuration MyFOX</small>
                     </h3>
                     <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
@@ -128,18 +128,18 @@ if($isPost){
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3" for="myfox_siteid">Client ID</label>
+                        <label class="control-label col-md-3" for="myfox_client_id">Client ID</label>
                         <div class="col-md-9">
-                            <input class="form-control"name="myfox_siteid" id="myfox_siteid" type="text" value="<?php echo $myfoxSiteid; ?>">
+                            <input class="form-control"name="myfox_client_id" id="myfox_client_id" type="text" value="<?php echo $myfoxClientid; ?>">
                             <span class="help-inline">Correspond à une application créée sur <a href="http://api.myfox.me">http://api.myfox.me</a></span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3" for="myfox_siteid">Client Secret</label>
+                        <label class="control-label col-md-3" for="myfox_client_secret">Client Secret</label>
                         <div class="col-md-9">
-                            <input class="form-control"name="myfox_siteid" id="myfox_siteid" type="text" value="<?php echo $myfoxSiteid; ?>">
+                            <input class="form-control"name="myfox_client_secret" id="myfox_client_secret" type="text" value="<?php echo $myfoxClientSecret; ?>">
                             <span class="help-inline">Correspond à une application créée sur <a href="http://api.myfox.me">http://api.myfox.me</a></span>
                         </div>
                     </div>

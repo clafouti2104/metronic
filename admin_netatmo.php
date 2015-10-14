@@ -81,7 +81,7 @@ if($isPost){
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                     <h3 class="page-title">
-                        KNX				
+                        Netatmo				
                         <small>Configuration Netatmo</small>
                     </h3>
                     <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
