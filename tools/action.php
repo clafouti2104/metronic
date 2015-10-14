@@ -57,9 +57,8 @@ function executeMessage($messgeId, $valueToSend=NULL){
             $group = new KNXgroup( $address, $eisType );
             //printf( "Going to write " . $argv[$idx +2] . " ... " );
             $r = $group->write( $c, $value );
-
             $c->close();
-
+            break;
         case 'myfox_alarm':
             if($GLOBALS["debug"]){
                 echo "myfox_alarm";
