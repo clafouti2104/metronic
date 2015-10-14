@@ -102,11 +102,10 @@ if($isPost){
             <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Général</h3>
             <div class="row">
                 <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="myfox_login">Login</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="myfox_login" id="myfox_login" type="text" value="<?php echo $myfoxLogin; ?>">
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3" for="myfox_login">Login</label>
+                        <div class="col-md-9">
+                            <input class="form-control"name="myfox_login" id="myfox_login" type="text" value="<?php echo $myfoxLogin; ?>">
                         </div>
                     </div>
                 </div>                
