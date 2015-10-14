@@ -17,40 +17,16 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="adminadvanced"){
     $isPost=TRUE;
 }
 
-$myfoxLoginBDD=$myfoxPasswordBDD=$myfoxSiteidBDD="";
-$netatmoClientIdBDD=$netatmoClientSecretBDD=$netatmoLoginBDD=$netatmoPasswordBDD="";
 $calaosIpAddressBDD=$calaosLoginBDD=$calaosPasswordBDD="";
 $zibaseLoginBDD=$zibasePasswordBDD="";
 $zwaveIpAddress=
 
-$sql = "SELECT * FROM config WHERE name IN ('myfox_login','myfox_password', 'myfox_siteid', ";
-$sql .= " 'netatmo_client_id', 'netatmo_client_secret', 'netatmo_login', 'netatmo_password', ";
+$sql = "SELECT * FROM config WHERE name IN (";
 $sql .= " 'calaos_ip_address', 'calaos_login', 'calaos_password', 'zibase_login', 'zibase_password', 'zwave_ip_address')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     switch(strtolower($row["name"])){
-        case 'myfox_login':
-            $myfoxLoginBDD = $row["value"];
-            break;
-        case 'myfox_password':
-            $myfoxPasswordBDD = $row["value"];
-            break;
-        case 'myfox_siteid':
-            $myfoxSiteidBDD = $row["value"];
-            break;
-        case 'netatmo_client_id':
-            $netatmoClientIdBDD= $row["value"];
-            break;
-        case 'netatmo_client_secret':
-            $netatmoClientSecretBDD= $row["value"];
-            break;
-        case 'netatmo_login':
-            $netatmoLoginBDD = $row["value"];
-            break;
-        case 'netatmo_password':
-            $netatmoPasswordBDD = $row["value"];
-            break;
         case 'calaos_ip_address':
             $calaosIpAddressBDD = $row["value"];
             break;
@@ -73,13 +49,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     }
 }
 
-$myfoxLogin= ($isPost) ? $_POST["myfox_login"] : $myfoxLoginBDD;
-$myfoxPassword= ($isPost) ? $_POST["myfox_password"] : $myfoxPasswordBDD;
-$myfoxSiteid= ($isPost) ? $_POST["myfox_siteid"] : $myfoxSiteidBDD;
-$netatmoClientId= ($isPost) ? $_POST["netatmo_client_id"] : $netatmoClientIdBDD;
-$netatmoClientSecret= ($isPost) ? $_POST["netatmo_client_secret"] : $netatmoClientSecretBDD;
-$netatmoLogin= ($isPost) ? $_POST["netatmo_login"] : $netatmoLoginBDD;
-$netatmoPassword= ($isPost) ? $_POST["netatmo_password"] : $netatmoPasswordBDD;
 $calaosIpAddress= ($isPost) ? $_POST["calaos_ip_address"] : $calaosIpAddressBDD;
 $calaosLogin= ($isPost) ? $_POST["calaos_login"] : $calaosLoginBDD;
 $calaosPassword= ($isPost) ? $_POST["calaos_password"] : $calaosPasswordBDD;
@@ -90,14 +59,7 @@ $zwaveIpAddress= ($isPost) ? $_POST["zwave_ip_address"] : $zwaveIpAddressBDD;
 
 if($isPost){
     
-    $sql="UPDATE config SET value='".$myfoxLogin."' WHERE name='myfox_login';";
-    $sql.="UPDATE config SET value='".$myfoxPassword."' WHERE name='myfox_password';";
-    $sql.="UPDATE config SET value='".$myfoxSiteid."' WHERE name='myfox_siteid';";
-    $sql.="UPDATE config SET value='".$netatmoClientId."' WHERE name='netatmo_client_id';";
-    $sql.="UPDATE config SET value='".$netatmoClientSecret."' WHERE name='netatmo_client_secret';";
-    $sql.="UPDATE config SET value='".$netatmoLogin."' WHERE name='netatmo_login';";
-    $sql.="UPDATE config SET value='".$netatmoPassword."' WHERE name='netatmo_password';";
-    $sql.="UPDATE config SET value='".$calaosIpAddress."' WHERE name='calaos_ip_address';";
+    $sql="UPDATE config SET value='".$calaosIpAddress."' WHERE name='calaos_ip_address';";
     $sql.="UPDATE config SET value='".$calaosLogin."' WHERE name='calaos_login';";
     $sql.="UPDATE config SET value='".$calaosPassword."' WHERE name='calaos_password';";
     $sql.="UPDATE config SET value='".$zibaseLogin."' WHERE name='zibase_login';";
@@ -109,27 +71,6 @@ if($isPost){
     $content="[parameters]\n";
     foreach($ini as $title => $value){
         switch($title){
-            case "myfox_login":
-                $value = $myfoxLogin;
-                break;
-            case "myfox_password":
-                $value = $myfoxPassword;
-                break;
-            case "myfox_siteid":
-                $value = $myfoxSiteid;
-                break;
-            case 'netatmo_client_id':
-                $value = $netatmoClientId;
-                break;
-            case 'netatmo_client_secret':
-                $value = $netatmoClientSecret;
-                break;
-            case 'netatmo_login':
-                $value = $netatmoLogin;
-                break;
-            case 'netatmo_password':
-                $value = $netatmoPassword;
-                break;
             case 'calaos_ip_address':
                 $value = $calaosIpAddress;
                 break;
@@ -198,72 +139,28 @@ if($isPost){
                             <h4>Administration KNX</h4>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="thumbnail">
+                            <a href="admin_myfox.php">
+                                <img src="assets/img/myfox_logo.png" title="Administration MyFox" alt="Administration MyFox" />
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <h4>Administration MyFox</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="thumbnail">
+                            <a href="admin_netatmo.php">
+                                <img src="assets/img/netatmo_logo.png" title="Administration Netatmo" alt="Administration Netatmo" />
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <h4>Administration Netatmo</h4>
+                        </div>
+                    </div>
                 </div>
 
-                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;MyFox</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="myfox_login">Login</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="myfox_login" id="myfox_login" type="text" value="<?php echo $myfoxLogin; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="myfox_password">Mot de passe</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="myfox_password" id="myfox_password" type="password" value="<?php echo $myfoxPassword; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="myfox_siteid">Code Site</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="myfox_siteid" id="myfox_siteid" type="text" value="<?php echo $myfoxSiteid; ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Netatmo</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_client_id">Client Id</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="netatmo_client_id" id="netatmo_client_id" type="text" value="<?php echo $netatmoClientId; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_client_secret">Client Secret</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="netatmo_client_secret" id="netatmo_client_secret" type="text" value="<?php echo $netatmoClientSecret; ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_login">Login</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="netatmo_login" id="netatmo_login" type="text" value="<?php echo $netatmoLogin; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_password">Mot de passe</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="netatmo_password" id="netatmo_password" type="password" value="<?php echo $netatmoPassword; ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Calaos</h3>
                 <div class="row">
                     <div class="col-md-6">

@@ -31,6 +31,20 @@ $knxIpAddress= ($isPost) ? $_POST["knx_ip_address"] : $knxIpAddressBDD;
 if($isPost){
     $sql="UPDATE config SET value='".$knxIpAddress."' WHERE name='knx_ip_address';";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
+
+    $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
+    $content="[parameters]\n";
+    foreach($ini as $title => $value){
+        switch($title){
+            case 'knx_ip_address':
+                $value = $knxIpAddress;
+                break;
+            default:
+        }
+        $content .="\n\t".$title."=\"".$value."\"";
+        
+    }
+    file_put_contents("/var/www/metronic/tools/parameters.ini", $content);
     
     $info="Modifications enregistrées avec succès";
 }
@@ -64,6 +78,12 @@ if($isPost){
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn blue" type="submit">
+                    <i class="icon-ok"></i>Valider
+                </button>
+                <a href="admin_advanced.php"><button class="btn" type="button">Retourner</button></a>
             </div>
         </form>
     </div>
