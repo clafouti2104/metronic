@@ -187,6 +187,19 @@ if($isPost){
             <form class="form-horizontal form" method="POST" action="admin_advanced.php">
                 <div class="form-body">
                 <input type="hidden" name="formname" id="formname" value="adminadvanced" />
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="thumbnail">
+                            <a href="admin_knx.php">
+                                <img src="assets/img/knx_logo.png" title="Administration KNX" alt="Administration KNX" />
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <h4>Administration KNX</h4>
+                        </div>
+                    </div>
+                </div>
+
                 <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;MyFox</h3>
                 <div class="row">
                     <div class="col-md-6">
