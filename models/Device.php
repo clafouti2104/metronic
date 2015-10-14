@@ -83,6 +83,7 @@ class Device{
             'myfox_light',
             'myfox_alarm',
             'freebox',
+            'knx_group',
             'chacon'
     );
     
@@ -358,6 +359,10 @@ class Device{
                         foreach($cmds as $name=>$cmd){
                             $msg=MessageDevice::createMessageDevice($id, $name, 0, NULL, NULL, NULL, 1,NULL,$cmd);
                         }
+                        break;
+                    case 'knx_group':
+                        $msgOn=MessageDevice::createMessageDevice($id, "On", 0, 1, NULL, "switch", 1, NULL, "<ADDRESS_GROUP>");
+                        $msgOff=MessageDevice::createMessageDevice($id, "Off", 0, 0, NULL, "switch", 1, NULL,"<ADDRESS_GROUP>");
                         break;
                     case 'myfox_alarm':
                         $msgArmed=MessageDevice::createMessageDevice($id, "MES", 0, NULL, NULL, NULL, 1, NULL, "armed");
