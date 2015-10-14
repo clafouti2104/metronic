@@ -27,6 +27,7 @@ if($type=="myfox"){
         addLog(LOG_ERR, "[ACTION]: MyFOX : no siteid set");
         return false;
     }
+
     $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/security?access_token=".$token);
     curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
     $securityState = curl_exec( $curl );
@@ -42,7 +43,7 @@ if($type=="myfox"){
     }
     $status = $securityState->payload->statusLabel;
     $result = array("state"=>strtolower($status));
-    
+
     //Récupération des devices actifs de type sonde de températures
     $sql = "SELECT d.id, d.name, last_update, param1 FROM device d, product p WHERE p.id=d.product_id AND p.name='myfox_alarm' AND d.active=1";
     $stmt = $db->prepare($sql);
