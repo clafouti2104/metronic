@@ -132,6 +132,22 @@ jQuery(document).ready(function() {
             }
         });
     });
+
+    $('.eibnetmuxStop').bind('click',function(e){
+        $.ajax({
+            url: "ajax/eibnetmux_handle.php",
+            type: "POST",
+            data: {
+                action: 'stop'
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            success: function(data){
+                toastr.info("KNX activé");
+            }
+        });
+    });
 });
 </script>
 
