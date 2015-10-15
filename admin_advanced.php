@@ -17,31 +17,15 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="adminadvanced"){
     $isPost=TRUE;
 }
 
-$calaosIpAddressBDD=$calaosLoginBDD=$calaosPasswordBDD="";
-$zibaseLoginBDD=$zibasePasswordBDD="";
-$zwaveIpAddress=
+
+$zwaveIpAddressBDD="";
 
 $sql = "SELECT * FROM config WHERE name IN (";
-$sql .= " 'calaos_ip_address', 'calaos_login', 'calaos_password', 'zibase_login', 'zibase_password', 'zwave_ip_address')";
+$sql .= " 'zwave_ip_address')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     switch(strtolower($row["name"])){
-        case 'calaos_ip_address':
-            $calaosIpAddressBDD = $row["value"];
-            break;
-        case 'calaos_login':
-            $calaosLoginBDD = $row["value"];
-            break;
-        case 'calaos_password':
-            $calaosPasswordBDD = $row["value"];
-            break;
-        case 'zibase_login':
-            $zibaseLoginBDD = $row["value"];
-            break;
-        case 'zibase_password':
-            $zibasePasswordBDD = $row["value"];
-            break;
         case 'zwave_ip_address':
             $zwaveIpAddressBDD = $row["value"];
             break;
@@ -49,43 +33,16 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     }
 }
 
-$calaosIpAddress= ($isPost) ? $_POST["calaos_ip_address"] : $calaosIpAddressBDD;
-$calaosLogin= ($isPost) ? $_POST["calaos_login"] : $calaosLoginBDD;
-$calaosPassword= ($isPost) ? $_POST["calaos_password"] : $calaosPasswordBDD;
-$zibaseLogin= ($isPost) ? $_POST["zibase_login"] : $zibaseLoginBDD;
-$zibasePassword= ($isPost) ? $_POST["zibase_password"] : $zibasePasswordBDD;
 $zwaveIpAddress= ($isPost) ? $_POST["zwave_ip_address"] : $zwaveIpAddressBDD;
 
-
 if($isPost){
-    
-    $sql="UPDATE config SET value='".$calaosIpAddress."' WHERE name='calaos_ip_address';";
-    $sql.="UPDATE config SET value='".$calaosLogin."' WHERE name='calaos_login';";
-    $sql.="UPDATE config SET value='".$calaosPassword."' WHERE name='calaos_password';";
-    $sql.="UPDATE config SET value='".$zibaseLogin."' WHERE name='zibase_login';";
-    $sql.="UPDATE config SET value='".$zibasePassword."' WHERE name='zibase_password';";
-    $sql.="UPDATE config SET value='".$zwaveIpAddress."' WHERE name='zwave_ip_address';";
+    $sql="UPDATE config SET value='".$zwaveIpAddress."' WHERE name='zwave_ip_address';";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
     
     $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
     $content="[parameters]\n";
     foreach($ini as $title => $value){
         switch($title){
-            case 'calaos_ip_address':
-                $value = $calaosIpAddress;
-                break;
-            case 'calaos_login':
-                $value = $calaosLogin;
-                break;
-            case 'calaos_password':
-                $value = $calaosPassword;
-                break;
-            case 'zibase_login':
-                $value = $zibaseLogin;
-                break;
-            case 'zibase_password':
-                $value = $zibasePassword;
-                break;
             case 'zwave_ip_address':
                 $value = $zwaveIpAddress;
                 break;
@@ -125,7 +82,6 @@ if($isPost){
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_protocol">
-            <form class="form-horizontal form" method="POST" action="admin_advanced.php">
                 <div class="form-body">
                 <input type="hidden" name="formname" id="formname" value="adminadvanced" />
                 <div class="row">
@@ -159,75 +115,39 @@ if($isPost){
                             <h4>Administration Netatmo</h4>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="thumbnail">
+                            <a href="admin_calaos.php">
+                                <img src="assets/img/calaos_logo.png" title="Administration Calaos" alt="Administration Calaos" />
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <h4>Administration Calaos</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="thumbnail">
+                            <a href="admin_zibase.php">
+                                <img src="assets/img/zibase_logo.jpg" title="Administration Zibase" alt="Administration Zibase" />
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <h4>Administration Zibase</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="thumbnail">
+                            <a href="admin_zwave.php">
+                                <img src="assets/img/zwave_logo.png" title="Administration ZWave" alt="Administration ZWave" />
+                            </a>
+                        </div>
+                        <div class="caption">
+                            <h4>Administration ZWave</h4>
+                        </div>
+                    </div>
                 </div>
 
-                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Calaos</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="calaos_login">Login</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="calaos_login" id="calaos_login" type="text" value="<?php echo $calaosLogin; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="calaos_password">Mot de passe</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="calaos_password" id="calaos_password" type="password" value="<?php echo $calaosPassword; ?>">
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="calaos_ip_address">Adresse IP</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="calaos_ip_address" id="calaos_ip_address" type="text" value="<?php echo $calaosIpAddress; ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Zibase</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="zibase_login">Login</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="zibase_login" id="zibase_login" type="text" value="<?php echo $zibaseLogin; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="zibase_password">Mot de passe</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="zibase_password" id="zibase_password" type="password" value="<?php echo $zibasePassword; ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;ZWave</h3>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="zwave_ip_address">Adresse IP Razberry</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="zwave_ip_address" id="zwave_ip_address" type="text" value="<?php echo $zwaveIpAddress; ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn blue" type="submit">
-                        <i class="icon-ok"></i>Valider
-                    </button>
-                    <a href="admin_device.php"><button class="btn" type="button">Retourner</button></a>
-                </div>
-                </div>
-            </form>
             </div>
             <div class="tab-pane" id="tab_notification">
                 <div class="row">
@@ -236,7 +156,7 @@ if($isPost){
                         &nbsp;&nbsp;&nbsp;&nbsp;<a data-toggle="modal" href="admin_advanced.php#addNotification" class="btn btn-primary btnAddNotification" type="button"><i class="fa fa-plus"></i>&nbsp;Ajouter une notification</a>
                         </h3>
         <?php 
-        if(count($notifications)>0){
+    if(count($notifications)>0){
         ?>
                         <table class="table table-striped table-hover">
                             <tr>
@@ -256,7 +176,7 @@ if($isPost){
         ?>
                         </table>
         <?php 
-        }
+    }
         ?>
                     </div>
                 </div>      

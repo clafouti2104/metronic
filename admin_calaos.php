@@ -8,60 +8,52 @@ include_once "models/Log.php";
 
 
 $isPost=FALSE;
-if(isset($_POST["formname"]) && $_POST["formname"]=="adminnetatmo"){
+if(isset($_POST["formname"]) && $_POST["formname"]=="admincalaos"){
     $isPost=TRUE;
 }
 
-$netatmoClientIdBDD=$netatmoClientSecretBDD=$netatmoLoginBDD=$netatmoPasswordBDD="";
+$calaosIpAddressBDD=$calaosLoginBDD=$calaosPasswordBDD="";
 
-$sql = "SELECT * FROM config WHERE name IN ('netatmo_client_id', 'netatmo_client_secret', 'netatmo_login', 'netatmo_password')";
+$sql = "SELECT * FROM config WHERE name IN ('calaos_ip_address', 'calaos_login', 'calaos_password')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     switch(strtolower($row["name"])){
-        case 'netatmo_client_id':
-            $netatmoClientIdBDD = $row["value"];
+        case 'calaos_ip_address':
+            $calaosIpAddressBDD = $row["value"];
             break;
-        case 'netatmo_client_secret':
-            $netatmoClientSecretBDD = $row["value"];
+        case 'calaos_login':
+            $calaosLoginBDD = $row["value"];
             break;
-        case 'netatmo_login':
-            $netatmoLoginBDD = $row["value"];
-            break;
-        case 'netatmo_password':
-            $netatmoPasswordBDD = $row["value"];
+        case 'calaos_password':
+            $calaosPasswordBDD = $row["value"];
             break;
         default:
     }
 }
 
-$netatmoClientId= ($isPost) ? $_POST["netatmo_client_id"] : $netatmoClientIdBDD;
-$netatmoClientSecret= ($isPost) ? $_POST["netatmo_client_secret"] : $netatmoClientSecretBDD;
-$netatmoLogin= ($isPost) ? $_POST["netatmo_login"] : $netatmoLoginBDD;
-$netatmoPassword= ($isPost) ? $_POST["netatmo_password"] : $netatmoPasswordBDD;
+$calaosIpAddress= ($isPost) ? $_POST["calaos_ip_address"] : $calaosIpAddressBDD;
+$calaosLogin= ($isPost) ? $_POST["calaos_login"] : $calaosLoginBDD;
+$calaosPassword= ($isPost) ? $_POST["calaos_password"] : $calaosPasswordBDD;
 
 if($isPost){
-    $sql="UPDATE config SET value='".$netatmoClientId."' WHERE name='netatmo_client_id';";
-    $sql.="UPDATE config SET value='".$netatmoClientSecret."' WHERE name='netatmo_client_secret';";
-    $sql.="UPDATE config SET value='".$netatmoLogin."' WHERE name='netatmo_login';";
-    $sql.="UPDATE config SET value='".$netatmoPassword."' WHERE name='netatmo_password';";
+    $sql="UPDATE config SET value='".$calaosIpAddress."' WHERE name='calaos_ip_address';";
+    $sql.="UPDATE config SET value='".$calaosLogin."' WHERE name='calaos_login';";
+    $sql.="UPDATE config SET value='".$calaosPassword."' WHERE name='calaos_password';";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
     
     $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
     $content="[parameters]\n";
     foreach($ini as $title => $value){
         switch($title){
-            case 'netatmo_client_id':
-                $value = $netatmoClientId;
+            case 'calaos_ip_address':
+                $value = $calaosIpAddress;
                 break;
-            case 'netatmo_client_secret':
-                $value = $netatmoClientSecret;
+            case 'calaos_login':
+                $value = $calaosLogin;
                 break;
-            case 'netatmo_login':
-                $value = $netatmoLogin;
-                break;
-            case 'netatmo_password':
-                $value = $netatmoPassword;
+            case 'calaos_password':
+                $value = $calaosPassword;
                 break;
             default:
         }
@@ -81,8 +73,8 @@ if($isPost){
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                     <h3 class="page-title">
-                        Netatmo				
-                        <small>Configuration Netatmo</small>
+                        Calaos				
+                        <small>Configuration Calaos</small>
                     </h3>
                     <ul class="page-breadcrumb breadcrumb" style="margin-bottom:0px;">
                         <li>
@@ -95,31 +87,31 @@ if($isPost){
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>   
-                            <a href="#">Netatmo</a>
+                            <a href="#">Calaos</a>
                         </li>
                     </ul>
                     <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
                     <!-- END PAGE TITLE & BREADCRUMB-->
                 </div>
         </div>
-        <form class="form-horizontal form" method="POST" action="admin_netatmo.php">
+        <form class="form-horizontal form" method="POST" action="admin_calaos.php">
             <div class="form-body">
-            <input type="hidden" name="formname" id="formname" value="adminnetatmo" />
+            <input type="hidden" name="formname" id="formname" value="admincalaos" />
             <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Général</h3>
             <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_client_id">Client Id</label>
+                            <label class="control-label col-md-3" for="calaos_login">Login</label>
                             <div class="col-md-9">
-                                <input class="form-control"name="netatmo_client_id" id="netatmo_client_id" type="text" value="<?php echo $netatmoClientId; ?>">
+                                <input class="form-control"name="calaos_login" id="calaos_login" type="text" value="<?php echo $calaosLogin; ?>">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_client_secret">Client Secret</label>
+                            <label class="control-label col-md-3" for="calaos_password">Mot de passe</label>
                             <div class="col-md-9">
-                                <input class="form-control"name="netatmo_client_secret" id="netatmo_client_secret" type="text" value="<?php echo $netatmoClientSecret; ?>">
+                                <input class="form-control"name="calaos_password" id="calaos_password" type="password" value="<?php echo $calaosPassword; ?>">
                             </div>
                         </div>
                     </div>
@@ -127,17 +119,9 @@ if($isPost){
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_login">Login</label>
+                            <label class="control-label col-md-3" for="calaos_ip_address">Adresse IP</label>
                             <div class="col-md-9">
-                                <input class="form-control"name="netatmo_login" id="netatmo_login" type="text" value="<?php echo $netatmoLogin; ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label col-md-3" for="netatmo_password">Mot de passe</label>
-                            <div class="col-md-9">
-                                <input class="form-control"name="netatmo_password" id="netatmo_password" type="password" value="<?php echo $netatmoPassword; ?>">
+                                <input class="form-control"name="calaos_ip_address" id="calaos_ip_address" type="text" value="<?php echo $calaosIpAddress; ?>">
                             </div>
                         </div>
                     </div>

@@ -92,6 +92,20 @@ if($isPost){
                         MyFOX				
                         <small>Configuration MyFOX</small>
                     </h3>
+                    <ul class="page-breadcrumb breadcrumb" style="margin-bottom:0px;">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href="index.php">Admin</a>
+                            <i class="fa fa-angle-right"></i>
+                        </li>
+                        <li>   
+                            <a href="admin_advanced">Avancés</a>
+                            <i class="fa fa-angle-right"></i>
+                        </li>
+                        <li>   
+                            <a href="#">MyFOX</a>
+                        </li>
+                    </ul>
                     <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
                     <!-- END PAGE TITLE & BREADCRUMB-->
                 </div>

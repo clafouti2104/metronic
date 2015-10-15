@@ -8,45 +8,50 @@ include_once "models/Log.php";
 
 
 $isPost=FALSE;
-if(isset($_POST["formname"]) && $_POST["formname"]=="adminknx"){
+if(isset($_POST["formname"]) && $_POST["formname"]=="adminzibase"){
     $isPost=TRUE;
 }
 
-$knxIpAddressBDD="";
+$zibaseLoginBDD=$zibasePasswordBDD="";
 
-$sql = "SELECT * FROM config WHERE name IN ('knx_ip_address')";
+$sql = "SELECT * FROM config WHERE name IN ('zibase_login', 'zibase_password')";
 $stmt = $GLOBALS["dbconnec"]->prepare($sql);
 $stmt->execute(array());
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     switch(strtolower($row["name"])){
-        case 'knx_ip_address':
-            $knxIpAddressBDD = $row["value"];
+        case 'zibase_login':
+            $zibaseLoginBDD = $row["value"];
+            break;
+        case 'zibase_password':
+            $zibasePasswordBDD = $row["value"];
             break;
         default:
     }
 }
 
-$knxIpAddress= ($isPost) ? $_POST["knx_ip_address"] : $knxIpAddressBDD;
+$zibaseLogin= ($isPost) ? $_POST["zibase_login"] : $zibaseLoginBDD;
+$zibasePassword= ($isPost) ? $_POST["zibase_password"] : $zibasePasswordBDD;
 
 if($isPost){
-    $sql="UPDATE config SET value='".$knxIpAddress."' WHERE name='knx_ip_address';";
+    $sql="UPDATE config SET value='".$zibaseLogin."' WHERE name='zibase_login';";
+    $sql.="UPDATE config SET value='".$zibasePassword."' WHERE name='zibase_password';";
     $stmt = $GLOBALS["dbconnec"]->exec($sql);
-
+    
     $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
     $content="[parameters]\n";
     foreach($ini as $title => $value){
         switch($title){
-            case 'knx_ip_address':
-                $value = $knxIpAddress;
+            case 'zibase_login':
+                $value = $zibaseLogin;
+                break;
+            case 'zibase_password':
+                $value = $zibasePassword;
                 break;
             default:
         }
         $content .="\n\t".$title."=\"".$value."\"";
-        
     }
     file_put_contents("/var/www/metronic/tools/parameters.ini", $content);
-    file_put_contents("/etc/domokine/eibnetmux", "#Do not edit\n\nIP_KNX_ROUTER=\"".$knxIpAddress."\"");
-    
     $info="Modifications enregistrées avec succès";
 }
 ?>
@@ -58,8 +63,8 @@ if($isPost){
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->			
                     <h3 class="page-title">
-                        KNX				
-                        <small>Configuration de la partie KNX</small>
+                        Zibase				
+                        <small>Configuration Zibase</small>
                     </h3>
                     <ul class="page-breadcrumb breadcrumb" style="margin-bottom:0px;">
                         <li>
@@ -67,29 +72,36 @@ if($isPost){
                             <a href="index.php">Admin</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                        <li>   
+                        <li>
                             <a href="admin_advanced">Avancés</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>   
-                            <a href="#">KNX</a>
+                            <a href="#">Zibase</a>
                         </li>
                     </ul>
                     <?php if(isset($info)){echo "<div class=\"alert alert-success\">".$info."</div>";}?>
                     <!-- END PAGE TITLE & BREADCRUMB-->
                 </div>
         </div>
-        <form class="form-horizontal form" method="POST" action="admin_knx.php">
+        <form class="form-horizontal form" method="POST" action="admin_zibase.php">
             <div class="form-body">
-            <input type="hidden" name="formname" id="formname" value="adminknx" />
-            <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Routeur IP/KNX</h3>
+            <input type="hidden" name="formname" id="formname" value="adminzibase" />
+            <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Général</h3>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-md-3" for="knx_ip_address">Adresse IP</label>
+                        <label class="control-label col-md-3" for="zibase_login">Login</label>
                         <div class="col-md-9">
-                            <input class="form-control" name="knx_ip_address" id="knx_ip_address" type="text" value="<?php echo $knxIpAddress; ?>">
-                            <span class="help-inline">Adresse IP du routeur KNX</span>
+                            <input class="form-control"name="zibase_login" id="zibase_login" type="text" value="<?php echo $zibaseLogin; ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3" for="zibase_password">Mot de passe</label>
+                        <div class="col-md-9">
+                            <input class="form-control"name="zibase_password" id="zibase_password" type="password" value="<?php echo $zibasePassword; ?>">
                         </div>
                     </div>
                 </div>
