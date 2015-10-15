@@ -84,7 +84,7 @@ if($isPost){
             <input type="hidden" name="formname" id="formname" value="adminknx" />
             <h3 class="form-section"><i class="fa fa-cog"></i>&nbsp;Routeur IP/KNX</h3>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label col-md-3" for="knx_ip_address">Adresse IP</label>
                         <div class="col-md-9">
@@ -94,8 +94,19 @@ if($isPost){
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Service</label>
+                        <div class="col-md-9">
+                            <button class="btn btn-primary eibnetmuxStart" type="button">Start</button>
+                            <button class="btn default eibnetmuxStop" type="button">Stop</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form-actions">
-                <button class="btn blue" type="submit">
+                <button class="btn btn-primary" type="submit">
                     <i class="icon-ok"></i>Valider
                 </button>
                 <a href="admin_advanced.php"><button class="btn" type="button">Retourner</button></a>
@@ -103,6 +114,27 @@ if($isPost){
         </form>
     </div>
 </div>
+
+<script>
+jQuery(document).ready(function() { 
+    $('.eibnetmuxStart').bind('click',function(e){
+        $.ajax({
+            url: "ajax/eibnetmux_handle.php",
+            type: "POST",
+            data: {
+                action: 'start'
+            },
+            error: function(data){
+                toastr.error("Une erreur est survenue");
+            },
+            success: function(data){
+                toastr.info("KNX activé");
+            }
+        });
+    });
+});
+</script>
+
 <?php
 include "modules/footer.php";
 ?>
