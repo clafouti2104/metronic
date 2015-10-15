@@ -11,7 +11,7 @@ if($_POST["action"] != "start" && $_POST["action"] != "stop"){
     return "error";
 }
 
-exec("/etc/init.d/eibnetmux ".$_POST["action"]);
+shell_exec("/usr/bin/nohup /etc/init.d/eibnetmux ".$_POST["action"]." > /dev/null 2>&1 &");
 echo "success";
 
 ?>
