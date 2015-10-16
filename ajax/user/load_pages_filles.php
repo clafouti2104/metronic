@@ -15,7 +15,7 @@ $output .= "$('.tiles').empty();";
 $pagesFilles=Page::getPageFilles($_POST["idPageParent"]);
 $output .= "$('#dashboard').append('";
 foreach($pagesFilles as $pagesFille){
-    $output .= "<div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12\" onclick=\"location.href=\'page.php?pageId=".$pagesFille->id."\'; \">";
+    $output .= "<div class=\"col-lg-4 col-md-4 col-sm-6 col-xs-12\" onclick=\"location.href=\'page.php?pageId=".$pagesFille->id."\'; \">";
     $output .= "<div class=\"dashboard-stat ".$pagesFille->color." \">";
     $output .= "<div class=\"visual\">";
     $output .= "<i class=\"fa ".$pagesFille->icon."\" ></i>";
