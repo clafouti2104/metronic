@@ -46,7 +46,7 @@ $pageFilles = Page::getPageFilles($_GET["pageId"]);
             <div class="packery">
     <?php 
     foreach($pageFilles as $pageFille){
-        echo "<div class=\"col-lg-3 col-md-3 col-sm-6 col-xs-12\" onclick=\"location.href='page.php?pageId=".$pageFille->id."'; \">";
+        echo "<div class=\"col-lg-4 col-md-4 col-sm-6 col-xs-12\" onclick=\"location.href='page.php?pageId=".$pageFille->id."'; \">";
         echo "<div class=\"dashboard-stat ".$pageFille->color." \">";
         echo "<div class=\"visual\">";
         echo "<i class=\"fa ".$pageFille->icon."\" ></i>";

@@ -28,14 +28,13 @@ if($isPost && isset($_POST["idpage"])){
     if(isset($_GET["idPage"])){
         $idPage=$_GET["idPage"];
         $page = Page::getPage($idPage);
-        
     } 
-    $name= (!is_object($page)) ? NULL : $page->name;
-    $description= (!is_object($page)) ? NULL : $page->description;
-    $icon= (!is_object($page)) ? NULL : $page->icon;
-    $active= (!is_object($page)) ? TRUE : $page->active;
-    $parent= (!is_object($page)) ? TRUE : $page->parent;
-    $color= (!is_object($page)) ? TRUE : $page->color;
+    $name= (!isset($page) || !is_object($page)) ? NULL : $page->name;
+    $description= (!isset($page) || !is_object($page)) ? NULL : $page->description;
+    $icon= (!isset($page) || !is_object($page)) ? NULL : $page->icon;
+    $active= (!isset($page) || !is_object($page)) ? TRUE : $page->active;
+    $parent= (!isset($page) || !is_object($page)) ? TRUE : $page->parent;
+    $color= (!isset($page) || !is_object($page)) ? TRUE : $page->color;
 }
 
 if($isPost){

@@ -103,7 +103,7 @@ $pagesParent=Page::getPageParents();
 <?php
 foreach($pagesParent as $pageParent){
 ?>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pageParent" idPageParent="<?php echo $pageParent->id; ?>">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pageParent" idPageParent="<?php echo $pageParent->id; ?>">
                                         <div class="dashboard-stat <?php echo $pageParent->color; ?>">
                                                 <div class="visual">
                                                         <i class="fa <?php echo $pageParent->icon; ?> "></i>
