@@ -390,7 +390,7 @@ if(isset($idCond) && $idCond > 0){
     
 <div class="modal fade" id="ajaxCommandLine" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
     <div class="modal-dialog" style="width:600px;">
@@ -401,7 +401,7 @@ if(isset($idCond) && $idCond > 0){
     
 <div class="modal fade" id="ajaxVariable" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
     <div class="modal-dialog" style="width:800px;">
@@ -412,7 +412,7 @@ if(isset($idCond) && $idCond > 0){
     
 <div class="modal fade" id="ajax" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
     <div class="modal-dialog" style="width:800px;">
@@ -423,7 +423,7 @@ if(isset($idCond) && $idCond > 0){
     
 <div class="modal fade" id="ajaxScenario" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
     <div class="modal-dialog" style="width:400px;">
@@ -434,7 +434,7 @@ if(isset($idCond) && $idCond > 0){
     
 <div class="modal fade" id="ajaxNotification" role="basic" aria-hidden="true">
     <div class="page-loading page-loading-boxed">
-        <img src="metronic/assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
+        <img src="assets/global/img/loading-spinner-grey.gif" alt="" class="loading">
         <span>&nbsp;&nbsp;Loading... </span>
     </div>
     <div class="modal-dialog" style="width:400px;">
