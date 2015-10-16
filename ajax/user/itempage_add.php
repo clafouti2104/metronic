@@ -247,6 +247,7 @@ $( document ).ready(function() {
             $('.optionTuile').hide();
             $('.optionSliderColor').hide();
         }
+        $('.optionTuile').show();
         $('.optionLargeur').show();
         $('.optionColor').show();
     });
