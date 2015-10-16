@@ -247,6 +247,8 @@ $( document ).ready(function() {
             $('.optionTuile').hide();
             $('.optionSliderColor').hide();
         }
+        $('.optionLargeur').show();
+        $('.optionColor').show();
     });
     
     $('#selectPlugins').bind('change',function(e){
