@@ -931,7 +931,10 @@ $password = $password_gmail;
 $headers = array (
          'From' => $from,
          'To' => $to,
-         'Subject' => $subject);
+         'Subject' => $subject,
+         'MIME-Version'  => '1.0'
+         'Content-Type' => 'text/html'
+         );
 
 $smtp = Mail::factory('smtp',
       array (
