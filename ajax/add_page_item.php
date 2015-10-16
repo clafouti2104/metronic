@@ -18,7 +18,7 @@ $_POST["chartid"] = ($_POST["chartid"] == "") ? NULL : $_POST["chartid"];
 $_POST["listeid"] = ($_POST["listeid"] == "") ? NULL : $_POST["listeid"];
 $_POST["deviceid"] = ($_POST["deviceid"] == "") ? NULL : $_POST["deviceid"];
 $_POST["plugin"] = ($_POST["plugin"] == "") ? NULL : $_POST["plugin"];
-$_POST["pluginType"] = (isset($_POST["pluginType"]) && $_POST["pluginType"] == "") ? NULL : $_POST["pluginType"];
+$_POST["pluginType"] = (!isset($_POST["pluginType"]) || $_POST["pluginType"] == "") ? NULL : $_POST["pluginType"];
 $_POST["incremental"] = ($_POST["incremental"] == "true") ? TRUE : FALSE;
 $_POST["description"] = ($_POST["description"] == "") ? NULL : $_POST["description"];
 $_POST["color"] = ($_POST["color"] == "") ? NULL : $_POST["color"];
