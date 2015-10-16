@@ -60,7 +60,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $logLevel= ($isPost) ? $_POST["log_level"] : $logLevelBDD;
-$chartDefaultDevices= ($isPost) ? $_POST["chart_default_devices"] : $chartDefaultDevicesBDD;
+$chartDefaultDevices= ($isPost && isset($_POST["chart_default_devices"])) ? $_POST["chart_default_devices"] : $chartDefaultDevicesBDD;
 $email= ($isPost) ? $_POST["general_email"] : $emailBDD;
 $login_gmail= ($isPost) ? $_POST["login_gmail"] : $loginGmailBDD;
 $password_gmail= ($isPost) ? $_POST["password_gmail"] : $passwordGmailBDD;

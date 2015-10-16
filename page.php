@@ -774,6 +774,7 @@ function refreshStatus(){
         success: function(data){
             $.each(data, function(index, value) {
                 value = utf8_decode(value);
+                index=utf8_decode(index);
                 if(value.toLowerCase() != "on" && value.toLowerCase() != "off"){
                     if($('.slider-basic-'+index).size() == 1){
                         //$('.slider-basic-'+index).slider({'value':value});
@@ -803,12 +804,12 @@ function refreshStatus(){
                     //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
-                    if($('.icon-status-'+index).length >= 1){
-                        if($('.icon-status-'+index).attr('type') == 'door'){
-                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-locked');
+                    if($('.status-icon-'+index).length >= 1){
+                        if($('.status-icon-'+index).attr('type') == 'door'){
+                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-locked');
                         }
-                        if($('.icon-status-'+index).attr('type') == 'light'){
-                            $('.icon-status-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
+                        if($('.status-icon-'+index).attr('type') == 'light'){
+                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
                         }
                     }
                     $('.make-switch-'+index).bootstrapSwitch('state', false, true);
