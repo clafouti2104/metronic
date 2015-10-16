@@ -612,6 +612,12 @@ $html.="
             body {
             direction: ltr;
             background: #f6f8f1;
+            width:100% !important;
+            min-width: 100%;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
             }   
             a:hover {
             text-decoration: underline;
