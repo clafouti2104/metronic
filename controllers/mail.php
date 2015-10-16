@@ -36,7 +36,7 @@ $content = (isset($content)) ? $content : "";
 $html="<html>";
 $html.="<head>";
 $html.="<title>Metronic | Email Templates - Responsive Newsletter<br> Email Template</title>";
-$html.="<style type=\"text/css\">
+/*$html.="<style type=\"text/css\">
 #outlook a {
 padding:0;
 }
@@ -849,7 +849,7 @@ $html.="
             }
             }
         ";
-$html.="</style>";
+$html.="</style>";*/
 $html.="</head>";
 $html.="<body>";
 $html.='
