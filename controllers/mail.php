@@ -606,7 +606,7 @@ table[class='body'] .hide-for-desktop {
 display: inherit !important;
 }
 }";
-$html.="</style>";
+$html.="</style>";*/
 $html.="<style type=\"text/css\">";
 $html.="
             body {
@@ -787,7 +787,7 @@ $html.="
             }
             }
         ";
-$html.="</style>";*/
+$html.="</style>";
 $html.="</head>";
 $html.="<body>";
 $html.='
