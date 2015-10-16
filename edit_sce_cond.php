@@ -44,6 +44,7 @@ if(isset($_POST["formname"]) && $_POST["formname"]=="editscenario"){
     $isPost=TRUE;
 }
 
+$conditions=$condActions=array();
 if($isPost && isset($_POST["idscenario"])){
     $name= $_POST["name"];
     $description= $_POST["description"];
