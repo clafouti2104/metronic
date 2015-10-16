@@ -5,6 +5,9 @@ include_once "/var/www/metronic/models/MessageDevice.php";
 include_once "/var/www/metronic/models/ScenarioMessage.php";
 $GLOBALS["debug"]=FALSE;
 
+$timeout = array('http' => array('timeout' => 10));
+$context = stream_context_create($timeout);
+
 function executeMessage($messgeId, $valueToSend=NULL){
     if($GLOBALS["debug"]){
         echo "execute message";
