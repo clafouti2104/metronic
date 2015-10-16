@@ -52,7 +52,7 @@ if(isset($icon)){
 <?php
 $moreMsg = FALSE;
 $acceptedTypes = array(
-    "on","off","open","close"
+    "on","off","open","close", "switch"
 );
 foreach($msgs as $msg){
     if($msg->active == "0"){
