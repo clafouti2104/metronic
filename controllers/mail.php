@@ -927,13 +927,13 @@ $host =     "ssl://smtp.gmail.com";
 $port =     "465";
 $username = $login_gmail;
 $password = $password_gmail;
+$crlf = "\n";
 
 $headers = array (
          'From' => $from,
          'To' => $to,
          'Subject' => $subject,
          'MIME-Version'  => '1.0'
-         'Content-Type' => 'text/html'
          );
 
 $smtp = Mail::factory('smtp',
@@ -944,7 +944,8 @@ $smtp = Mail::factory('smtp',
             'username' => $username,
             'password' => $password));
 
-$message = new Mail_mime();
+$message = new Mail_mime($crlf);
+$message->setTXTBody("Text message only");
 $message->setHTMLBody($body);
 $mail =& Mail::factory('smtp',
       array (
