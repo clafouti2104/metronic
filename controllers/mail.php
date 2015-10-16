@@ -33,11 +33,11 @@ $_POST["mail"] = (isset($_POST["mail"])) ? $_POST["mail"] : $general_mail;
 $title = (isset($title)) ? $title : "";
 $content = (isset($content)) ? $content : "";
 
-$body="<html>";
-$body.="<head>";
-$body.="<title>Metronic | Email Templates - Responsive Newsletter<br> Email Template</title>";
-$body.="<style type=\"text/css\">";
-$body.="<style type=\"text/css\">
+$html="<html>";
+$html.="<head>";
+$html.="<title>Metronic | Email Templates - Responsive Newsletter<br> Email Template</title>";
+$html.="<style type=\"text/css\">";
+$html.="<style type=\"text/css\">
 #outlook a {
 padding:0;
 }
@@ -616,9 +616,9 @@ table[class='body'] .hide-for-desktop {
 display: inherit !important;
 }
 }";
-$body.="</style>";
-$body.="<style>";
-$body.="
+$html.="</style>";
+$html.="<style>";
+$html.="
             /**************************************************************
             * Custom Styles *
             ***************************************************************/
@@ -850,10 +850,10 @@ $body.="
             }
             }
         ";
-$body.="</style>";
-$body.="</head>";
-$body.="<body>";
-$body.='
+$html.="</style>";
+$html.="</head>";
+$html.="<body>";
+$html.='
 <table class="body">
     <tbody>
     <tr>
@@ -916,27 +916,48 @@ $body.='
     </tbody>
 </table>
         ';
-$body.="</body>";
-$body.="</html>";
+$html.="</body>";
+$html.="</html>";
 
 $from =     $login_gmail;
 $to =       $_POST["mail"];
 $subject = (!isset($subject)) ? "Test Mail Domokine" : $subject;
-$body = (!isset($body)) ? "\n\nIl s'agit d'un test d'envoi de mail" : $body;
+$html = (!isset($html)) ? "\n\nIl s'agit d'un test d'envoi de mail" : $html;
 $host =     "ssl://smtp.gmail.com";
 $port =     "465";
 $username = $login_gmail;
 $password = $password_gmail;
-$crlf = "\n";
 
 $headers = array (
          'From' => $from,
          'To' => $to,
-         'Subject' => $subject,
-         'MIME-Version'  => '1.0'
+         'Subject' => $subject
          );
 
-$smtp = Mail::factory('smtp',
+$mime = new Mail_mime();
+// TXT
+$text = 'Text version of email';
+$mime->setTXTBody($text);
+//HTML
+$mime->setHTMLBody($html);
+
+if(isset($filename)){
+      $mime->addAttachment($filename, "application/pdf");
+}
+
+$headers = $mime->headers($headers);
+$body = $mime->get();
+
+$message =& Mail::factory('smtp',
+      array (
+            'host' => $host,
+            'port' => $port,
+            'auth' => true,
+            'username' => $username,
+            'password' => $password));
+$message->send($to, $headers, $body);
+
+/*$smtp = Mail::factory('smtp',
       array (
             'host' => $host,
             'port' => $port,
@@ -944,9 +965,12 @@ $smtp = Mail::factory('smtp',
             'username' => $username,
             'password' => $password));
 
-$message = new Mail_mime($crlf);
+$message = new Mail_mime();
 $message->setTXTBody("Text message only");
-$message->setHTMLBody($body);
+$message->setHTMLBody($html);
+
+$headers = $mime->headers($headers);
+
 $mail =& Mail::factory('smtp',
       array (
             'host' => $host,
@@ -954,11 +978,9 @@ $mail =& Mail::factory('smtp',
             'auth' => true,
             'username' => $username,
             'password' => $password));
-if(isset($filename)){
-      $message->addAttachment($filename, "application/pdf");
-}
+
 
 $result = $mail->send($to, $message->headers($headers), $message->get());
 
-if (PEAR::isError($mail)) die($mail->getMessage());
+if (PEAR::isError($mail)) die($mail->getMessage());*/
 ?>
