@@ -616,7 +616,7 @@ display: inherit !important;
 }
 }";
 $html.="</style>";
-$html.="<style>";
+$html.="<style type=\"text/css\">";
 $html.="
             /**************************************************************
             * Custom Styles *
