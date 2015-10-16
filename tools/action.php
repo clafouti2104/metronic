@@ -9,6 +9,9 @@ $timeout = array('http' => array('timeout' => 10));
 $context = stream_context_create($timeout);
 
 function executeMessage($messgeId, $valueToSend=NULL){
+    $timeout = array('http' => array('timeout' => 10));
+    $context = stream_context_create($timeout);
+
     if($GLOBALS["debug"]){
         echo "execute message";
     }
