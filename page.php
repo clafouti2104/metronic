@@ -785,12 +785,12 @@ function refreshStatus(){
                     }
                 }
                 if(value.toLowerCase() == "on"){
-                    if($('.status-icon-'+index).length >= 1){
-                        if($('.status-icon-'+index).attr('type') == 'door'){
-                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-unlocked');
+                    if($('.icon-status-'+index).length >= 1){
+                        if($('.icon-status-'+index).attr('type') == 'door'){
+                            $('.icon-status-'+index).removeClass().addClass('icon-status-'+index+' stateDeviceId icon-unlocked');
                         }
-                        if($('.status-icon-'+index).attr('type') == 'light'){
-                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-on');
+                        if($('.icon-status-'+index).attr('type') == 'light'){
+                            $('.icon-status-'+index).removeClass().addClass('icon-status-'+index+' stateDeviceId icon-light-on');
                         }
                     }
                     
@@ -804,12 +804,12 @@ function refreshStatus(){
                     //$('.stateDeviceId-'+index).text('');
                 }
                 if(value.toLowerCase() == "off"){
-                    if($('.status-icon-'+index).length >= 1){
-                        if($('.status-icon-'+index).attr('type') == 'door'){
-                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-locked');
+                    if($('.icon-status-'+index).length >= 1){
+                        if($('.icon-status-'+index).attr('type') == 'door'){
+                            $('.icon-status-'+index).removeClass().addClass('icon-status-'+index+' stateDeviceId icon-locked');
                         }
-                        if($('.status-icon-'+index).attr('type') == 'light'){
-                            $('.status-icon-'+index).removeClass().addClass('status-icon-'+index+' stateDeviceId icon-light-off');
+                        if($('.icon-status-'+index).attr('type') == 'light'){
+                            $('.icon-status-'+index).removeClass().addClass('icon-status-'+index+' stateDeviceId icon-light-off');
                         }
                     }
                     $('.make-switch-'+index).bootstrapSwitch('state', false, true);
