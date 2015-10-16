@@ -77,7 +77,6 @@ clear: both;
 display: block;
 }
 @media screen and (min-width:0\0) {
-/* IE9 and IE10 rule sets go here */
 img.ie10-responsive {
 width: 100% !important;
 }
@@ -114,7 +113,6 @@ background-color: #d9d9d9;
 height: 1px;
 border: none;
 }
-/* Responsive Grid */
 table.body {
 height: 100%;
 width: 100%;
@@ -250,7 +248,6 @@ table.column .right-text-pad,
 table.column .text-pad-right {
 padding-right: 10px;
 }
-/* Block Grid */
 .block-grid {
 width: 100%;
 max-width: 580px;
@@ -280,7 +277,6 @@ width:62px;
 .eight-up td {
 width:52px;
 }
-/* Alignment & Visibility Classes */
 table.center, td.center {
 text-align: center;
 }
@@ -305,7 +301,6 @@ float: none;
 .hide-for-desktop {
 display: none;
 }
-/* Typography */
 body, table.body, h1, h2, h3, h4, h5, h6, p, td {
 color: #222222;
 font-family: 'Helvetica', 'Arial', sans-serif;
@@ -372,7 +367,6 @@ h5 a:visited,
 h6 a:visited {
 color: #2ba6cb !important;
 }
-/* Panels */
 .panel {
 background: #f2f2f2;
 border: 1px solid #d9d9d9;
@@ -384,7 +378,6 @@ width: 100%;
 .sub-grid td.sub-columns {
 padding-bottom: 0;
 }
-/* Buttons */
 table.button,
 table.tiny-button,
 table.small-button,
@@ -517,11 +510,9 @@ table.round td {
 -moz-border-radius: 500px;
 border-radius: 500px;
 }
-/* Outlook First */
 body.outlook p {
 display: inline !important;
 }
-/* Media Queries */
 @media only screen and (max-width: 600px) {
 table[class='body'] img {
 width: auto !important;
@@ -618,12 +609,6 @@ display: inherit !important;
 $html.="</style>";
 $html.="<style type=\"text/css\">";
 $html.="
-            /**************************************************************
-            * Custom Styles *
-            ***************************************************************/
-            /***
-            Reset & Typography
-            ***/
             body {
             direction: ltr;
             background: #f6f8f1;
@@ -645,9 +630,6 @@ $html.="
             display: block;
             margin: 5px 0 5px 0 !important;
             }
-            /***
-            Buttons
-            ***/
             .btn td {
             background: #e5e5e5 !important;
             border: 0;
@@ -673,7 +655,6 @@ $html.="
             .btn td:active {  
             background: #d8d8d8 !important;
             }
-            /*  Yellow */
             .btn.yellow td {
             background: #ffb848 !important;
             }
@@ -698,7 +679,6 @@ $html.="
             .btn.green td:active { 
             background: #1d943b !important;
             }
-            /*  Blue */
             .btn.blue td {
             background: #4d90fe !important;
             }
@@ -712,24 +692,15 @@ $html.="
             font-weight: bold;
             font-size: 11px;
             }
-            /***
-            Note Panels
-            ***/
             .note .panel {
             padding: 10px !important;
             background: #ECF8FF;
             border: 0;
             }
-            /***
-            Header
-            ***/
             .page-header { 
             width: 100%;
             background: #1f1f1f;
             }
-            /***
-            Social Icons
-            ***/
             .social-icons {
             float: right;
             }
@@ -743,16 +714,10 @@ $html.="
             .social-icons td img {
             max-width: none !important; 
             }
-            /***
-            Content
-            ***/
             table.container.content > tbody > tr > td{
             background: #fff;  
             padding: 15px !important;
             }
-            /***
-            Footer
-            ***/
             .page-footer  {
             width: 100%;
             background: #2f2f2f;
@@ -761,17 +726,11 @@ $html.="
             vertical-align: middle;
             color: #fff;
             }
-            /***
-            Content devider
-            ***/
             .devider {
             border-bottom: 1px solid #eee;
             margin: 15px -15px;
             display: block;
             }
-            /***
-            Media Item
-            ***/
             .media-item img {
             display: block !important;
             float: none;
@@ -782,9 +741,6 @@ $html.="
             padding-bottom: 0;
             vertical-align: middle;
             }
-            /***
-            Utils
-            ***/
             .align-reverse {
             text-align: right;
             }
@@ -798,9 +754,6 @@ $html.="
             display: none;
             }
             @media only screen and (max-width: 600px) {
-            /***
-            Reset & Typography
-            ***/
             body {
             background: #fff;  
             }
@@ -810,37 +763,22 @@ $html.="
             h4 {font-size: 20px;}
             h5 {font-size: 16px;}
             h6 {font-size: 14px;}
-            /***
-            Content
-            ***/
             table.container.content > tbody > tr > td{
             padding: 0px !important;
             }
             table[class='body'] table.columns .social-icons td {
             width: auto !important;
             }
-            /***
-            Header
-            ***/
             .page-header {
             padding: 10px !important;
             }
-            /***
-            Content devider
-            ***/
             .devider {
             margin: 15px 0;
             }
-            /***
-            Media Item
-            ***/
             .media-item {
             border-bottom: 1px solid #eee;
             padding: 15px 0 !important;
             }
-            /***
-            Media Item
-            ***/
             .hidden-mobile {
             display: none;
             }
