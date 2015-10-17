@@ -332,21 +332,33 @@ function zibase($type,$device,$message,$valueToSend=NULL){
 }
 
 function zwave($heat,$device,$message,$valueToSend=NULL){
+    $login=$password="admin";
     $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
     foreach($ini as $title => $value){
         if($title == "zwave_ip_address"){
             $zwave_ip_address=$value;
-            break;
+        }
+        if($title == "zwave_login"){
+            $zwave_login=$value;
+        }
+        if($title == "zwave_password"){
+            $zwave_password=$value;
         }
     }
     if(!isset($zwave_ip_address)){
         addLog(LOG_ERR, "[ACTION]: Any Zwave Ip Address is set");
         return FALSE;
     }
+    /*$loginUrl="192.168.23.27:8083/smarthome/#/?login=admin&password=admin";
+    file_get_contents($url);
     $url= "http://".$zwave_ip_address.":8083/ZWaveAPI/Run/devices[".$device->param1."].".$message->command;
     $url .= (is_null($valueToSend)) ? "" : $valueToSend.")";
-    file_get_contents($url);
-    addLog(LOG_INFO, "[ACTION]: ZWave calling ".$url);
+    file_get_contents($url);*/
+    //Login
+    exec('curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d \'{"form": true, "login": "'.$zwave_login.'", "password": "'.$zwave_password.'", "keepme": false, "default_ui": 1}\' '.$zwave_ip_address.':8083/ZAutomation/api/v1/login -c /etc/domokine/cookie.txt');
+    //Action
+    exec('curl '.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.' -b cookie.txt');
+    addLog(LOG_INFO, "[ACTION]: ZWave calling ".$zwave_ip_address.":8083/ZAutomation/api/v1/devices/".$device->param1."/command/".$message->command);
 
     return TRUE;
 }
