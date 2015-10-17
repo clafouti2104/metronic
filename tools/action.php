@@ -357,7 +357,7 @@ function zwave($heat,$device,$message,$valueToSend=NULL){
     //Login
     exec('curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d \'{"form": true, "login": "'.$zwave_login.'", "password": "'.$zwave_password.'", "keepme": false, "default_ui": 1}\' '.$zwave_ip_address.':8083/ZAutomation/api/v1/login -c /etc/domokine/cookie.txt');
     //Action
-    exec('curl '.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.' -b cookie.txt');
+    exec('curl '.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.' -b /etc/domokine/cookie.txt');
     addLog(LOG_INFO, "[ACTION]: ZWave calling ".$zwave_ip_address.":8083/ZAutomation/api/v1/devices/".$device->param1."/command/".$message->command);
 
     return TRUE;
