@@ -37,18 +37,27 @@ if(count($zwaves) == 0){
     exit;
 }
 
-$timeout = array('http' => array('timeout' => 10));
-$context = stream_context_create($timeout);
-
-$date=new DateTime('now');
-$dateInterval=new DateInterval('PT360S');
-$dateInterval->invert=1;
-$date->add($dateInterval);
-//echo "<br/>DATE = ".$date->format('U')."<br/>";
-$contentData=file_get_contents("http://".$zwaveIpAddress.":8083/ZWaveAPI/Data/".$date->format('U'), false, $context);
-$content=json_decode($contentData,TRUE);
-
 foreach($zwaves as $zwaveId=>$zwaveObjects){
+    /*$date=new DateTime('now');
+    $dateInterval=new DateInterval('PT360S');
+    $dateInterval->invert=1;
+    $date->add($dateInterval);
+    //echo "<br/>DATE = ".$date->format('U')."<br/>";
+    $contentData=file_get_contents("http://".$zwaveIpAddress.":8083/ZWaveAPI/Data/".$date->format('U'), false, $context);
+    $content=json_decode($contentData,TRUE);*/
+
+    //ZWayVDev_zway_2-0-67-1
+    $url='http://'.$zwaveIpAddress.':8083/ZAutomation/api/v1/devices/'.$zwaveId;
+    $cookie="/etc/domokine/cookie.txt";
+
+    $c = curl_init($url);
+    //curl_setopt($c, CURLOPT_VERBOSE, 1);
+    curl_setopt($c, CURLOPT_COOKIE, $cookie);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+    $page = curl_exec($c);
+    curl_close($c);
+    $content=json_decode($content,TRUE);
+    
     foreach($zwaveObjects as $infos){
         if($infos["path"] == ""){
             continue;
