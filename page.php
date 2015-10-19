@@ -250,7 +250,10 @@ $( document ).ready(function() {
         });
     });
     
-    
+    $('.dk-camera').each( function( i, itemElem ) {
+        var idItemTmp=$(this).attr('idItem');
+        
+    });
     
     $('.btnDeletePageItem').bind('click',function(e){
         $('#iditempagetodelete').val($(this).attr('iditempage'));

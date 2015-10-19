@@ -36,7 +36,7 @@ switch(strtolower($device->type)){
 
 ?>
 <div class="cell cell-<?php echo $item->id; ?> col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery itempage itempage-<?php echo $item->id; ?>" type="device" elementId="<?php echo $device->id; ?>" iditempage="<?php echo $item->id; ?>">
-    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; ?> <?php echo $bgcolor; ?>" style="">
+    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; echo $bgcolor; ?>" style="">
         <div class="visual ">
 <?php 
 if(isset($icon)){

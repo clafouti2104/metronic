@@ -252,7 +252,13 @@ $( document ).ready(function() {
         $('.optionColor').show();
     });
     
-    $('#selectPlugins').bind('change',function(e){
+    $('#selectChart').buttonind('change',function(e){
+        $('.optionTuile').show();
+        $('.optionColor').hide();
+        $('.optionLargeur').show();
+    });
+
+    $('#selectPlugins').buttonind('change',function(e){
         if($('#selectPlugins option:selected').attr('type') == "camera"){
             $('.optionTuile').show();
             $('.optionHeight').show();
@@ -263,7 +269,6 @@ $( document ).ready(function() {
         } 
         if($('#selectPlugins option:selected').attr('type') == "meteo"){
             $('.optionTuile').show();
-            
         }
     });
     

@@ -54,7 +54,7 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
     //curl_setopt($c, CURLOPT_VERBOSE, 1);
     curl_setopt($c, CURLOPT_COOKIE, $cookie);
     curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-    $page = curl_exec($c);
+    $content = curl_exec($c);
     curl_close($c);
     $content=json_decode($content,TRUE);
     
@@ -65,7 +65,7 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
         if($infos["deviceId"] == ""){
             continue;
         }
-        $explPath = explode("/", $infos["path"]);
+        $explPath = explode(".", $infos["path"]);
         $buildResult = '$content';
         foreach($explPath as $item){
             $buildResult .= "['".$item."']";
