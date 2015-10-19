@@ -258,7 +258,7 @@ $( document ).ready(function() {
         $('.optionLargeur').show();
     });
 
-    $('#selectPlugins').buttonind('change',function(e){
+    $('#selectPlugins').bind('change',function(e){
         if($('#selectPlugins option:selected').attr('type') == "camera"){
             $('.optionTuile').show();
             $('.optionHeight').show();
