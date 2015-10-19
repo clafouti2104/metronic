@@ -252,7 +252,7 @@ $( document ).ready(function() {
         $('.optionColor').show();
     });
     
-    $('#selectChart').buttonind('change',function(e){
+    $('#selectChart').bind('change',function(e){
         $('.optionTuile').show();
         $('.optionColor').hide();
         $('.optionLargeur').show();
