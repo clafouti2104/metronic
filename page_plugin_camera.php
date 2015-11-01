@@ -8,7 +8,7 @@ $streamImg=(isset($details->ip) && isset($details->cameraStream)) ? "http://".$d
 
 ?>
 <div class="cell col-lg-<?php echo $size; ?> col-md-<?php echo $size; ?> col-sm-6 col-xs-12 boxPackery itempage itempage-<?php echo $item->id; ?>" deviceid="" iditempage="<?php echo $item->id; ?>">
-    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; echo $bgcolor; ?>" style="<?php echo $color;if(isset($params->height)){echo "height:".$params->height."px;";} ?>">
+    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; echo " ".$bgcolor; ?>" style="<?php echo $color;if(isset($params->height)){echo "height:".$params->height."px;";} ?>">
         <img class="dk-camera dk-camera-<?php echo $item->id;?>" idItem="<?php echo $item->id;?>" src="<?php echo $streamImg; ?>" id="<?php echo $item->deviceId; ?>" width="100%" width="100%" />
         <a class="more btnDeletePageItem" iditempage="<?php echo $item->id; ?>" data-toggle="modal" href="page.php#deleteItemPage">
           <?php echo $name; ?><i class="fa fa-trash-o" ></i>

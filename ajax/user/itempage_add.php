@@ -252,11 +252,11 @@ $( document ).ready(function() {
         $('.optionColor').show();
     });
     
-    $('#selectChart').bind('change',function(e){
+    /*$('#selectChart').bind('change',function(e){
         $('.optionTuile').show();
         $('.optionColor').hide();
         $('.optionLargeur').show();
-    });
+    });*/
 
     $('#selectPlugins').bind('change',function(e){
         if($('#selectPlugins option:selected').attr('type') == "camera"){
