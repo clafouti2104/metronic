@@ -7,12 +7,18 @@ require("../models/Device.php");
 
 $db = connectDB();
 $GLOBALS["dbconnec"] = connectDB();
+$zwaveLogin=$zwavePassword="admin";
 //Récupération @IP razberry
 $ini = parse_ini_file("/var/www/metronic/tools/parameters.ini");
 foreach($ini as $title => $value){
     if($title == "zwave_ip_address"){
         $zwaveIpAddress=$value;
-        break;
+    }
+    if($title == "zwave_login"){
+        $zwaveLogin=$value;
+    }
+    if($title == "zwave_password"){
+        $zwavePassword=$value;
     }
 }
 
@@ -38,14 +44,6 @@ if(count($zwaves) == 0){
 }
 
 foreach($zwaves as $zwaveId=>$zwaveObjects){
-    /*$date=new DateTime('now');
-    $dateInterval=new DateInterval('PT360S');
-    $dateInterval->invert=1;
-    $date->add($dateInterval);
-    //echo "<br/>DATE = ".$date->format('U')."<br/>";
-    $contentData=file_get_contents("http://".$zwaveIpAddress.":8083/ZWaveAPI/Data/".$date->format('U'), false, $context);
-    $content=json_decode($contentData,TRUE);*/
-
     //ZWayVDev_zway_2-0-67-1
     $url='http://'.$zwaveIpAddress.':8083/ZAutomation/api/v1/devices/'.$zwaveId;
     $cookie="/etc/domokine/cookie.txt";
@@ -58,6 +56,35 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
     curl_close($c);
     $content=json_decode($content,TRUE);
     
+    //Not authenticated
+    if(isset($content['code']) && $content['code']='401'){
+        $urlLogin='http://'.$zwaveIpAddress.':8083/ZAutomation/api/v1/login';
+        $requestJson='{"form": true, "login": "'.$zwaveLogin.'", "password": "'.$zwavePassword.'", "keepme": true, "default_ui": 1}';
+
+        $cLogin = curl_init($url);
+        curl_setopt($cLogin,CURLOPT_POSTFIELDS,$requestJson);
+        curl_setopt($cLogin, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($cLogin, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($cLogin, CURLOPT_RETURNTRANSFER, false);
+        curl_setopt($cLogin, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($cLogin, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($requestJson))
+        );
+        curl_setopt($cLogin, CURLOPT_COOKIEJAR, '/etc/domokine/cookie.txt');
+
+        $content = curl_exec($cLogin);
+        curl_close($cLogin);
+    }
+
+    $c = curl_init($url);
+    //curl_setopt($c, CURLOPT_VERBOSE, 1);
+    curl_setopt($c, CURLOPT_COOKIE, $cookie);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+    $content = curl_exec($c);
+    curl_close($c);
+    $content=json_decode($content,TRUE);
+
     foreach($zwaveObjects as $infos){
         if($infos["path"] == ""){
             continue;

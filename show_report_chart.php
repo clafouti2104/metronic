@@ -1,3 +1,31 @@
+<?php
+//Affichage des graphiques
+
+echo "<div class=\"col-md-12\">";
+foreach($reportCharts as $reportChart){
+    $chartTmp = Chart::getChart($reportChart->deviceid);
+    //echo "<br/>Chart #".$chartTmp->id;
+    //print_r($devices[$chartTmp->id]);
+?>
+<div class="col-md-6" <?php if($isPDF){echo " style=\"width:650px;page-break-after: always;\"";}  ?>>
+    <div class="portlet box blue-steel tabbable" style="background-color: #FFF;">
+        <div class="portlet-title">
+            <div class="caption"> <?php echo $chartTmp->name; ?> </div>
+        </div>
+        <div class="portlet-body">
+            <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat" style="overflow: auto;"></div>
+                <!--<div class="deleteItemPage" style="margin-bottom:10px;position: absolute;top:370px;right:10px;">
+                    
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+}
+?>
+</div>
 <div class="col-md-12">
 <?php
 foreach($devicesByType as $type=>$tmpDevices){
@@ -53,14 +81,14 @@ foreach($tmpDevices as $tmpDevice){
 }
 
 if(isset($devicesIncByType[$type])){
-foreach($devicesIncByType[$type] as $tmpDeviceInc){
-    $txtAvg = Device::showStateGeneric($sum[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
-    $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
-    $percent = History::getPercent($sum[$tmpDeviceInc->id], $sumLastPeriod[$tmpDeviceInc->id]);
-    $minValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "min");
-    $maxValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "max");
-    $txtMin = Device::showStateGeneric($minValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
-    $txtMax = Device::showStateGeneric($maxValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+    foreach($devicesIncByType[$type] as $tmpDeviceInc){
+        $txtAvg = Device::showStateGeneric($sum[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+        $txtAvgLast = Device::showStateGeneric($sumLastPeriod[$tmpDeviceInc->id],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+        $percent = History::getPercent($sum[$tmpDeviceInc->id], $sumLastPeriod[$tmpDeviceInc->id]);
+        $minValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "min");
+        $maxValue=History::getMinMaxForDevicesInc($tmpDeviceInc->id, $report->period, "max");
+        $txtMin = Device::showStateGeneric($minValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
+        $txtMax = Device::showStateGeneric($maxValue['value'],$tmpDeviceInc->data_type,$tmpDeviceInc->unite);
 ?>
                             <tr>
                                 <td><?php echo "#".$tmpDeviceInc->id." ".$tmpDeviceInc->name; ?></td>
@@ -81,7 +109,7 @@ foreach($devicesIncByType[$type] as $tmpDeviceInc){
                                 </td>
                             </tr>
 <?php
-}
+    }
 }
 ?>
                         </tbody>
@@ -168,35 +196,9 @@ foreach($devicesIncByType as $type=>$tmpDevices){
         </div>
     </div>-->
 <?php
-    
 }
-
 echo "</div>";
-echo "<div class=\"col-md-12\">";
-foreach($reportCharts as $reportChart){
-    $chartTmp = Chart::getChart($reportChart->deviceid);
-    //echo "<br/>Chart #".$chartTmp->id;
-    //print_r($devices[$chartTmp->id]);
 ?>
-<div class="col-md-6" <?php if($isPDF){echo " style=\"width:650px;page-break-after: always;\"";}  ?>>
-    <div class="portlet box blue-steel tabbable" style="background-color: #FFF;">
-        <div class="portlet-title">
-            <div class="caption"> <?php echo $chartTmp->name; ?> </div>
-        </div>
-        <div class="portlet-body">
-            <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div id="container-<?php echo $chartTmp->id; ?>" class="container-<?php echo $chartTmp->id; ?> dashboard-stat" style="overflow: auto;"></div>
-                <!--<div class="deleteItemPage" style="margin-bottom:10px;position: absolute;top:370px;right:10px;">
-                    
-                </div>-->
-            </div>
-        </div>
-    </div>
-</div>
-<?php
-}
-?>
-</div>
 
 <script type="text/javascript">
     
