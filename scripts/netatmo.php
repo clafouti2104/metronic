@@ -2,8 +2,8 @@
 /**
  * Récupération des états des sondes de températures netatmo
  */
-require_once '../tools/netatmo/NAApiClient.php';
-require_once '../tools/netatmo/Config.php';
+require_once '../tools/netatmo/Clients/NAApiClient.php';
+//require_once '../tools/netatmo/Config.php';
 require("../tools/config.php");
 require("../models/Device.php");
 
@@ -49,7 +49,7 @@ try {
 
 $devicelist = $helper->simplifyDeviceList();
 $mesures = $helper->getLastMeasures();
-print_r($mesures);
+//print_r($mesures);
 if(!is_array($mesures) || count($mesures) == 0){
     echo "no data returned\n";
     exit;
@@ -96,6 +96,7 @@ while($row = $stmt->fetch()){
     }
     
     if($value != ""){
+        //echo "\nValue To Store = ".$value;
         Device::updateState($row["id"], $value, $date->format('Y-m-d H:i:s'));
     }
 }
