@@ -349,15 +349,39 @@ function zwave($heat,$device,$message,$valueToSend=NULL){
         addLog(LOG_ERR, "[ACTION]: Any Zwave Ip Address is set");
         return FALSE;
     }
-    /*$loginUrl="192.168.23.27:8083/smarthome/#/?login=admin&password=admin";
-    file_get_contents($url);
-    $url= "http://".$zwave_ip_address.":8083/ZWaveAPI/Run/devices[".$device->param1."].".$message->command;
-    $url .= (is_null($valueToSend)) ? "" : $valueToSend.")";
-    file_get_contents($url);*/
+
+    $cookie="/etc/domokine/cookie.txt";
     //Login
-    exec('curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d \'{"form": true, "login": "'.$zwave_login.'", "password": "'.$zwave_password.'", "keepme": false, "default_ui": 1}\' '.$zwave_ip_address.':8083/ZAutomation/api/v1/login -c /etc/domokine/cookie.txt');
+    //exec('curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d \'{"form": true, "login": "'.$zwave_login.'", "password": "'.$zwave_password.'", "keepme": false, "default_ui": 1}\' '.$zwave_ip_address.':8083/ZAutomation/api/v1/login -c /etc/domokine/cookie.txt');
+    $urlLogin='http://'.$zwave_ip_address.':8083/ZAutomation/api/v1/login';
+    $requestJson='{"form": true, "login": "'.$zwave_login.'", "password": "'.$zwave_password.'", "keepme": true, "default_ui": 1}';
+
+    $cLogin = curl_init($urlLogin);
+    curl_setopt($cLogin,CURLOPT_POSTFIELDS,$requestJson);
+    curl_setopt($cLogin, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($cLogin, CURLOPT_FOLLOWLOCATION, false);
+    curl_setopt($cLogin, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($cLogin, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($cLogin, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($requestJson))
+    );
+    curl_setopt($cLogin, CURLOPT_COOKIEJAR, '/etc/domokine/cookie.txt');
+
+    $content = curl_exec($cLogin);
+    curl_close($cLogin);
+
     //Action
-    exec('curl '.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.' -b /etc/domokine/cookie.txt');
+    //exec('curl '.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.' -b /etc/domokine/cookie.txt');
+    $url='http://'.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command;
+    $c = curl_init($url);
+    curl_setopt($c, CURLOPT_COOKIEFILE, $cookie);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+    $content = curl_exec($c);
+    curl_close($c);
+    $content=json_decode($content,TRUE);
+
+    //Logging
     addLog(LOG_INFO, "[ACTION]: ZWave calling ".$zwave_ip_address.":8083/ZAutomation/api/v1/devices/".$device->param1."/command/".$message->command);
 
     return TRUE;

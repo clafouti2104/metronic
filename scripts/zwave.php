@@ -50,7 +50,7 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
 
     $c = curl_init($url);
     //curl_setopt($c, CURLOPT_VERBOSE, 1);
-    curl_setopt($c, CURLOPT_COOKIE, $cookie);
+    curl_setopt($c, CURLOPT_COOKIEFILE, $cookie);
     curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
     $content = curl_exec($c);
     curl_close($c);
@@ -61,7 +61,7 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
         $urlLogin='http://'.$zwaveIpAddress.':8083/ZAutomation/api/v1/login';
         $requestJson='{"form": true, "login": "'.$zwaveLogin.'", "password": "'.$zwavePassword.'", "keepme": true, "default_ui": 1}';
 
-        $cLogin = curl_init($url);
+        $cLogin = curl_init($urlLogin);
         curl_setopt($cLogin,CURLOPT_POSTFIELDS,$requestJson);
         curl_setopt($cLogin, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($cLogin, CURLOPT_FOLLOWLOCATION, false);
@@ -79,7 +79,7 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
 
     $c = curl_init($url);
     //curl_setopt($c, CURLOPT_VERBOSE, 1);
-    curl_setopt($c, CURLOPT_COOKIE, $cookie);
+    curl_setopt($c, CURLOPT_COOKIEFILE, $cookie);
     curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
     $content = curl_exec($c);
     curl_close($c);
