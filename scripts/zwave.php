@@ -75,15 +75,15 @@ foreach($zwaves as $zwaveId=>$zwaveObjects){
 
         $content = curl_exec($cLogin);
         curl_close($cLogin);
+    
+        $c = curl_init($url);
+        //curl_setopt($c, CURLOPT_VERBOSE, 1);
+        curl_setopt($c, CURLOPT_COOKIEFILE, $cookie);
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+        $content = curl_exec($c);
+        curl_close($c);
+        $content=json_decode($content,TRUE);
     }
-
-    $c = curl_init($url);
-    //curl_setopt($c, CURLOPT_VERBOSE, 1);
-    curl_setopt($c, CURLOPT_COOKIEFILE, $cookie);
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-    $content = curl_exec($c);
-    curl_close($c);
-    $content=json_decode($content,TRUE);
 
     foreach($zwaveObjects as $infos){
         if($infos["path"] == ""){
