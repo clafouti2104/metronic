@@ -373,7 +373,7 @@ function zwave($heat,$device,$message,$valueToSend=NULL){
 
     //Action
     //exec('curl '.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.' -b /etc/domokine/cookie.txt');
-    $url='http://'.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command;
+    $url='http://'.$zwave_ip_address.':8083/ZAutomation/api/v1/devices/'.$device->param1.'/command/'.$message->command.$valueToSend;
     $c = curl_init($url);
     curl_setopt($c, CURLOPT_COOKIEFILE, $cookie);
     curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);

@@ -93,14 +93,14 @@ $(document).ready(function() {
         grid: true,
         hasGrid: true,
         onFinish: function (data) {
-            console.log(data.fromNumber);
+            console.log(data.from);
             $.ajax({
                 url: "ajax/action/execute.php",
                 type: "POST",
                 data: {
                    elementId: '101',
                    type:  encodeURIComponent('message'),
-                   value:  data.fromNumber
+                   value:  data.from
                 },
                 error: function(datas){
                     toastr.error("Une erreur est survenue");
