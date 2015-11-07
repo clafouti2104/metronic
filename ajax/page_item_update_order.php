@@ -27,4 +27,5 @@ foreach($items as $item){
     $sqlUpdate.="UPDATE pageitem SET position=".$x.", positiony=".$y.", width=".$width.", height=".$height." WHERE id=".$item[0].";";
 }
 $GLOBALS["dbconnec"]->query($sqlUpdate);
+echo $sqlUpdate;
 ?>

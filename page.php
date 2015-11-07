@@ -201,6 +201,9 @@ $( document ).ready(function() {
         vertical_margin: 10
     };
     $('.grid-stack').gridstack(options);
+    var grid = $('.grid-stack').data('gridstack');
+    grid.movable('.grid-stack-item', false);
+    grid.resizable('.grid-stack-item', false);    
 
     $('.grid-stack').on('dragstop', function (event, ui) {
         orderItems();
@@ -219,18 +222,19 @@ $( document ).ready(function() {
             if(WURFL.is_mobile){
                 //dostuff();
             } else {
-                $container.find('.boxPackery').each( function( i, itemElem ) {
-                    // make element draggable with Draggabilly
-                    var draggie = new Draggabilly( itemElem );
-                    // bind Draggabilly events to Packery
-                    $container.packery( 'bindDraggabillyEvents', draggie );
-                });
-                $container.packery( 'on', 'layoutComplete', orderItems );
-                $container.packery( 'on', 'dragItemPositioned', orderItems );
+                var grid = $('.grid-stack').data('gridstack');
+                grid.movable('.grid-stack-item', true);
+                grid.resizable('.grid-stack-item', true);
             }
         } else {
             $('#editMode').val('0');
-            location.reload();
+            var grid = $('.grid-stack').data('gridstack');
+            grid.movable('.grid-stack-item', false);
+            grid.resizable('.grid-stack-item', false);
+            $(this).removeClass("green");
+            $(this).addClass("default");
+            $('#editMode').val('0');
+            //location.reload();
         }
     });
     
@@ -679,24 +683,11 @@ $( document ).ready(function() {
         //setTimeout(requestDataDomokine(chartId, itemId), 8000000);
     }
     
-    var $container = $('.packery').packery({
-        columnWidth: 80,
-        rowHeight: 80
-    });
-    
-    if(WURFL.is_mobile){
-	//dostuff();
-    } else {
-        $container.find('.boxPackery').each( function( i, itemElem ) {
-            // make element draggable with Draggabilly
-            //var draggie = new Draggabilly( itemElem );
-            // bind Draggabilly events to Packery
-            //$container.packery( 'bindDraggabillyEvents', draggie );
-        });
-    }
-    
-  
     function orderItems() {
+        var myVar = setTimeout(orderTimer, 1000);
+    }
+
+    function orderTimer(){
         var sorts="";
         $('.grid-stack-item').each( function( i, itemElem ) {
             //console.debug("IdItemPage="+$(this).attr('iditempage')+" H"+$(this).attr('data-gs-height')+" W"+$(this).attr('data-gs-width')+" X"+$(this).attr('data-gs-x')+" y"+$(this).attr('data-gs-y'));
