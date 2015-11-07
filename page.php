@@ -700,14 +700,12 @@ $( document ).ready(function() {
         var sorts="";
         $('.grid-stack-item').each( function( i, itemElem ) {
             //console.debug("IdItemPage="+$(this).attr('iditempage')+" H"+$(this).attr('data-gs-height')+" W"+$(this).attr('data-gs-width')+" X"+$(this).attr('data-gs-x')+" y"+$(this).attr('data-gs-y'));
-            if($(this).attr('iditempage') === undefined){
-                continue;
+            if($(this).attr('iditempage') !== undefined){
+                if(sorts != ""){
+                    sorts=sorts+"~";
+                }
+                sorts=sorts+$(this).attr('iditempage')+":"+$(this).attr('data-gs-height')+":"+$(this).attr('data-gs-width')+":"+$(this).attr('data-gs-x')+":"+$(this).attr('data-gs-y');
             }
-
-            if(sorts != ""){
-                sorts=sorts+"~";
-            }
-            sorts=sorts+$(this).attr('iditempage')+":"+$(this).attr('data-gs-height')+":"+$(this).attr('data-gs-width')+":"+$(this).attr('data-gs-x')+":"+$(this).attr('data-gs-y');
         });
         
         $.ajax({
