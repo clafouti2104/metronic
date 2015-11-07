@@ -3,8 +3,8 @@ $liste=Liste::getListe($item->listeId);
 $listeMessages=  ListeMessage::getListeMessagesForListe($liste->id);
 $icon=($liste->icon == "") ? "fa-play-circle" : $liste->icon;
 ?>
-<div class="col-md-<?php echo $liste->size; ?> boxPackery itempage itempage-<?php echo $item->id; ?>" type="liste" elementId="<?php echo $liste->id; ?>" iditempage="<?php echo $item->id; ?>">
-    <div class="portlet box <?php echo $liste->color; ?> tabbable">
+<div class="grid-stack-item cell cell-<?php echo $item->id; ?> itempage itempage-<?php echo $item->id; ?>" data-gs-x="<?php echo $item->position; ?>" data-gs-y="<?php echo $item->positiony; ?>" data-gs-width="<?php echo $item->width; ?>" data-gs-height="<?php echo $item->height; ?>"  type="liste" elementId="<?php echo $liste->id; ?>" iditempage="<?php echo $item->id; ?>">
+    <div class="grid-stack-item-content portlet box <?php echo $liste->color; ?> tabbable">
         <div class="portlet-title">
             <div class="caption">
                 <?php echo $liste->name; ?>

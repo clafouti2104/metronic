@@ -31,7 +31,7 @@ if(isset($includeCSS)){
     }
 }
 ?>
-<script src="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+<!--<script src="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>-->
 <script src="<?php echo $GLOBALS['path']; ?>/assets/js/packery.pkgd.min.js" type="text/javascript"></script>
 <script src="<?php echo $GLOBALS['path']; ?>/assets/js/draggabilly.pkgd.js" type="text/javascript"></script>
 <script src="<?php echo $GLOBALS['path']; ?>/assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>

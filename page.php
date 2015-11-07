@@ -6,6 +6,8 @@ $includeJS[] = "/assets/js/raphael.2.1.0.min.js";
 $includeJS[] = "/assets/js/justgage.1.0.1.min.js";   
 $includeJS[] = "/assets/js/wurfl.js";   
 $includeJS[] = "/assets/global/plugins/ion.rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js";
+$includeJS[] = "/assets/global/plugins/gridstack/lodash.js";
+$includeJS[] = "/assets/global/plugins/gridstack/gridstack.js";
 //$includeJS[] = "/assets/admin/pages/scripts/components-jqueryui-sliders.js";   
 
 $includeCSS[] = "/assets/svg/fontcustom.css"; 
@@ -14,6 +16,7 @@ $includeCSS[] = "/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.cs
 $includeCSS[] = "/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"; 
 $includeCSS[] = "/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.css";
 $includeCSS[] = "/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.Metronic.css";
+$includeCSS[] = "/assets/global/plugins/gridstack/gridstack.css";
 include "modules/header.php";
 include "modules/sidebar.php";
 
@@ -63,7 +66,7 @@ $items = PageItem::getPageItemsForPage($_GET["pageId"]);
             </div>
         </div>
         <div class="row">
-            <div class="packery">
+            <div class="grid-stack">
     <?php 
     foreach($items as $item){
         if($item->scenarioId != ""){
@@ -192,6 +195,20 @@ $( document ).ready(function() {
     $('#editMode').val('0');
     $('.btnEditPageItem').hide();
     //$('.btnMoreMessage').hide();
+
+    var options = {
+        cell_height: 123,
+        vertical_margin: 10
+    };
+    $('.grid-stack').gridstack(options);
+
+    $('.grid-stack').on('dragstop', function (event, ui) {
+        orderItems();
+    });
+
+    $('.grid-stack').on('resizestop', function (event, ui) {
+        orderItems();
+    });
     
     $('.btnEditMode').bind('click',function(e){
         $('.btnEditPageItem').toggle();
@@ -258,29 +275,6 @@ $( document ).ready(function() {
     $('.btnDeletePageItem').bind('click',function(e){
         $('#iditempagetodelete').val($(this).attr('iditempage'));
     });
-    
-    
-    /*$(".slider-basic").slider({
-        change: function(e,ui){
-            if( typeof e.clientX != 'undefined'){
-                $.ajax({
-                    url: "ajax/action/execute.php",
-                    type: "POST",
-                    data: {
-                       type:  encodeURIComponent('message'),
-                       value:  ui.value,
-                       elementId: $(this).attr('elementId')
-                    },
-                    error: function(data){
-                        toastr.error("Une erreur est survenue");
-                    },
-                    complete: function(data){
-                        toastr.success("Action exécutée");
-                    }
-                });
-            }
-        }
-    });*/
     
      $(".slider-basic").each(function() {
         var deviceid=$(this).attr('deviceid');
@@ -703,16 +697,14 @@ $( document ).ready(function() {
     
   
     function orderItems() {
-        var itemElems = $container.packery('getItemElements');
         var sorts="";
-        jQuery.each(itemElems, function( index ) {
+        $('.grid-stack-item').each( function( i, itemElem ) {
+            //console.debug("IdItemPage="+$(this).attr('iditempage')+" H"+$(this).attr('data-gs-height')+" W"+$(this).attr('data-gs-width')+" X"+$(this).attr('data-gs-x')+" y"+$(this).attr('data-gs-y'));
             if(sorts != ""){
                 sorts=sorts+"~";
             }
-            sorts=sorts+index+":"+ $( this ).attr('iditempage');
-            //console.log( index + ": " + $( this ).attr('iditempage') );
+            sorts=sorts+$( this ).attr('iditempage')+":"+$(this).attr('data-gs-height')+":"+$(this).attr('data-gs-width')+":"+$(this).attr('data-gs-x')+":"+$(this).attr('data-gs-y');
         });
-        
         
         $.ajax({
             url: "ajax/page_item_update_order.php",
@@ -731,7 +723,6 @@ $( document ).ready(function() {
                 } 
             }
         });
-        //console.debug(sorts);
     }
 });
 

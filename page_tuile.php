@@ -26,8 +26,8 @@ if($item->params != "" && isset($params->period) && $lastStateNow != 0){
     $diffConso = ($percent == 100) ? "0" : $diffConso;
 }
 ?>
-<div class="cell cell-<?php echo $item->id; ?> col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery <?php if(isset($params->period)){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>" deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
-    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; ?> <?php echo $color; ?>">
+<div class="grid-stack-item cell cell-<?php echo $item->id; ?> boxPackery <?php if(isset($params->period)){echo "popupTendance ";} ?> itempage itempage-<?php echo $item->id; ?>" <?php echo $linkTendance; ?> href="ajax/user/tendance.php?deviceId=<?php echo $tuileDevice->id; ?>"  data-gs-x="<?php echo $item->position; ?>" data-gs-y="<?php echo $item->positiony; ?>" data-gs-width="<?php echo $item->width; ?>" data-gs-height="<?php echo $item->height; ?>"  deviceid="<?php echo $tuile->deviceid; ?>" iditempage="<?php echo $item->id; ?>">
+    <div class="grid-stack-item-content dashboard-stat dashboard-stat-<?php echo $item->id; ?> <?php echo $color; ?>">
         <div class="visual">
             <?php
             if(isset($icon)){

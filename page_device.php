@@ -1,9 +1,10 @@
 <?php
 $color=$width=$bgcolor=$diffConso=$linkTendance="";
 
-$width='4';
-$width= (isset($itemParams->width)) ? $itemParams->width : $width;
-$height=$width*66;
+$width=$height='1';
+$width= (isset($item->width)) ? $item->width : $width;
+$height= (isset($item->height)) ? $item->height : $height;
+//$height=$width*66;
 $bgcolor=(isset($itemParams->color) && $itemParams->color != "") ? $itemParams->color : "blue";
 $color="#FFF";
 
@@ -35,8 +36,8 @@ switch(strtolower($device->type)){
 }
 
 ?>
-<div class="cell cell-<?php echo $item->id; ?> col-lg-<?php echo $width; ?> col-md-<?php echo $width; ?> col-sm-6 col-xs-12 boxPackery itempage itempage-<?php echo $item->id; ?>" type="device" elementId="<?php echo $device->id; ?>" iditempage="<?php echo $item->id; ?>">
-    <div class="dashboard-stat dashboard-stat-<?php echo $item->id; echo " ".$bgcolor; ?>" style="">
+<div class="grid-stack-item cell cell-<?php echo $item->id; ?> itempage itempage-<?php echo $item->id; ?>" data-gs-x="<?php echo $item->position; ?>" data-gs-y="<?php echo $item->positiony; ?>" data-gs-width="<?php echo $item->width; ?>" data-gs-height="<?php echo $item->height; ?>"  type="device" elementId="<?php echo $device->id; ?>" iditempage="<?php echo $item->id; ?>">
+    <div class="grid-stack-item-content dashboard-stat dashboard-stat-<?php echo $item->id; echo " ".$bgcolor; ?>" style="">
         <div class="visual ">
 <?php 
 if(isset($icon)){

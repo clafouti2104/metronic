@@ -10,8 +10,11 @@ class PageItem{
     public $listeId;
     public $params;
     public $deviceId;
+    public $width;
+    public $height;
+    public $positiony;
     
-    public function __construct($id, $pageId, $position, $tuileId, $scenarioId, $chartId, $listeId, $params,$deviceId) {
+    public function __construct($id, $pageId, $position, $tuileId, $scenarioId, $chartId, $listeId, $params,$deviceId, $width, $height, $positiony) {
         $this->id = $id;
         $this->pageId = $pageId;
         $this->position = $position;
@@ -21,6 +24,9 @@ class PageItem{
         $this->listeId = $listeId;
         $this->params = $params;
         $this->deviceId = $deviceId;
+        $this->width = $width;
+        $this->height = $height;
+        $this->positiony = $positiony;
     }
         
     public static function PageItemExists($idPageItem) {
@@ -102,6 +108,9 @@ class PageItem{
         $query .= ",listeId";
         $query .= ",params";
         $query .= ",deviceId";
+        $query .= ",width";
+        $query .= ",height";
+        $query .= ",positiony";
         $query .= " FROM pageitem ";
         $query .= " WHERE id=:id";
         
@@ -112,7 +121,7 @@ class PageItem{
             $params = array(":id"	=> $id);
             $stmt->execute($params);
             if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    $tmp_pageitem = new PageItem($row['id'],$row['pageId'],$row['position'], $row['tuileId'], $row['scenarioId'], $row['chartId'], $row["listeId"],$row['params'], $row["deviceId"]);
+                    $tmp_pageitem = new PageItem($row['id'],$row['pageId'],$row['position'], $row['tuileId'], $row['scenarioId'], $row['chartId'], $row["listeId"],$row['params'], $row["deviceId"], $row['width'], $row['height'], $row['positiony']);
 
                     $result[] = $tmp_pageitem;
                     $tmp_pageitem = NULL;
@@ -132,7 +141,7 @@ class PageItem{
         return self::getPageItem($stmt->fetchAll(PDO::FETCH_COLUMN, 0));
     }
     
-    public static function createPageItem($pageId, $position, $tuileId, $scenarioId, $chartId, $listeId, $paramsI, $deviceId) {
+    public static function createPageItem($pageId, $position, $tuileId, $scenarioId, $chartId, $listeId, $paramsI, $deviceId, $width, $height, $positiony) {
         
         $query = "INSERT INTO pageitem (";
         $query .= "pageId";
@@ -143,6 +152,9 @@ class PageItem{
         $query .= ",listeId";
         $query .= ",params";
         $query .= ",deviceId";
+        $query .= ",width";
+        $query .= ",height";
+        $query .= ",positiony";
         $query .= ") ";
         $query .= " VALUES (";
         $query .= ":pageId";
@@ -153,6 +165,9 @@ class PageItem{
         $query .= ",:listeId";
         $query .= ",:params";
         $query .= ",:deviceId";
+        $query .= ",:width";
+        $query .= ",:height";
+        $query .= ",:positiony";
         $query .= ")";
         
         $params = array();
@@ -164,6 +179,9 @@ class PageItem{
         $params[":listeId"] = $listeId;
         $params[":params"] = $paramsI;
         $params[":deviceId"] = $deviceId;
+        $params[":width"] = $width;
+        $params[":height"] = $height;
+        $params[":positiony"] = $positiony;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
         if (!$stmt->execute($params)) {
@@ -181,7 +199,7 @@ class PageItem{
         }
         $stmt = NULL;
 
-        $tmpInstance = new PageItem($id, $pageId, $position, $tuileId, $scenarioId, $chartId, $listeId, $params,$deviceId);
+        $tmpInstance = new PageItem($id, $pageId, $position, $tuileId, $scenarioId, $chartId, $listeId, $params,$deviceId,$width, $height, $positiony);
 
         return $tmpInstance;
     }
@@ -225,6 +243,9 @@ class PageItem{
         $query .= ", listeId=:listeId";
         $query .= ", params=:params";
         $query .= ", deviceId=:deviceId";
+        $query .= ", width=:width";
+        $query .= ", height=:height";
+        $query .= ", positiony=:positiony";
         $query .= " WHERE id=:id";
         
         $params = array();
@@ -236,6 +257,9 @@ class PageItem{
         $params[":listeId"] = $this->listeId;
         $params[":params"] = $this->params;
         $params[":deviceId"] = $this->deviceId;
+        $params[":width"] = $this->width;
+        $params[":height"] = $this->height;
+        $params[":positiony"] = $this->positiony;
         $params[":id"] = $this->id;
 
         $stmt = $GLOBALS['dbconnec']->prepare($query);
