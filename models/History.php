@@ -128,7 +128,7 @@ class History{
 
                     }
 
-                    if($value != ""){
+                    if($tmpValue != ""){
                         $jsSerie .= ($jsSerie == "") ? ""  : ",";
                         $date = new DateTime($row["date"]." ".$tmpDate.":00");
                         $value = $tmpValue;
