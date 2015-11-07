@@ -66,8 +66,8 @@ if(isset($params->plugin) && $params->plugin == "meteo" && isset($params->id)){
 }
 
 ?>
-<div class="cell col-lg-<?php echo $size; ?> col-md-<?php echo $size; ?> col-sm-6 col-xs-12 boxPackery itempage itempage-<?php echo $item->id; ?>" deviceid="" iditempage="<?php echo $item->id; ?>">
-    <div class="dashboard-stat <?php echo $bgcolor; ?>" style="<?php echo $color; ?>">
+<div class="grid-stack-item cell boxPackery itempage itempage-<?php echo $item->id; ?>" deviceid="" iditempage="<?php echo $item->id; ?>" data-gs-x="<?php echo $item->position; ?>" data-gs-y="<?php echo $item->positiony; ?>" data-gs-width="<?php echo $item->width; ?>" data-gs-height="<?php echo $item->height; ?>">
+    <div class="grid-stack-item-content dashboard-stat <?php echo $bgcolor; ?>" style="<?php echo $color; ?>">
         <div class="visual" style="padding-top: 1px;width: 120px;">
 <?php 
 
