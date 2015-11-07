@@ -73,7 +73,7 @@ if( $_POST["scenarioid"] != "" || $_POST["chartid"] != "" || $_POST["tuileid"] !
 //Récupération de la derniere position
 $nextPosition=PageItem::getNextPositionForPage($_POST["pageid"]);
 //Création du PageItem
-PageItem::createPageItem($_POST["pageid"], $nextPosition, $_POST["tuileid"], $_POST["scenarioid"], $_POST["chartid"], $_POST["listeid"], $params, $_POST["deviceid"]);
+PageItem::createPageItem($_POST["pageid"], $nextPosition, $_POST["tuileid"], $_POST["scenarioid"], $_POST["chartid"], $_POST["listeid"], $params, $_POST["deviceid"], 3, 1, 0);
 
 echo "success";
 ?>

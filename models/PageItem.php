@@ -205,7 +205,7 @@ class PageItem{
     }
         
     public static function getNextPositionForPage($pageId) {
-            $query = "SELECT TOP 1 position ";
+            $query = "SELECT TOP 1 positiony ";
             $query .= " FROM pageitem";
             $query .= " WHERE pageId=:pageId";
 
@@ -214,7 +214,7 @@ class PageItem{
             $stmt->execute(array(":pageId" => $pageId));
             $row = $stmt->fetch(PDO::FETCH_COLUMN, 0);
             $stmt = NULL;
-            $position=$row["position"];
+            $position=$row["positiony"];
             $position++;
             
             return $position;
