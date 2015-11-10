@@ -787,7 +787,7 @@ class History{
                     $query .= " SUM(value) as somme";
                     $query .= " FROM releve_consolidation_d$deviceid";
                     $query .= " WHERE ";
-                    $query .= " date > '".$dateFrom->format('Y-m-d')."' AND date < '".$dateFrom->format('Y-m-t')." 23:59:59' ";
+                    $query .= " date > '".$dateFrom->format('Y-m')."-01' AND date < '".$dateFrom->format('Y-m-t')." 23:59:59' ";
                     
                     $stmt = $GLOBALS["histoconnec"]->prepare($query);
                     $stmt->execute(array());

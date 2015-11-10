@@ -29,8 +29,9 @@ while($row = $stmt->fetch()){
             if(!$content = @file_get_contents($url, false, $context)){
                 continue;
             }
-            $xml = simplexml_load_file($url);
-            print_r($xml->$row["param1"]);
+            $content=utf8_for_xml($content);
+            $xml = simplexml_load_string($content);
+            //print_r($xml->$row["param1"]);
             $value=$xml->$row["param1"];
             break;
         case 'gce_compteur':
@@ -49,5 +50,10 @@ while($row = $stmt->fetch()){
     if(isset($value)){
         Device::updateState($row["id"],$value, "NOW()");
     }
+}
+
+function utf8_for_xml($string)
+{
+    return preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $string);
 }
 ?>

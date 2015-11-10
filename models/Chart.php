@@ -291,7 +291,7 @@ class Chart{
     public function getDaysForWeek(){
         $days="";
         $dateFrom=new DateTime('now');
-        $interval=new DateInterval("P7D");
+        $interval=new DateInterval("P6D");
         $interval->invert=1;
         $dateFrom->add($interval);
         $days .= "'".$dateFrom->format('d')."'";
