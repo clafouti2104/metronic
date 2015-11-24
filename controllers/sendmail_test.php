@@ -134,10 +134,10 @@ $body.="<body>";
 $body.='
 <div style="width:100%;">
       <div style="float:left;width:35%;text-align: center;height:40px;">
-            <img src="http://maleksultan1.free.fr/logo.png" />
+            <img src="http://maleksultan1.free.fr/logo.png" style="margin-top:10px;" />
       </div>
       <div style="float:left;width:35%;text-align: center;height:40px;">
-            <h4>Test Mail</h4>
+            <h4 style="margin-top:10px;">Test Mail</h4>
       </div>
       <div style="clear:left;width:100%;">
             <hr class="fondu" />
