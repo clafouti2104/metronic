@@ -64,7 +64,11 @@ foreach($scheduleActions as $scheduleAction){
             break;
         case 'rapport':
             $report = Report::getReport($scheduleAction->action);
-            $pdfName=str_replace(" ","_",utf8_decode($report->name));
+            $pdfName=str_replace(" ","_",$report->name);
+            $pdfName=str_replace("é","e",$pdfName);
+            $pdfName=str_replace("è","e",$pdfName);
+            $pdfName=str_replace("ê","e",$pdfName);
+            $pdfName=str_replace("ô","o",$pdfName);
             //Recuperation adresse IP
             $ipAddress = exec("/sbin/ifconfig eth0 | grep 'inet adr:' | cut -d: -f2 | awk '{ print $1}'"); 
 
