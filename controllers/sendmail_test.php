@@ -32,7 +32,6 @@ $body.="<style type=\"text/css\">";
 $body.="
             body {
             direction: ltr;
-            background: #f6f8f1;
             width:100% !important;
             min-width: 100%;
             -webkit-text-size-adjust:100%;
@@ -160,6 +159,8 @@ $body.='
 $body.="</body>";
 $body.="</html>";
 
+print_r($body);
+exit;
 $from =     $login_gmail;
 $to =       $_POST["mail"];
 $subject = (!isset($subject)) ? "Test Mail Domokine" : $subject;
