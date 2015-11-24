@@ -161,8 +161,6 @@ $body.='
 $body.="</body>";
 $body.="</html>";
 
-print_r($body);
-exit;
 $from =     $login_gmail;
 $to =       $_POST["mail"];
 $subject = (!isset($subject)) ? "Test Mail Domokine" : $subject;
