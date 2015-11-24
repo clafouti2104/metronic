@@ -287,6 +287,20 @@ class Chart{
         $dateFrom=new DateTime('now');
         return $dateFrom->format('d');
     }
+
+    public function getDaysForDay(){
+        $hours="";
+        $j = $this->getHeureFormatted();
+        for($i=0;$i<=23;$i++){
+            $j=($j > 23) ? 0 : $j;
+            if($i>0){
+                $hours .= ",";
+            }
+            $hours .=  "'".$j."'";
+            $j++;
+        }
+        return $hours;
+    }
     
     public function getDaysForWeek(){
         $days="";
