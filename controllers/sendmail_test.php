@@ -69,7 +69,7 @@ $body.="
             .page-header { 
             width: 100%;
             }
-            fondu {
+            .fondu {
                 border: 0;
                 height: 1px;
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -115,7 +115,7 @@ $body.="
             border-bottom: 1px solid #eee;
             padding: 15px 0 !important;
             }
-            fondu {
+            .fondu {
                 border: 0;
                 height: 1px;
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -133,23 +133,23 @@ $body.="</head>";
 $body.="<body>";
 $body.='
 <div style="width:100%;">
-      <div style="float:left;width:35%;">
+      <div style="float:left;width:35%;text-align: center;height:40px;">
             <img src="http://maleksultan1.free.fr/logo.png" />
       </div>
-      <div style="float:left;width:62%;">
+      <div style="float:left;width:35%;text-align: center;height:40px;">
             <h4>Test Mail</h4>
       </div>
       <div style="clear:left;width:100%;">
-            <hr style="fondu" />
+            <hr class="fondu" />
       </div>
-      <div style="clear:left;width:100%;">
-            <h4>Bienvenue sur Domokine</h4>
-            <p>
+      <div style="clear:left;width:100%;clear:left;width:100%;">
+            <h4 style="padding-left:10px;">Bienvenue sur Domokine</h4>
+            <p style="padding-left:10px;">
                    Il s\'agit d\'un mail de test
             </p>
       </div>
       <div style="clear:left;width:100%;">
-            <hr style="fondu" />
+            <hr class="fondu" />
       </div>
       <div style="clear:left;width:100%;">
             The END
