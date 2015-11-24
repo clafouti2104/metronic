@@ -34,6 +34,7 @@ $body.="
             direction: ltr;
             width:100% !important;
             min-width: 100%;
+            color:#4d4d4d;
             -webkit-text-size-adjust:100%;
             -ms-text-size-adjust:100%;
             margin:0;
@@ -97,7 +98,8 @@ $body.="
             }
             @media only screen and (max-width: 600px) {
             body {
-            background: #fff;  
+            background: #fff; 
+            color:#4d4d4d; 
             }
             table.container.content > tbody > tr > td{
             padding: 0px !important;
