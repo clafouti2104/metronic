@@ -75,8 +75,8 @@ foreach($scheduleActions as $scheduleAction){
 
             //Envoi du mail avec le PDF en PJ
             $subject="[DOMOKINE] Rapport";
-            $title="Envoi du rapport ".$report->name;
-            $content="Vous trouverez le rapport en piece jointe";
+            $title="Rapport";
+            $content="Vous trouverez le rapport ".utf8_decode($report->name)." en piece jointe";
             $filename="/tmp/rapport_".$pdfName.".pdf";
             exec("chmod 0777 /tmp/rapport_".$pdfName.".pdf");
             if($content != ""){
