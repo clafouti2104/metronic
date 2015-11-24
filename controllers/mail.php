@@ -143,7 +143,7 @@ $html.="</head>";
 $html.="<body>";
 $html.='
 <div style="width:100%;">
-      <div style="float:left;width:35%;text-align: center;height:40px;">
+      <div style="float:left;width:35%;text-align: center;height:60px;">
             <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="" />
       </div>
       <div style="float:left;width:35%;text-align: center;height:40px;">
