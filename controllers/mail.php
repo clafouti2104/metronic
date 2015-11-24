@@ -144,16 +144,16 @@ $html.="<body>";
 $html.='
 <div style="width:100%;">
       <div style="float:left;width:35%;text-align: center;height:60px;">
-            <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="max-height:55px;width: 100%;" />
+            <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="max-height:55px;width: 100%;max-width: 233px;" />
       </div>
       <div style="float:left;width:35%;text-align: center;height:60px;">
-            <h4 style="margin-top:30px;">'.$title.'</h4>
+            <h4 style="margin-top:30px;">'.utf8_decode($title).'</h4>
       </div>
       <div style="clear:left;width:100%;">
             <hr class="fondu" />
       </div>
       <div style="clear:left;width:100%;clear:left;width:100%;">
-            '.$content.'
+            '.utf8_decode($content).'
       </div>
       <div style="clear:left;width:100%;">
             <hr class="fondu" />
