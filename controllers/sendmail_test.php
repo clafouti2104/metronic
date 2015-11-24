@@ -28,8 +28,8 @@ while( $resultat = $resultats->fetch() )
 $body="<html>";
 $body.="<head>";
 $body.="<title>Domokine | Test Mail</title>";
-$html.="<style type=\"text/css\">";
-$html.="
+$body.="<style type=\"text/css\">";
+$body.="
             body {
             direction: ltr;
             background: #f6f8f1;
@@ -70,7 +70,7 @@ $html.="
             .page-header { 
             width: 100%;
             }
-            hr.fondu {
+            fondu {
                 border: 0;
                 height: 1px;
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -116,7 +116,7 @@ $html.="
             border-bottom: 1px solid #eee;
             padding: 15px 0 !important;
             }
-            hr.fondu {
+            fondu {
                 border: 0;
                 height: 1px;
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -129,30 +129,30 @@ $html.="
             }
             }
         ";
-$html.="</style>";
-$html.="</head>";
-$html.="<body>";
-$html.='
+$body.="</style>";
+$body.="</head>";
+$body.="<body>";
+$body.='
 <div style="width:100%;">
-      <div style="float:left;width:35%">
+      <div style="float:left;width:35%;">
             <img src="http://maleksultan1.free.fr/logo.png" />
       </div>
-      <div style="float:left;width:62%">
+      <div style="float:left;width:62%;">
             <h4>'.$title.'</h4>
       </div>
-      <div style="clear:left:width:100%">
+      <div style="clear:left:width:100%;">
             <hr style="fondu" />
       </div>
-      <div style="clear:left:width:100%">
+      <div style="clear:left;width:100%;">
             <h4>Bienvenue sur Domokine</h4>
             <p>
                    Il s\'agit d\'un mail de test
             </p>
       </div>
-      <div style="clear:left:width:100%">
+      <div style="clear:left;width:100%;">
             <hr style="fondu" />
       </div>
-      <div style="clear:left:width:100%">
+      <div style="clear:left;width:100%;">
             The END
       </div>
 </div>
