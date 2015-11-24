@@ -138,9 +138,9 @@ $body.='
             <img src="http://maleksultan1.free.fr/logo.png" />
       </div>
       <div style="float:left;width:62%;">
-            <h4>'.$title.'</h4>
+            <h4>Test Mail</h4>
       </div>
-      <div style="clear:left:width:100%;">
+      <div style="clear:left;width:100%;">
             <hr style="fondu" />
       </div>
       <div style="clear:left;width:100%;">
