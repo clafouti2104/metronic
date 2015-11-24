@@ -40,9 +40,9 @@ $html.="<style type=\"text/css\">";
 $html.="
             body {
             direction: ltr;
-            background: #f6f8f1;
             width:100% !important;
             min-width: 100%;
+            color:#4d4d4d;
             -webkit-text-size-adjust:100%;
             -ms-text-size-adjust:100%;
             margin:0;
@@ -78,7 +78,7 @@ $html.="
             .page-header { 
             width: 100%;
             }
-            hr.fondu {
+            .fondu {
                 border: 0;
                 height: 1px;
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -106,7 +106,8 @@ $html.="
             }
             @media only screen and (max-width: 600px) {
             body {
-            background: #fff;  
+            background: #fff; 
+            color:#4d4d4d; 
             }
             table.container.content > tbody > tr > td{
             padding: 0px !important;
@@ -124,7 +125,7 @@ $html.="
             border-bottom: 1px solid #eee;
             padding: 15px 0 !important;
             }
-            hr.fondu {
+            .fondu {
                 border: 0;
                 height: 1px;
                 background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
@@ -142,20 +143,20 @@ $html.="</head>";
 $html.="<body>";
 $html.='
 <div style="width:100%;">
-      <div style="float:left;width:35%">
-            <img src="http://maleksultan1.free.fr/logo.png" />
+      <div style="float:left;width:35%;text-align: center;height:40px;">
+            <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="" />
       </div>
-      <div style="float:left;width:62%">
-            <h4>'.$title.'</h4>
+      <div style="float:left;width:35%;text-align: center;height:40px;">
+            <h4 style="margin-top:10px;">'.$title.'</h4>
       </div>
-      <div style="clear:left:width:100%">
-            <hr style="fondu" />
+      <div style="clear:left;width:100%;">
+            <hr class="fondu" />
       </div>
-      <div style="clear:left:width:100%">
+      <div style="clear:left;width:100%;clear:left;width:100%;">
             '.$content.'
       </div>
-      <div style="clear:left:width:100%">
-            <hr style="fondu" />
+      <div style="clear:left;width:100%;">
+            <hr class="fondu" />
       </div>
       <div style="clear:left:width:100%">
             The END

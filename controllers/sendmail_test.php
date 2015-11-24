@@ -136,7 +136,7 @@ $body.="<body>";
 $body.='
 <div style="width:100%;">
       <div style="float:left;width:35%;text-align: center;height:40px;">
-            <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="margin-top:10px;" />
+            <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="" />
       </div>
       <div style="float:left;width:35%;text-align: center;height:40px;">
             <h4 style="margin-top:10px;">Test Mail</h4>

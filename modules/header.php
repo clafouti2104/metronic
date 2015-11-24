@@ -120,7 +120,7 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
 			<a href="index.php">
-			<img src="<?php echo $GLOBALS['path']; ?>/assets/img/logo.png" alt="logo" class="logo-default"/>
+			<img src="<?php echo $GLOBALS['path']; ?>/assets/img/logo_v2.png" alt="logo" class="logo-default"/>
 			</a>
 			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
