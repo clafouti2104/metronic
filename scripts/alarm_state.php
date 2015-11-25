@@ -33,13 +33,18 @@ if($type=="myfox"){
     $securityState = curl_exec( $curl );
     //$securityState = exec("curl https://api.myfox.me:443/v2/site/".$siteid."/security?access_token=".$token);
     $securityState = json_decode($securityState);
-    if(isset($securityState->status) && $securityState->status == "KO" && $securityState->error == "invalid_token"){
+    if((isset($securityState->status) && $securityState->status == "KO" && $securityState->error == "invalid_token") ||  !isset($securityState->status){
         $token=getToken();
         $curl = curl_init( "https://api.myfox.me:443/v2/site/".$siteid."/security?access_token=".$token);
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
         $securityState = curl_exec( $curl );
         //$securityState = exec("curl https://api.myfox.me:443/v2/site/".$siteid."/security?access_token=".$token);
         $securityState = json_decode($securityState);
+    } 
+
+    if(!isset($securityState->payload->statusLabel)){
+        echo "MyFOX Alarm Error: can't have status";
+        return false;
     }
     $status = $securityState->payload->statusLabel;
     $result = array("state"=>strtolower($status));
