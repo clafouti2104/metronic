@@ -7,7 +7,7 @@ foreach($reportCharts as $reportChart){
     //echo "<br/>Chart #".$chartTmp->id;
     //print_r($devices[$chartTmp->id]);
 ?>
-<div class="col-md-6" <?php if($isPDF){echo " style=\"width:650px;page-break-after: always;\"";}  ?>>
+<div class="col-md-6" align="center" <?php if($isPDF){echo " style=\"width:650px;page-break-after: always;\"";}  ?>>
     <div class="portlet" style="background-color: #FFF;">
         <div class="portlet-title">
             <div class="caption"> <?php echo $chartTmp->name." <small>".$report->getBorneDatesReport()."</small>"; ?> </div>
