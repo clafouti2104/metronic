@@ -147,6 +147,9 @@ foreach($charts as $chart){
         //echo " text: '".$chart->description." - ".$report->getBorneDatesReport()."'";
         echo " text: '".$chart->description."'";
         echo "},";
+        echo "subtitle: {";
+        echo "text: '".$chart->getBorneDates()."'";
+        echo "},";
         echo "xAxis: {";
         echo "type: 'datetime',";
         echo "title: {";
@@ -239,6 +242,9 @@ foreach($charts as $chart){
             echo "title: {";
             echo " text: '".$chart->description."'";
             //echo " text: '".$chart->description." - ".$report->getBorneDatesReport()."'";
+            echo "},";
+            echo "subtitle: {";
+            echo "text: '".$chart->getBorneDates()."'";
             echo "},";
             echo "xAxis: {";
             echo "categories: [";
