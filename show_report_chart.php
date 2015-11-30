@@ -8,9 +8,9 @@ foreach($reportCharts as $reportChart){
     //print_r($devices[$chartTmp->id]);
 ?>
 <div class="col-md-6" <?php if($isPDF){echo " style=\"width:650px;page-break-after: always;\"";}  ?>>
-    <div class="portlet box blue-steel tabbable" style="background-color: #FFF;">
+    <div class="portlet" style="background-color: #FFF;">
         <div class="portlet-title">
-            <div class="caption"> <?php echo $chartTmp->name; ?> </div>
+            <div class="caption"> <?php echo $chartTmp->name." <small>".$report->getBorneDatesReport()."</small>"; ?> </div>
         </div>
         <div class="portlet-body">
             <div class="cell col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -31,7 +31,7 @@ foreach($reportCharts as $reportChart){
 foreach($devicesByType as $type=>$tmpDevices){
 ?>
     <div class="col-md-6" <?php if($isPDF){ echo " style=\"500px;\" "; } ?> >
-        <div class="portlet box green-haze">
+        <div class="portlet">
             <div class="portlet-title">
                 <div class="caption"> <?php echo ucwords($type); ?> </div>
             </div>

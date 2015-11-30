@@ -440,7 +440,7 @@ class History{
     
     public static function getHistoryHighchartBarre($deviceid,$period,$from,$formula=NULL,$showDate=FALSE,$dateBegin=NULL){
         $result = array();
-        //echo "rentre";exit;
+        
         if($dateBegin != ""){
             $dateFrom=new DateTime($dateBegin);
         }else {
@@ -449,8 +449,7 @@ class History{
                 $interval=new DateInterval($from);
                 $interval->invert=1;
                 $dateFrom->add($interval);
-            }
-            
+            } 
         }
         
         $jsSerie="";
@@ -574,12 +573,19 @@ class History{
                         $query .= " WHERE ";
                         $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";*/
                         
-                        $query = "SELECT ";
+                        /*$query = "SELECT ";
                         $query .= " value as somme";
                         $query .= " FROM releve_consolidation_d$deviceid";
                         $query .= " WHERE ";
-                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";
-                        //echo "\n".$query."\n  ";
+                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";*/
+
+                        $query = "SELECT ";
+                        $query .= " avg as somme";
+                        $query .= " FROM temperature_consolidation";
+                        $query .= " WHERE ";
+                        $query .= " deviceid=$deviceid ";
+                        $query .= " AND date = '".$dateFrom->format('Y-m-d')."'";
+                        //echo "\nQUERY=".$query."\n  ";
                         $stmt = $GLOBALS["histoconnec"]->prepare($query);
                         $stmt->execute(array());
                         $value=0;
@@ -631,11 +637,18 @@ class History{
                         $query .= " WHERE ";
                         $query .= " date > '".$dateFrom->format('Y-m-d')." 00:00:00' AND date < '".$dateFrom->format('Y-m-d')." 23:59:59'";*/
                         
-                        $query = "SELECT ";
+                        /*$query = "SELECT ";
                         $query .= " value as somme";
                         $query .= " FROM releve_consolidation_d$deviceid";
                         $query .= " WHERE ";
-                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";
+                        $query .= " date = '".$dateFrom->format('Y-m-d')."'";*/
+
+                        $query = "SELECT ";
+                        $query .= " avg as somme";
+                        $query .= " FROM temperature_consolidation";
+                        $query .= " WHERE ";
+                        $query .= " deviceid=$deviceid ";
+                        $query .= " AND date = '".$dateFrom->format('Y-m-d')."'";
                         
                         //echo "\n".$query."\n  ";
                         $stmt = $GLOBALS["histoconnec"]->prepare($query);

@@ -475,13 +475,14 @@ $( document ).ready(function() {
             echo "categories: [";
             switch($chart->period){
                 case '1':
-                    $j=$chart->getHeureFormatted();
+                    /*$j=$chart->getHeureFormatted();
                     for($i=0;$i<=23;$i++){
                         $j=($j > 23) ? 0 : $j;
                         if($i>0){echo ",";}
                         echo "'".$j."'";
                         $j++;
-                    }
+                    }*/
+                    $j=$chart->getHoursForDay();
                     break;
                 case '2':
                     echo $chart->getDaysForWeek();

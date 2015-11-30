@@ -1,5 +1,9 @@
 <?php
-include "modules/header.php";
+if(isset($_GET['pdf'])){
+    include "modules/header_no_style.php";
+} else {
+    include "modules/header.php";    
+}
 //include "modules/sidebar.php";
 
 $GLOBALS["dbconnec"] = connectDB();
@@ -52,7 +56,7 @@ $isPDF = (isset($_GET["pdf"])) ? TRUE : FALSE;
 ?>
 <!-- BEGIN PAGE -->
 <div class="page-content">
-    <div class="container-fluid" <?php if($isPDF){?> style="padding-top: 60px;" <?php } ?>>
+    <div class="container-fluid" <?php if($isPDF){?> style="padding-top: 0px;" <?php } ?>>
 <?php if(!$isPDF){ ?>
         <div class="row" style="margin-top:60px;">
             <div class="col-md-12">
@@ -80,6 +84,22 @@ $isPDF = (isset($_GET["pdf"])) ? TRUE : FALSE;
             </div>
         </div>
 <?php } ?>
+        <div class="row-fluid">
+            <div class="head">
+                <div style="float: left; line-height: inherit;height:50px;">
+                    <h3 style="margin-bottom:0px;">
+                        <?php echo $report->name; ?>
+                        <small><?php echo $report->description; ?></small>
+                    </h3>
+                </div>
+                <div  style="float: right;max-width:110px;height:50px;">
+                    <img class="logo-default" src="<?php echo $GLOBALS['path']; ?>/assets/img/logo_horizontalV2.png" style="margin-top:20px;"/>
+                </div>
+                <div style="clear:left;">
+                <hr>
+                </div>
+            </div>
+        </div>
         <div class="row-fluid">
             <?php include "show_report_chart.php"; ?>
             <!--<div class="col-md-12">
@@ -124,10 +144,8 @@ foreach($charts as $chart){
         }
         echo " },";
         echo "title: {";
-        echo " text: '".$chart->name."'";
-        echo "},";
-        echo "subtitle: {";
-        echo "text: '".$chart->description." - ".$report->getBorneDatesReport()."'";
+        //echo " text: '".$chart->description." - ".$report->getBorneDatesReport()."'";
+        echo " text: '".$chart->description."'";
         echo "},";
         echo "xAxis: {";
         echo "type: 'datetime',";
@@ -219,10 +237,8 @@ foreach($charts as $chart){
             }
             echo " },";
             echo "title: {";
-            echo " text: '".$chart->name."'";
-            echo "},";
-            echo "subtitle: {";
-            echo "text: '".$chart->description." - ".$report->getBorneDatesReport()."'";
+            echo " text: '".$chart->description."'";
+            //echo " text: '".$chart->description." - ".$report->getBorneDatesReport()."'";
             echo "},";
             echo "xAxis: {";
             echo "categories: [";
@@ -237,7 +253,7 @@ foreach($charts as $chart){
                     }
                     break;
                 case '2':
-                    echo $chart->getDaysForWeek();
+                    echo $chart->getDaysForWeekSinceYesterday();
                     break;
                 case '3':
                     echo $chart->getDaysForMonth();
@@ -282,6 +298,7 @@ foreach($charts as $chart){
             foreach($devices[$chart->id] as $device){
                 //print_r($history[$device->id]);
                 $data = History::getDataForChart($history[$device->id], $report->period, $device->incremental);
+
                 if($k>0){
                     echo ",";
                 }

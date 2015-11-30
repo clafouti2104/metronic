@@ -216,15 +216,27 @@ class Chart{
     }
     
     public function getBorneDates(){
-        $from = $this->from;
+        //$from = $this->from;
         $period = $this->period;
-        $dateFrom=new DateTime('now');
-        if($from != ""){
-            $interval=new DateInterval($from);
-            $interval->invert=1;
-            $dateFrom->add($interval);
+        switch($period){
+            case '1':
+                $from='P1D';
+                break;
+            case '2':
+                $from='P7D';
+                break;
+            case '3':
+                $from='P1M';
+                break;
+            case '4':
+                $from='P1Y';
+                break;
         }
-        
+        $dateFrom=new DateTime('now');
+        $interval=new DateInterval($from);
+        $interval->invert=1;
+        $dateFrom->add($interval);
+
         switch($period){
             case '1':
                 $duration='1';
@@ -241,43 +253,12 @@ class Chart{
             default:
                 $duration='1';
         }
+        
         $dateEnd=clone $dateFrom;
         $dateEnd->add(new DateInterval("P".$duration."D"));
         return "du ".$dateFrom->format('d/m H:i')." au ".$dateEnd->format('d/m H:i');
     }
 
-    public function getBorneDatesReport(){
-        $from = $this->from;
-        $period = $this->period;
-        $dateFrom=new DateTime('now');
-        $interval=new DateInterval($from);
-        $interval->invert=1;
-        $dateFrom->add($interval);
-        $interval=new DateInterval('P1D');
-        $interval->invert=1;
-        $dateFrom->add($interval);
-        
-        switch($period){
-            case '1':
-                $duration='1';
-                break;
-            case '2':
-                $duration='6';
-                break;
-            case '3':
-                $duration='31';
-                break;
-            case '4':
-                $duration='365';
-                break;
-            default:
-                $duration='1';
-        }
-        $dateEnd=clone $dateFrom;
-        $dateEnd->add(new DateInterval("P".$duration."D"));
-        return "du ".$dateFrom->format('d/m H:i')." au ".$dateEnd->format('d/m H:i');
-    }
-    
     public function getHeureFormatted(){
         $dateFrom=new DateTime('now');
         return $dateFrom->format('H');
@@ -288,7 +269,7 @@ class Chart{
         return $dateFrom->format('d');
     }
 
-    public function getDaysForDay(){
+    public function getHoursForDay(){
         $hours="";
         $j = $this->getHeureFormatted();
         for($i=0;$i<=23;$i++){
@@ -306,6 +287,26 @@ class Chart{
         $days="";
         $dateFrom=new DateTime('now');
         $interval=new DateInterval("P6D");
+        $interval->invert=1;
+        $dateFrom->add($interval);
+        $days .= "'".$dateFrom->format('d')."'";
+        for($i=1;$i<=7;$i++){
+            $interval=new DateInterval("P1D");
+            $dateFrom->add($interval);
+            $days .= ",'".$dateFrom->format('d')."'";
+        }
+        return $days;
+    }
+
+    public function getDaysForWeekSinceYesterday(){
+        $days="";
+        $dateFrom=new DateTime('now');
+        $dateYesterday=new DateTime('now');
+        $intervalYesterday=new DateInterval('P1D');
+        $intervalYesterday->invert=1;
+        $dateYesterday->add($intervalYesterday);
+
+        $interval=new DateInterval("P7D");
         $interval->invert=1;
         $dateFrom->add($interval);
         $days .= "'".$dateFrom->format('d')."'";
