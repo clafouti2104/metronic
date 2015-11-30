@@ -43,6 +43,7 @@ $unknownNotif=0;
 $notifications=array();
 //$resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND date > '".$lastDate->format('Y-m-d H:i:s')."' AND level >= ".$logLevel." ORDER BY date DESC");
 $resultatLogs=$GLOBALS["dbconnec"]->query("SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND level >= ".$logLevel." ORDER BY date DESC LIMIT 0,10");
+//echo "<br/><br/>SELECT l.deviceId,l.date,l.value,l.level,l.rfId,d.name FROM log l, device d WHERE d.id=l.deviceId AND level >= ".$logLevel." ORDER BY date DESC LIMIT 0,10";
 $resultatLogs->setFetchMode(PDO::FETCH_OBJ);
 while( $resultatLog = $resultatLogs->fetch() )
 {
@@ -151,85 +152,91 @@ $stmt = $GLOBALS["dbconnec"]->query($sqlUpdate);
 							<li>
 								<p>Vous avez <?php echo count($notifications); ?> notifications</p>
 							</li>
-                                                        <?php 
-                                                        foreach ($notifications as $notification){
-                                                            $device= ($notification["deviceName"] != "") ? $notification["deviceName"] : $notification["rfId"];
-                                                            $tmpInfo=$prefix="";
-                                                            switch (strtolower($notification["value"])){
-                                                                case "on":
-                                                                    $label="success";
-                                                                    $icon="bolt";
-                                                                    break;
-                                                                case "off":
-                                                                    $label="danger";
-                                                                    $icon="bolt";
-                                                                    break;
-                                                                case "armed":
-                                                                    $prefix="MES ";
-                                                                    $label="danger";
-                                                                    $icon="bullhorn";
-                                                                    break;
-                                                                case "disarmed":
-                                                                    $prefix="MHS ";
-                                                                    $label="success";
-                                                                    $icon="bullhorn";
-                                                                    break;
-                                                                case "partial":
-                                                                    $prefix="MES ";
-                                                                    $label="warning";
-                                                                    $icon="bullhorn";
-                                                                    break;
-                                                                case "alert":
-                                                                    $label="danger";
-                                                                    $icon="icon-ban-circle";
-                                                                    break;
-                                                                case "double badgeage":
-                                                                    $label="danger";
-                                                                    $icon="user";
-                                                                    break;
-                                                                case "badge accepté":
-                                                                    $label="success";
-                                                                    $icon="user";
-                                                                    break;
-                                                                default:
-                                                                    $label="info";
-                                                                    $icon="info-circle";
-                                                                    
-                                                            }
-                                                            $date = new DateTime($notification["date"]);
-                                                            echo "<li>";
-                                                            echo "<a href='javascript:;' onclick='App.onNotificationClick(1)'>";
-                                                            echo "<span class='label label-".$label."'><i class='fa fa-".$icon."'></i></span>";
-                                                            echo " ".$prefix.$device.". ";
-                                                            echo "<span class='time'>".$date->format('d-m-Y H:i')."</span>";
-                                                            echo "</a>";
-                                                            echo "</li>";
-                                                        } 
-                                                        ?>
-                                                        <li class="external">
-                                                            <a href="system.php">
-                                                                Toutes les notifications <i class="m-icon-swapright"></i>
-                                                            </a>
-                                                        </li>
+                            <?php 
+                            foreach ($notifications as $notification){
+                                $device= ($notification["deviceName"] != "") ? $notification["deviceName"] : $notification["rfId"];
+                                $tmpInfo=$prefix="";
+                                switch (strtolower($notification["value"])){
+                                    case "on":
+                                        $label="success";
+                                        $icon="bolt";
+                                        break;
+                                    case "off":
+                                        $label="danger";
+                                        $icon="bolt";
+                                        break;
+                                    case "armed":
+                                        $prefix="MES ";
+                                        $label="danger";
+                                        $icon="bullhorn";
+                                        break;
+                                    case "disarmed":
+                                        $prefix="MHS ";
+                                        $label="success";
+                                        $icon="bullhorn";
+                                        break;
+                                    case "partial":
+                                        $prefix="MES ";
+                                        $label="warning";
+                                        $icon="bullhorn";
+                                        break;
+                                    case "alert":
+                                        $label="danger";
+                                        $icon="icon-ban-circle";
+                                        break;
+                                    case "double badgeage":
+                                        $label="danger";
+                                        $icon="user";
+                                        break;
+                                    case "badge accepté":
+                                        $label="success";
+                                        $icon="user";
+                                        break;
+                                    default:
+                                        $label="info";
+                                        $icon="info-circle";
+                                        
+                                }
+                                $infoNotifications=array(
+                                    "lost_communication" => "Perte Communication",
+                                    "get_communication" => "Reprise Communication",
+                                );
+                                $tmpInformation = (isset($infoNotifications[$notification["value"]])) ? $infoNotifications[$notification["value"]] : $notification["value"];
+
+                                $date = new DateTime($notification["date"]);
+                                echo "<li>";
+                                echo "<a href='javascript:;' onclick='App.onNotificationClick(1)'>";
+                                echo "<span class='label label-".$label."'><i class='fa fa-".$icon."'></i></span>";
+                                echo " ".$prefix.$device." - ".$tmpInformation.". ";
+                                echo "<span class='time'>".$date->format('d-m-Y H:i')."</span>";
+                                echo "</a>";
+                                echo "</li>";
+                            } 
+                            ?>
+                            <li class="external">
+                                <a href="system.php">
+                                    Toutes les notifications <i class="m-icon-swapright"></i>
+                                </a>
+                            </li>
 						</ul>
 					</li>
-                                        <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                                <i class="fa fa-tasks"></i>
-                                            </a>
-                                            <ul class="dropdown-menu extended tasks">
-                                                <li>
-                                                    <p>Opérations</p>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="btnReboot">
-                                                        <i class="fa fa-repeat "></i>
-                                                        Redémarrer
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                    <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="fa fa-tasks"></i>
+                        </a>
+                        <ul class="dropdown-menu extended tasks">
+                            <li>
+                                <p>Opérations</p>
+                            </li>
+                            <li>
+                                <a href="#" class="btnReboot">
+                                    <i class="fa fa-repeat "></i>
+                                    Redémarrer
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 				<!-- END TOP NAVIGATION MENU -->	
 			</div>
 		</div>

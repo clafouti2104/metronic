@@ -143,10 +143,10 @@ $html.="</head>";
 $html.="<body>";
 $html.='
 <div style="width:100%;">
-      <div style="float:left;width:35%;text-align: center;height:60px;">
+      <div style="float:left;width:35%;max-width:235px;text-align: center;height:60px;">
             <img src="http://maleksultan1.free.fr/logo_horizontal.png" style="max-height:55px;width: 100%;max-width: 233px;" />
       </div>
-      <div style="float:left;width:35%;text-align: center;height:60px;">
+      <div style="float:left;width:62%;text-align: center;height:60px;">
             <h4 style="margin-top:30px;">'.utf8_decode($title).'</h4>
       </div>
       <div style="clear:left;width:100%;">
