@@ -58,6 +58,15 @@ function executeMessage($messgeId, $valueToSend=NULL){
             file_get_contents("http://".$device->ip_address."".$message->command, false, $context);
             addLog(LOG_INFO, "[ACTION]: Calling URL "."http://".$device->ip_address.$message->command);
             break;
+        case 'camera_7links':
+            if($GLOBALS["debug"]){
+                echo "http://".$device->ip_address."".$message->command;
+            }
+            file_get_contents("http://".$device->ip_address."".$message->command, false, $context);
+            usleep(200);
+            file_get_contents("http://".$device->ip_address."/decoder_control.cgi?command=1", false, $context);
+            addLog(LOG_INFO, "[ACTION]: Calling URL "."http://".$device->ip_address.$message->command);
+            break;
         case 'knx_group':
             include_once('eibnetmux.php');
             //Parameters
